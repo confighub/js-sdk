@@ -1,0 +1,55 @@
+{
+  "name": "@confighub/react-auth",
+  "version": "0.0.0",
+  "description": "React auth provider and hooks for ConfigHub browser apps (OIDC PKCE + RFC 8693 token exchange)",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@confighub/api": "^0.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "react": "^18.3.1"
+  },
+  "keywords": [
+    "confighub",
+    "oauth",
+    "oidc",
+    "pkce",
+    "react",
+    "auth"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

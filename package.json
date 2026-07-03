@@ -1,0 +1,31 @@
+{
+  "name": "confighub-js-sdk",
+  "version": "0.0.0",
+  "private": true,
+  "description": "ConfigHub JavaScript SDK — browser auth and typed API client",
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "sync-spec": "node scripts/sync-spec.mjs",
+    "build": "npm run build -w @confighub/api -w @confighub/react-auth",
+    "typecheck": "npm run typecheck -w @confighub/api -w @confighub/react-auth",
+    "example": "npm run dev -w confighub-example-space-browser",
+    "lint": "npm run lint --workspaces --if-present",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "npm run build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.9",
+    "openapi-typescript": "^7.4.4",
+    "tsup": "^8.3.5",
+    "typescript": "~5.6.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
