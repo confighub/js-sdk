@@ -15,5 +15,6 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npm run typecheck
+      # Build first: react-auth's typecheck resolves @confighub/api from its built dist.
       - run: npm run build
+      - run: npm run typecheck
