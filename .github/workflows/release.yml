@@ -1,8 +1,10 @@
 name: Release
 
+# Manual-only for now: we are not publishing to npm yet. Flip this to
+# `on: push: branches: [main]` once the @confighub npm scope + NPM_TOKEN secret
+# are in place, and the changesets flow will open a version PR and publish.
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 concurrency: release-${{ github.ref }}
 
