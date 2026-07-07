@@ -1,10 +1,11 @@
 name: Release
 
-# Manual-only for now: we are not publishing to npm yet. Flip this to
-# `on: push: branches: [main]` once the @confighub npm scope + NPM_TOKEN secret
-# are in place, and the changesets flow will open a version PR and publish.
+# On every push to main: if there are pending changesets, open/update a
+# "Version Packages" PR (bump versions + changelogs). When that PR merges (no
+# changesets left, versions ahead of npm), publish the changed packages.
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
 
 concurrency: release-${{ github.ref }}
 
@@ -14,6 +15,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      id-token: write # npm provenance
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,8 +25,6 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run build
-      # Opens/updates a "Version Packages" PR from pending changesets, and when
-      # that PR merges, publishes the changed packages to npm.
       - uses: changesets/action@v1
         with:
           version: npm run version-packages
@@ -32,3 +32,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'
