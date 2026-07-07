@@ -119,8 +119,7 @@ for `@confighub/api`, `@rtk-query/codegen-openapi` for `@confighub/rtk-query`. T
 fetched root `openapi.json` and both generated files (`packages/api/src/schema.d.ts`,
 `packages/rtk-query/src/confighubApi.gen.ts`) are committed, so a spec change is a
 reviewable diff. Bumping the targeted server version is: edit `.spec-version`, run
-`sync-spec`, review, release. CI can do this via the `Sync OpenAPI spec` workflow, which
-opens a PR with a changeset.
+`npm run sync-spec`, commit the regenerated files, and open a PR.
 
 ## Development
 
@@ -133,8 +132,19 @@ npm run example          # run examples/space-browser (plain client)
 npm run example:rtk      # run examples/space-browser-rtk (RTK Query)
 ```
 
-Versioning is managed with [changesets](https://github.com/changesets/changesets):
-add one with `npm run changeset` for any change you want to publish.
+## Releasing
+
+Publishing is tag-driven (matching the main codebase). The git tag is the source of
+truth for the version; CI sets each package to that version and publishes all three to
+npm with provenance.
+
+```
+git tag v0.2.0
+git push origin v0.2.0     # triggers .github/workflows/release.yml
+```
+
+Use a `v*.*.*` semver tag. The package.json versions in the repo are placeholders that
+CI overwrites at publish time, so they don't need bumping by hand.
 
 ## Standards
 

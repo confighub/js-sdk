@@ -15,13 +15,9 @@
     "typecheck": "npm run typecheck -w @confighub/api -w @confighub/rtk-query -w @confighub/react-auth",
     "example": "npm run dev -w confighub-example-space-browser",
     "example:rtk": "npm run dev -w confighub-example-space-browser-rtk",
-    "lint": "npm run lint --workspaces --if-present",
-    "changeset": "changeset",
-    "version-packages": "changeset version",
-    "release": "npm run build && changeset publish"
+    "lint": "npm run lint --workspaces --if-present"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.9",
     "@rtk-query/codegen-openapi": "^2.0.0",
     "openapi-typescript": "^7.4.4",
     "tsup": "^8.3.5",
