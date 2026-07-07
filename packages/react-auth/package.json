@@ -1,6 +1,6 @@
 {
   "name": "@confighub/react-auth",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "React auth provider and hooks for ConfigHub browser apps (OIDC PKCE + RFC 8693 token exchange)",
   "license": "MIT",
   "repository": {
@@ -39,7 +39,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@confighub/api": "^0.0.0"
+    "@confighub/api": "^0.1.0"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0"
