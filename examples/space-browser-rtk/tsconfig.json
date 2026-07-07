@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "types": ["vite/client"],
+    "verbatimModuleSyntax": false,
+    "baseUrl": ".",
+    "paths": {
+      "@confighub/api": ["../../packages/api/src/index.ts"],
+      "@confighub/react-auth": ["../../packages/react-auth/src/index.ts"],
+      "@confighub/rtk-query": ["../../packages/rtk-query/src/index.ts"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}

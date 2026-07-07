@@ -17,6 +17,7 @@ import {
   startLogin,
   type MintedSession,
 } from './core';
+import { setAccessToken } from './tokenStore';
 
 export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated' | 'error';
 
@@ -69,6 +70,7 @@ export function ConfigHubAuthProvider({
 
   const applySession = useCallback((session: MintedSession) => {
     tokenRef.current = session.accessToken;
+    setAccessToken(session.accessToken); // keep the non-React accessor in sync (rtk-query)
     setUser({ organizationId: session.organizationId, idpClaims: session.idpClaims });
     setError(null);
     setStatus('authenticated');
@@ -104,6 +106,7 @@ export function ConfigHubAuthProvider({
 
   const logout = useCallback(() => {
     tokenRef.current = undefined;
+    setAccessToken(undefined);
     resetPending();
     setUser(null);
     setStatus('unauthenticated');

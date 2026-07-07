@@ -1,15 +1,20 @@
 # ConfigHub JavaScript SDK
 
-Two small packages for building browser apps on the ConfigHub API:
+Packages for building browser apps on the ConfigHub API:
 
-- [`@confighub/api`](packages/api) — a typed, framework-agnostic client generated
-  from the ConfigHub OpenAPI spec. No Redux, no React, no required provider.
 - [`@confighub/react-auth`](packages/react-auth) — a React provider and hooks that
   run the browser-direct auth flow (OIDC PKCE + RFC 8693 token exchange) and hand
   back a client pre-wired with the token.
+- [`@confighub/api`](packages/api) — a typed, framework-agnostic client (openapi-fetch).
+  No Redux, no React, no required provider. Reach for this by default.
+- [`@confighub/rtk-query`](packages/rtk-query) — an [RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
+  client (generated hooks, cache tags) for apps already on Redux Toolkit.
 
-They compose but are independently usable. The only contract between them is a
-`getToken()` seam: the client accepts a token source; the auth layer provides one.
+`@confighub/api` and `@confighub/rtk-query` are parallel, independent clients: same
+version-pegged spec, same `getToken` auth seam, different generator, no shared code.
+Pick one. The only contract between the auth package and a client is `getToken()`: the
+client accepts a token source; the auth layer provides one (via `useConfigHub()` for the
+plain client, or `getAccessToken` for RTK Query).
 
 ## Try it (the example app)
 
@@ -106,21 +111,26 @@ of its own code. The one thing it pulls from ConfigHub is the OpenAPI spec, pinn
 a released server version in [`.spec-version`](.spec-version).
 
 ```
-npm run sync-spec          # fetch openapi.json at .spec-version, regenerate types
+npm run sync-spec          # fetch the pinned spec, regenerate BOTH clients
 ```
 
-The fetched `openapi.json` and generated `packages/api/src/schema.d.ts` are committed,
-so a spec change is a reviewable diff. Bumping the targeted server version is: edit
-`.spec-version`, run `sync-spec`, review, release. CI can do this via the
-`Sync OpenAPI spec` workflow, which opens a PR with a changeset.
+One pegged spec drives both clients through their own generators: `openapi-typescript`
+for `@confighub/api`, `@rtk-query/codegen-openapi` for `@confighub/rtk-query`. The
+fetched root `openapi.json` and both generated files (`packages/api/src/schema.d.ts`,
+`packages/rtk-query/src/confighubApi.gen.ts`) are committed, so a spec change is a
+reviewable diff. Bumping the targeted server version is: edit `.spec-version`, run
+`sync-spec`, review, release. CI can do this via the `Sync OpenAPI spec` workflow, which
+opens a PR with a changeset.
 
 ## Development
 
 ```
 npm install
 npm run sync-spec        # generate the client types (needed once before build)
-npm run build            # tsup -> dual ESM/CJS + d.ts for both packages
+npm run build            # tsup -> dual ESM/CJS + d.ts for all packages
 npm run typecheck
+npm run example          # run examples/space-browser (plain client)
+npm run example:rtk      # run examples/space-browser-rtk (RTK Query)
 ```
 
 Versioning is managed with [changesets](https://github.com/changesets/changesets):

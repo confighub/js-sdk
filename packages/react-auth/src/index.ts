@@ -9,4 +9,5 @@ export type {
   AuthStatus,
 } from './provider';
 export { useAuth, useConfigHub } from './hooks';
+export { getAccessToken } from './tokenStore';
 export type { Discovery, MintedSession } from './core';
