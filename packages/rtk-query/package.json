@@ -1,6 +1,6 @@
 {
   "name": "@confighub/rtk-query",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "RTK Query client for the ConfigHub API (generated hooks, cache tags, bearer auth)",
   "license": "MIT",
   "repository": {
