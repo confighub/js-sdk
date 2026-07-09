@@ -7,6 +7,8 @@ export type {
   ConfigHubAuthContextValue,
   ConfigHubUser,
   AuthStatus,
+  LogoutOptions,
+  SilentReauthMode,
 } from './provider';
 export { useAuth, useConfigHub } from './hooks';
 export { getAccessToken } from './tokenStore';

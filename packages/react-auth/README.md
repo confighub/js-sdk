@@ -41,8 +41,40 @@ The minted token is kept in memory, never `localStorage`; only the transient PKC
 verifier is parked in `sessionStorage` across the authorize redirect. A 401 clears
 the session so the app re-authenticates.
 
-Not yet implemented: silent refresh via refresh-token rotation, and IdP
-end-session on logout. Today a 401 or `logout()` returns the app to the login
-screen. These follow the server-side refresh-rotation work.
+## Silent re-auth on page refresh
+
+Because tokens are memory-only, a full page refresh discards them. Rather than
+persisting tokens, the provider re-runs the authorize redirect with `prompt=none`:
+the IdP's SSO cookie answers non-interactively, and the app is authenticated again
+after a quick redirect round-trip — no login screen, no user interaction. The app
+shows `status === 'loading'` throughout, and the pre-refresh URL (path, query,
+hash) is restored afterward.
+
+The `silentReauth` prop controls when this happens:
+
+- `'returning'` (default) — only when a prior login is remembered on this
+  browser, via a non-sensitive marker in `localStorage` (a bare flag — no token
+  material). The marker is set on successful login and cleared by `logout()` or
+  by the IdP declining the silent attempt (`login_required`), so first-time
+  visitors and logged-out users go straight to the login screen.
+- `'always'` — attempt on every fresh load, first-time visitors included. Use
+  this when users arrive already holding an IdP session — e.g. the app is
+  reached from a portal that shares the IdP — so they are logged in without ever
+  seeing a login screen. A visitor with no IdP session pays one redirect
+  round-trip, after which attempts are suppressed for that tab until they log in
+  explicitly. Note this requires the app to load as a top-level page (own tab or
+  full-page navigation); inside a cross-site iframe the IdP cookie is partitioned
+  away and silent auth cannot work (see issue #3).
+- `'never'` — no automatic attempts; auth starts only from `login()`.
+
+## Logout
+
+`logout()` clears the in-memory session and the silent re-auth marker, and
+suppresses automatic login in the tab (relevant for `'always'` mode) until the
+user logs in explicitly — but it leaves the IdP SSO cookie alone, so the next
+login is one non-interactive click. To also end the IdP session (e.g. shared
+machines), pass `logout({ endSession: true })`: this redirects through the OIDC
+end-session endpoint with `id_token_hint`, after which logging in requires
+credentials again.
 
 `react` (18 or 19) is a peer dependency.

@@ -34,7 +34,7 @@ export function App() {
         <span className="brand">ConfigHub Space Browser</span>
         <span className="spacer" />
         <span className="muted">org {user.organizationId}</span>
-        <button className="ghost" onClick={logout}>
+        <button className="ghost" onClick={() => logout()}>
           Sign out
         </button>
       </header>
