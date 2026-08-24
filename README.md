@@ -104,6 +104,52 @@ const { data, error } = await api.GET('/space/{space_id}/unit', {
 });
 ```
 
+## Configuration data
+
+A Unit's configuration is not a field of the Unit. `Unit`, `Revision` and `Release` carry
+`DataHash` and `DataSize` — enough to tell whether a document changed and how big it is —
+and the document itself is read from and written to its own endpoints, which serve it as
+`application/octet-stream` rather than as JSON. So a list of a thousand Units is a list,
+not a thousand documents.
+
+```ts
+import { getUnitData, putUnitData } from '@confighub/api';
+
+const { data: config, dataHash } = await getUnitData(api, { spaceId, unitId });
+await putUnitData(api, { spaceId, unitId }, edited, {
+  ifMatch: dataHash, // fail rather than clobber somebody else's write
+  lastChangeDescription: 'raise replicas',
+});
+```
+
+The RTK Query client has the same endpoints as generated hooks
+(`useDownloadUnitDataQuery`, `useUploadUnitDataMutation`,
+`useGetUnitMutationSourcesQuery`, and the bulk `useSearchUnitDataQuery`).
+
+Three things are easy to get wrong, and none of them are caught by the type checker:
+
+- **Do not JSON-parse a configuration.** Both clients are wired to read a response as
+  whatever the server says it is. `@confighub/rtk-query` sets
+  `responseHandler: 'content-type'`; `@confighub/api` reads through the helpers above,
+  which pass `parseAs: 'text'`. Calling `api.GET('.../data')` yourself parses YAML as
+  JSON and throws.
+- **A write answers with the operation's result, not the entity.** `POST`/`PUT`/`PATCH`
+  on a Unit, the data write, and the bulk forms all return `UnitCreateOrUpdateResponse`;
+  the Unit is in its `Unit` field. Ask for `include: 'ConfigData,MutationSources'` to get
+  back the configuration the operation produced — for a dry run that is the only place it
+  exists, since nothing was stored.
+- **An empty configuration is a configuration.** Emptying a Unit is how its resources are
+  withdrawn, so never guard the write with `if (config)`. Track whether a configuration
+  was supplied separately from what it contains.
+
+For a list, read the configurations in one request rather than one per Unit:
+`GET /unit_data`, `/revision_data`, `/unit_mutation_sources` and
+`/revision_mutation_sources` each take a `where` clause and are organization-scoped.
+
+`Data` and `MutationSources` are no longer names any entity has, so naming either in a
+`select` is a 400 rather than a silently missing field. `ContentHash` and `RevisionHash`
+are gone; there is one hash, `DataHash`.
+
 ## How this repo relates to the spec
 
 Unlike the Go SDK (`confighub/sdk`, a mirror of the monorepo), this repo is the home
@@ -112,6 +158,10 @@ a released server version in [`.spec-version`](.spec-version).
 
 ```
 npm run sync-spec          # fetch the pinned spec, regenerate BOTH clients
+
+# Or from a checkout, which is the only way to sync against a server whose spec
+# no release carries yet:
+SPEC_FILE=../confighub/public/core/openapi/openapi.json npm run sync-spec
 ```
 
 One pegged spec drives both clients through their own generators: `openapi-typescript`

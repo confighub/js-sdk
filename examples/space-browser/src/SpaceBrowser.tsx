@@ -1,4 +1,4 @@
-import type { components } from '@confighub/api';
+import { getUnitData, type components } from '@confighub/api';
 import { useConfigHub } from '@confighub/react-auth';
 import { useEffect, useState } from 'react';
 
@@ -19,6 +19,7 @@ export function SpaceBrowser() {
   const [selected, setSelected] = useState<string | null>(null);
   const [units, setUnits] = useState<ExtendedUnit[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [openUnit, setOpenUnit] = useState<{ slug: string; config: string } | null>(null);
 
   // Load the org's spaces once. This is the whole point of the sample: a plain
   // fetch through the typed client, no data-fetching library required.
@@ -37,12 +38,26 @@ export function SpaceBrowser() {
   async function openSpace(spaceId: string) {
     setSelected(spaceId);
     setUnits(null);
+    setOpenUnit(null);
     setError(null);
+    // A Unit list carries each Unit's DataHash and DataSize but not its configuration:
+    // a list of a thousand Units is not a thousand documents.
     const { data, error } = await api.GET('/space/{space_id}/unit', {
       params: { path: { space_id: spaceId } },
     });
     if (error) return setError(errText(error));
     setUnits(data ?? []);
+  }
+
+  // The configuration is its own endpoint, and it serves the document itself rather than
+  // JSON. getUnitData reads it as text; calling api.GET directly would parse it as JSON
+  // and fail on anything that is not.
+  async function openConfig(spaceId: string, unitId: string, slug: string) {
+    setOpenUnit(null);
+    setError(null);
+    const { data, error } = await getUnitData(api, { spaceId, unitId });
+    if (error) return setError(errText(error));
+    setOpenUnit({ slug, config: data ?? '' });
   }
 
   return (
@@ -84,20 +99,45 @@ export function SpaceBrowser() {
                   <th>Slug</th>
                   <th>Display name</th>
                   <th>Head rev</th>
+                  <th>Bytes</th>
                 </tr>
               </thead>
               <tbody>
-                {units.map((u) => (
-                  <tr key={u.Unit?.UnitID ?? u.Unit?.Slug}>
-                    <td>
-                      <code>{u.Unit?.Slug}</code>
-                    </td>
-                    <td>{u.Unit?.DisplayName}</td>
-                    <td>{u.Unit?.HeadRevisionNum ?? '—'}</td>
-                  </tr>
-                ))}
+                {units.map((u) => {
+                  const unitId = u.Unit?.UnitID;
+                  const slug = u.Unit?.Slug ?? '';
+                  return (
+                    <tr key={unitId ?? slug}>
+                      <td>
+                        {selected && unitId ? (
+                          <button
+                            className="linklike"
+                            onClick={() => openConfig(selected, unitId, slug)}
+                          >
+                            <code>{slug}</code>
+                          </button>
+                        ) : (
+                          <code>{slug}</code>
+                        )}
+                      </td>
+                      <td>{u.Unit?.DisplayName}</td>
+                      <td>{u.Unit?.HeadRevisionNum ?? '—'}</td>
+                      <td>{u.Unit?.DataSize ?? 0}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
+            {openUnit && (
+              <>
+                <h2>
+                  Configuration <code>{openUnit.slug}</code>
+                </h2>
+                {/* An empty configuration is a configuration -- a Unit whose resources
+                    have been withdrawn -- so it is shown as empty, not as "not loaded". */}
+                <pre className="config">{openUnit.config}</pre>
+              </>
+            )}
           </>
         )}
       </section>

@@ -25,6 +25,9 @@ export interface ConfigHubConfig {
 // first-party UI's base query (endpoint names are the camelCased operationIds).
 const MERGE_PATCH_PREFIXES = ['patch', 'bulkPatch', 'bulkCreate', 'patchView'];
 
+// The one endpoint whose request body is a configuration document rather than JSON.
+const OCTET_STREAM_ENDPOINTS = ['uploadUnitData'];
+
 const apiBaseUrl = (raw: string): string => {
   const trimmed = raw.replace(/\/+$/, '');
   return trimmed.endsWith('/api') ? trimmed : trimmed + '/api';
@@ -49,11 +52,24 @@ export function configureConfigHub(cfg: ConfigHubConfig): void {
   inner = fetchBaseQuery({
     baseUrl: apiBaseUrl(cfg.baseUrl),
     isJsonContentType: (headers) => (headers.get('Content-Type') ?? '').includes('json'),
+    // Read a response as what the server says it is, rather than assuming JSON. The
+    // configuration endpoints (downloadUnitData, downloadRevisionData, downloadReleaseData)
+    // serve the document itself as application/octet-stream; the default 'json' handler
+    // JSON.parses every body, which fails on YAML and surfaces as a parse error with no
+    // data -- an empty editor and nothing to say why. 'content-type' routes the decision
+    // through isJsonContentType above, so those come back as strings and every JSON
+    // endpoint is unchanged.
+    responseHandler: 'content-type',
     prepareHeaders: async (headers, { endpoint }) => {
       const token = await cfg.getToken?.();
       if (token) headers.set('Authorization', `Bearer ${token}`);
       if (MERGE_PATCH_PREFIXES.some((p) => endpoint.startsWith(p))) {
         headers.set('Content-Type', 'application/merge-patch+json');
+      }
+      // The body of a configuration write is the document, not a JSON envelope around it.
+      // Declaring it keeps isJsonContentType above from stringifying the string.
+      if (OCTET_STREAM_ENDPOINTS.includes(endpoint)) {
+        headers.set('Content-Type', 'application/octet-stream');
       }
       return headers;
     },

@@ -13,6 +13,11 @@ Use this side-by-side with `space-browser` to compare the two approaches:
 - `src/SpaceBrowser.tsx` — `useListSpacesQuery()` and `useListUnitsQuery({ spaceId })`.
   Caching, dedup, and loading state come from RTK Query; compare with the plain example's
   manual `fetch` + `useState` in the same file.
+- `useDownloadUnitDataQuery({ spaceId, unitId })` in the same file — a Unit's
+  configuration is not a field of the Unit. The list carries each Unit's `DataSize`, shown
+  as a column; the document comes from the Unit's data endpoint as
+  `application/octet-stream`, which arrives as a string because the base query is
+  configured with `responseHandler: 'content-type'`.
 
 The token seam is the same `getToken` contract as the plain client — here the RTK base
 query reads `getAccessToken()` (react-auth's non-React accessor) in `prepareHeaders`.

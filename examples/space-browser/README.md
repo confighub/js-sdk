@@ -8,7 +8,8 @@ A full ConfigHub browser app in ~200 lines, built on the two SDK packages:
   checked against the pinned server spec.
 
 It logs a real user in (OIDC PKCE → RFC 8693 token exchange), then lists the org's
-spaces with unit counts and drills into a space to show its units. Read-only.
+spaces with unit counts, drills into a space to show its units, and shows one Unit's
+configuration. Read-only.
 
 ## What to look at
 
@@ -17,6 +18,10 @@ spaces with unit counts and drills into a space to show its units. Read-only.
 - `src/SpaceBrowser.tsx` — `useConfigHub()` for the typed client, then
   `api.GET('/space')` and `api.GET('/space/{space_id}/unit', { params: { path: { space_id } } })`.
   No Redux, no data-fetching library — just the client and `useState`.
+- `getUnitData(api, { spaceId, unitId })` in the same file — a Unit's configuration is
+  not a field of the Unit. The list carries each Unit's `DataSize`, shown as a column;
+  the document itself comes from the Unit's data endpoint, which serves it as
+  `application/octet-stream`, so it is read as text rather than parsed as JSON.
 
 The only seam between auth and API access is `useConfigHub()`: the token is attached
 for you.

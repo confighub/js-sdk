@@ -20,6 +20,11 @@
 //
 // Override the source for local/preview work:
 //   SPEC_URL=http://localhost:9090/api/openapi.json npm run sync-spec
+//   SPEC_FILE=../confighub/public/core/openapi/openapi.json npm run sync-spec
+//
+// SPEC_FILE reads a checkout on disk. That is the only way to sync against an
+// unreleased server: the pinned URL resolves to a published tag, so a spec that no
+// release carries yet has no URL to fetch.
 
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -43,14 +48,25 @@ function specUrl() {
   return `https://raw.githubusercontent.com/confighub/sdk/${version}/core/openapi/openapi.json`;
 }
 
-async function main() {
+// node's fetch has no file: scheme, so a local checkout is read rather than fetched.
+async function readSpec() {
+  const file = process.env.SPEC_FILE;
+  if (file) {
+    const path = resolve(process.cwd(), file);
+    console.log(`sync-spec: reading ${path}`);
+    return readFileSync(path, 'utf8');
+  }
   const url = specUrl();
   console.log(`sync-spec: fetching ${url}`);
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error(`fetch ${url} failed: ${res.status} ${res.statusText}`);
   }
-  const raw = await res.text();
+  return res.text();
+}
+
+async function main() {
+  const raw = await readSpec();
 
   // Validate + normalize (stable formatting, trailing newline) so the committed diff
   // is minimal and reviewable.
