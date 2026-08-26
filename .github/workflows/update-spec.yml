@@ -1,0 +1,94 @@
+name: Update ConfigHub spec
+
+# Re-pin the generated clients at the latest ConfigHub release and regenerate them,
+# as a pull request.
+#
+# This opens a PR rather than pushing, because two decisions are not automatable:
+# this repo also contains hand-written code (the auth flow, the data helpers, the
+# RTK base query), so a regenerated client can require a matching hand edit; and
+# the packages carry their own release number, so which version to publish depends
+# on what the regenerated diff actually removed. The PR body says which.
+#
+# Publishing stays a separate, deliberate act: merge this, then push a `vX.Y.Z`
+# tag, which is what release.yml turns into an npm publish.
+#
+# The PR is always branch `chore/update-spec`, force-pushed, so at most one is
+# open at a time. Requires "Allow GitHub Actions to create and approve pull
+# requests" in the repository's Actions settings.
+
+on:
+  schedule:
+    # Mondays, 15:00 UTC — an hour after the examples repo's Go bump, so a
+    # release that lands in both shows up there in the same window.
+    - cron: '0 15 * * 1'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'ConfigHub SDK version to pin to (default: latest release)'
+        required: false
+        type: string
+  # Lets confighub's release workflow push a sync the moment a version ships,
+  # instead of waiting for the weekly run:
+  #   gh api repos/confighub/js-sdk/dispatches -f event_type=confighub-release \
+  #     -f 'client_payload[version]=vX.Y.Z'
+  repository_dispatch:
+    types: [confighub-release]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Re-pin and regenerate
+        env:
+          SUMMARY_FILE: ${{ runner.temp }}/spec-update.md
+          VERSION: ${{ inputs.version || github.event.client_payload.version }}
+        run: |
+          scripts/update-spec.sh $VERSION
+          cat "$SUMMARY_FILE" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Open or update the pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SUMMARY_FILE: ${{ runner.temp }}/spec-update.md
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo "Already on the latest spec; nothing to open."
+            exit 0
+          fi
+
+          version="$(cat .spec-version)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -C chore/update-spec
+          git commit -am "Pin the spec at ${version}"
+          git push -f origin chore/update-spec
+
+          # --state open matters: gh also resolves the branch to a merged PR, which
+          # would send this run's update to the last one that was merged.
+          number="$(gh pr list --head chore/update-spec --state open --json number --jq '.[0].number // empty')"
+          if [ -z "$number" ]; then
+            gh pr create \
+              --base main \
+              --head chore/update-spec \
+              --title "Pin the spec at ${version}" \
+              --body-file "$SUMMARY_FILE"
+          else
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/pulls/$number" \
+              -f title="Pin the spec at ${version}" \
+              -f body="$(cat "$SUMMARY_FILE")" >/dev/null
+          fi
