@@ -2401,7 +2401,7 @@ export interface components {
             readonly RedirectURI?: string;
             readonly TokenExchangeAudience?: string;
             readonly TokenExchangeEndpoint?: string;
-            /** @description Semantic version of the server (e.g. v1.2.3), or 'dev' for development builds. */
+            /** @description Version of the server, either a release (e.g. v1.2.3) or a build from a working tree (e.g. v1.2-dev). Its first two numbers are the API version: pre-1.0, a change in the second is not backward compatible. Also sent on every response in the ConfigHub-Version header. */
             readonly Version?: string;
             /** @description Deprecated and always empty. Workers connect over long polling on the main API port; there is no separate worker port. */
             readonly WorkerPort?: string;
@@ -2819,8 +2819,8 @@ export interface components {
             EndTagID?: string;
             /** @description The type of entity. */
             readonly EntityType?: string;
-            /** @description InScopeSpaceIDs is where the ChangeOrder is headed, recorded when its scope was last derived rather than worked out on each read: the Spaces its WhereSpace and/or SpaceFilterID selected, or, with no selection, the Spaces its Links reached. A Space that comes into scope later is taken in by an update or patch with refresh_spaces. ResolvedSpaceIDs and ReleasedSpaceIDs are measured against it. (readonly) */
-            readonly InScopeSpaceIDs?: components["schemas"]["UUID"][];
+            /** @description InScopeSpaceIDs is where the ChangeOrder is headed: the Spaces it propagates into, supplied by the client rather than derived from a query. Empty names a change without saying where it is headed, in which case the Spaces the ChangeOrder's Links reach when its scope is derived are recorded instead. ResolvedSpaceIDs and ReleasedSpaceIDs are measured against it. Editing it re-derives what the ChangeOrder covers. */
+            InScopeSpaceIDs?: components["schemas"]["UUID"][];
             /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
             Labels?: {
                 [key: string]: string;
@@ -2841,12 +2841,6 @@ export interface components {
             };
             /** @description Unique URL-safe identifier for the entity. */
             Slug: string;
-            /**
-             * Format: uuid
-             * @description SpaceFilterID is a reference to a Filter over Spaces that selects the Spaces this ChangeOrder propagates into.
-             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
-             */
-            SpaceFilterID?: string;
             /**
              * Format: uuid
              * @description Unique identifier for a space.
@@ -2876,46 +2870,6 @@ export interface components {
              * @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update.
              */
             Version?: number;
-            /**
-             * @description Filter expression selecting the Spaces this ChangeOrder propagates into. ANDed with SpaceFilterID when both are set. The specified string is an expression for the purpose of filtering
-             *     the list of Spaces returned. The expression syntax was inspired by SQL.
-             *     It supports conjunctions using `AND` of relational expressions of the form *attribute*
-             *     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
-             *     as in the JSON encoding.
-             *     Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
-             *     String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
-             *     `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
-             *     String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
-             *     `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
-             *     Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
-             *     UUIDs and boolean attributes support equality and inequality only.
-             *     UUID and time literals must be quoted as string literals.
-             *     String literals are quoted with single quotes, such as `'string'`.
-             *     Time literals use the same form as when serialized as JSON,
-             *     such as: `CreatedAt > '2025-02-18T23:16:34'`.
-             *     Integer and boolean literals are also supported for attributes of those types.
-             *     Arrays support the `?` operator to to match any element of the array,
-             *     as in `ApprovedBy ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
-             *     Arrays can perform LEN() to check for length, as in `LEN(ApprovedBy) > 0`.
-             *     An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
-             *     as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
-             *     Without the `*` such a reference is an error, since it names no single value to compare.
-             *     Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
-             *     Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
-             *     as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
-             *     Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
-             *     These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
-             *     The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
-             *     such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
-             *     Conjunctions are supported using the `AND` operator.
-             *     An example conjunction is:
-             *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
-             *
-             *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseBridgeWorkerID, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
-             *
-             *     The whole string must be query-encoded.
-             */
-            WhereSpace?: string;
         };
         ChangeOrderCreateOrUpdateResponse: {
             ChangeOrder?: components["schemas"]["ChangeOrder"];
@@ -2997,12 +2951,6 @@ export interface components {
              */
             readonly UpdatedAt?: string;
             /**
-             * Format: uuid
-             * @description UpstreamChangeSetID is the ChangeSet this one mirrors, set when a promotion replays a change into this Space.
-             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
-             */
-            UpstreamChangeSetID?: string;
-            /**
              * Format: int64
              * @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update.
              */
@@ -3081,7 +3029,6 @@ export interface components {
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
             Space?: components["schemas"]["Space"];
-            SpaceFilter?: components["schemas"]["Filter"];
             StartTag?: components["schemas"]["Tag"];
         };
         ExtendedChangeSet: {
@@ -8281,7 +8228,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8323,7 +8270,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceFilterID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8449,7 +8396,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8491,7 +8438,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceFilterID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8582,18 +8529,16 @@ export interface operations {
                     DisplayName?: string | null;
                     /** Format: uuid */
                     EndTagID?: string | null;
+                    InScopeSpaceIDs?: (string | null)[] | null;
                     /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
                     Labels?: {
                         [key: string]: string | null;
                     } | null;
                     /** @description Unique URL-safe identifier for the entity. */
                     Slug?: string | null;
-                    /** Format: uuid */
-                    SpaceFilterID?: string | null;
                     UpdateType?: string | null;
                     /** @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
                     Version?: number | null;
-                    WhereSpace?: string | null;
                 };
             };
         };
@@ -8719,7 +8664,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8761,7 +8706,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceFilterID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8903,7 +8848,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8945,13 +8890,11 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceFilterID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
                 include?: string;
-                /** @description If true, re-evaluate WhereSpace and/or SpaceFilterID into InScopeSpaceIDs, and re-derive what the ChangeOrder covers against the Spaces they now select, even if neither field has changed */
-                refresh_spaces?: boolean;
             };
             header?: never;
             path?: never;
@@ -8974,18 +8917,16 @@ export interface operations {
                     DisplayName?: string | null;
                     /** Format: uuid */
                     EndTagID?: string | null;
+                    InScopeSpaceIDs?: (string | null)[] | null;
                     /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
                     Labels?: {
                         [key: string]: string | null;
                     } | null;
                     /** @description Unique URL-safe identifier for the entity. */
                     Slug?: string | null;
-                    /** Format: uuid */
-                    SpaceFilterID?: string | null;
                     UpdateType?: string | null;
                     /** @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
                     Version?: number | null;
-                    WhereSpace?: string | null;
                 };
             };
         };
@@ -9111,7 +9052,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UpstreamChangeSetID.
+                 *     Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -9279,7 +9220,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UpstreamChangeSetID.
+                 *     Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -9415,8 +9356,6 @@ export interface operations {
                     } | null;
                     /** @description Unique URL-safe identifier for the entity. */
                     Slug?: string | null;
-                    /** Format: uuid */
-                    UpstreamChangeSetID?: string | null;
                     /** @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
                     Version?: number | null;
                 };
@@ -9544,7 +9483,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UpstreamChangeSetID.
+                 *     Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -9728,7 +9667,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UpstreamChangeSetID.
+                 *     Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -9800,8 +9739,6 @@ export interface operations {
                     } | null;
                     /** @description Unique URL-safe identifier for the entity. */
                     Slug?: string | null;
-                    /** Format: uuid */
-                    UpstreamChangeSetID?: string | null;
                     /** @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
                     Version?: number | null;
                 };
@@ -17375,7 +17312,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17417,7 +17354,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceFilterID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17609,7 +17546,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceFilterID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17704,10 +17641,7 @@ export interface operations {
     };
     UpdateChangeOrder: {
         parameters: {
-            query?: {
-                /** @description If true, re-evaluate WhereSpace and/or SpaceFilterID into InScopeSpaceIDs, and re-derive what the ChangeOrder covers against the Spaces they now select, even if neither field has changed */
-                refresh_spaces?: boolean;
-            };
+            query?: never;
             header?: never;
             path: {
                 /** @description Unique identifier for a space_id */
@@ -17896,10 +17830,7 @@ export interface operations {
     };
     PatchChangeOrder: {
         parameters: {
-            query?: {
-                /** @description If true, re-evaluate WhereSpace and/or SpaceFilterID into InScopeSpaceIDs, and re-derive what the ChangeOrder covers against the Spaces they now select, even if neither field has changed */
-                refresh_spaces?: boolean;
-            };
+            query?: never;
             header?: never;
             path: {
                 /** @description Unique identifier for a space_id */
@@ -17926,18 +17857,16 @@ export interface operations {
                     DisplayName?: string | null;
                     /** Format: uuid */
                     EndTagID?: string | null;
+                    InScopeSpaceIDs?: (string | null)[] | null;
                     /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
                     Labels?: {
                         [key: string]: string | null;
                     } | null;
                     /** @description Unique URL-safe identifier for the entity. */
                     Slug?: string | null;
-                    /** Format: uuid */
-                    SpaceFilterID?: string | null;
                     UpdateType?: string | null;
                     /** @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
                     Version?: number | null;
-                    WhereSpace?: string | null;
                 };
             };
         };
@@ -18054,7 +17983,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UpstreamChangeSetID.
+                 *     Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -18602,8 +18531,6 @@ export interface operations {
                     } | null;
                     /** @description Unique URL-safe identifier for the entity. */
                     Slug?: string | null;
-                    /** Format: uuid */
-                    UpstreamChangeSetID?: string | null;
                     /** @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
                     Version?: number | null;
                 };
