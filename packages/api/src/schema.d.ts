@@ -392,6 +392,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/me/browser-session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a single-use link that signs a browser in as the current user
+         * @description Returns a short-lived, single-use URL. Opening it exchanges the ticket for a session cookie. Intended for instances with no identity provider, where the browser has no other way to authenticate.
+         */
+        post: operations["CreateBrowserSession"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/oauth_client": {
         parameters: {
             query?: never;
@@ -2778,10 +2798,21 @@ export interface components {
             /** @description Status indicates the current status of the bridge worker. Possible values include Connected, Disconnected, ActionSent, ActionResultReceived. */
             Status?: string;
         };
+        BrowserSessionResponse: {
+            ExpiresIn?: number;
+            Ticket?: string;
+            URL?: string;
+        };
         /** @description Defines a change's identity as it moves between Spaces. */
         ChangeOrder: {
             /** @description AbortedReason says why the ChangeOrder was given up on. Setting it is what aborts one: a ChangeOrder with a reason is Aborted whatever its Links say. */
             AbortedReason?: string;
+            /**
+             * Format: uuid
+             * @description AdoptedEndTagID is the Tag whose marks were taken as the ChangeOrder's boundary, when it was created with one, and empty when the boundary was each Unit's head Revision.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly AdoptedEndTagID?: string;
             /** @description An optional map of Annotation key/value pairs for tools to attach information to entities. */
             Annotations?: {
                 [key: string]: string;
@@ -2813,7 +2844,7 @@ export interface components {
             DisplayName?: string;
             /**
              * Format: uuid
-             * @description EndTagID is the identifier of the set of Revisions that end the ChangeOrder. Settable at creation to adopt an existing Tag as the boundary; the ChangeOrder creates one on each in-scope Unit's head Revision if it is not set.
+             * @description EndTagID is the identifier of the set of Revisions that end the ChangeOrder. The ChangeOrder always mints this Tag itself; supplying one at creation adopts its marks as the boundary, and the supplied Tag is recorded as AdoptedEndTagID and never written to. Without one the boundary is each Unit's head Revision.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             EndTagID?: string;
@@ -2835,7 +2866,7 @@ export interface components {
             readonly ReleasedSpaceIDs?: components["schemas"]["UUID"][];
             /** @description ResolvedSpaceIDs is where the ChangeOrder has been fully propagated to: the Spaces in scope whose Links of its UpdateType have all merged it, plus the Space it resides in. Derived when the ChangeOrder is read. */
             readonly ResolvedSpaceIDs?: components["schemas"]["UUID"][];
-            /** @description SkippedUnits names the Units of the ChangeOrder's Space that it covers nothing of, mapped to the reason. Written when the scope is derived. */
+            /** @description SkippedUnits names the Units of the ChangeOrder's Space that it carries no Revisions of, mapped to the reason. Written when the scope is derived. A skipped Unit may still be marked by the ChangeOrder's Tags, when the Spaces in scope had already taken it. */
             readonly SkippedUnits?: {
                 [key: string]: string;
             };
@@ -8208,7 +8239,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8376,7 +8407,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8644,7 +8675,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8828,7 +8859,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -12741,6 +12772,89 @@ export interface operations {
                 };
             };
             /** @description Something went wrong while processing UserInfo. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    CreateBrowserSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrowserSessionResponse"];
+                };
+            };
+            /** @description BrowserSession request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description BrowserSession not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description BrowserSession data conflict. Data has changed since last read. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing BrowserSession. */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -17292,7 +17406,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
