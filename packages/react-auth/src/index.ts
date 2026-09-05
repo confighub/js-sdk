@@ -7,7 +7,9 @@ export type {
   ConfigHubAuthContextValue,
   ConfigHubUser,
   AuthStatus,
+  LogoutOptions,
 } from './provider';
 export { useAuth, useConfigHub } from './hooks';
 export { getAccessToken } from './tokenStore';
-export type { Discovery, MintedSession } from './core';
+export { callbackUri, decodeJwtClaims, isExpired } from './core';
+export type { Discovery, MintedSession, LoginOptions, FlowOptions } from './core';
