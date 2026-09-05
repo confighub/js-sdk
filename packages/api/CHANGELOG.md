@@ -1,5 +1,9 @@
 # @confighub/api
 
+## 0.2.0
+
+No changes; version moves in lockstep with the other packages.
+
 ## 0.1.0
 
 ### Minor Changes
