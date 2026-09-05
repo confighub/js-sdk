@@ -57,6 +57,15 @@ export interface ConfigHubAuthContextValue {
    * member; the current session stays as it was.
    */
   switchOrganization: (organizationId: string) => Promise<void>;
+  /**
+   * The ConfigHub token stopped working (a 401). Try to get a new one without any
+   * UI: a `prompt=none` round trip through the IdP, for the organization the session
+   * already had. Status goes to `loading` meanwhile, not `unauthenticated`, so an
+   * app that auto-logs-in on `unauthenticated` does not race this with an
+   * interactive login. If the IdP session is gone too, the page comes back
+   * `unauthenticated`. Redirects the page.
+   */
+  reauthenticate: () => Promise<void>;
   /** Current bearer token, or undefined when unauthenticated. */
   getToken: () => string | undefined;
   /** A typed API client pre-wired with the current token. Stable across renders. */
@@ -92,6 +101,18 @@ export interface ConfigHubAuthProviderProps {
 }
 
 const SESSION_KEY = 'confighub_session';
+
+/**
+ * The Keycloak organization alias of the session, from the IdP token's
+ * `organization` claim (`{ "<alias>": { id } }`), for re-selecting the same org
+ * without a prompt. Undefined when the claim is absent or not in that shape.
+ */
+function organizationAlias(session: MintedSession | undefined): string | undefined {
+  const org = session?.idpClaims.organization;
+  if (!org || typeof org !== 'object') return undefined;
+  const aliases = Object.keys(org as Record<string, unknown>);
+  return aliases.length === 1 ? aliases[0] : undefined;
+}
 
 function readPersisted(): MintedSession | null {
   try {
@@ -226,14 +247,31 @@ export function ConfigHubAuthProvider({
 
   const getToken = useCallback(() => sessionRef.current?.accessToken, []);
 
+  const reauthenticate = useCallback(async () => {
+    const organization = organizationAlias(sessionRef.current);
+    // Forget the token but stay 'loading': the page is about to navigate away,
+    // and 'unauthenticated' would invite an interactive login in the meantime.
+    sessionRef.current = undefined;
+    setAccessToken(undefined);
+    persistSession(undefined);
+    resetPending();
+    setStatus('loading');
+    try {
+      await startLogin(baseUrl, clientId, { prompt: 'none', organization }, flow);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e : new Error(String(e)));
+      setStatus('error');
+    }
+  }, [baseUrl, clientId, flow, persistSession]);
+
   // A 401 means the minted token no longer works. Silent re-auth keeps the user's
   // place if the IdP session is still alive; otherwise the page comes back
   // unauthenticated and the app offers a real login.
   const handleUnauthorized = useCallback(() => {
     if (!sessionRef.current) return;
-    clearSession();
-    if (onUnauthorized === 'login') void login({ prompt: 'none' });
-  }, [clearSession, login, onUnauthorized]);
+    if (onUnauthorized === 'login') void reauthenticate();
+    else clearSession();
+  }, [clearSession, reauthenticate, onUnauthorized]);
 
   // One client for the provider's lifetime. getToken reads the session ref.
   const client = useMemo(
@@ -242,8 +280,18 @@ export function ConfigHubAuthProvider({
   );
 
   const value = useMemo<ConfigHubAuthContextValue>(
-    () => ({ status, user, error, login, logout, switchOrganization, getToken, client }),
-    [status, user, error, login, logout, switchOrganization, getToken, client],
+    () => ({
+      status,
+      user,
+      error,
+      login,
+      logout,
+      switchOrganization,
+      reauthenticate,
+      getToken,
+      client,
+    }),
+    [status, user, error, login, logout, switchOrganization, reauthenticate, getToken, client],
   );
 
   return (
