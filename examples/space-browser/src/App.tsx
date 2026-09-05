@@ -20,7 +20,7 @@ export function App() {
           A sample app built on <code>@confighub/react-auth</code> and{' '}
           <code>@confighub/api</code>. Log in to browse your spaces and units.
         </p>
-        <button className="primary" onClick={login}>
+        <button className="primary" onClick={() => login()}>
           Log in
         </button>
         {error && <pre className="error">{error.message}</pre>}
@@ -34,7 +34,7 @@ export function App() {
         <span className="brand">ConfigHub Space Browser</span>
         <span className="spacer" />
         <span className="muted">org {user.organizationId}</span>
-        <button className="ghost" onClick={logout}>
+        <button className="ghost" onClick={() => logout()}>
           Sign out
         </button>
       </header>

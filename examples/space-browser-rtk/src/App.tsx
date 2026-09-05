@@ -20,7 +20,7 @@ export function App() {
           The same app as <code>space-browser</code>, but data comes from{' '}
           <code>@confighub/rtk-query</code> hooks instead of the plain client.
         </p>
-        <button className="primary" onClick={login}>
+        <button className="primary" onClick={() => login()}>
           Log in
         </button>
         {error && <pre className="error">{error.message}</pre>}
@@ -34,7 +34,7 @@ export function App() {
         <span className="brand">ConfigHub Space Browser · RTK Query</span>
         <span className="spacer" />
         <span className="muted">org {user.organizationId}</span>
-        <button className="ghost" onClick={logout}>
+        <button className="ghost" onClick={() => logout()}>
           Sign out
         </button>
       </header>
