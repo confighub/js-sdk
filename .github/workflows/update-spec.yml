@@ -23,8 +23,11 @@ on:
   repository_dispatch:
     types: [confighub-release]
 
+# id-token: the release workflow this calls publishes with npm provenance, and a
+# called workflow cannot hold a permission its caller does not.
 permissions:
   contents: write
+  id-token: write
 
 concurrency:
   group: update-spec
