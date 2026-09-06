@@ -267,9 +267,10 @@ let pending: Promise<MintedSession | null> | null = null;
 /**
  * If the page is the IdP redirect (`?code=...`), exchange the code for an IdP token
  * and then exchange that for a minted ConfigHub token, and restore the URL the
- * login started from. Returns null on a normal load, and also when a `prompt=none`
- * attempt came back with `login_required` (the SSO session is gone; the caller
- * should offer an interactive login).
+ * login started from. Returns null on a normal load, when a `prompt=none` attempt
+ * came back with `login_required` (the SSO session is gone; the caller should offer
+ * an interactive login), and when the redirect carries a code this tab has no PKCE
+ * state for (an IdP email flow landed here; the caller should start a login).
  */
 export function completeLoginFromRedirect(): Promise<MintedSession | null> {
   if (!pending) pending = doCompleteLogin();
@@ -296,7 +297,13 @@ async function doCompleteLogin(): Promise<MintedSession | null> {
     if (saved?.silent && SILENT_FAILURES.has(error)) return null;
     throw new Error(`IdP returned error: ${error} ${params.get('error_description') ?? ''}`);
   }
-  if (!saved) throw new Error('no PKCE state; restart login');
+  // A code with no PKCE state means this tab did not start the login: the IdP's
+  // email flows (password reset, verify email) finish the authentication in the tab
+  // the mail link opened and redirect it here, while the verifier sits in the tab
+  // that began. The code is unusable without it, so drop it and report a normal
+  // load; the caller starts a login, which the now-live IdP session completes
+  // without a prompt.
+  if (!saved) return null;
   if (params.get('state') !== saved.state) throw new Error('state mismatch; aborting');
 
   // Exchange the authorization code for an IdP token (PKCE, public client).

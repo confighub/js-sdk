@@ -1,5 +1,13 @@
 # @confighub/react-auth
 
+## 0.4.4
+
+- A redirect carrying an authorization code that this tab holds no PKCE state for
+  (Keycloak's password-reset and verify-email links finish the login in the tab the
+  mail opened) no longer surfaces as "no PKCE state; restart login". It is treated
+  as a normal load, so the caller's usual login start runs and completes silently
+  against the now-live IdP session.
+
 ## 0.4.3
 
 - A login that comes back with an IdP token naming no organization (a fresh brokered
