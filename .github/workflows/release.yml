@@ -1,18 +1,28 @@
 name: Release
 
-# Tag-driven publish, matching the main codebase (v*.*.* tags). Push a semver tag
-# and this publishes all three packages to npm at that version, with provenance.
+# Publishes all three packages to npm at one version, with provenance.
 #
-#   npm run build        # sanity first
-#   git tag v0.2.0
-#   git push origin v0.2.0
+# Two ways in:
+#   - a `vX.Y.Z` tag pushed by hand (a hand-written change, e.g. to react-auth);
+#   - the update-spec workflow, which re-pins the spec at each ConfigHub release
+#     and calls this with the next version.
 #
-# The tag is the source of truth for the version — package.json versions in the repo
-# are placeholders that CI overwrites at publish time.
+# Versions follow ConfigHub's own rule: X.Y is the API version the packages speak
+# (the pinned spec's), Z increments on every publish. scripts/next-version.mjs
+# computes it and refuses a tag that names a different API than the pinned spec.
 on:
   push:
     tags:
       - 'v*.*.*'
+  workflow_call:
+    inputs:
+      version:
+        description: 'Version to publish (X.Y.Z, no v)'
+        required: true
+        type: string
+    secrets:
+      NPM_TOKEN:
+        required: true
 
 jobs:
   publish:
@@ -22,6 +32,8 @@ jobs:
       id-token: write # npm provenance
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.version && 'main' || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -29,11 +41,23 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
 
-      - name: Set versions from the tag
+      - name: Resolve and check the version
+        id: v
         run: |
           set -e
-          VERSION="${GITHUB_REF_NAME#v}"
-          echo "Publishing version $VERSION"
+          if [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION="${GITHUB_REF_NAME#v}"
+          fi
+          node scripts/next-version.mjs --check "$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Publishing $VERSION (spec $(cat .spec-version))"
+
+      - name: Set package versions
+        run: |
+          set -e
+          VERSION="${{ steps.v.outputs.version }}"
           for pkg in @confighub/api @confighub/react-auth @confighub/rtk-query; do
             npm pkg set version="$VERSION" -w "$pkg"
           done

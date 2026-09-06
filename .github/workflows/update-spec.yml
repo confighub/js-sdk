@@ -1,55 +1,50 @@
 name: Update ConfigHub spec
 
-# Re-pin the generated clients at the latest ConfigHub release and regenerate them,
-# as a pull request.
+# Keep the generated clients at the latest ConfigHub release, automatically.
 #
-# This opens a PR rather than pushing, because two decisions are not automatable:
-# this repo also contains hand-written code (the auth flow, the data helpers, the
-# RTK base query), so a regenerated client can require a matching hand edit; and
-# the packages carry their own release number, so which version to publish depends
-# on what the regenerated diff actually removed. The PR body says which.
-#
-# Publishing stays a separate, deliberate act: merge this, then push a `vX.Y.Z`
-# tag, which is what release.yml turns into an npm publish.
-#
-# The PR is always branch `chore/update-spec`, force-pushed, so at most one is
-# open at a time. Requires "Allow GitHub Actions to create and approve pull
-# requests" in the repository's Actions settings.
+# Every hour (and on demand, or when the ConfigHub release workflow dispatches a
+# `confighub-release` event), re-pin the spec at the latest confighub/sdk release.
+# If that changed anything: commit it to main, compute the next version
+# (X.Y = the spec's API version, Z = next patch; scripts/next-version.mjs), and
+# publish through the release workflow. Nothing to review: the generated clients
+# are a function of the spec, and the hand-written code is typechecked against
+# them before anything is committed. A regenerated client that no longer
+# typechecks fails here, loudly, and nothing is published.
 
 on:
   schedule:
-    # Mondays, 15:00 UTC — an hour after the examples repo's Go bump, so a
-    # release that lands in both shows up there in the same window.
-    - cron: '0 15 * * 1'
+    - cron: '17 * * * *'
   workflow_dispatch:
     inputs:
       version:
         description: 'ConfigHub SDK version to pin to (default: latest release)'
         required: false
         type: string
-  # Lets confighub's release workflow push a sync the moment a version ships,
-  # instead of waiting for the weekly run:
-  #   gh api repos/confighub/js-sdk/dispatches -f event_type=confighub-release \
-  #     -f 'client_payload[version]=vX.Y.Z'
   repository_dispatch:
     types: [confighub-release]
 
 permissions:
   contents: write
-  pull-requests: write
+
+concurrency:
+  group: update-spec
+  cancel-in-progress: false
 
 jobs:
-  update:
+  repin:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+      version: ${{ steps.commit.outputs.version }}
     steps:
       - uses: actions/checkout@v4
-
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-
       - run: npm ci
 
       - name: Re-pin and regenerate
@@ -60,35 +55,34 @@ jobs:
           scripts/update-spec.sh $VERSION
           cat "$SUMMARY_FILE" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Open or update the pull request
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SUMMARY_FILE: ${{ runner.temp }}/spec-update.md
+      - name: Commit to main and pick the version
+        id: commit
         run: |
           set -euo pipefail
           if git diff --quiet; then
-            echo "Already on the latest spec; nothing to open."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Already on the latest spec; nothing to publish."
             exit 0
           fi
-
-          version="$(cat .spec-version)"
+          spec="$(cat .spec-version)"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git switch -C chore/update-spec
-          git commit -am "Pin the spec at ${version}"
-          git push -f origin chore/update-spec
+          git commit -am "Pin the spec at ${spec}"
+          git push origin main
+          version="$(node scripts/next-version.mjs)"
+          git tag "v${version}"
+          git push origin "v${version}"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "Pinned ${spec}; publishing ${version}" >> "$GITHUB_STEP_SUMMARY"
 
-          # --state open matters: gh also resolves the branch to a merged PR, which
-          # would send this run's update to the last one that was merged.
-          number="$(gh pr list --head chore/update-spec --state open --json number --jq '.[0].number // empty')"
-          if [ -z "$number" ]; then
-            gh pr create \
-              --base main \
-              --head chore/update-spec \
-              --title "Pin the spec at ${version}" \
-              --body-file "$SUMMARY_FILE"
-          else
-            gh api -X PATCH "repos/$GITHUB_REPOSITORY/pulls/$number" \
-              -f title="Pin the spec at ${version}" \
-              -f body="$(cat "$SUMMARY_FILE")" >/dev/null
-          fi
+  # A tag pushed with GITHUB_TOKEN does not trigger the release workflow's own
+  # push event, so it is called directly.
+  publish:
+    needs: repin
+    if: needs.repin.outputs.changed == 'true'
+    uses: ./.github/workflows/release.yml
+    with:
+      version: ${{ needs.repin.outputs.version }}
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
