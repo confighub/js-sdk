@@ -1,5 +1,14 @@
 # @confighub/react-auth
 
+## 0.4.3
+
+- A login that comes back with an IdP token naming no organization (a fresh brokered
+  login, e.g. Google after logout, where Keycloak's organization step does not run)
+  no longer surfaces as an exchange error: the login is retried once with no hint,
+  and with the SSO session now alive the IdP prompts. Any remembered alias is
+  forgotten first. `OrganizationMissing` is exported for callers that drive
+  `completeLoginFromRedirect` themselves.
+
 ## 0.4.2
 
 - `login()` remembers the organization of the last successful login (its Keycloak
