@@ -16,6 +16,8 @@ import {
   completeLoginFromRedirect,
   endSession,
   isExpired,
+  organizationAliasOf,
+  rememberOrganization,
   resetPending,
   startLogin,
   switchOrganization as switchOrganizationCore,
@@ -101,18 +103,6 @@ export interface ConfigHubAuthProviderProps {
 }
 
 const SESSION_KEY = 'confighub_session';
-
-/**
- * The Keycloak organization alias of the session, from the IdP token's
- * `organization` claim (`{ "<alias>": { id } }`), for re-selecting the same org
- * without a prompt. Undefined when the claim is absent or not in that shape.
- */
-function organizationAlias(session: MintedSession | undefined): string | undefined {
-  const org = session?.idpClaims.organization;
-  if (!org || typeof org !== 'object') return undefined;
-  const aliases = Object.keys(org as Record<string, unknown>);
-  return aliases.length === 1 ? aliases[0] : undefined;
-}
 
 function readPersisted(): MintedSession | null {
   try {
@@ -240,15 +230,18 @@ export function ConfigHubAuthProvider({
       const current = sessionRef.current;
       if (!current) throw new Error('not authenticated');
       const minted = await switchOrganizationCore(baseUrl, current.accessToken, organizationId);
+      // The session's IdP claims still name the previous org, so its alias must not
+      // be remembered as the default for the next login.
+      rememberOrganization(clientId, undefined);
       applySession({ ...current, ...minted });
     },
-    [applySession, baseUrl],
+    [applySession, baseUrl, clientId],
   );
 
   const getToken = useCallback(() => sessionRef.current?.accessToken, []);
 
   const reauthenticate = useCallback(async () => {
-    const organization = organizationAlias(sessionRef.current);
+    const organization = organizationAliasOf(sessionRef.current?.idpClaims ?? {});
     // Forget the token but stay 'loading': the page is about to navigate away,
     // and 'unauthenticated' would invite an interactive login in the meantime.
     sessionRef.current = undefined;

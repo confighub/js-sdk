@@ -11,5 +11,5 @@ export type {
 } from './provider';
 export { useAuth, useConfigHub } from './hooks';
 export { getAccessToken } from './tokenStore';
-export { callbackUri, decodeJwtClaims, isExpired } from './core';
+export { callbackUri, decodeJwtClaims, isExpired, organizationAliasOf, rememberedOrganization } from './core';
 export type { Discovery, MintedSession, LoginOptions, FlowOptions } from './core';

@@ -52,8 +52,12 @@ const { status, user, error, login, logout, switchOrganization, reauthenticate, 
 
 - `login(options?)` — redirects to the IdP. `returnTo` picks the landing path
   (default: the current one). `organization` is a Keycloak organization alias, sent
-  as the `organization:<alias>` scope so a multi-org user is not prompted; without
-  it Keycloak prompts. `prompt: 'none' | 'login'` is passed through.
+  as the `organization:<alias>` scope so a multi-org user is not prompted. Left
+  out, the alias of the last successful login in this browser is used (remembered
+  per client in `localStorage`; a short public name, not a credential), so a new
+  tab or a login after logout lands in the same organization silently. `null`
+  sends no hint on purpose, so Keycloak prompts: that is "switch organization".
+  `prompt: 'none' | 'login'` is passed through.
 - `logout(options?)` — forgets the session in this tab. `endSession: true` also ends
   the IdP session (RP-initiated logout with `id_token_hint`), landing on
   `postLogoutRedirectUri` (default: the callback URI), which must be registered

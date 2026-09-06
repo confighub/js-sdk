@@ -1,5 +1,13 @@
 # @confighub/react-auth
 
+## 0.4.2
+
+- `login()` remembers the organization of the last successful login (its Keycloak
+  alias, per client, in `localStorage`) and hints it by default, so a new tab or a
+  login after logout does not stop at Keycloak's organization picker.
+  `login({ organization: null })` asks on purpose. `rememberedOrganization(clientId)`
+  and `organizationAliasOf(claims)` are exported.
+
 ## 0.2.0
 
 ### Minor Changes
