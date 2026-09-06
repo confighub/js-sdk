@@ -12,6 +12,7 @@ import {
   type ReactNode,
 } from 'react';
 import {
+  OrganizationMissing,
   callbackUri,
   completeLoginFromRedirect,
   endSession,
@@ -188,13 +189,24 @@ export function ConfigHubAuthProvider({
       })
       .catch((e: unknown) => {
         if (cancelled) return;
+        if (e instanceof OrganizationMissing) {
+          // Once, with no hint, flagged so a second miss surfaces as an error.
+          void startLogin(
+            baseUrl,
+            clientId,
+            { returnTo: e.returnTo, organization: null },
+            flow,
+            { retriedForOrganization: true },
+          );
+          return;
+        }
         setError(e instanceof Error ? e : new Error(String(e)));
         setStatus('error');
       });
     return () => {
       cancelled = true;
     };
-  }, [applySession, persist]);
+  }, [applySession, persist, baseUrl, clientId, flow]);
 
   const login = useCallback(
     async (options?: LoginOptions) => {

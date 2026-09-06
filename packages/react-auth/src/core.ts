@@ -82,6 +82,29 @@ interface PkceState {
   redirectUri: string;
   returnTo: string;
   silent: boolean;
+  /** The organization alias the authorize request hinted, if any. */
+  hintedOrganization?: string;
+  /** This login is already the retry after a token without an organization. */
+  retriedForOrganization?: boolean;
+}
+
+/**
+ * Thrown by `completeLoginFromRedirect` when the IdP token names no organization,
+ * which the exchange would refuse. Seen on a fresh brokered (Google) login, where
+ * Keycloak's organization step does not run; on the next login the SSO session is
+ * alive and it does, so the caller logs in again, once, with no hint. Any
+ * remembered alias has already been forgotten.
+ */
+export class OrganizationMissing extends Error {
+  constructor(public readonly returnTo: string) {
+    super('the identity provider issued a token with no organization');
+    this.name = 'OrganizationMissing';
+  }
+}
+
+export interface RetryOptions {
+  /** @internal set by the provider on the one retry after OrganizationMissing. */
+  retriedForOrganization?: boolean;
 }
 
 const PKCE_KEY = 'confighub_pkce';
@@ -189,6 +212,7 @@ export async function startLogin(
   clientId: string,
   login: LoginOptions = {},
   flow: FlowOptions = {},
+  retry: RetryOptions = {},
 ): Promise<void> {
   const info = await discover(base);
   if (!info.AuthIssuer || !info.TokenExchangeEndpoint) {
@@ -201,6 +225,13 @@ export async function startLogin(
   const challenge = await sha256(verifier);
   const state = randomString(16);
   const redirectUri = callbackUri(flow);
+  // The "organization" scope makes Keycloak emit the org claim the exchange resolves;
+  // "organization:<alias>" selects one without prompting.
+  const alias =
+    login.organization === null
+      ? undefined
+      : (login.organization ?? rememberedOrganization(clientId));
+  const orgScope = alias ? `organization:${alias}` : 'organization';
   const pkce: PkceState = {
     verifier,
     state,
@@ -210,16 +241,10 @@ export async function startLogin(
     redirectUri,
     returnTo: login.returnTo ?? currentPath(),
     silent: login.prompt === 'none',
+    hintedOrganization: alias,
+    retriedForOrganization: retry.retriedForOrganization,
   };
   sessionStorage.setItem(PKCE_KEY, JSON.stringify(pkce));
-
-  // The "organization" scope makes Keycloak emit the org claim the exchange resolves;
-  // "organization:<alias>" selects one without prompting.
-  const alias =
-    login.organization === null
-      ? undefined
-      : (login.organization ?? rememberedOrganization(clientId));
-  const orgScope = alias ? `organization:${alias}` : 'organization';
   const params: Record<string, string> = {
     response_type: 'code',
     client_id: clientId,
@@ -292,8 +317,15 @@ async function doCompleteLogin(): Promise<MintedSession | null> {
   const idpToken = await tokenResp.json();
 
   // RFC 8693 token exchange against ConfigHub -> minted ConfigHub token.
-  const minted = await exchange(saved.exchangeEndpoint, idpToken.access_token);
   const idpClaims = decodeJwtClaims(idpToken.access_token);
+  if (!organizationAliasOf(idpClaims) && !saved.retriedForOrganization) {
+    // The exchange would refuse this token. Rather than surface that, log in
+    // once more: with the SSO session now alive the IdP runs its organization
+    // step. A hint that was sent evidently did not help, so forget it.
+    if (saved.hintedOrganization) rememberOrganization(saved.clientId, undefined);
+    throw new OrganizationMissing(saved.returnTo);
+  }
+  const minted = await exchange(saved.exchangeEndpoint, idpToken.access_token);
   rememberOrganization(saved.clientId, organizationAliasOf(idpClaims));
   return {
     ...minted,
