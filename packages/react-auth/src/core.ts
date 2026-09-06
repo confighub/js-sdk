@@ -44,11 +44,18 @@ export interface LoginOptions {
    */
   returnTo?: string;
   /**
-   * Keycloak organization alias to sign in to, sent as the `organization:<alias>`
-   * scope. Without it Keycloak prompts a multi-org user to pick one (or uses the
-   * organization already selected in the SSO session).
+   * Which organization to sign in to, as the Keycloak organization alias sent in
+   * the `organization:<alias>` scope.
+   *
+   * - a string: that organization, no prompt;
+   * - `undefined` (default): the organization of the last successful login in this
+   *   browser, remembered per client in `localStorage`, so a new tab or a login after
+   *   logout lands in the same organization without a prompt; with nothing
+   *   remembered, Keycloak decides (prompt for a multi-org user, or the org matching
+   *   the email domain on a fresh authentication);
+   * - `null`: no hint on purpose, so Keycloak prompts. This is "switch organization".
    */
-  organization?: string;
+  organization?: string | null;
   /**
    * `'none'` asks the IdP to re-authenticate without any UI, failing with
    * `login_required` if the SSO session is gone -- the way to refresh an expired
@@ -78,6 +85,41 @@ interface PkceState {
 }
 
 const PKCE_KEY = 'confighub_pkce';
+const LAST_ORG_KEY = 'confighub_last_org';
+
+// The alias is a short public identifier, not a credential, so localStorage is the
+// right place: it must outlive the tab, which is exactly what the token must not.
+const lastOrgKey = (clientId: string): string => `${LAST_ORG_KEY}:${clientId}`;
+
+/** The organization alias of the last successful login for this client, if any. */
+export function rememberedOrganization(clientId: string): string | undefined {
+  try {
+    return localStorage.getItem(lastOrgKey(clientId)) ?? undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/** @internal */
+export function rememberOrganization(clientId: string, alias: string | undefined): void {
+  try {
+    if (alias) localStorage.setItem(lastOrgKey(clientId), alias);
+    else localStorage.removeItem(lastOrgKey(clientId));
+  } catch {
+    // Storage unavailable: the next login gets no hint.
+  }
+}
+
+/**
+ * The alias in an IdP token's `organization` claim (`{ "<alias>": { id } }`), or
+ * undefined when the claim is absent or names more than one organization.
+ */
+export function organizationAliasOf(idpClaims: Record<string, unknown>): string | undefined {
+  const org = idpClaims.organization;
+  if (!org || typeof org !== 'object') return undefined;
+  const aliases = Object.keys(org as Record<string, unknown>);
+  return aliases.length === 1 ? aliases[0] : undefined;
+}
 
 const trimSlash = (s: string): string => s.replace(/\/+$/, '');
 
@@ -173,7 +215,11 @@ export async function startLogin(
 
   // The "organization" scope makes Keycloak emit the org claim the exchange resolves;
   // "organization:<alias>" selects one without prompting.
-  const orgScope = login.organization ? `organization:${login.organization}` : 'organization';
+  const alias =
+    login.organization === null
+      ? undefined
+      : (login.organization ?? rememberedOrganization(clientId));
+  const orgScope = alias ? `organization:${alias}` : 'organization';
   const params: Record<string, string> = {
     response_type: 'code',
     client_id: clientId,
@@ -247,9 +293,11 @@ async function doCompleteLogin(): Promise<MintedSession | null> {
 
   // RFC 8693 token exchange against ConfigHub -> minted ConfigHub token.
   const minted = await exchange(saved.exchangeEndpoint, idpToken.access_token);
+  const idpClaims = decodeJwtClaims(idpToken.access_token);
+  rememberOrganization(saved.clientId, organizationAliasOf(idpClaims));
   return {
     ...minted,
-    idpClaims: decodeJwtClaims(idpToken.access_token),
+    idpClaims,
     idToken: typeof idpToken.id_token === 'string' ? idpToken.id_token : undefined,
   };
 }
