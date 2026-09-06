@@ -2537,9 +2537,10 @@ export interface components {
             BoundProvidedProperties?: {
                 [key: string]: string;
             };
+            /** @description Value a defaulting function writes at this path, if any */
+            DefaultValue?: unknown;
             /** @description Description of the attribute */
             Description?: string;
-            GetterInvocation?: components["schemas"]["FunctionInvocation"];
             /** @description Whether this attribute is a needed value */
             IsNeeded?: boolean;
             /** @description Whether this attribute is a provided value */
@@ -2556,8 +2557,6 @@ export interface components {
             ProvidedProperties?: {
                 [key: string]: string;
             };
-            /** @description Function invocation used to set the attribute (except for the value), if any */
-            SetterInvocations?: components["schemas"]["FunctionInvocation"][];
         };
         AttributeInfo: {
             /** @description Name of the registered attribute */
@@ -2862,10 +2861,20 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description ReleasedRestoredSpaceIDs is where the undoing has been released: the Spaces in RestoredSpaceIDs whose Units are released at or past the Revision the restore Tag marks. Covering ReleasedSpaceIDs is what State reports as RestoreReleased. Derived when the ChangeOrder is read. */
+            readonly ReleasedRestoredSpaceIDs?: components["schemas"]["UUID"][];
             /** @description ReleasedSpaceIDs is where the ChangeOrder has been released: the Spaces in scope whose Units in the Space's release are applied at or past the Revision the end Tag marks. Derived when the ChangeOrder is read. */
             readonly ReleasedSpaceIDs?: components["schemas"]["UUID"][];
             /** @description ResolvedSpaceIDs is where the ChangeOrder has been fully propagated to: the Spaces in scope whose Links of its UpdateType have all merged it, plus the Space it resides in. Derived when the ChangeOrder is read. */
             readonly ResolvedSpaceIDs?: components["schemas"]["UUID"][];
+            /**
+             * Format: uuid
+             * @description RestoreTagID is the Tag marking the Revisions that undid the ChangeOrder. The first restore mints it; every restore after that marks with the same Tag. Empty until something has been restored.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly RestoreTagID?: string;
+            /** @description RestoredSpaceIDs is where the ChangeOrder has been undone: the Spaces whose Units all carry the restore Tag. Derived when the ChangeOrder is read. */
+            readonly RestoredSpaceIDs?: components["schemas"]["UUID"][];
             /** @description SkippedUnits names the Units of the ChangeOrder's Space that it carries no Revisions of, mapped to the reason. Written when the scope is derived. A skipped Unit may still be marked by the ChangeOrder's Tags, when the Spaces in scope had already taken it. */
             readonly SkippedUnits?: {
                 [key: string]: string;
@@ -2886,7 +2895,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             readonly StartTagID?: string;
-            /** @description State is how far the ChangeOrder has got: New until a Space other than its own has taken it, InProgress while some have and some have not, Resolved once every Space in scope has, Released once every Space in scope has released what it took, and Aborted whenever AbortedReason is set. Derived when the ChangeOrder is read. */
+            /** @description State is how far the ChangeOrder has got: New until a Space other than its own has taken it, InProgress while some have and some have not, Resolved once every Space in scope has, Released once every Space in scope has released what it took, Aborted whenever AbortedReason is set, Restored once every Space that had taken it has been restored to the Revisions before it, and RestoreReleased once every Space that had released it has released the restored Revisions. Derived when the ChangeOrder is read. */
             readonly State?: string;
             /** @description UpdateType is the Link UpdateType this ChangeOrder follows when propagating. UpgradeUnit, the clone lineage, is the default; MergeUnits is the other supported value. */
             UpdateType?: string;
@@ -3059,6 +3068,7 @@ export interface components {
             EndTag?: components["schemas"]["Tag"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            RestoreTag?: components["schemas"]["Tag"];
             Space?: components["schemas"]["Space"];
             StartTag?: components["schemas"]["Tag"];
         };
@@ -3337,6 +3347,7 @@ export interface components {
             Clearance?: components["schemas"]["Clearance"];
             /** @description Function name */
             FunctionName?: string;
+            Guards?: components["schemas"]["GuardStamp"];
             /** @description Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
             Params?: {
                 [key: string]: unknown;
@@ -3376,6 +3387,7 @@ export interface components {
         FunctionInvocationsResponse: {
             /** @description The resulting configuration data; present only when the invocation changed it */
             ConfigData?: string;
+            Conflicts?: components["schemas"]["MutationConflictList"];
             /** @description SHA256 of the resulting configuration data, whether or not ConfigData is present */
             DataHash?: string;
             Error?: components["schemas"]["ResponseError"];
@@ -3507,6 +3519,9 @@ export interface components {
             Set?: {
                 [key: string]: string;
             };
+        };
+        GuardStamp: {
+            [key: string]: string;
         };
         /** @description Defines a stored, reusable call to one or more functions, executed in the order they are listed. */
         Invocation: {
@@ -3646,6 +3661,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             FromUnitID: string;
+            Guards?: components["schemas"]["GuardStamp"];
             /** @description SHA256 hash of the resolution-relevant Link fields, used to detect changes that require re-resolution. */
             readonly Hash?: string;
             /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -4458,7 +4474,6 @@ export interface components {
             BoundProvidedProperties?: {
                 [key: string]: string;
             };
-            GetterInvocation?: components["schemas"]["FunctionInvocation"];
             /** @description Whether this attribute is a needed value */
             IsNeeded?: boolean;
             /** @description Whether this attribute is a provided value */
@@ -4477,7 +4492,6 @@ export interface components {
                 [key: string]: string;
             };
             ResourceType?: string;
-            SetterInvocation?: components["schemas"]["FunctionInvocation"];
         };
         ResponseError: {
             /** @description Additional context messages */
@@ -5159,6 +5173,7 @@ export interface components {
             FailOpenAfter?: number | null;
             /** @description Function name */
             FunctionName?: string;
+            Guards?: components["schemas"]["GuardStamp"];
             /** @description SHA256 hash of the trigger's specification fields, used to detect changes. */
             readonly Hash?: string;
             /**
@@ -8239,7 +8254,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8281,7 +8296,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, RestoreTagID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8407,7 +8422,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8449,7 +8464,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, RestoreTagID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8675,7 +8690,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8717,7 +8732,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, RestoreTagID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8859,7 +8874,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8901,7 +8916,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, RestoreTagID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -10799,6 +10814,8 @@ export interface operations {
                 protect?: boolean;
                 /** @description The classes of guarded reason this operation is cleared for, as a JSON Clearance -- a list of {Key, Operator, Values} requirements, where Operator is Exists, In, NotIn, or DoesNotExist. A path whose guards this does not cover is not written, and the withheld change is reported as a Guarded conflict. An absent or empty clearance clears nothing, which only matters for a Unit that has guards. */
                 clearance?: string;
+                /** @description The guards this operation records on the paths it writes, as a JSON object of guard key to value -- the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. The guard analogue of protect: protect claims the paths, this says why. It only ever adds and overwrites the keys it names -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). */
+                guards?: string;
                 /** @description Must match ChangeSetID of affected Units unless in dry run mode; not valid when invoked on Revisions */
                 change_set_id?: string;
                 /** @description User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
@@ -12196,6 +12213,10 @@ export interface operations {
                     DownstreamSetters?: (Record<string, never> | null)[] | null;
                     /** Format: uuid */
                     FromUnitID?: string | null;
+                    /** @description Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
+                    Guards?: {
+                        [key: string]: string | null;
+                    } | null;
                     /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
                     Labels?: {
                         [key: string]: string | null;
@@ -12607,6 +12628,10 @@ export interface operations {
                     DownstreamSetters?: (Record<string, never> | null)[] | null;
                     /** Format: uuid */
                     FromUnitID?: string | null;
+                    /** @description Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
+                    Guards?: {
+                        [key: string]: string | null;
+                    } | null;
                     /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
                     Labels?: {
                         [key: string]: string | null;
@@ -17406,7 +17431,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedSpaceIDs, ResolvedSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, Labels, OrganizationID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UpdateType, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17448,7 +17473,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, RestoreTagID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17640,7 +17665,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeOrder are EndTagID, OrganizationID, RestoreTagID, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -19519,6 +19544,8 @@ export interface operations {
                 protect?: boolean;
                 /** @description The classes of guarded reason this operation is cleared for, as a JSON Clearance -- a list of {Key, Operator, Values} requirements, where Operator is Exists, In, NotIn, or DoesNotExist. A path whose guards this does not cover is not written, and the withheld change is reported as a Guarded conflict. An absent or empty clearance clears nothing, which only matters for a Unit that has guards. */
                 clearance?: string;
+                /** @description The guards this operation records on the paths it writes, as a JSON object of guard key to value -- the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. The guard analogue of protect: protect claims the paths, this says why. It only ever adds and overwrites the keys it names -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). */
+                guards?: string;
                 /** @description Must match ChangeSetID of affected Units unless in dry run mode; not valid when invoked on Revisions */
                 change_set_id?: string;
                 /** @description User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
@@ -21000,6 +21027,10 @@ export interface operations {
                     DownstreamSetters?: (Record<string, never> | null)[] | null;
                     /** Format: uuid */
                     FromUnitID?: string | null;
+                    /** @description Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
+                    Guards?: {
+                        [key: string]: string | null;
+                    } | null;
                     /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
                     Labels?: {
                         [key: string]: string | null;
@@ -23915,6 +23946,10 @@ export interface operations {
                     FailOpenAfter?: number | null;
                     /** @description Function name */
                     FunctionName?: string | null;
+                    /** @description Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Only meaningful for a mutating trigger, and part of the trigger's Hash, unlike Protect. */
+                    Guards?: {
+                        [key: string]: string | null;
+                    } | null;
                     /** Format: uuid */
                     InvocationID?: string | null;
                     /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -24435,6 +24470,8 @@ export interface operations {
                 protect?: boolean;
                 /** @description The classes of guarded reason this operation is cleared for, as a JSON Clearance -- a list of {Key, Operator, Values} requirements, where Operator is Exists, In, NotIn, or DoesNotExist. A path whose guards this does not cover is not written, and the withheld change is reported as a Guarded conflict. An absent or empty clearance clears nothing, which only matters for a Unit that has guards. */
                 clearance?: string;
+                /** @description The guards this operation records on the paths it writes, as a JSON object of guard key to value -- the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. The guard analogue of protect: protect claims the paths, this says why. It only ever adds and overwrites the keys it names -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). */
+                guards?: string;
                 /** @description Merge the range as one rebased diff and record it as one Revision, instead of walking it. By default a merge replays: it takes the source's Revisions in order and, where a Revision records function invocations that can be re-executed, runs them against this Unit rather than rebasing their recorded paths onto it -- so a change lands where this Unit's own structure puts it -- and records each source Revision that has an effect here as a Revision of its own, carrying that Revision's change description, its own conflicts, and one Mutation per source Mutation. Squashing gives up both: the range arrives as a single rebased patch in a single Revision, which is what a merge did before replay existed. Accepted with upgrade, merge_source, and resolve of an UpgradeUnit or MergeUnits Link, and refused elsewhere, since there is no range to walk. A Link can ask for it standingly with its Squash field. */
                 squash?: boolean;
                 /** @description Upgrade the unit to the latest version of its upstream unit */
@@ -24513,7 +24550,7 @@ export interface operations {
                 tag?: string;
                 /** @description Must match ChangeSetID of affected Units if config Data is changed unless in dry run mode */
                 change_set_id?: string;
-                /** @description ChangeOrder to promote, with upgrade or resolve. The change order fixed the range when it was created -- the interval on each source Unit, marked with its Tags -- so it supplies both ends of the merge and merge_end is refused alongside it. A Unit whose source the change order does not cover is passed over rather than failed, which is what lets a bulk upgrade name a whole Space and take only the Units the change is in. A Unit whose last merged revision is not where the change order starts is an error, since merging anyway would replay what it already has or skip what it does not, and with resolve a selected Link whose UpdateType the change order does not follow is an error too. The revisions the promotion creates carry the ChangeOrder, and its start Tag is placed on the revision before them and its end Tag on the one it arrives at, so 'restore Before:ChangeOrder:uuid' undoes it whether it landed as one revision or as one per source revision. */
+                /** @description ChangeOrder to promote, with upgrade or resolve, or to undo, with restore. The change order fixed the range when it was created -- the interval on each source Unit, marked with its Tags -- so it supplies both ends of the merge and merge_end is refused alongside it. A Unit whose source the change order does not cover is passed over rather than failed, which is what lets a bulk upgrade name a whole Space and take only the Units the change is in. A Unit whose last merged revision is not where the change order starts is an error, since merging anyway would replay what it already has or skip what it does not, and with resolve a selected Link whose UpdateType the change order does not follow is an error too. The revisions the promotion creates carry the ChangeOrder, and its start Tag is placed on the revision before them and its end Tag on the one it arrives at, so 'restore Before:ChangeOrder:uuid' undoes it whether it landed as one revision or as one per source revision. With restore the change order is being undone rather than promoted: the restore must be 'Before:ChangeOrder:' the same change order, the change order must have an AbortedReason -- undoing a change nobody has said is not coming is a race with whoever is still promoting it -- and a Unit the change order never marked is an error rather than passed over, since naming it says the Unit is part of the undoing. The first restore mints the change order's restore Tag and records it as RestoreTagID; every restore after that marks with the same Tag, which is what RestoredSpaceIDs is read off. A Unit the change order carried nothing for takes the restore Tag on the revision its start and end Tags are already on, and no revision is made. A Unit already carrying the restore Tag has had the change order taken back out of it and is passed over, since undoing one in a Unit happens once as promoting it into one does -- so the revisions a Unit has taken since it was undone are its own work rather than this undoing's to drop. Restoring also advances the merge pointers of the Links of the change order's UpdateType that follow the restored Unit onto the revision the restore made, so a later upgrade does not replay the change that was just taken out; the downstream Units are not restored with it, since each has to be restored and released on its own account. */
                 change_order?: string;
                 /** @description User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
                 subgroup?: string;
@@ -24735,6 +24772,8 @@ export interface operations {
                 protect?: boolean;
                 /** @description The classes of guarded reason this operation is cleared for, as a JSON Clearance -- a list of {Key, Operator, Values} requirements, where Operator is Exists, In, NotIn, or DoesNotExist. A path whose guards this does not cover is not written, and the withheld change is reported as a Guarded conflict. An absent or empty clearance clears nothing, which only matters for a Unit that has guards. */
                 clearance?: string;
+                /** @description The guards this operation records on the paths it writes, as a JSON object of guard key to value -- the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. The guard analogue of protect: protect claims the paths, this says why. It only ever adds and overwrites the keys it names -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). */
+                guards?: string;
                 /** @description Merge the range as one rebased diff and record it as one Revision, instead of walking it. By default a merge replays: it takes the source's Revisions in order and, where a Revision records function invocations that can be re-executed, runs them against this Unit rather than rebasing their recorded paths onto it -- so a change lands where this Unit's own structure puts it -- and records each source Revision that has an effect here as a Revision of its own, carrying that Revision's change description, its own conflicts, and one Mutation per source Mutation. Squashing gives up both: the range arrives as a single rebased patch in a single Revision, which is what a merge did before replay existed. Accepted with upgrade, merge_source, and resolve of an UpgradeUnit or MergeUnits Link, and refused elsewhere, since there is no range to walk. A Link can ask for it standingly with its Squash field. */
                 squash?: boolean;
                 /** @description Upgrade the unit to the latest version of its upstream unit */
@@ -24813,7 +24852,7 @@ export interface operations {
                 tag?: string;
                 /** @description Must match ChangeSetID of affected Units if config Data is changed unless in dry run mode */
                 change_set_id?: string;
-                /** @description ChangeOrder to promote, with upgrade or resolve. The change order fixed the range when it was created -- the interval on each source Unit, marked with its Tags -- so it supplies both ends of the merge and merge_end is refused alongside it. A Unit whose source the change order does not cover is passed over rather than failed, which is what lets a bulk upgrade name a whole Space and take only the Units the change is in. A Unit whose last merged revision is not where the change order starts is an error, since merging anyway would replay what it already has or skip what it does not, and with resolve a selected Link whose UpdateType the change order does not follow is an error too. The revisions the promotion creates carry the ChangeOrder, and its start Tag is placed on the revision before them and its end Tag on the one it arrives at, so 'restore Before:ChangeOrder:uuid' undoes it whether it landed as one revision or as one per source revision. */
+                /** @description ChangeOrder to promote, with upgrade or resolve, or to undo, with restore. The change order fixed the range when it was created -- the interval on each source Unit, marked with its Tags -- so it supplies both ends of the merge and merge_end is refused alongside it. A Unit whose source the change order does not cover is passed over rather than failed, which is what lets a bulk upgrade name a whole Space and take only the Units the change is in. A Unit whose last merged revision is not where the change order starts is an error, since merging anyway would replay what it already has or skip what it does not, and with resolve a selected Link whose UpdateType the change order does not follow is an error too. The revisions the promotion creates carry the ChangeOrder, and its start Tag is placed on the revision before them and its end Tag on the one it arrives at, so 'restore Before:ChangeOrder:uuid' undoes it whether it landed as one revision or as one per source revision. With restore the change order is being undone rather than promoted: the restore must be 'Before:ChangeOrder:' the same change order, the change order must have an AbortedReason -- undoing a change nobody has said is not coming is a race with whoever is still promoting it -- and a Unit the change order never marked is an error rather than passed over, since naming it says the Unit is part of the undoing. The first restore mints the change order's restore Tag and records it as RestoreTagID; every restore after that marks with the same Tag, which is what RestoredSpaceIDs is read off. A Unit the change order carried nothing for takes the restore Tag on the revision its start and end Tags are already on, and no revision is made. A Unit already carrying the restore Tag has had the change order taken back out of it and is passed over, since undoing one in a Unit happens once as promoting it into one does -- so the revisions a Unit has taken since it was undone are its own work rather than this undoing's to drop. Restoring also advances the merge pointers of the Links of the change order's UpdateType that follow the restored Unit onto the revision the restore made, so a later upgrade does not replay the change that was just taken out; the downstream Units are not restored with it, since each has to be restored and released on its own account. */
                 change_order?: string;
                 /** @description User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
                 subgroup?: string;
@@ -25235,6 +25274,8 @@ export interface operations {
                 protect?: boolean;
                 /** @description The classes of guarded reason this operation is cleared for, as a JSON Clearance -- a list of {Key, Operator, Values} requirements, where Operator is Exists, In, NotIn, or DoesNotExist. A path whose guards this does not cover is not written, and the withheld change is reported as a Guarded conflict. An absent or empty clearance clears nothing, which only matters for a Unit that has guards. */
                 clearance?: string;
+                /** @description The guards this operation records on the paths it writes, as a JSON object of guard key to value -- the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. The guard analogue of protect: protect claims the paths, this says why. It only ever adds and overwrites the keys it names -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). */
+                guards?: string;
                 /** @description Merge base revision, which provides the base configuration data of the changes to merge. With merge_source, this is a revision of the merge source unit. With merge_external_source, this is a revision of the unit being updated and overrides the default selection of the latest MergeExternal revision. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
                 merge_base?: string;
                 /** @description Identifier of the external source for merge-on-update. When set, computes mutations between the last MergeExternal revision and the provided data, then patches the current unit data with those mutations. */
@@ -29662,6 +29703,10 @@ export interface operations {
                     FailOpenAfter?: number | null;
                     /** @description Function name */
                     FunctionName?: string | null;
+                    /** @description Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Only meaningful for a mutating trigger, and part of the trigger's Hash, unlike Protect. */
+                    Guards?: {
+                        [key: string]: string | null;
+                    } | null;
                     /** Format: uuid */
                     InvocationID?: string | null;
                     /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -30068,6 +30113,10 @@ export interface operations {
                     FailOpenAfter?: number | null;
                     /** @description Function name */
                     FunctionName?: string | null;
+                    /** @description Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Only meaningful for a mutating trigger, and part of the trigger's Hash, unlike Protect. */
+                    Guards?: {
+                        [key: string]: string | null;
+                    } | null;
                     /** Format: uuid */
                     InvocationID?: string | null;
                     /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -30988,6 +31037,8 @@ export interface operations {
                 protect?: boolean;
                 /** @description The classes of guarded reason this operation is cleared for, as a JSON Clearance -- a list of {Key, Operator, Values} requirements, where Operator is Exists, In, NotIn, or DoesNotExist. A path whose guards this does not cover is not written, and the withheld change is reported as a Guarded conflict. An absent or empty clearance clears nothing, which only matters for a Unit that has guards. */
                 clearance?: string;
+                /** @description The guards this operation records on the paths it writes, as a JSON object of guard key to value -- the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. The guard analogue of protect: protect claims the paths, this says why. It only ever adds and overwrites the keys it names -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). */
+                guards?: string;
                 /** @description Merge the range as one rebased diff and record it as one Revision, instead of walking it. By default a merge replays: it takes the source's Revisions in order and, where a Revision records function invocations that can be re-executed, runs them against this Unit rather than rebasing their recorded paths onto it -- so a change lands where this Unit's own structure puts it -- and records each source Revision that has an effect here as a Revision of its own, carrying that Revision's change description, its own conflicts, and one Mutation per source Mutation. Squashing gives up both: the range arrives as a single rebased patch in a single Revision, which is what a merge did before replay existed. Accepted with upgrade, merge_source, and resolve of an UpgradeUnit or MergeUnits Link, and refused elsewhere, since there is no range to walk. A Link can ask for it standingly with its Squash field. */
                 squash?: boolean;
                 /** @description Upgrade the unit to the latest version of its upstream unit */
@@ -31066,7 +31117,7 @@ export interface operations {
                 tag?: string;
                 /** @description Must match ChangeSetID of affected Units if config Data is changed unless in dry run mode */
                 change_set_id?: string;
-                /** @description ChangeOrder to promote, with upgrade or resolve. The change order fixed the range when it was created -- the interval on each source Unit, marked with its Tags -- so it supplies both ends of the merge and merge_end is refused alongside it. A Unit whose source the change order does not cover is passed over rather than failed, which is what lets a bulk upgrade name a whole Space and take only the Units the change is in. A Unit whose last merged revision is not where the change order starts is an error, since merging anyway would replay what it already has or skip what it does not, and with resolve a selected Link whose UpdateType the change order does not follow is an error too. The revisions the promotion creates carry the ChangeOrder, and its start Tag is placed on the revision before them and its end Tag on the one it arrives at, so 'restore Before:ChangeOrder:uuid' undoes it whether it landed as one revision or as one per source revision. */
+                /** @description ChangeOrder to promote, with upgrade or resolve, or to undo, with restore. The change order fixed the range when it was created -- the interval on each source Unit, marked with its Tags -- so it supplies both ends of the merge and merge_end is refused alongside it. A Unit whose source the change order does not cover is passed over rather than failed, which is what lets a bulk upgrade name a whole Space and take only the Units the change is in. A Unit whose last merged revision is not where the change order starts is an error, since merging anyway would replay what it already has or skip what it does not, and with resolve a selected Link whose UpdateType the change order does not follow is an error too. The revisions the promotion creates carry the ChangeOrder, and its start Tag is placed on the revision before them and its end Tag on the one it arrives at, so 'restore Before:ChangeOrder:uuid' undoes it whether it landed as one revision or as one per source revision. With restore the change order is being undone rather than promoted: the restore must be 'Before:ChangeOrder:' the same change order, the change order must have an AbortedReason -- undoing a change nobody has said is not coming is a race with whoever is still promoting it -- and a Unit the change order never marked is an error rather than passed over, since naming it says the Unit is part of the undoing. The first restore mints the change order's restore Tag and records it as RestoreTagID; every restore after that marks with the same Tag, which is what RestoredSpaceIDs is read off. A Unit the change order carried nothing for takes the restore Tag on the revision its start and end Tags are already on, and no revision is made. A Unit already carrying the restore Tag has had the change order taken back out of it and is passed over, since undoing one in a Unit happens once as promoting it into one does -- so the revisions a Unit has taken since it was undone are its own work rather than this undoing's to drop. Restoring also advances the merge pointers of the Links of the change order's UpdateType that follow the restored Unit onto the revision the restore made, so a later upgrade does not replay the change that was just taken out; the downstream Units are not restored with it, since each has to be restored and released on its own account. */
                 change_order?: string;
                 /** @description User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
                 subgroup?: string;

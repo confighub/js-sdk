@@ -16,6 +16,16 @@ Pick one. The only contract between the auth package and a client is `getToken()
 client accepts a token source; the auth layer provides one (via `useConfigHub()` for the
 plain client, or `getAccessToken` for RTK Query).
 
+## Versions
+
+`X.Y` of a package version is the ConfigHub API version it was generated against
+(the pinned spec's; see `.spec-version`), the same rule the server and `cub` use:
+`@confighub/*@0.4.7` speaks the same API as any `v0.4.*` server. `Z` increments on
+every publish. Each ConfigHub release re-pins the spec and publishes automatically
+(`.github/workflows/update-spec.yml`); a hand-written change publishes by pushing the
+next `vX.Y.Z` tag. `@confighub/api` also exports the server's input-validation
+constants (`SLUG_PATTERN`, `LABEL_KEY_MAX_LENGTH`, …) for validating forms.
+
 ## Try it (the example app)
 
 `examples/space-browser` is a full app built on both packages — it logs you in and

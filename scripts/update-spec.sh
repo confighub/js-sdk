@@ -6,10 +6,8 @@
 # Env:
 #   SUMMARY_FILE  write a markdown summary here (for the PR body)
 #
-# This does not change any package version. The js-sdk packages carry their own
-# release number — they contain hand-written code that is not generated from the
-# ConfigHub repo — so which version to publish is a decision for whoever reviews
-# the regenerated diff, not something this script can infer.
+# This does not change any package version; scripts/next-version.mjs decides
+# that (X.Y = the pinned spec's API version, Z = next patch).
 
 set -euo pipefail
 
