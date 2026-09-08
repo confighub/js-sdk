@@ -7,6 +7,8 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.4.5 — 2026-09-08
+
 ## 0.4.4 (react-auth, hand-written)
 
 - A redirect carrying an authorization code that this tab holds no PKCE state for
