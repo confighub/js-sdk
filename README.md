@@ -21,11 +21,10 @@ plain client, or `getAccessToken` for RTK Query).
 `X.Y` of a package version is the ConfigHub API version it was generated against
 (the pinned spec's; see `.spec-version`), the same rule the server and `cub` use:
 `@confighub/*@0.4.7` speaks the same API as any `v0.4.*` server. `Z` increments on
-every publish. Each ConfigHub release re-pins the spec and publishes automatically
-(`.github/workflows/update-spec.yml`); a hand-written change publishes by pushing the
-next `vX.Y.Z` tag. Every publish writes its section of `CHANGELOG.md` and a GitHub
-release under that tag, both generated from the commits since the previous tag
-(`cliff.toml`).
+every publish, whether a spec re-pin or a hand-written change. All three packages
+publish together at one version. How a version comes to be is under "Releasing".
+`@confighub/api` also exports the server's input-validation constants
+(`SLUG_PATTERN`, `LABEL_KEY_MAX_LENGTH`, …) for validating forms.
 
 ## Commits
 
@@ -33,8 +32,8 @@ Commit subjects are `type(scope): what changed`, since the changelog is generate
 them. Types: `feat`, `fix`, `docs`, `chore`, `ci`. Scopes: `api`, `react-auth`,
 `rtk-query`, `spec` (a re-pin, written by the update-spec workflow), or none. A `!` after
 the type, or a `BREAKING CHANGE:` footer, marks a breaking change. Merge commits are
-ignored, so a PR's own commits are what appear. `@confighub/api` also exports the server's input-validation
-constants (`SLUG_PATTERN`, `LABEL_KEY_MAX_LENGTH`, …) for validating forms.
+ignored, so a PR's own commits are what appear. Nothing enforces the format; a commit
+that does not follow it lands under "Other" in the changelog.
 
 ## Try it (the example app)
 
@@ -188,8 +187,9 @@ One pegged spec drives both clients through their own generators: `openapi-types
 for `@confighub/api`, `@rtk-query/codegen-openapi` for `@confighub/rtk-query`. The
 fetched root `openapi.json` and both generated files (`packages/api/src/schema.d.ts`,
 `packages/rtk-query/src/confighubApi.gen.ts`) are committed, so a spec change is a
-reviewable diff. Bumping the targeted server version is: edit `.spec-version`, run
-`npm run sync-spec`, commit the regenerated files, and open a PR.
+reviewable diff. The pin moves automatically with each ConfigHub release (see
+"Releasing"); to work ahead of one, sync from a checkout as above and keep the result on
+a branch.
 
 ## Development
 
@@ -204,17 +204,50 @@ npm run example:rtk      # run examples/space-browser-rtk (RTK Query)
 
 ## Releasing
 
-Publishing is tag-driven (matching the main codebase). The git tag is the source of
-truth for the version; CI sets each package to that version and publishes all three to
-npm with provenance.
+Nothing here is versioned or published by hand. A release is a `vX.Y.Z` tag, and two
+things create one:
+
+**A ConfigHub release** (the usual case). `.github/workflows/update-spec.yml` runs
+every hour, on demand, and immediately when the ConfigHub release workflow dispatches a
+`confighub-release` event. It re-pins `.spec-version` at the latest `confighub/sdk`
+release, regenerates both clients, and typechecks the hand-written code against them; a
+regeneration that no longer typechecks fails there and nothing is committed. Then:
+
+- If the generated files changed (`schema.d.ts`, `confighubApi.gen.ts`,
+  `validation.ts`), it commits `feat(spec): ConfigHub vA.B.C` to `main` with a summary
+  of what the API gained or lost as the body, computes the next version with
+  `scripts/next-version.mjs` (`X.Y` from the new spec, `Z` the next patch), pushes the
+  tag, and calls the release workflow.
+- If they are identical, it commits `chore(spec): pin ConfigHub vA.B.C, generated
+  clients unchanged` and stops. Nothing goes to npm. The pin still moves, so the next
+  published version names the spec it was built against.
+
+**A hand-written change** (react-auth, the API client's non-generated code, this
+README). Merge it, then push the next tag; `next-version.mjs` prints it and refuses a
+tag whose `X.Y` does not match the pinned spec:
 
 ```
-git tag v0.2.0
-git push origin v0.2.0     # triggers .github/workflows/release.yml
+git tag "v$(node scripts/next-version.mjs)"
+git push origin --tags       # triggers .github/workflows/release.yml
 ```
 
-Use a `v*.*.*` semver tag. The package.json versions in the repo are placeholders that
-CI overwrites at publish time, so they don't need bumping by hand.
+**What the release workflow does**, on either path (`.github/workflows/release.yml`):
+checks the version against the pinned spec, sets every package to it (the `package.json`
+versions in the repo are placeholders), builds, publishes all three to npm with
+provenance, renders the commits since the previous tag into a section with
+[git-cliff](https://git-cliff.org) (`cliff.toml`), prepends that section to
+`CHANGELOG.md` on `main` as `docs(changelog): vX.Y.Z`, and creates a GitHub release
+under the tag with the same text as its notes. npm is the authoritative record; the
+GitHub release and `CHANGELOG.md` are the readable one.
+
+| Piece | Where |
+| --- | --- |
+| Pinned spec version | `.spec-version` |
+| Fetch the spec, regenerate both clients | `scripts/sync-spec.mjs` (`npm run sync-spec`) |
+| Re-pin, regenerate, summarize the API diff | `scripts/update-spec.sh`, `scripts/spec-diff.mjs` |
+| Next version, and the `X.Y` check | `scripts/next-version.mjs` |
+| Automatic re-pin and publish | `.github/workflows/update-spec.yml` |
+| Publish, changelog, GitHub release | `.github/workflows/release.yml`, `cliff.toml` |
 
 ## Standards
 
