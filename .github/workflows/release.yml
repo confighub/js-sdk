@@ -34,6 +34,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.version && 'main' || github.ref }}
+          # git-cliff renders the commits since the previous release tag, which a
+          # shallow checkout does not have.
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 20
