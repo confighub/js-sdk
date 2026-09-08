@@ -23,7 +23,17 @@ plain client, or `getAccessToken` for RTK Query).
 `@confighub/*@0.4.7` speaks the same API as any `v0.4.*` server. `Z` increments on
 every publish. Each ConfigHub release re-pins the spec and publishes automatically
 (`.github/workflows/update-spec.yml`); a hand-written change publishes by pushing the
-next `vX.Y.Z` tag. `@confighub/api` also exports the server's input-validation
+next `vX.Y.Z` tag. Every publish writes its section of `CHANGELOG.md` and a GitHub
+release under that tag, both generated from the commits since the previous tag
+(`cliff.toml`).
+
+## Commits
+
+Commit subjects are `type(scope): what changed`, since the changelog is generated from
+them. Types: `feat`, `fix`, `docs`, `chore`, `ci`. Scopes: `api`, `react-auth`,
+`rtk-query`, `spec` (a re-pin, written by the update-spec workflow), or none. A `!` after
+the type, or a `BREAKING CHANGE:` footer, marks a breaking change. Merge commits are
+ignored, so a PR's own commits are what appear. `@confighub/api` also exports the server's input-validation
 constants (`SLUG_PATTERN`, `LABEL_KEY_MAX_LENGTH`, …) for validating forms.
 
 ## Try it (the example app)

@@ -60,6 +60,8 @@ jobs:
 
       - name: Commit to main and pick the version
         id: commit
+        env:
+          SUMMARY_FILE: ${{ runner.temp }}/spec-update.md
         run: |
           set -euo pipefail
           if git diff --quiet; then
@@ -70,7 +72,15 @@ jobs:
           spec="$(cat .spec-version)"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -am "Pin the spec at ${spec}"
+          # Conventional subject, and the spec-diff summary as the body: git-cliff turns
+          # this commit into the release's "API spec" entry at publish time.
+          # The summary's headings become bold lines: the body is rendered as a nested
+          # list item in CHANGELOG.md, where a heading would break out of the list.
+          {
+            echo "feat(spec): ConfigHub ${spec}"
+            echo
+            sed -E 's/^#+ (.*)$/**\1**/' "${SUMMARY_FILE}"
+          } | git commit -aF -
           git push origin main
           version="$(node scripts/next-version.mjs)"
           git tag "v${version}"
