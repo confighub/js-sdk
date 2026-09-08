@@ -34,11 +34,14 @@ function App() {
   which is the redirect URI to register. It is fixed on purpose: the page the user
   started from travels in the PKCE `state` and is restored on return, so a login
   from `/space/x?tab=units` lands back there without registering every path.
-- `persist` (default `'none'`) — `'session'` keeps the session in `sessionStorage`,
-  so a reload or in-tab navigation does not round-trip through the IdP. Tab-scoped,
-  gone when the tab closes, dropped when the token has expired.
-- `onUnauthorized` (default `'login'`) — what a 401 from the API means. `'login'`
-  tries a silent re-authentication; `'logout'` just drops the session.
+- `persist` (default `'session'`) — the session is kept in `sessionStorage`, so a
+  reload or in-tab navigation does not round-trip through the IdP. Tab-scoped, gone
+  when the tab closes, dropped when the token has expired. `'none'` keeps it in memory
+  only, and every page load starts unauthenticated.
+- `onUnauthorized` (default `'login'`) — what a rejected token means. `'login'` tries a
+  silent re-authentication; `'logout'` just drops the session. Applied when
+  `getAccessToken` finds the token expired, and when a data client reports a 401
+  through `handleUnauthorized` (below).
 
 The IdP issuer and OIDC endpoints are discovered from `{baseUrl}/api/info`, so the
 same build runs against any ConfigHub instance (the bundled Keycloak for Cloud, an
@@ -71,12 +74,32 @@ const { status, user, error, login, logout, switchOrganization, reauthenticate, 
   `unauthenticated`, so an app that auto-logs-in on `unauthenticated` does not race
   it. If the IdP session is gone too, the page comes back `unauthenticated`.
 
+## Outside React
+
+Two module-level functions carry the session to code that cannot use hooks, such as a
+data client's request setup:
+
+- `getAccessToken()` — the current token, or undefined. It never returns an expired
+  token: it starts the provider's recovery (per `onUnauthorized`) and returns undefined,
+  and the page comes back from the IdP where it was.
+- `handleUnauthorized()` — report a 401. Only needed for a token rejected before its
+  expiry (a server key rotation, a revoked session); expiry is handled by
+  `getAccessToken`. A no-op while a recovery is already under way.
+
+```ts
+import { getAccessToken, handleUnauthorized } from '@confighub/react-auth';
+import { configureConfigHub } from '@confighub/rtk-query';
+
+configureConfigHub({ baseUrl, getToken: getAccessToken, onUnauthorized: handleUnauthorized });
+```
+
 ## Token posture
 
-The minted token is kept in memory by default; opt in to `sessionStorage` with
-`persist: 'session'`. Never `localStorage`. The transient PKCE state is parked in
-`sessionStorage` across the authorize redirect. A 401 triggers a silent
-re-authentication (see `onUnauthorized`), which needs a live IdP session; refresh
-tokens are not used.
+The minted token is kept in `sessionStorage` (tab-scoped) by default, or in memory
+with `persist: 'none'`. Never `localStorage`. The transient PKCE state is parked in
+`sessionStorage` across the authorize redirect. A rejected or expired token triggers a
+silent re-authentication (see `onUnauthorized`), which needs a live IdP session; refresh
+tokens are not used, so the token's lifetime is the longest a page goes without a
+redirect.
 
 `react` (18 or 19) is a peer dependency.

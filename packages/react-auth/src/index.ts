@@ -10,6 +10,6 @@ export type {
   LogoutOptions,
 } from './provider';
 export { useAuth, useConfigHub } from './hooks';
-export { getAccessToken } from './tokenStore';
+export { getAccessToken, handleUnauthorized } from './tokenStore';
 export { callbackUri, decodeJwtClaims, isExpired, organizationAliasOf, rememberedOrganization, OrganizationMissing } from './core';
 export type { Discovery, MintedSession, LoginOptions, FlowOptions } from './core';

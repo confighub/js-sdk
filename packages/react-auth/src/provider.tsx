@@ -25,7 +25,7 @@ import {
   type LoginOptions,
   type MintedSession,
 } from './core';
-import { setAccessToken } from './tokenStore';
+import { setAccessToken, setUnauthorizedHandler } from './tokenStore';
 
 export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated' | 'error';
 
@@ -89,9 +89,9 @@ export interface ConfigHubAuthProviderProps {
    */
   callbackPath?: string;
   /**
-   * `'session'` keeps the minted token in `sessionStorage` so a reload or an in-tab
-   * navigation does not round-trip through the IdP. Tab-scoped and gone when the tab
-   * closes. Default `'none'`: memory only, a reload starts unauthenticated.
+   * `'session'` (default) keeps the minted token in `sessionStorage` so a reload or an
+   * in-tab navigation does not round-trip through the IdP. Tab-scoped and gone when the
+   * tab closes. `'none'`: memory only, every page load starts unauthenticated.
    */
   persist?: 'none' | 'session';
   /**
@@ -130,7 +130,7 @@ export function ConfigHubAuthProvider({
   baseUrl,
   clientId,
   callbackPath,
-  persist = 'none',
+  persist = 'session',
   onUnauthorized = 'login',
   children,
 }: ConfigHubAuthProviderProps): JSX.Element {
@@ -277,6 +277,13 @@ export function ConfigHubAuthProvider({
     if (onUnauthorized === 'login') void reauthenticate();
     else clearSession();
   }, [clearSession, reauthenticate, onUnauthorized]);
+
+  // Non-React callers (getAccessToken on an expired token, handleUnauthorized from a
+  // data client's 401) reach this provider's handling through the token store.
+  useEffect(() => {
+    setUnauthorizedHandler(handleUnauthorized);
+    return () => setUnauthorizedHandler(undefined);
+  }, [handleUnauthorized]);
 
   // One client for the provider's lifetime. getToken reads the session ref.
   const client = useMemo(
