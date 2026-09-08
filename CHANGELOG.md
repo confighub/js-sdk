@@ -9,6 +9,19 @@ lists what the generated surface gained or lost.
 
 ## 0.4.5 — 2026-09-08
 
+### Features
+
+- **react-auth:** sessions persist by default, and an expired token re-authenticates itself **(breaking)**
+
+### Documentation
+
+- **readme:** how versions, the automatic re-pin, publishing, the changelog and GitHub releases fit together
+
+### Maintenance
+
+- **release:** CHANGELOG.md and a GitHub release generated from commits
+- **update-spec:** publish only when the generated clients changed
+
 ## 0.4.4 (react-auth, hand-written)
 
 - A redirect carrying an authorization code that this tab holds no PKCE state for
