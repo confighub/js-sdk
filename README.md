@@ -21,9 +21,10 @@ plain client, or `getAccessToken` for RTK Query).
 `X.Y` of a package version is the ConfigHub API version it was generated against
 (the pinned spec's; see `.spec-version`), the same rule the server and `cub` use:
 `@confighub/*@0.4.7` speaks the same API as any `v0.4.*` server. `Z` increments on
-every publish. Each ConfigHub release re-pins the spec and publishes automatically
-(`.github/workflows/update-spec.yml`); a hand-written change publishes by pushing the
-next `vX.Y.Z` tag. Every publish writes its section of `CHANGELOG.md` and a GitHub
+every publish. Each ConfigHub release re-pins the spec automatically
+(`.github/workflows/update-spec.yml`), and publishes when that changed the generated
+clients; a release that left them identical only moves the pin. A hand-written change
+publishes by pushing the next `vX.Y.Z` tag. Every publish writes its section of `CHANGELOG.md` and a GitHub
 release under that tag, both generated from the commits since the previous tag
 (`cliff.toml`).
 

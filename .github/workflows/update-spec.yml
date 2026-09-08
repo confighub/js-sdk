@@ -3,10 +3,10 @@ name: Update ConfigHub spec
 # Keep the generated clients at the latest ConfigHub release, automatically.
 #
 # Every hour (and on demand, or when the ConfigHub release workflow dispatches a
-# `confighub-release` event), re-pin the spec at the latest confighub/sdk release.
-# If that changed anything: commit it to main, compute the next version
-# (X.Y = the spec's API version, Z = next patch; scripts/next-version.mjs), and
-# publish through the release workflow. Nothing to review: the generated clients
+# `confighub-release` event), re-pin the spec at the latest confighub/sdk release
+# and commit the pin to main. If the generated clients changed: compute the next
+# version (X.Y = the spec's API version, Z = next patch; scripts/next-version.mjs)
+# and publish through the release workflow; otherwise nothing is published. Nothing to review: the generated clients
 # are a function of the spec, and the hand-written code is typechecked against
 # them before anything is committed. A regenerated client that no longer
 # typechecks fails here, loudly, and nothing is published.
@@ -72,6 +72,17 @@ jobs:
           spec="$(cat .spec-version)"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          # A release only when the generated clients changed. A ConfigHub release that
+          # left them identical (most do: the API moves less often than the server) is
+          # recorded by committing the pin, so the next published version names it, and
+          # nothing goes to npm.
+          if git diff --quiet -- . ':!.spec-version' ':!openapi.json'; then
+            git commit -qam "chore(spec): pin ConfigHub ${spec}, generated clients unchanged"
+            git push origin main
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Pinned ${spec}; the generated clients are unchanged, nothing to publish." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
           # Conventional subject, and the spec-diff summary as the body: git-cliff turns
           # this commit into the release's "API spec" entry at publish time.
           # The summary's headings become bold lines: the body is rendered as a nested
