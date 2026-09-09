@@ -7,6 +7,40 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.4.6 — 2026-09-09
+
+### API spec
+
+- pin ConfigHub v0.4.11, generated clients unchanged
+- ConfigHub v0.4.12
+  Re-pinned the ConfigHub spec from `v0.4.11` to `v0.4.12` and regenerated both clients.
+
+  **Added (13) — backward compatible**
+
+  - parameter `change_order` on `POST /function/invoke`
+  - parameter `change_order` on `POST /space/{space_id}/function/invoke`
+  - field `ChangeOrder.InvocationID`
+  - field `ChangeOrder.Parameters`
+  - field `ChangeOrder.UnitFilterID`
+  - field `ChangeOrder.WhereUnit`
+  - field `ExtendedChangeOrder.Invocation`
+  - field `ExtendedChangeOrder.UnitFilter`
+  - field `FunctionInvocationsRequest.UpdateValidationResults`
+  - field `Revision.ValidationErrors`
+  - field `Revision.ValidationWarnings`
+  - field `Unit.ValidationErrors`
+  - field `Unit.ValidationWarnings`
+
+  Nothing was removed, so a **patch** bump of the js-sdk packages is enough.
+
+  The js-sdk packages carry their own version, independent of the spec: merge this, then
+  push a `vX.Y.Z` tag to publish. `.spec-version` records which ConfigHub release the
+  generated clients target.
+
+### Maintenance
+
+- **release:** full history for git-cliff; the 0.4.5 changelog section, regenerated
+
 ## 0.4.5 — 2026-09-08
 
 ### Features
