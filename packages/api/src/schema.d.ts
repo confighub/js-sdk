@@ -1592,27 +1592,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/space/{space_id}/unit/{unit_id}/extended": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Unit details with expanded relationships
-         * @deprecated
-         * @description Get Unit details with expanded relationships. Deprecated: use GET /space/{space_id}/unit/{unit_id} with the include query parameter, which returns the same expanded entities and is how every other entity is read.
-         */
-        get: operations["GetUnitExtended"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/space/{space_id}/unit/{unit_id}/guard": {
         parameters: {
             query?: never;
@@ -2463,11 +2442,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description DataType specifies the data type of the attribute value. Must be one of: string, int, bool. */
             DataType: string;
             /** @description An optional set of gates that, if any is present, will block deletion. */
@@ -2676,11 +2650,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -2829,11 +2798,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -2952,11 +2916,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -3286,11 +3245,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -3568,11 +3522,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -3660,11 +3609,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -3799,11 +3743,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description The type of entity. */
             readonly EntityType?: string;
             FunctionInvocation?: components["schemas"]["FunctionInvocation"];
@@ -3996,11 +3935,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -4234,11 +4168,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** Format: int64 */
             readonly DataSize?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
@@ -4333,11 +4262,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description Configuration data of the resource, represented as JSON. */
             Data?: Record<string, never>;
             /** @description The type of entity. */
@@ -4567,11 +4491,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description The SHA256 hash of this revision's data, encoded as hexadecimal. It is also the ETag the data endpoint serves. */
             DataHash?: string;
             /**
@@ -4748,11 +4667,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -4947,11 +4861,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -5024,11 +4933,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -5203,11 +5107,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -5380,11 +5279,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description The SHA256 hash of the configuration data, encoded as hexadecimal. It is also the ETag the data endpoint serves, so a caller that listed Units can ask for a body conditionally without fetching it first. */
             readonly DataHash?: string;
             /**
@@ -5709,11 +5603,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description The type of entity. */
             readonly EntityType?: string;
             Message?: string;
@@ -5779,12 +5668,6 @@ export interface components {
              */
             Version?: number;
         };
-        UnitExtended: {
-            ApprovedByUsers?: string[] | null;
-            FromLinks?: components["schemas"]["Link"][] | null;
-            ToLinks?: components["schemas"]["Link"][] | null;
-            Unit?: components["schemas"]["Unit"];
-        };
         UnitGuardRequest: {
             Clearance?: components["schemas"]["Clearance"];
             /** @description Per-resource guard edits to apply to the Unit's PathAnnotations */
@@ -5843,11 +5726,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description Friendly name for the entity. */
             DisplayName?: string;
             /** @description The type of entity. */
@@ -5938,11 +5816,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /**
-             * Format: int64
-             * @description An auto-incrementing sequence number used for pagination.
-             */
-            readonly CursorID?: number;
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -25458,85 +25331,6 @@ export interface operations {
             };
             /** @description Unit data conflict. Data has changed since last read. */
             409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Something went wrong while processing Unit. */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Unexpected error. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-        };
-    };
-    GetUnitExtended: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Unique identifier for a space_id */
-                space_id: string;
-                /** @description Unique identifier for a unit_id */
-                unit_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UnitExtended"];
-                };
-            };
-            /** @description Unit request is invalid (Bad Request). */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Unauthorized access. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Forbidden access. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Unit not found. */
-            404: {
                 headers: {
                     [name: string]: unknown;
                 };
