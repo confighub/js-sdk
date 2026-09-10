@@ -7,6 +7,34 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.4.7 — 2026-09-10
+
+### API spec
+
+- ConfigHub v0.4.13
+  Re-pinned the ConfigHub spec from `v0.4.12` to `v0.4.13` and regenerated both clients.
+
+  **Added (12) — backward compatible**
+
+  - parameter `where_data_engine` on `POST /function/invoke`
+  - parameter `where_data_engine` on `POST /space/{space_id}/function/invoke`
+  - parameter `where_data_engine` on `GET /space/{space_id}/unit`
+  - parameter `where_data_engine` on `GET /unit`
+  - parameter `where_data_engine` on `GET /unit_data`
+  - parameter `where_data_engine` on `GET /unit_mutation_sources`
+  - field `Revision.NeededPaths`
+  - field `Revision.ProvidedPaths`
+  - field `Revision.ValidationPassed`
+  - field `Revision.ValidationResults`
+  - field `Revision.Values`
+  - field `Unit.HeadRevisionID`
+
+  Nothing was removed, so a **patch** bump of the js-sdk packages is enough.
+
+  The js-sdk packages carry their own version, independent of the spec: merge this, then
+  push a `vX.Y.Z` tag to publish. `.spec-version` records which ConfigHub release the
+  generated clients target.
+
 ## 0.4.6 — 2026-09-09
 
 ### API spec
