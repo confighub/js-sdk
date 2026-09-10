@@ -7,6 +7,46 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.4.8 — 2026-09-10
+
+### API spec
+
+- ConfigHub v0.4.14
+  Re-pinned the ConfigHub spec from `v0.4.13` to `v0.4.14` and regenerated both clients.
+
+  **Removed (22) — breaking for anyone typed against the old spec**
+
+  - path `/space/{space_id}/unit/{unit_id}/extended`
+  - field `Attribute.CursorID`
+  - field `BridgeWorker.CursorID`
+  - field `ChangeOrder.CursorID`
+  - field `ChangeSet.CursorID`
+  - field `Filter.CursorID`
+  - field `Invocation.CursorID`
+  - field `Link.CursorID`
+  - field `Mutation.CursorID`
+  - field `Organization.CursorID`
+  - field `Release.CursorID`
+  - field `Resource.CursorID`
+  - field `Revision.CursorID`
+  - field `Space.CursorID`
+  - field `Tag.CursorID`
+  - field `Target.CursorID`
+  - field `Trigger.CursorID`
+  - field `Unit.CursorID`
+  - field `UnitEvent.CursorID`
+  - schema `UnitExtended`
+  - field `User.CursorID`
+  - field `View.CursorID`
+
+  Release this as a **minor** bump of the js-sdk packages, and check the hand-written
+  code (`packages/*/src`, excluding the generated `schema.d.ts` and `confighubApi.gen.ts`)
+  for anything that referenced these.
+
+  The js-sdk packages carry their own version, independent of the spec: merge this, then
+  push a `vX.Y.Z` tag to publish. `.spec-version` records which ConfigHub release the
+  generated clients target.
+
 ## 0.4.7 — 2026-09-10
 
 ### API spec
