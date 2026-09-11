@@ -7,6 +7,35 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.4.9 — 2026-09-11
+
+### API spec
+
+- ConfigHub v0.4.15
+  Re-pinned the ConfigHub spec from `v0.4.14` to `v0.4.15` and regenerated both clients.
+
+  **Added (13) — backward compatible**
+
+  - path `/change_workflow`
+  - path `/space/{space_id}/change_workflow`
+  - path `/space/{space_id}/change_workflow/{change_workflow_id}`
+  - field `ChangeOrder.ChangeWorkflow`
+  - field `ChangeOrder.ChangeWorkflowID`
+  - field `ExtendedSpace.TotalChangeWorkflowCount`
+  - schema `ChangeWorkflow`
+  - schema `ChangeWorkflowCreateOrUpdateResponse`
+  - schema `ChangeWorkflowFinalStage`
+  - schema `ChangeWorkflowPrerequisite`
+  - schema `ChangeWorkflowSpec`
+  - schema `ChangeWorkflowStage`
+  - schema `ExtendedChangeWorkflow`
+
+  Nothing was removed, so a **patch** bump of the js-sdk packages is enough.
+
+  The js-sdk packages carry their own version, independent of the spec: merge this, then
+  push a `vX.Y.Z` tag to publish. `.spec-version` records which ConfigHub release the
+  generated clients target.
+
 ## 0.4.8 — 2026-09-10
 
 ### API spec
