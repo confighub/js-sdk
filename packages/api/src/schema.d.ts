@@ -5121,7 +5121,7 @@ export interface components {
              * @description Unique identifier for a Bridge Worker associated with the Target.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
-            BridgeWorkerID: string;
+            BridgeWorkerID?: string;
             /** @description ConfigTypes (ToolchainType, ProviderType, LiveStateType tuples) supported by this Target. */
             ConfigTypes?: components["schemas"]["TargetConfigType"][];
             /**

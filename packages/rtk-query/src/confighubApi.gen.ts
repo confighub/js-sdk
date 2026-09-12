@@ -16756,7 +16756,7 @@ export type Target = {
   /** Identifier used by the Bridge to refer to discovered/enabled Target credentials and coordinates. */
   BridgeHandle?: string;
   /** Unique identifier for a Bridge Worker associated with the Target. */
-  BridgeWorkerID: string;
+  BridgeWorkerID?: string;
   /** ConfigTypes (ToolchainType, ProviderType, LiveStateType tuples) supported by this Target. */
   ConfigTypes?: TargetConfigType[];
   /** An optional set of gates that, if any is present, will block deletion. */
@@ -16850,7 +16850,7 @@ export type TargetRead = {
   /** Identifier used by the Bridge to refer to discovered/enabled Target credentials and coordinates. */
   BridgeHandle?: string;
   /** Unique identifier for a Bridge Worker associated with the Target. */
-  BridgeWorkerID: string;
+  BridgeWorkerID?: string;
   /** ConfigTypes (ToolchainType, ProviderType, LiveStateType tuples) supported by this Target. */
   ConfigTypes?: TargetConfigType[];
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
