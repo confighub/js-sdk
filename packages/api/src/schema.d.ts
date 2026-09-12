@@ -2300,6 +2300,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/upload": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Upload a bundle of configuration
+         * @description Takes a bundle of rendered configuration files, splits it into resources, and makes a Space's Units, Links, and Invocations match it. Creates what is missing, 3-way merges what changed, and empties the Units of resources the bundle no longer contains, so uploading the same bundle again changes nothing. Every resource becomes its own Unit.
+         */
+        post: operations["Upload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/user": {
         parameters: {
             query?: never;
@@ -5422,20 +5442,7 @@ export interface components {
          * @example 248df4b7-aa70-47b8-a036-33ac447e668d
          */
         UUID: string;
-        /**
-         * @description Unit is the core unit of operation in ConfigHub. It contains a blob of configuration Data
-         *     of a single supported Toolchain Type (configuration format). This blob is typically a text document
-         *     that contains a collection of Kubernetes or infrastructure resources, or an application configuration
-         *     file. Applying / deploying or destroying the configuration happens as a single *transaction*
-         *     from ConfigHub's perspective. In reality, it is most often a multi-step workflow performed by
-         *     the underlying configuration / deployment tool. The resources must belong to a single
-         *     infrastructure provider and the actuation mechanism must be able to resolve references and
-         *     ordering dependencies among the resources within the document. For example, if one resource
-         *     needs to be fully provisioned to provide input to another resource, then the actuation code is
-         *     responsible for handling this. Revisions store historical copies of the configuration data.
-         *     Configuration data can be restored from prior Revisions. Units can also be cloned to create
-         *     new variants of a configuration.
-         */
+        /** @description Unit is the core unit of operation in ConfigHub. It contains a blob of configuration Data of a single supported Config Type (configuration format). This blob is typically a text document that contains a collection of Kubernetes or infrastructure resources, or an application configuration file. Applying / deploying or destroying the configuration happens as a single *transaction* from ConfigHub's perspective. In reality, it is most often a multi-step workflow performed by the underlying configuration / deployment tool. The resources must belong to a single infrastructure provider and the actuation mechanism must be able to resolve references and ordering dependencies among the resources within the document. For example, if one resource needs to be fully provisioned to provide input to another resource, then the actuation code is responsible for handling this. Revisions store historical copies of the configuration data. Configuration data can be restored from prior Revisions. Units can also be cloned to create new variants of a configuration. */
         Unit: {
             /** @description An optional map of Annotation key/value pairs for tools to attach information to entities. */
             Annotations?: {
@@ -5914,6 +5921,183 @@ export interface components {
         UnitTagResponse: {
             Error?: components["schemas"]["ResponseError"];
             Message?: string;
+        };
+        UploadBrokenEdge: {
+            Cycle?: string[];
+            From?: string;
+            Kind?: string;
+            Reason?: string;
+            To?: string;
+        };
+        UploadComponentRequest: {
+            /** @description Synthesize the release Namespace if the bundle lacks it. Off by default. */
+            CreateNamespace?: boolean;
+            /** @description The component name. */
+            Name?: string;
+            /** @description The release namespace. Required when the bundle has namespaced resources that name no namespace. */
+            Namespace?: string;
+            /** @description Prepended to the slugs of new Units, so two releases can share one Space. */
+            SlugPrefix?: string;
+            /** @description Ownership name within the component's Spaces. Default: Name. */
+            SourceName?: string;
+            /** @description Explicit Space slug, overriding SpacePattern. */
+            Space?: string;
+            SpaceAnnotations?: {
+                [key: string]: string;
+            };
+            /** @description Set on Spaces the upload creates. */
+            SpaceDeleteGates?: {
+                [key: string]: boolean;
+            };
+            /** @description Merged over UploadRequest.SpaceLabels. */
+            SpaceLabels?: {
+                [key: string]: string;
+            };
+            /**
+             * Format: uuid
+             * @description Applies to the component's Spaces. New Units are created on it, except AppConfig and record Units.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            TargetID?: string;
+            UnitAnnotations?: {
+                [key: string]: string;
+            };
+            /** @description Set on Units the upload creates. */
+            UnitDeleteGates?: {
+                [key: string]: boolean;
+            };
+            /** @description Set on Units the upload creates. */
+            UnitDestroyGates?: {
+                [key: string]: boolean;
+            };
+            /** @description Set on every Unit the source writes. */
+            UnitLabels?: {
+                [key: string]: string;
+            };
+        };
+        UploadComponentResult: {
+            /** @description Inferred links dropped to keep the link graph acyclic. */
+            BrokenLinks?: components["schemas"]["UploadBrokenEdge"][];
+            Name?: string;
+            NamespaceCollision?: components["schemas"]["UploadNamespaceCollision"];
+            /**
+             * Format: uuid
+             * @description The record Unit holding what was uploaded and from where. Absent on a dry run.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            RecordUnitID?: string;
+            /** @description Secret resources dropped from the bundle, as Kind/namespace/name. Secrets are never uploaded. */
+            SkippedSecrets?: string[];
+            SourceName?: string;
+            Spaces?: components["schemas"]["UploadSpaceResult"][];
+            /** @description References that resolved to no resource in the bundle. */
+            UnmatchedReferences?: components["schemas"]["UploadUnmatchedReference"][];
+        };
+        UploadLinkResult: {
+            /** @description Create or Unchanged. */
+            Action?: string;
+            Error?: components["schemas"]["ResponseError"];
+            FromUnit?: string;
+            /**
+             * Format: uuid
+             * @description Absent for a Link a dry run would create.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            LinkID?: string;
+            /** @description Why the link was inferred, e.g. reference:v1/ConfigMap. */
+            Reason?: string;
+            ToUnit?: string;
+        };
+        UploadNamespaceCollision: {
+            /** @description The release Namespace the bundle already carries. */
+            Namespace?: string;
+        };
+        UploadRequest: {
+            /** @description Recorded on each Unit write. */
+            ChangeDescription?: string;
+            ChangeSetDescription?: string;
+            /**
+             * Format: uuid
+             * @description An existing ChangeSet to record the writes in. Default: one new ChangeSet per Space.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChangeSetID?: string;
+            /** @description Placement of each component. Exactly one is supported. */
+            Components?: components["schemas"]["UploadComponentRequest"][];
+            /** @description The bundle's files. Paths must be relative and may not contain "..". */
+            Files?: components["schemas"]["UploadRequestFile"][];
+            Source?: components["schemas"]["UploadSourceInfo"];
+            /** @description Labels applied to every Space, merge-patch: keys given are set, keys omitted are left alone. */
+            SpaceLabels?: {
+                [key: string]: string;
+            };
+            /** @description Slug pattern for created Spaces, over the Space's labels. Default {{.Labels.Component}}-{{.Labels.Variant}}. */
+            SpacePattern?: string;
+        };
+        UploadRequestFile: {
+            /** @description The file's contents. */
+            Content?: string;
+            /** @description Relative path within the bundle, e.g. backend.yaml. */
+            Path?: string;
+        };
+        UploadResult: {
+            Components?: components["schemas"]["UploadComponentResult"][];
+            /** @description True when nothing was written. */
+            DryRun?: boolean;
+            /** @description Digest of the planned actions. */
+            Plan?: string;
+        };
+        UploadSourceInfo: {
+            /** @description The client that uploaded: cub, installer, ui. */
+            Client?: string;
+            ClientVersion?: string;
+            /** @description The resolved digest, when the transport has one. */
+            Digest?: string;
+            /** @description Where the bundle came from, e.g. oci://ghcr.io/confighub/configs/cubbychat:1.4.0 or a local path. */
+            Ref?: string;
+        };
+        UploadSpaceResult: {
+            /** @description Create, Update, or Unchanged. */
+            Action?: string;
+            /**
+             * Format: uuid
+             * @description The ChangeSet the writes were recorded in. Absent on a dry run.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChangeSetID?: string;
+            Links?: components["schemas"]["UploadLinkResult"][];
+            Namespace?: string;
+            /**
+             * Format: uuid
+             * @description Absent for a Space a dry run would create.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            SpaceID?: string;
+            SpaceSlug?: string;
+            Units?: components["schemas"]["UploadUnitResult"][];
+        };
+        UploadUnitResult: {
+            /** @description Create, Update, Unchanged, Empty, Revive, or Adopt. */
+            Action?: string;
+            Conflicts?: components["schemas"]["MutationConflictList"];
+            Error?: components["schemas"]["ResponseError"];
+            Mutations?: components["schemas"]["MutationMap"];
+            /** @description The resource identity this Unit is keyed by. */
+            Resource?: string;
+            /** @description Resource, AppConfig, AppConfigRendered, or Record. */
+            Role?: string;
+            Slug?: string;
+            /**
+             * Format: uuid
+             * @description Absent for a Unit a dry run would create.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UnitID?: string;
+        };
+        UploadUnmatchedReference: {
+            FromUnit?: string;
+            TargetName?: string;
+            TargetType?: string;
         };
         /** @description a User in Confighub. */
         User: {
@@ -34094,6 +34278,105 @@ export interface operations {
                 };
             };
             /** @description Something went wrong while processing Unit. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    Upload: {
+        parameters: {
+            query?: {
+                /** @description Plan the upload and return the same response without writing anything. */
+                dry_run?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["UploadRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UploadResult"];
+                };
+            };
+            /** @description Multi-Status: some Unit or Link writes failed, each carrying its own error */
+            207: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UploadResult"];
+                };
+            };
+            /** @description Upload request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Upload not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Upload data conflict. Data has changed since last read. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing Upload. */
             500: {
                 headers: {
                     [name: string]: unknown;
