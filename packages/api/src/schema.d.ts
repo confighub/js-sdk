@@ -5932,6 +5932,8 @@ export interface components {
         UploadComponentRequest: {
             /** @description Synthesize the release Namespace if the bundle lacks it. Off by default. */
             CreateNamespace?: boolean;
+            /** @description Names of the components this one depends on, recorded in the Space's DependsOn annotation. Requires a Variant Space label. */
+            DependsOn?: string[];
             /** @description The component name. */
             Name?: string;
             /** @description The release namespace. Required when the bundle has namespaced resources that name no namespace. */
@@ -6075,10 +6077,10 @@ export interface components {
             Action?: string;
             Conflicts?: components["schemas"]["MutationConflictList"];
             Error?: components["schemas"]["ResponseError"];
-            Mutations?: components["schemas"]["MutationMap"];
+            Mutations?: components["schemas"]["ResourceMutationList"];
             /** @description The resource identity this Unit is keyed by. */
             Resource?: string;
-            /** @description Resource, AppConfig, AppConfigRendered, or Record. */
+            /** @description Resource, AppConfig, or AppConfigRendered. */
             Role?: string;
             Slug?: string;
             /**
@@ -34296,6 +34298,8 @@ export interface operations {
             query?: {
                 /** @description Plan the upload and return the same response without writing anything. */
                 dry_run?: boolean;
+                /** @description Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change. It costs something to return, and on a dry run it runs the merges a plan otherwise skips, so it is returned only when named. */
+                include?: string;
             };
             header?: never;
             path?: never;
