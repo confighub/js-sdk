@@ -5955,7 +5955,7 @@ export interface components {
             };
             /**
              * Format: uuid
-             * @description Applies to the component's Spaces. New Units are created on it, except AppConfig and record Units.
+             * @description Applies to the component's Spaces. New Units are created on it, except AppConfig Units.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             TargetID?: string;
@@ -5980,12 +5980,6 @@ export interface components {
             BrokenLinks?: components["schemas"]["UploadBrokenEdge"][];
             Name?: string;
             NamespaceCollision?: components["schemas"]["UploadNamespaceCollision"];
-            /**
-             * Format: uuid
-             * @description The record Unit holding what was uploaded and from where. Absent on a dry run.
-             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
-             */
-            RecordUnitID?: string;
             /** @description Secret resources dropped from the bundle, as Kind/namespace/name. Secrets are never uploaded. */
             SkippedSecrets?: string[];
             SourceName?: string;

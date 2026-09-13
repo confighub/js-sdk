@@ -18157,8 +18157,6 @@ export type UploadComponentResult = {
   BrokenLinks?: UploadBrokenEdge[];
   Name?: string;
   NamespaceCollision?: UploadNamespaceCollision;
-  /** The record Unit holding what was uploaded and from where. Absent on a dry run. */
-  RecordUnitID?: string;
   /** Secret resources dropped from the bundle, as Kind/namespace/name. Secrets are never uploaded. */
   SkippedSecrets?: string[];
   SourceName?: string;
@@ -18197,7 +18195,7 @@ export type UploadComponentRequest = {
   SpaceLabels?: {
     [key: string]: string;
   };
-  /** Applies to the component's Spaces. New Units are created on it, except AppConfig and record Units. */
+  /** Applies to the component's Spaces. New Units are created on it, except AppConfig Units. */
   TargetID?: string;
   UnitAnnotations?: {
     [key: string]: string;
