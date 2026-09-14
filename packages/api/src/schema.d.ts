@@ -2311,7 +2311,7 @@ export interface paths {
         put?: never;
         /**
          * Upload a bundle of configuration
-         * @description Takes a bundle of rendered configuration files, or pulls one from an OCI registry, splits it into resources, and makes a Space's Units, Links, and Invocations match it. Creates what is missing, 3-way merges what changed, and empties the Units of resources the bundle no longer contains, so uploading the same bundle again changes nothing. Every resource becomes its own Unit.
+         * @description Takes a bundle of rendered configuration files, splits it into resources, and makes a Space's Units, Links, and Invocations match it. Creates what is missing, 3-way merges what changed, and empties the Units of resources the bundle no longer contains, so uploading the same bundle again changes nothing. Every resource becomes its own Unit.
          */
         post: operations["Upload"];
         delete?: never;
@@ -5989,14 +5989,6 @@ export interface components {
             /** @description References that resolved to no resource in the bundle. */
             UnmatchedReferences?: components["schemas"]["UploadUnmatchedReference"][];
         };
-        UploadDuplicate: {
-            /** @description The other Units that define the resource. */
-            Others?: components["schemas"]["UploadUnitRef"][];
-            /** @description The resource identity, as in UploadUnitResult.Resource. */
-            Resource?: string;
-            /** @description The slug of this upload's Unit for the resource. */
-            Slug?: string;
-        };
         UploadLinkResult: {
             /** @description Create or Unchanged. */
             Action?: string;
@@ -6016,12 +6008,6 @@ export interface components {
             /** @description The release Namespace the bundle already carries. */
             Namespace?: string;
         };
-        UploadRegistryCredentials: {
-            /** @description The password, or an access token for registries that issue them. */
-            Password?: string;
-            /** @description The registry username. */
-            Username?: string;
-        };
         UploadRequest: {
             /** @description Recorded on each Unit write. */
             ChangeDescription?: string;
@@ -6034,7 +6020,7 @@ export interface components {
             ChangeSetID?: string;
             /** @description Placement of each component. Exactly one is supported. */
             Components?: components["schemas"]["UploadComponentRequest"][];
-            /** @description The bundle's files. Paths must be relative and may not contain "..". Exactly one of Files and Source.Pull is given. */
+            /** @description The bundle's files. Paths must be relative and may not contain "..". */
             Files?: components["schemas"]["UploadRequestFile"][];
             Source?: components["schemas"]["UploadSourceInfo"];
             /** @description Labels applied to every Space, merge-patch: keys given are set, keys omitted are left alone. */
@@ -6056,18 +6042,13 @@ export interface components {
             DryRun?: boolean;
             /** @description Digest of the planned actions. */
             Plan?: string;
-            /** @description The digest of the manifest the server pulled, when Source.Pull was set. Send it as Source.Digest to upload exactly the bundle a dry run read. */
-            SourceDigest?: string;
         };
         UploadSourceInfo: {
             /** @description The client that uploaded: cub, installer, ui. */
             Client?: string;
             ClientVersion?: string;
-            Credentials?: components["schemas"]["UploadRegistryCredentials"];
             /** @description The resolved digest, when the transport has one. */
             Digest?: string;
-            /** @description Fetch the bundle from Ref, an oci:// reference, instead of taking Files. With Digest set, that manifest is fetched rather than whatever Ref's tag names now. */
-            Pull?: boolean;
             /** @description Where the bundle came from, e.g. oci://ghcr.io/confighub/configs/cubbychat:1.4.0 or a local path. */
             Ref?: string;
         };
@@ -6080,8 +6061,6 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             ChangeSetID?: string;
-            /** @description Resources this upload writes that other Units deployed to the same Target also define: the Space's other Units, and when the Space has a Target, Units elsewhere on that Target. */
-            Duplicates?: components["schemas"]["UploadDuplicate"][];
             Links?: components["schemas"]["UploadLinkResult"][];
             Namespace?: string;
             /**
@@ -6092,20 +6071,6 @@ export interface components {
             SpaceID?: string;
             SpaceSlug?: string;
             Units?: components["schemas"]["UploadUnitResult"][];
-        };
-        UploadUnitRef: {
-            /**
-             * Format: uuid
-             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
-             */
-            SpaceID?: string;
-            SpaceSlug?: string;
-            /**
-             * Format: uuid
-             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
-             */
-            UnitID?: string;
-            UnitSlug?: string;
         };
         UploadUnitResult: {
             /** @description Create, Update, Unchanged, Empty, Revive, or Adopt. */
@@ -6688,7 +6653,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Space is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Space data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -7514,7 +7479,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Attribute is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Attribute data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -8017,7 +7982,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description BridgeWorker is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description BridgeWorker data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -9168,7 +9133,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description ChangeOrder is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description ChangeOrder data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -9995,7 +9960,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description ChangeSet is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description ChangeSet data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -10814,7 +10779,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description ChangeWorkflow is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description ChangeWorkflow data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -11642,7 +11607,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Filter is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Filter data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -12835,7 +12800,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Invocation is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Invocation data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -13681,7 +13646,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Link is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Link data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -14400,7 +14365,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description OAuthClient is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description OAuthClient data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -14942,7 +14907,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Organization is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Organization data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -15358,7 +15323,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description OrganizationMember is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description OrganizationMember data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -16866,7 +16831,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Space is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Space data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -17553,7 +17518,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Attribute is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Attribute data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -18246,7 +18211,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description BridgeWorker is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description BridgeWorker data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -19115,7 +19080,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description ChangeOrder is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description ChangeOrder data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -19794,7 +19759,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description ChangeSet is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description ChangeSet data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -20460,7 +20425,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description ChangeWorkflow is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description ChangeWorkflow data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -21135,7 +21100,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Filter is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Filter data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -22162,7 +22127,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Invocation is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Invocation data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -22842,7 +22807,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Link is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Link data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -23548,7 +23513,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Release is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Release data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -24385,7 +24350,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Tag is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Tag data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -25053,7 +25018,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Target is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Target data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -25763,7 +25728,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Trigger is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Trigger data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -26607,7 +26572,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Unit is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Unit data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -29637,7 +29602,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description View is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description View data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -30369,7 +30334,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Tag is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Tag data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -30919,7 +30884,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Target is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Target data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -31783,7 +31748,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Trigger is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Trigger data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -32723,7 +32688,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Unit is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Unit data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -34409,26 +34374,8 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description The bundle could not be pulled from Source.Ref */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
             /** @description Something went wrong while processing Upload. */
             500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Pulling the bundle from Source.Ref took too long */
-            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -34897,7 +34844,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description User is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description User data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -35518,7 +35465,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description View is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description View data conflict. Data has changed since last read. */
             409: {
                 headers: {
                     [name: string]: unknown;
