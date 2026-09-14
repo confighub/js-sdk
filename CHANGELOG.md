@@ -7,6 +7,29 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.4.14 — 2026-09-14
+
+### API spec
+
+- ConfigHub v0.4.20
+  Re-pinned the ConfigHub spec from `v0.4.19` to `v0.4.20` and regenerated both clients.
+
+  **Added (7) — backward compatible**
+
+  - field `UploadResult.SourceDigest`
+  - field `UploadSourceInfo.Credentials`
+  - field `UploadSourceInfo.Pull`
+  - field `UploadSpaceResult.Duplicates`
+  - schema `UploadDuplicate`
+  - schema `UploadRegistryCredentials`
+  - schema `UploadUnitRef`
+
+  Nothing was removed, so a **patch** bump of the js-sdk packages is enough.
+
+  The js-sdk packages carry their own version, independent of the spec: merge this, then
+  push a `vX.Y.Z` tag to publish. `.spec-version` records which ConfigHub release the
+  generated clients target.
+
 ## 0.4.13 — 2026-09-13
 
 ### API spec
