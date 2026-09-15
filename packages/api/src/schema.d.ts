@@ -592,6 +592,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/promote": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Promote changes into downstream variants
+         * @description Moves changes from upstream Spaces into the downstream variants selected by WhereSpace, SpaceFilterID, ChangeOrderID and TargetStage, and makes them match: Units are upgraded, emptied, revived and cloned, clones are placed in the variant's namespace, and their Links are copied. With a ChangeOrder only its range is promoted, and with a ChangeWorkflow the Stage's entry gates are enforced. Promoting again changes nothing.
+         */
+        post: operations["Promote"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/release": {
         parameters: {
             query?: never;
@@ -2951,6 +2971,7 @@ export interface components {
             Parameters?: {
                 [key: string]: unknown;
             };
+            readonly PromotionOverrides?: components["schemas"]["ChangeOrderPromotionOverride"][];
             /** @description ReleasedRestoredSpaceIDs is where the undoing has been released: the Spaces in RestoredSpaceIDs whose Units are released at or past the Revision the restore Tag marks. Covering ReleasedSpaceIDs is what State reports as RestoreReleased. Derived when the ChangeOrder is read. */
             readonly ReleasedRestoredSpaceIDs?: components["schemas"]["UUID"][];
             /** @description ReleasedSpaceIDs is where the ChangeOrder has been released: the Spaces in scope whose Units in the Space's release are applied at or past the Revision the end Tag marks. Derived when the ChangeOrder is read. */
@@ -3012,6 +3033,21 @@ export interface components {
         ChangeOrderCreateOrUpdateResponse: {
             ChangeOrder?: components["schemas"]["ChangeOrder"];
             Error?: components["schemas"]["ResponseError"];
+        };
+        ChangeOrderPromotionOverride: {
+            FailedGates?: string[];
+            /**
+             * Format: date-time
+             * @example 2006-01-02T15:04:05Z07:00
+             */
+            OverriddenAt?: string;
+            Reason?: string;
+            Stage?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UserID?: string;
         };
         /** @description Defines an entity changeset. */
         ChangeSet: {
@@ -4273,6 +4309,150 @@ export interface components {
         };
         Permissions: {
             [key: string]: components["schemas"]["Subjects"];
+        };
+        PromoteGateResult: {
+            /** @description Why the gate does not hold. */
+            Message?: string;
+            /** @description Promoted, Released, Healthy, or a custom prerequisite's name. */
+            Prerequisite?: string;
+            Satisfied?: boolean;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            SpaceID?: string;
+            SpaceSlug?: string;
+        };
+        PromoteLinkResult: {
+            /** @description Create, Unchanged, Skip, or Orphaned. */
+            Action?: string;
+            Error?: components["schemas"]["ResponseError"];
+            FromUnitSlug?: string;
+            /**
+             * Format: uuid
+             * @description Absent for a Link a dry run would create.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            LinkID?: string;
+            Reason?: string;
+            Slug?: string;
+            ToSpaceSlug?: string;
+            ToUnitSlug?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UpstreamLinkID?: string;
+        };
+        PromoteRequest: {
+            /** @description Recorded on each Unit write. */
+            ChangeDescription?: string;
+            /**
+             * Format: uuid
+             * @description The ChangeOrder to promote. Without one, everything each upstream has reached is promoted. With one, only its range is, into the Spaces it is headed for.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChangeOrderID?: string;
+            /**
+             * Format: uuid
+             * @description An existing open ChangeSet to record every write in.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChangeSetID?: string;
+            /** @description The Plan a previous dry run returned. If the plan now differs, nothing is written and the request fails with 412. */
+            ExpectedPlan?: string;
+            /** @description Promote even though the Stage's entry gates do not hold. Requires ForceReason, and Edit permission on the ChangeOrder, where the override is recorded. */
+            Force?: boolean;
+            /** @description Why the gates were overridden. Required with Force. */
+            ForceReason?: string;
+            /**
+             * Format: uuid
+             * @description A Filter over Spaces selecting the Spaces to promote. Intersected with the other selectors.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            SpaceFilterID?: string;
+            /** @description Merge each Unit's range as one rebased Revision rather than replaying each upstream Revision. */
+            Squash?: boolean;
+            /** @description A Stage of the ChangeOrder's ChangeWorkflow to promote into. Requires a ChangeOrder with a ChangeWorkflow. When empty, and neither WhereSpace nor SpaceFilterID is given, the next Stage the change has not reached. */
+            TargetStage?: string;
+            /** @description A where expression selecting the Spaces to promote. Intersected with the other selectors. */
+            WhereSpace?: string;
+        };
+        PromoteResult: {
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChangeOrderID?: string;
+            /** @description Every Stage of the ChangeWorkflow already has the change; nothing was promoted. */
+            Complete?: boolean;
+            /** @description True when nothing was written. */
+            DryRun?: boolean;
+            /** @description Digest of the planned actions. Send it as ExpectedPlan to apply exactly this plan. */
+            Plan?: string;
+            /** @description In the order they were, or would be, promoted: a Space after any selected Space it takes from. */
+            Spaces?: components["schemas"]["PromoteSpaceResult"][];
+            /** @description The Stages entered, each with every gate evaluated over the Stage before it. */
+            Stages?: components["schemas"]["PromoteStageResult"][];
+        };
+        PromoteSpaceResult: {
+            /** @description Promote, Unchanged, Skipped, Blocked, or Failed. */
+            Action?: string;
+            Error?: components["schemas"]["ResponseError"];
+            Links?: components["schemas"]["PromoteLinkResult"][];
+            /** @description A dry run previewed this Space against its upstream as it is now, although the same request promotes that upstream first. */
+            PreviewedAgainstCurrentUpstream?: boolean;
+            /** @description Why the Space was Skipped or Blocked. */
+            Reason?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            SpaceID?: string;
+            SpaceSlug?: string;
+            Stage?: string;
+            Units?: components["schemas"]["PromoteUnitResult"][];
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UpstreamSpaceID?: string;
+            UpstreamSpaceSlug?: string;
+        };
+        PromoteStageResult: {
+            /** @description The Stage was the next one the change has not reached, rather than named. */
+            Chosen?: boolean;
+            /** @description The gates did not hold and the promotion was forced. */
+            Forced?: boolean;
+            Gates?: components["schemas"]["PromoteGateResult"][];
+            Name?: string;
+            /** @description The Stage whose Spaces the gates are evaluated over. Empty for the first Stage, which has no gates. */
+            PreviousStage?: string;
+        };
+        PromoteUnitResult: {
+            /** @description Upgrade, Mark, Empty, Revive, Clone, Invoke, Unchanged, or Skip. */
+            Action?: string;
+            Conflicts?: components["schemas"]["MutationConflictList"];
+            Error?: components["schemas"]["ResponseError"];
+            Mutations?: components["schemas"]["ResourceMutationList"];
+            /** Format: int64 */
+            PreviousHeadMutationNum?: number;
+            /** Format: int64 */
+            PreviousHeadRevisionNum?: number;
+            /** @description For Skip and Unchanged: NotCovered, CreatedAfterChangeOrder, or AlreadyTaken. */
+            Reason?: string;
+            Slug?: string;
+            /**
+             * Format: uuid
+             * @description Absent for a clone a dry run would create.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UnitID?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UpstreamUnitID?: string;
         };
         /** @description UnitAction is a record of an operation queued for a Worker, such as a function invocation on a unit. Operations are delivered to the worker in creation order; if the worker is disconnected, pending operations are delivered when it reconnects. One or more UnitEvents will correspond to each UnitAction. */
         QueuedOperation: {
@@ -8616,7 +8796,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -8784,7 +8964,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -9060,7 +9240,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -9244,7 +9424,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -15396,6 +15576,116 @@ export interface operations {
             };
         };
     };
+    Promote: {
+        parameters: {
+            query?: {
+                /** @description Plan the promotion, evaluate its gates, and return the same response without writing anything. */
+                dry_run?: boolean;
+                /** @description Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change. On a dry run it runs the merges a plan otherwise skips, so it is returned only when named. */
+                include?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PromoteRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromoteResult"];
+                };
+            };
+            /** @description Multi-Status: some Unit or Link writes failed, each carrying its own error */
+            207: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromoteResult"];
+                };
+            };
+            /** @description Promote request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Promote not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description The Stage's entry gates do not hold; the result names each gate and whether it holds. Nothing was written. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromoteResult"];
+                };
+            };
+            /** @description The plan differs from ExpectedPlan. Nothing was written. */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing Promote. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
     ListAllReleases: {
         parameters: {
             query?: {
@@ -18637,7 +18927,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceID, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
