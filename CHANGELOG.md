@@ -7,6 +7,29 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.4.18 — 2026-09-16
+
+### API spec
+
+- ConfigHub v0.4.24
+  Re-pinned the ConfigHub spec from `v0.4.23` to `v0.4.24` and regenerated both clients.
+
+  **Added (7) — backward compatible**
+
+  - parameter `refresh_spaces` on `PATCH /change_order`
+  - parameter `refresh_spaces` on `PATCH /space/{space_id}/change_order/{change_order_id}`
+  - parameter `refresh_spaces` on `PUT /space/{space_id}/change_order/{change_order_id}`
+  - field `ChangeOrder.SpaceFilterID`
+  - field `ChangeOrder.WhereSpace`
+  - field `ExtendedChangeOrder.SpaceFilter`
+  - field `Release.TargetID`
+
+  Nothing was removed, so a **patch** bump of the js-sdk packages is enough.
+
+  The js-sdk packages carry their own version, independent of the spec: merge this, then
+  push a `vX.Y.Z` tag to publish. `.spec-version` records which ConfigHub release the
+  generated clients target.
+
 ## 0.4.17 — 2026-09-15
 
 ### API spec
