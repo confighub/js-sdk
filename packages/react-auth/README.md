@@ -61,7 +61,8 @@ const { status, user, error, login, logout, reauthenticate, signInWithTicket, ge
   tab or a login after logout lands in the same organization silently. `null`
   sends no hint on purpose, so Keycloak prompts. Either is how an app switches
   organization: a fresh login through the IdP, which is where membership is
-  decided. `prompt: 'none' | 'login'` is passed through.
+  decided. `prompt: 'none' | 'login' | 'create'` is passed through; `'create'` opens
+  the IdP's registration form, so a sign-up link is `login({ prompt: 'create' })`.
 - `logout(options?)` — forgets the session in this tab. `endSession: true` also ends
   the IdP session (RP-initiated logout with `id_token_hint`), landing on
   `postLogoutRedirectUri` (default: the callback URI), which must be registered

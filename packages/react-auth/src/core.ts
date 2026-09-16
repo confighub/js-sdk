@@ -60,9 +60,12 @@ export interface LoginOptions {
    * `'none'` asks the IdP to re-authenticate without any UI, failing with
    * `login_required` if the SSO session is gone -- the way to refresh an expired
    * ConfigHub token when the user is still signed in at the IdP. `'login'` forces the
-   * login form even with a live SSO session.
+   * login form even with a live SSO session. `'create'` opens the IdP's registration
+   * form instead of its login form (OpenID Connect Prompt Create; Keycloak honours it),
+   * so a "sign up" link can be an ordinary PKCE login that lands the new user in the
+   * app signed in.
    */
-  prompt?: 'none' | 'login';
+  prompt?: 'none' | 'login' | 'create';
 }
 
 export interface FlowOptions {
