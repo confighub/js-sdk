@@ -7,6 +7,30 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.5.1 — 2026-09-22
+
+### API spec
+
+- pin ConfigHub v0.5.1, generated clients unchanged
+- pin ConfigHub v0.5.2, generated clients unchanged
+- pin ConfigHub v0.5.3, generated clients unchanged
+- pin ConfigHub v0.5.2, generated clients unchanged
+- pin ConfigHub v0.5.3, generated clients unchanged
+- ConfigHub v0.5.4
+  Re-pinned the ConfigHub spec from `v0.5.3` to `v0.5.4` and regenerated both clients.
+
+  **Added (3) — backward compatible**
+
+  - path `/unit/move`
+  - schema `UnitMoveRequest`
+  - schema `UnitMoveResponse`
+
+  Nothing was removed, so a **patch** bump of the js-sdk packages is enough.
+
+  The js-sdk packages carry their own version, independent of the spec: merge this, then
+  push a `vX.Y.Z` tag to publish. `.spec-version` records which ConfigHub release the
+  generated clients target.
+
 ## 0.5.0 — 2026-09-16
 
 ### API spec
