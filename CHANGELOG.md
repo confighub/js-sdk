@@ -7,6 +7,38 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.5.2 — 2026-09-24
+
+### API spec
+
+- ConfigHub v0.5.5
+  Re-pinned the ConfigHub spec from `v0.5.4` to `v0.5.5` and regenerated both clients.
+
+  **Added (16) — backward compatible**
+
+  - parameter `detach` on `DELETE /_space`
+  - parameter `detach` on `DELETE /bridge_worker`
+  - parameter `detach` on `DELETE /change_order`
+  - parameter `detach` on `DELETE /change_set`
+  - parameter `detach` on `DELETE /space/{space_id}`
+  - parameter `detach` on `DELETE /space/{space_id}/bridge_worker/{bridge_worker_id}`
+  - parameter `detach` on `DELETE /space/{space_id}/change_order/{change_order_id}`
+  - parameter `detach` on `DELETE /space/{space_id}/change_set/{change_set_id}`
+  - parameter `detach` on `DELETE /space/{space_id}/release/{release_id}`
+  - parameter `detach` on `DELETE /space/{space_id}/tag/{tag_id}`
+  - parameter `detach` on `DELETE /space/{space_id}/target/{target_id}`
+  - parameter `detach` on `DELETE /space/{space_id}/unit/{unit_id}`
+  - parameter `detach` on `DELETE /tag`
+  - parameter `detach` on `DELETE /target`
+  - parameter `detach` on `DELETE /unit`
+  - field `Tag.ReleaseID`
+
+  Nothing was removed, so a **patch** bump of the js-sdk packages is enough.
+
+  The js-sdk packages carry their own version, independent of the spec: merge this, then
+  push a `vX.Y.Z` tag to publish. `.spec-version` records which ConfigHub release the
+  generated clients target.
+
 ## 0.5.1 — 2026-09-22
 
 ### API spec
