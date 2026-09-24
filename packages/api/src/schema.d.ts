@@ -5337,6 +5337,12 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /**
+             * Format: uuid
+             * @description ReleaseID is the optional ID of the Release that made this Tag.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly ReleaseID?: string;
             /** @description Unique URL-safe identifier for the entity. */
             Slug: string;
             /**
@@ -6892,6 +6898,8 @@ export interface operations {
                 recursive?: string;
                 /** @description Valid values are true and false. False is the default if unspecified. If true, recursively delete all entities within the deleted space(s) regardless whether any have delete gates. */
                 recursive_force?: string;
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
             };
             header?: never;
             path?: never;
@@ -8221,6 +8229,8 @@ export interface operations {
                  *     The whole string must be query-encoded.
                  */
                 include?: string;
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
             };
             header?: never;
             path?: never;
@@ -9375,6 +9385,8 @@ export interface operations {
                  *     The whole string must be query-encoded.
                  */
                 include?: string;
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
             };
             header?: never;
             path?: never;
@@ -10207,6 +10219,8 @@ export interface operations {
                  *     The whole string must be query-encoded.
                  */
                 include?: string;
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
             };
             header?: never;
             path?: never;
@@ -17194,6 +17208,8 @@ export interface operations {
                 recursive?: string;
                 /** @description Valid values are true and false. False is the default if unspecified. If true, recursively delete all entities within the deleted space(s) regardless whether any have delete gates. */
                 recursive_force?: string;
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
             };
             header?: never;
             path: {
@@ -18572,7 +18588,10 @@ export interface operations {
     };
     DeleteBridgeWorker: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
+            };
             header?: never;
             path: {
                 /** @description Unique identifier for a space_id */
@@ -19444,7 +19463,10 @@ export interface operations {
     };
     DeleteChangeOrder: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
+            };
             header?: never;
             path: {
                 /** @description Unique identifier for a space_id */
@@ -20129,7 +20151,10 @@ export interface operations {
     };
     DeleteChangeSet: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
+            };
             header?: never;
             path: {
                 /** @description Unique identifier for a space_id */
@@ -23883,7 +23908,10 @@ export interface operations {
     };
     DeleteRelease: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
+            };
             header?: never;
             path: {
                 /** @description Unique identifier for a space_id */
@@ -24299,7 +24327,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Slug, SpaceID, TagID, UpdatedAt.
+                 *     Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -24720,7 +24748,10 @@ export interface operations {
     };
     DeleteTag: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
+            };
             header?: never;
             path: {
                 /** @description Unique identifier for a space_id */
@@ -25388,7 +25419,10 @@ export interface operations {
     };
     DeleteTarget: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
+            };
             header?: never;
             path: {
                 /** @description Unique identifier for a space_id */
@@ -26942,7 +26976,10 @@ export interface operations {
     };
     DeleteUnit: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
+            };
             header?: never;
             path: {
                 /** @description Unique identifier for a space_id */
@@ -30223,7 +30260,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Slug, SpaceID, TagID, UpdatedAt.
+                 *     Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -30391,7 +30428,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Slug, SpaceID, TagID, UpdatedAt.
+                 *     Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -30653,7 +30690,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Slug, SpaceID, TagID, UpdatedAt.
+                 *     Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -30700,6 +30737,8 @@ export interface operations {
                  *     The whole string must be query-encoded.
                  */
                 include?: string;
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
             };
             header?: never;
             path?: never;
@@ -30837,7 +30876,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Slug, SpaceID, TagID, UpdatedAt.
+                 *     Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -31250,6 +31289,8 @@ export interface operations {
                  *     The whole string must be query-encoded.
                  */
                 include?: string;
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
             };
             header?: never;
             path?: never;
@@ -33054,6 +33095,8 @@ export interface operations {
                  *     The whole string must be query-encoded.
                  */
                 include?: string;
+                /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
+                detach?: boolean;
             };
             header?: never;
             path?: never;
