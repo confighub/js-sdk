@@ -29,8 +29,8 @@ also exports the server's input-validation constants (`SLUG_PATTERN`,
 
 The packages are developed in the ConfigHub server's repository, next to the API they
 describe, and copied here on each release (see "Releasing"). A pull request here is
-welcome and is carried over by hand. `examples/` and `CHANGELOG.md` belong to this
-repository and are changed here directly.
+welcome and is carried over by hand. `examples/`, `CHANGELOG.md` and the workflows in
+`.github/` belong to this repository and are changed here directly.
 
 ## Try it (the example app)
 
