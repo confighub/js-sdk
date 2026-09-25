@@ -102,6 +102,18 @@ export class OrganizationMissing extends Error {
   }
 }
 
+/**
+ * Thrown by `startLogin` when the instance advertises no identity provider. Such an
+ * instance signs a browser in with a ticket from `cub auth browser-session` instead
+ * (see `redeemBrowserTicket`), so there is no login to start.
+ */
+export class NoIdentityProvider extends Error {
+  constructor() {
+    super('this instance has no identity provider; sign in with `cub auth browser-session`');
+    this.name = 'NoIdentityProvider';
+  }
+}
+
 export interface RetryOptions {
   /** @internal set by the provider on the one retry after OrganizationMissing. */
   retriedForOrganization?: boolean;
@@ -215,6 +227,7 @@ export async function startLogin(
   retry: RetryOptions = {},
 ): Promise<void> {
   const info = await discover(base);
+  if (!info.AuthIssuer && !info.TokenExchangeEndpoint) throw new NoIdentityProvider();
   if (!info.AuthIssuer || !info.TokenExchangeEndpoint) {
     throw new Error(
       'this instance is not configured for token-exchange auth (server needs CONFIGHUB_IDP_ISSUER)',
@@ -357,6 +370,24 @@ async function exchange(
   if (!exResp.ok) throw new Error(`/auth/exchange ${exResp.status}: ${await exResp.text()}`);
   const minted = await exResp.json();
   return { accessToken: minted.access_token, organizationId: minted.organization_id };
+}
+
+/**
+ * Redeem a single-use ticket from `cub auth browser-session` for a minted ConfigHub
+ * token (`POST {base}/auth/browser-session`). This is how a browser signs in to an
+ * instance with no identity provider, and how a local identity (a break-glass
+ * administrator) signs in to one that has a provider. The session has no IdP behind
+ * it: when the token expires, the user runs the command again.
+ */
+export async function redeemBrowserTicket(base: string, ticket: string): Promise<MintedSession> {
+  const r = await fetch(trimSlash(base) + '/auth/browser-session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ ticket }),
+  });
+  if (!r.ok) throw new Error(`/auth/browser-session ${r.status}: ${await r.text()}`);
+  const minted = await r.json();
+  return { accessToken: minted.access_token, organizationId: minted.organization_id, idpClaims: {} };
 }
 
 /**

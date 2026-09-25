@@ -50,7 +50,7 @@ organization's own IdP for Enterprise).
 ## `useAuth()`
 
 ```ts
-const { status, user, error, login, logout, switchOrganization, reauthenticate, getToken } = useAuth();
+const { status, user, error, login, logout, switchOrganization, reauthenticate, signInWithTicket, getToken } = useAuth();
 ```
 
 - `login(options?)` — redirects to the IdP. `returnTo` picks the landing path
@@ -64,7 +64,9 @@ const { status, user, error, login, logout, switchOrganization, reauthenticate, 
 - `logout(options?)` — forgets the session in this tab. `endSession: true` also ends
   the IdP session (RP-initiated logout with `id_token_hint`), landing on
   `postLogoutRedirectUri` (default: the callback URI), which must be registered
-  for the client. Without it the next login rides the SSO cookie silently.
+  for the client. Without it the next login rides the SSO cookie silently. While the
+  page navigates to the IdP, status stays `loading`, so an app that logs in
+  automatically on `unauthenticated` does not start a login that races the logout.
 - `switchOrganization(organizationId)` — `POST /auth/switch-organization` with the
   bearer token, re-minting for another org the user belongs to. Requires a server
   that offers the bearer form; a fresh `login()` with no organization hint is the
@@ -72,7 +74,15 @@ const { status, user, error, login, logout, switchOrganization, reauthenticate, 
 - `reauthenticate()` — the token stopped working: a `prompt=none` round trip for the
   organization the session already had. Status is `loading` meanwhile, not
   `unauthenticated`, so an app that auto-logs-in on `unauthenticated` does not race
-  it. If the IdP session is gone too, the page comes back `unauthenticated`.
+  it. If the IdP session is gone too, the page comes back `unauthenticated`. On an
+  instance with no identity provider there is nothing to ask, and status goes
+  straight to `unauthenticated`.
+- `signInWithTicket(ticket)` — redeems a single-use ticket from
+  `cub auth browser-session` (`POST /auth/browser-session`) for a session. This is how
+  a browser signs in to an instance with no identity provider, which `/api/info`
+  shows by advertising no `AuthIssuer`; `login()` rejects with `NoIdentityProvider`
+  there. The session has no IdP behind it, so when it expires the user runs the
+  command again.
 
 ## Outside React
 
