@@ -99,7 +99,8 @@ field. There is one content hash, `DataHash`; `ContentHash` and `RevisionHash` a
   the auth provider.
 - The api is a module singleton, so `baseUrl`/`getToken` are set at configure time, not
   per instance — the one ergonomic difference from `@confighub/api`.
-- A 401 calls your `onUnauthorized` (if provided); it does not redirect.
+- A 401 calls your `onUnauthorized` (if provided); it does not redirect. A 403 calls your
+  `onForbidden` with the error, whose `data.message` says why.
 - Peer deps: `@reduxjs/toolkit`, `react`, `react-redux`.
 - Endpoints and types are generated from the spec of the ConfigHub server whose version
   the package carries, by `@rtk-query/codegen-openapi`.

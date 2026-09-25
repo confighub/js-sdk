@@ -19,6 +19,12 @@ export interface ConfigHubConfig {
   getToken?: () => string | undefined | Promise<string | undefined>;
   /** Called on a 401 so the app can refresh or re-login. The query is not retried. */
   onUnauthorized?: () => void | Promise<void>;
+  /**
+   * Called on a 403 with the error, whose `data.message` says why (for example an
+   * account pending approval), so the app can send the user somewhere that explains
+   * it. The query still fails with the error.
+   */
+  onForbidden?: (error: FetchBaseQueryError) => void | Promise<void>;
 }
 
 // Endpoints whose ConfigHub handlers expect RFC 7386 merge-patch semantics. Mirrors the
@@ -89,6 +95,9 @@ const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> =
   const result = await inner(args, api, extraOptions);
   if (result.error && result.error.status === 401) {
     await config.onUnauthorized?.();
+  }
+  if (result.error && result.error.status === 403) {
+    await config.onForbidden?.(result.error);
   }
   return result;
 };

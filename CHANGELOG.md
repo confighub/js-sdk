@@ -7,6 +7,19 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.6.3 — 2026-09-25
+
+### Changes
+
+- `@confighub/rtk-query`: `configureConfigHub({ onForbidden })` is called with the error on
+  a 403, next to `onUnauthorized` for a 401.
+
+### API
+
+Compared with ConfigHub `v0.6.2`:
+
+The API is unchanged.
+
 ## 0.6.2 — 2026-09-25
 
 ### API
