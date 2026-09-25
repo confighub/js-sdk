@@ -30,10 +30,11 @@ for 5174:
 ```
 cub oauthclient create space-browser-rtk --redirect-uri http://localhost:5174/
 
-cp examples/space-browser-rtk/.env.example examples/space-browser-rtk/.env
+# from this directory; it installs the published packages from npm
+cp .env.example .env
 # edit .env: set VITE_OAUTH_CLIENT_ID
 npm install
-npm run example:rtk       # vite dev server on http://localhost:5174
+npm run dev               # vite dev server on http://localhost:5174
 ```
 
 Open http://localhost:5174, log in, and browse. Clean up with

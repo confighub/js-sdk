@@ -28,20 +28,20 @@ for you.
 
 ## Run it
 
-1. Register this app to get a `client_id` (from the ConfigHub monorepo, or any
-   machine with `cub`):
+1. Register this app to get a `client_id` (from any machine with `cub`):
 
    ```
    cub oauthclient create space-browser --redirect-uri http://localhost:5173/
    ```
 
-2. Configure and run (from the SDK repo root):
+2. Configure and run, from this directory. It installs the published packages from
+   npm, like any app of your own:
 
    ```
-   cp examples/space-browser/.env.example examples/space-browser/.env
+   cp .env.example .env
    # edit .env: set VITE_OAUTH_CLIENT_ID (and VITE_CONFIGHUB_BASE_URL if not the default)
    npm install
-   npm run example          # vite dev server on http://localhost:5173
+   npm run dev              # vite dev server on http://localhost:5173
    ```
 
 3. Open http://localhost:5173, click Log in, and browse.

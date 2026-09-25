@@ -18,3 +18,24 @@ jobs:
       # Build first: react-auth's typecheck resolves @confighub/api from its built dist.
       - run: npm run build
       - run: npm run typecheck
+
+  # The examples are standalone apps on the published packages, so they build against
+  # npm, not against this checkout.
+  examples:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example: [space-browser, space-browser-rtk]
+    defaults:
+      run:
+        working-directory: examples/${{ matrix.example }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: examples/${{ matrix.example }}/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
