@@ -50,7 +50,7 @@ organization's own IdP for Enterprise).
 ## `useAuth()`
 
 ```ts
-const { status, user, error, login, logout, switchOrganization, reauthenticate, getToken } = useAuth();
+const { status, user, error, login, logout, switchOrganization, reauthenticate, signInWithTicket, getToken } = useAuth();
 ```
 
 - `login(options?)` — redirects to the IdP. `returnTo` picks the landing path
@@ -72,7 +72,15 @@ const { status, user, error, login, logout, switchOrganization, reauthenticate, 
 - `reauthenticate()` — the token stopped working: a `prompt=none` round trip for the
   organization the session already had. Status is `loading` meanwhile, not
   `unauthenticated`, so an app that auto-logs-in on `unauthenticated` does not race
-  it. If the IdP session is gone too, the page comes back `unauthenticated`.
+  it. If the IdP session is gone too, the page comes back `unauthenticated`. On an
+  instance with no identity provider there is nothing to ask, and status goes
+  straight to `unauthenticated`.
+- `signInWithTicket(ticket)` — redeems a single-use ticket from
+  `cub auth browser-session` (`POST /auth/browser-session`) for a session. This is how
+  a browser signs in to an instance with no identity provider, which `/api/info`
+  shows by advertising no `AuthIssuer`; `login()` rejects with `NoIdentityProvider`
+  there. The session has no IdP behind it, so when it expires the user runs the
+  command again.
 
 ## Outside React
 

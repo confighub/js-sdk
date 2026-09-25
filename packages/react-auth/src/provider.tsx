@@ -12,12 +12,14 @@ import {
   type ReactNode,
 } from 'react';
 import {
+  NoIdentityProvider,
   OrganizationMissing,
   callbackUri,
   completeLoginFromRedirect,
   endSession,
   isExpired,
   organizationAliasOf,
+  redeemBrowserTicket,
   rememberOrganization,
   resetPending,
   startLogin,
@@ -69,6 +71,12 @@ export interface ConfigHubAuthContextValue {
    * `unauthenticated`. Redirects the page.
    */
   reauthenticate: () => Promise<void>;
+  /**
+   * Sign in with a ticket from `cub auth browser-session`, for an instance with no
+   * identity provider or a local identity. Rejects with the server's error if the
+   * ticket is unknown, expired or already used; the session stays as it was.
+   */
+  signInWithTicket: (ticket: string) => Promise<void>;
   /** Current bearer token, or undefined when unauthenticated. */
   getToken: () => string | undefined;
   /** A typed API client pre-wired with the current token. Stable across renders. */
@@ -264,10 +272,22 @@ export function ConfigHubAuthProvider({
     try {
       await startLogin(baseUrl, clientId, { prompt: 'none', organization }, flow);
     } catch (e: unknown) {
+      // No IdP to ask: the session came from a ticket, and the user needs a new one.
+      if (e instanceof NoIdentityProvider) {
+        setStatus('unauthenticated');
+        return;
+      }
       setError(e instanceof Error ? e : new Error(String(e)));
       setStatus('error');
     }
   }, [baseUrl, clientId, flow, persistSession]);
+
+  const signInWithTicket = useCallback(
+    async (ticket: string) => {
+      applySession(await redeemBrowserTicket(baseUrl, ticket));
+    },
+    [applySession, baseUrl],
+  );
 
   // A 401 means the minted token no longer works. Silent re-auth keeps the user's
   // place if the IdP session is still alive; otherwise the page comes back
@@ -300,10 +320,11 @@ export function ConfigHubAuthProvider({
       logout,
       switchOrganization,
       reauthenticate,
+      signInWithTicket,
       getToken,
       client,
     }),
-    [status, user, error, login, logout, switchOrganization, reauthenticate, getToken, client],
+    [status, user, error, login, logout, switchOrganization, reauthenticate, signInWithTicket, getToken, client],
   );
 
   return (
