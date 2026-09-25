@@ -391,29 +391,6 @@ export async function redeemBrowserTicket(base: string, ticket: string): Promise
 }
 
 /**
- * Trade the current minted token for one scoped to another organization the user
- * belongs to (`POST {base}/auth/switch-organization`, bearer-authenticated). The
- * IdP session is untouched; only the ConfigHub token changes.
- */
-export async function switchOrganization(
-  base: string,
-  accessToken: string,
-  organizationId: string,
-): Promise<Pick<MintedSession, 'accessToken' | 'organizationId'>> {
-  const r = await fetch(trimSlash(base) + '/auth/switch-organization', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({ organization_id: organizationId }),
-  });
-  if (!r.ok) throw new Error(`/auth/switch-organization ${r.status}: ${await r.text()}`);
-  const minted = await r.json();
-  return { accessToken: minted.access_token, organizationId: minted.organization_id };
-}
-
-/**
  * End the IdP session (RP-initiated logout) and land on `postLogoutRedirectUri`,
  * which must be registered for the client. Returns only by redirecting. If the
  * issuer publishes no end-session endpoint, navigates to the redirect URI directly.
