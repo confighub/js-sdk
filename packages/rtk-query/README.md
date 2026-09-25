@@ -101,5 +101,5 @@ field. There is one content hash, `DataHash`; `ContentHash` and `RevisionHash` a
   per instance — the one ergonomic difference from `@confighub/api`.
 - A 401 calls your `onUnauthorized` (if provided); it does not redirect.
 - Peer deps: `@reduxjs/toolkit`, `react`, `react-redux`.
-- Endpoints and types are regenerated from the pinned server spec (`.spec-version`) by
-  `@rtk-query/codegen-openapi`.
+- Endpoints and types are generated from the spec of the ConfigHub server whose version
+  the package carries, by `@rtk-query/codegen-openapi`.

@@ -9,7 +9,7 @@
     "packages/*"
   ],
   "scripts": {
-    "sync-spec": "node scripts/sync-spec.mjs",
+    "generate": "node scripts/generate.mjs",
     "build": "npm run build -w @confighub/api -w @confighub/rtk-query -w @confighub/react-auth",
     "typecheck": "npm run typecheck -w @confighub/api -w @confighub/rtk-query -w @confighub/react-auth",
     "lint": "npm run lint --workspaces --if-present"

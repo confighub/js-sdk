@@ -1,13 +1,14 @@
 // Copyright (C) ConfigHub, Inc.
 // SPDX-License-Identifier: MIT
 
-// Generates the RTK Query endpoints + hooks from the version-pegged spec (written to
-// the repo root by scripts/sync-spec.mjs) into the hand-written base api in baseApi.ts.
+// Generates the RTK Query endpoints + hooks from the ConfigHub server's spec
+// (public/core/openapi/ in the ConfigHub repository; see scripts/generate.mjs) into the
+// hand-written base api in baseApi.ts.
 // Plain CommonJS so @rtk-query/codegen-openapi needs no TS config loader.
 
 /** @type {import('@rtk-query/codegen-openapi').ConfigFile} */
 const config = {
-  schemaFile: '../../openapi.json',
+  schemaFile: '../../../core/openapi/openapi.json',
   apiFile: './src/baseApi.ts',
   apiImport: 'confighubApi',
   exportName: 'confighubApi',

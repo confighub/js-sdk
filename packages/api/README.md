@@ -98,4 +98,4 @@ type Unit = components['schemas']['Unit'];
 is a 400 rather than a silently absent field. There is one content hash, `DataHash`;
 `ContentHash` and `RevisionHash` no longer exist.
 
-Types track the ConfigHub server version pinned in the SDK repo's `.spec-version`.
+Types describe the API of the ConfigHub server whose version the package carries.

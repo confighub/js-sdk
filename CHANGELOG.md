@@ -7,6 +7,33 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.6.1 — 2026-09-25
+
+### Changes
+
+- All three packages are now published from the ConfigHub server's repository, at the
+  server's version, on every ConfigHub release.
+- `@confighub/react-auth`: `signInWithTicket(ticket)` signs a browser in with a ticket from
+  `cub auth browser-session`, for an instance with no identity provider; `login()` there
+  rejects with the new `NoIdentityProvider`, and `reauthenticate()` goes to
+  `unauthenticated`.
+- `@confighub/react-auth`: a logout that ends the IdP session keeps status `loading` until
+  the page has navigated away, so an app that logs in on `unauthenticated` no longer
+  starts a login that races the logout.
+- `@confighub/react-auth`: `login({ prompt: 'create' })` opens the identity provider's
+  registration form.
+- `@confighub/react-auth` (breaking): `switchOrganization()` is removed; it called a server
+  endpoint that does not exist. Switch organization with `login({ organization })`.
+
+### API
+
+Compared with ConfigHub `v0.6.0`:
+
+#### Removed (2), breaking for code typed against them
+
+- field `ApiInfo.AuthServer`
+- field `ApiInfo.RedirectURI`
+
 ## 0.5.4 — 2026-09-25
 
 ### API spec

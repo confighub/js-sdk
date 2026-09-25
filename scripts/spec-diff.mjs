@@ -1,9 +1,9 @@
 // Copyright (C) ConfigHub, Inc.
 // SPDX-License-Identifier: MIT
 //
-// Summarize what changed between two OpenAPI documents, in the terms that decide this
-// repo's own release number: a removed path, operation, parameter, or schema field is a
-// break for anyone typed against the old spec, while additions are not.
+// Summarize what changed between two OpenAPI documents, for a release's changelog: a
+// removed path, operation, parameter, or schema field is a break for anyone typed
+// against the old spec, while additions are not.
 //
 // Usage: node scripts/spec-diff.mjs <before.json> <after.json> <fromVersion> <toVersion>
 
@@ -69,36 +69,17 @@ const list = (items, cap = 40) => {
   return shown.join('\n');
 };
 
-const out = [`Re-pinned the ConfigHub spec from \`${fromVersion}\` to \`${toVersion}\` and regenerated both clients.`, ''];
+const out = [`Compared with ConfigHub \`${fromVersion}\`:`, ''];
 
 if (removed.length === 0 && added.length === 0) {
-  out.push('The generated surface is unchanged — only the pinned version moved.');
+  out.push('The API is unchanged.', '');
 } else {
   if (removed.length > 0) {
-    out.push(
-      `### Removed (${removed.length}) — breaking for anyone typed against the old spec`,
-      '',
-      list(removed),
-      '',
-      'Release this as a **minor** bump of the js-sdk packages, and check the hand-written',
-      'code (`packages/*/src`, excluding the generated `schema.d.ts` and `confighubApi.gen.ts`)',
-      'for anything that referenced these.',
-      '',
-    );
+    out.push(`#### Removed (${removed.length}), breaking for code typed against them`, '', list(removed), '');
   }
   if (added.length > 0) {
-    out.push(`### Added (${added.length}) — backward compatible`, '', list(added), '');
-  }
-  if (removed.length === 0) {
-    out.push('Nothing was removed, so a **patch** bump of the js-sdk packages is enough.', '');
+    out.push(`#### Added (${added.length})`, '', list(added), '');
   }
 }
 
-out.push(
-  '',
-  'The js-sdk packages carry their own version, independent of the spec: merge this, then',
-  'push a `vX.Y.Z` tag to publish. `.spec-version` records which ConfigHub release the',
-  'generated clients target.',
-);
-
-process.stdout.write(out.join('\n') + '\n');
+process.stdout.write(out.join('\n'));

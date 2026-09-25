@@ -1,3 +1,6 @@
+// Copyright (C) ConfigHub, Inc.
+// SPDX-License-Identifier: MIT
+
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
