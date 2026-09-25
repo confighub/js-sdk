@@ -7,6 +7,41 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.5.4 — 2026-09-25
+
+### API spec
+
+- ConfigHub v0.5.7
+  Re-pinned the ConfigHub spec from `v0.5.6` to `v0.5.7` and regenerated both clients.
+
+  **Added (19) — backward compatible**
+
+  - path `/attest`
+  - path `/attestation`
+  - path `/space/{space_id}/attestation`
+  - path `/space/{space_id}/attestation/{attestation_id}`
+  - field `ChangeWorkflow.AttestationPrerequisites`
+  - field `ChangeWorkflowSpec.AttestationPrerequisites`
+  - field `ChangeWorkflowStage.ReleasePrerequisites`
+  - field `ExtendedRevision.Attestations`
+  - field `Revision.Attestations`
+  - schema `AttestRequest`
+  - schema `AttestResult`
+  - schema `AttestSpaceResult`
+  - schema `Attestation`
+  - schema `AttestationCreateRequest`
+  - schema `AttestationCreateResponse`
+  - schema `AttestationSkippedUnit`
+  - schema `AttestationSubject`
+  - schema `ChangeWorkflowAttestationPrerequisite`
+  - schema `ExtendedAttestation`
+
+  Nothing was removed, so a **patch** bump of the js-sdk packages is enough.
+
+  The js-sdk packages carry their own version, independent of the spec: merge this, then
+  push a `vX.Y.Z` tag to publish. `.spec-version` records which ConfigHub release the
+  generated clients target.
+
 ## 0.5.3 — 2026-09-24
 
 ### API spec
