@@ -2,19 +2,16 @@
   "name": "confighub-js-sdk",
   "version": "0.0.0",
   "private": true,
-  "description": "ConfigHub JavaScript SDK — browser auth and typed API client",
+  "description": "ConfigHub JavaScript SDK \u2014 browser auth and typed API client",
   "license": "MIT",
   "type": "module",
   "workspaces": [
-    "packages/*",
-    "examples/*"
+    "packages/*"
   ],
   "scripts": {
     "sync-spec": "node scripts/sync-spec.mjs",
     "build": "npm run build -w @confighub/api -w @confighub/rtk-query -w @confighub/react-auth",
     "typecheck": "npm run typecheck -w @confighub/api -w @confighub/rtk-query -w @confighub/react-auth",
-    "example": "npm run dev -w confighub-example-space-browser",
-    "example:rtk": "npm run dev -w confighub-example-space-browser-rtk",
     "lint": "npm run lint --workspaces --if-present"
   },
   "devDependencies": {

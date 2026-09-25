@@ -11,8 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@confighub/api": "*",
-    "@confighub/react-auth": "*",
+    "@confighub/api": "^0.5.4",
+    "@confighub/react-auth": "^0.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

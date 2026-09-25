@@ -37,18 +37,20 @@ that does not follow it lands under "Other" in the changelog.
 
 ## Try it (the example app)
 
-`examples/space-browser` is a full app built on both packages — it logs you in and
-browses your spaces and units. Nothing is published to npm; the example uses the
-packages straight from this repo, so cloning and running is all it takes.
+`examples/space-browser` is a full app built on `@confighub/api` and
+`@confighub/react-auth` — it logs you in and browses your spaces and units.
+`examples/space-browser-rtk` is the same app on `@confighub/rtk-query`. Each is a
+standalone app that installs the published packages from npm, exactly as your own app
+would.
 
 Prerequisites: Node 18+, and [`cub`](https://docs.confighub.com) logged in to a
 ConfigHub instance with browser auth enabled (`hub.confighub.com` works).
 
-1. Clone and install:
+1. Clone and install the example:
 
    ```
    git clone git@github.com:confighub/js-sdk.git
-   cd js-sdk
+   cd js-sdk/examples/space-browser
    npm install
    ```
 
@@ -62,15 +64,15 @@ ConfigHub instance with browser auth enabled (`hub.confighub.com` works).
 3. Configure the example — copy the template and paste in your `client_id`:
 
    ```
-   cp examples/space-browser/.env.example examples/space-browser/.env
-   # edit examples/space-browser/.env: set VITE_OAUTH_CLIENT_ID
+   cp .env.example .env
+   # edit .env: set VITE_OAUTH_CLIENT_ID
    # (VITE_CONFIGHUB_BASE_URL defaults to https://hub.confighub.com)
    ```
 
 4. Run it:
 
    ```
-   npm run example       # vite dev server on http://localhost:5173
+   npm run dev           # vite dev server on http://localhost:5173
    ```
 
    Open http://localhost:5173, click Log in, and — if you belong to more than one org —
@@ -198,8 +200,6 @@ npm install
 npm run sync-spec        # generate the client types (needed once before build)
 npm run build            # tsup -> dual ESM/CJS + d.ts for all packages
 npm run typecheck
-npm run example          # run examples/space-browser (plain client)
-npm run example:rtk      # run examples/space-browser-rtk (RTK Query)
 ```
 
 ## Releasing
