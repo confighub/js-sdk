@@ -20,10 +20,8 @@ import {
   isExpired,
   organizationAliasOf,
   redeemBrowserTicket,
-  rememberOrganization,
   resetPending,
   startLogin,
-  switchOrganization as switchOrganizationCore,
   type LoginOptions,
   type MintedSession,
 } from './core';
@@ -56,12 +54,6 @@ export interface ConfigHubAuthContextValue {
   login: (options?: LoginOptions) => Promise<void>;
   /** Forget the session in this tab and, optionally, end the IdP session too. */
   logout: (options?: LogoutOptions) => Promise<void>;
-  /**
-   * Re-mint the ConfigHub token for another organization the user belongs to. The
-   * IdP session is untouched. Rejects with the server's error if the user is not a
-   * member; the current session stays as it was.
-   */
-  switchOrganization: (organizationId: string) => Promise<void>;
   /**
    * The ConfigHub token stopped working (a 401). Try to get a new one without any
    * UI: a `prompt=none` round trip through the IdP, for the organization the session
@@ -262,19 +254,6 @@ export function ConfigHubAuthProvider({
     [baseUrl, clientId, clearSession, flow, persistSession],
   );
 
-  const switchOrganization = useCallback(
-    async (organizationId: string) => {
-      const current = sessionRef.current;
-      if (!current) throw new Error('not authenticated');
-      const minted = await switchOrganizationCore(baseUrl, current.accessToken, organizationId);
-      // The session's IdP claims still name the previous org, so its alias must not
-      // be remembered as the default for the next login.
-      rememberOrganization(clientId, undefined);
-      applySession({ ...current, ...minted });
-    },
-    [applySession, baseUrl, clientId],
-  );
-
   const getToken = useCallback(() => sessionRef.current?.accessToken, []);
 
   const reauthenticate = useCallback(async () => {
@@ -335,13 +314,12 @@ export function ConfigHubAuthProvider({
       error,
       login,
       logout,
-      switchOrganization,
       reauthenticate,
       signInWithTicket,
       getToken,
       client,
     }),
-    [status, user, error, login, logout, switchOrganization, reauthenticate, signInWithTicket, getToken, client],
+    [status, user, error, login, logout, reauthenticate, signInWithTicket, getToken, client],
   );
 
   return (

@@ -50,7 +50,7 @@ organization's own IdP for Enterprise).
 ## `useAuth()`
 
 ```ts
-const { status, user, error, login, logout, switchOrganization, reauthenticate, signInWithTicket, getToken } = useAuth();
+const { status, user, error, login, logout, reauthenticate, signInWithTicket, getToken } = useAuth();
 ```
 
 - `login(options?)` — redirects to the IdP. `returnTo` picks the landing path
@@ -59,18 +59,15 @@ const { status, user, error, login, logout, switchOrganization, reauthenticate, 
   out, the alias of the last successful login in this browser is used (remembered
   per client in `localStorage`; a short public name, not a credential), so a new
   tab or a login after logout lands in the same organization silently. `null`
-  sends no hint on purpose, so Keycloak prompts: that is "switch organization".
-  `prompt: 'none' | 'login'` is passed through.
+  sends no hint on purpose, so Keycloak prompts. Either is how an app switches
+  organization: a fresh login through the IdP, which is where membership is
+  decided. `prompt: 'none' | 'login'` is passed through.
 - `logout(options?)` — forgets the session in this tab. `endSession: true` also ends
   the IdP session (RP-initiated logout with `id_token_hint`), landing on
   `postLogoutRedirectUri` (default: the callback URI), which must be registered
   for the client. Without it the next login rides the SSO cookie silently. While the
   page navigates to the IdP, status stays `loading`, so an app that logs in
   automatically on `unauthenticated` does not start a login that races the logout.
-- `switchOrganization(organizationId)` — `POST /auth/switch-organization` with the
-  bearer token, re-minting for another org the user belongs to. Requires a server
-  that offers the bearer form; a fresh `login()` with no organization hint is the
-  portable alternative, since the IdP then prompts for the organization.
 - `reauthenticate()` — the token stopped working: a `prompt=none` round trip for the
   organization the session already had. Status is `loading` meanwhile, not
   `unauthenticated`, so an app that auto-logs-in on `unauthenticated` does not race
