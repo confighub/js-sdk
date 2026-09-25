@@ -1,28 +1,16 @@
 name: Release
 
-# Publishes all three packages to npm at one version, with provenance.
+# Publishes all three packages to npm, with provenance, when a `vX.Y.Z` tag is pushed.
 #
-# Two ways in:
-#   - a `vX.Y.Z` tag pushed by hand (a hand-written change, e.g. to react-auth);
-#   - the update-spec workflow, which re-pins the spec at each ConfigHub release
-#     and calls this with the next version.
-#
-# Versions follow ConfigHub's own rule: X.Y is the API version the packages speak
-# (the pinned spec's), Z increments on every publish. scripts/next-version.mjs
-# computes it and refuses a tag that names a different API than the pinned spec.
+# The tag is pushed by the ConfigHub server's release workflow, in the same push as the
+# commit `ConfigHub vX.Y.Z` that copies the packages here at that release, sets their
+# versions to `X.Y.Z`, and prepends the release's section to CHANGELOG.md. So there is
+# nothing to compute here: check that the tag and the packages agree, build, publish,
+# and make the GitHub release from that section.
 on:
   push:
     tags:
       - 'v*.*.*'
-  workflow_call:
-    inputs:
-      version:
-        description: 'Version to publish (X.Y.Z, no v)'
-        required: true
-        type: string
-    secrets:
-      NPM_TOKEN:
-        required: true
 
 jobs:
   publish:
@@ -32,11 +20,6 @@ jobs:
       id-token: write # npm provenance
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.version && 'main' || github.ref }}
-          # git-cliff renders the commits since the previous release tag, which a
-          # shallow checkout does not have.
-          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -44,56 +27,39 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
 
-      - name: Resolve and check the version
+      - name: Check the tag names the packages' version
         id: v
         run: |
-          set -e
-          if [ -n "${{ inputs.version }}" ]; then
-            VERSION="${{ inputs.version }}"
-          else
-            VERSION="${GITHUB_REF_NAME#v}"
-          fi
-          node scripts/next-version.mjs --check "$VERSION"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "Publishing $VERSION (spec $(cat .spec-version))"
-
-      - name: Set package versions
-        run: |
-          set -e
-          VERSION="${{ steps.v.outputs.version }}"
-          for pkg in @confighub/api @confighub/react-auth @confighub/rtk-query; do
-            npm pkg set version="$VERSION" -w "$pkg"
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          for pkg in api react-auth rtk-query; do
+            got="$(node -p "require('./packages/$pkg/package.json').version")"
+            if [ "$got" != "$VERSION" ]; then
+              echo "::error::packages/$pkg is at $got, but the tag is $GITHUB_REF_NAME"
+              exit 1
+            fi
           done
-          # Keep the internal dependency in lockstep with this release.
-          npm pkg set "dependencies.@confighub/api=^$VERSION" -w @confighub/react-auth
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - run: npm run build
 
-      # Publishes every non-private workspace (the three packages; examples are private).
+      # Publishes every non-private workspace: the three packages.
       - run: npm publish --workspaces --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
 
-      # CHANGELOG.md and the GitHub release, both generated from the commits since the
-      # previous release tag (cliff.toml). HEAD is the tagged commit on either path.
-      # The changelog commit goes to main, which is at or past the tag on both.
-      - name: Changelog and GitHub release
+      # The notes are this version's section of CHANGELOG.md: from its heading to the
+      # next version's.
+      - name: GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.v.outputs.version }}
         run: |
           set -euo pipefail
-          VERSION="${{ steps.v.outputs.version }}"
-          {
-            echo "\`@confighub/api\`, \`@confighub/react-auth\` and \`@confighub/rtk-query\` \`$VERSION\` on npm, generated against ConfigHub API spec \`$(cat .spec-version)\`."
-            echo
-            npx --yes git-cliff@2.13.1 --latest --strip all
-          } > "$RUNNER_TEMP/notes.md"
-          git fetch --no-tags origin main
-          git checkout -B main origin/main
-          npx --yes git-cliff@2.13.1 --latest --prepend CHANGELOG.md
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -am "docs(changelog): v$VERSION"
-          git push origin main
+          awk -v v="$VERSION" '
+            $0 ~ "^## " v "( |$)" { on = 1; next }
+            on && /^## / { exit }
+            on { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
           gh release create "v$VERSION" --verify-tag --title "v$VERSION" --notes-file "$RUNNER_TEMP/notes.md"
