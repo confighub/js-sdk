@@ -64,7 +64,9 @@ const { status, user, error, login, logout, switchOrganization, reauthenticate, 
 - `logout(options?)` — forgets the session in this tab. `endSession: true` also ends
   the IdP session (RP-initiated logout with `id_token_hint`), landing on
   `postLogoutRedirectUri` (default: the callback URI), which must be registered
-  for the client. Without it the next login rides the SSO cookie silently.
+  for the client. Without it the next login rides the SSO cookie silently. While the
+  page navigates to the IdP, status stays `loading`, so an app that logs in
+  automatically on `unauthenticated` does not start a login that races the logout.
 - `switchOrganization(organizationId)` — `POST /auth/switch-organization` with the
   bearer token, re-minting for another org the user belongs to. Requires a server
   that offers the bearer form; a fresh `login()` with no organization hint is the

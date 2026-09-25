@@ -232,17 +232,34 @@ export function ConfigHubAuthProvider({
   const logout = useCallback(
     async (options?: LogoutOptions) => {
       const idToken = sessionRef.current?.idToken;
-      clearSession();
-      if (options?.endSession) {
+      if (!options?.endSession) {
+        clearSession();
+        return;
+      }
+      // Forget the session but stay 'loading': the page is about to navigate to the
+      // IdP's end-session endpoint, and 'unauthenticated' would let an app that
+      // auto-logs-in start a login that races the logout and can win it, landing
+      // the user back in the session they just ended.
+      sessionRef.current = undefined;
+      setAccessToken(undefined);
+      persistSession(undefined);
+      resetPending();
+      setUser(null);
+      setStatus('loading');
+      try {
         await endSession(
           baseUrl,
           clientId,
           idToken,
           options.postLogoutRedirectUri ?? callbackUri(flow),
         );
+      } catch (e: unknown) {
+        // The session in this tab is already gone; say why the IdP's is not.
+        setError(e instanceof Error ? e : new Error(String(e)));
+        setStatus('error');
       }
     },
-    [baseUrl, clientId, clearSession, flow],
+    [baseUrl, clientId, clearSession, flow, persistSession],
   );
 
   const switchOrganization = useCallback(
