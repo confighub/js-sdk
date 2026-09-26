@@ -5102,7 +5102,7 @@ export interface components {
             PreviousHeadMutationNum?: number;
             /** Format: int64 */
             PreviousHeadRevisionNum?: number;
-            /** @description For Skip and Unchanged: NotCovered, CreatedAfterChangeOrder, or AlreadyTaken. */
+            /** @description For Skip and Unchanged: NotCovered, CreatedAfterChangeOrder, AlreadyTaken, or, for a Unit created in this Space, why the ChangeOrder does not cover it. For Mark: CreatedInSpace, when the Unit was created in this Space and the ChangeOrder is scoped over it. */
             Reason?: string;
             Slug?: string;
             /**
@@ -5113,6 +5113,7 @@ export interface components {
             UnitID?: string;
             /**
              * Format: uuid
+             * @description Absent for a Unit created in this Space.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             UpstreamUnitID?: string;

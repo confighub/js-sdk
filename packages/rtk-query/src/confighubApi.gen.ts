@@ -18635,11 +18635,12 @@ export type PromoteUnitResult = {
   Mutations?: ResourceMutationList;
   PreviousHeadMutationNum?: number;
   PreviousHeadRevisionNum?: number;
-  /** For Skip and Unchanged: NotCovered, CreatedAfterChangeOrder, or AlreadyTaken. */
+  /** For Skip and Unchanged: NotCovered, CreatedAfterChangeOrder, AlreadyTaken, or, for a Unit created in this Space, why the ChangeOrder does not cover it. For Mark: CreatedInSpace, when the Unit was created in this Space and the ChangeOrder is scoped over it. */
   Reason?: string;
   Slug?: string;
   /** Absent for a clone a dry run would create. */
   UnitID?: string;
+  /** Absent for a Unit created in this Space. */
   UpstreamUnitID?: string;
 };
 export type PromoteSpaceResult = {
