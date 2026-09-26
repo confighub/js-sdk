@@ -233,7 +233,7 @@ export async function startLogin(
   if (!info.AuthIssuer && !info.TokenExchangeEndpoint) throw new NoIdentityProvider();
   if (!info.AuthIssuer || !info.TokenExchangeEndpoint) {
     throw new Error(
-      'this instance is not configured for token-exchange auth (server needs CONFIGHUB_IDP_ISSUER)',
+      'this instance is not configured for token-exchange auth (server needs CONFIGHUB_AUTH_ISSUER)',
     );
   }
   const meta = await oidcMetadata(info.AuthIssuer);
