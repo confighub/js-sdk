@@ -7,6 +7,30 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.6.6 — 2026-09-29
+
+### API
+
+Compared with ConfigHub `v0.6.5`:
+
+#### Added (15)
+
+- path `/demote`
+- parameter `prior_revisions` on `PATCH /space/{space_id}/unit/{unit_id}`
+- parameter `prior_revisions` on `PUT /space/{space_id}/unit/{unit_id}`
+- parameter `prior_revisions` on `PATCH /unit`
+- field `ChangeOrder.PromotionFailures`
+- field `PromoteRequest.PriorRevisions`
+- field `PromoteUnitResult.HeadRevisionNum`
+- field `PromoteUnitResult.LinkIDs`
+- schema `ChangeOrderPromotionFailure`
+- schema `ChangeOrderPromotionFailureSpace`
+- schema `ChangeOrderPromotionFailureUnit`
+- schema `DemoteRequest`
+- schema `DemoteResult`
+- schema `DemoteSpaceResult`
+- schema `DemoteUnitResult`
+
 ## 0.6.5 — 2026-09-25
 
 ### API
