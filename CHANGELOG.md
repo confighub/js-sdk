@@ -7,6 +7,34 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.6.8 — 2026-09-29
+
+### API
+
+Compared with ConfigHub `v0.6.7`:
+
+#### Added (19)
+
+- path `/diff`
+- path `/space/{space_id}/unit/{unit_id}/diff`
+- path `/unit_diff`
+- field `DemoteUnitResult.Diff`
+- field `FunctionInvocationsResponse.Diff`
+- field `PromoteUnitResult.Diff`
+- field `UnitConflictsResponse.Diff`
+- field `UnitCreateOrUpdateResponse.Diff`
+- field `UploadUnitResult.Diff`
+- schema `ConfigDiff`
+- schema `DiffRequest`
+- schema `DiffResult`
+- schema `DiffSide`
+- schema `DiffSideResult`
+- schema `MergeKeyValue`
+- schema `PathChange`
+- schema `PathSegment`
+- schema `ResourceDiff`
+- schema `UnitDiff`
+
 ## 0.6.7 — 2026-09-29
 
 ### API

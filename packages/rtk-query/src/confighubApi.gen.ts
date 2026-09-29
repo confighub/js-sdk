@@ -14,6 +14,7 @@ export const addTagTypes = [
   "ChangeSet",
   "ChangeWorkflow",
   "Demote",
+  "Unit",
   "Filter",
   "Function",
   "Meta",
@@ -32,7 +33,6 @@ export const addTagTypes = [
   "Tag",
   "Target",
   "Trigger",
-  "Unit",
   "Mutation",
   "UnitAction",
   "UnitEvent",
@@ -675,6 +675,21 @@ const injectedRtkApi = api
           },
         }),
         invalidatesTags: ["Demote"],
+      }),
+      diffConfigurations: build.mutation<
+        DiffConfigurationsApiResponse,
+        DiffConfigurationsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/diff`,
+          method: "POST",
+          body: queryArg.diffRequest,
+          params: {
+            include: queryArg.include,
+            where_resource: queryArg.whereResource,
+          },
+        }),
+        invalidatesTags: ["Unit"],
       }),
       bulkDeleteFilters: build.mutation<
         BulkDeleteFiltersApiResponse,
@@ -2467,6 +2482,18 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Unit"],
       }),
+      getUnitDiff: build.query<GetUnitDiffApiResponse, GetUnitDiffApiArg>({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/diff`,
+          params: {
+            from: queryArg["from"],
+            to: queryArg.to,
+            include: queryArg.include,
+            where_resource: queryArg.whereResource,
+          },
+        }),
+        providesTags: ["Unit"],
+      }),
       setUnitGuard: build.mutation<SetUnitGuardApiResponse, SetUnitGuardApiArg>(
         {
           query: (queryArg) => ({
@@ -3134,6 +3161,31 @@ const injectedRtkApi = api
             trigger_filter: queryArg.triggerFilter,
             triggers_passed: queryArg.triggersPassed,
             view: queryArg.view,
+          },
+        }),
+        providesTags: ["Unit"],
+      }),
+      searchUnitDiff: build.query<
+        SearchUnitDiffApiResponse,
+        SearchUnitDiffApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/unit_diff`,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            resource_type: queryArg.resourceType,
+            where_data: queryArg.whereData,
+            where_data_engine: queryArg.whereDataEngine,
+            where_trigger: queryArg.whereTrigger,
+            trigger_filter: queryArg.triggerFilter,
+            triggers_passed: queryArg.triggersPassed,
+            view: queryArg.view,
+            from: queryArg["from"],
+            to: queryArg.to,
+            include: queryArg.include,
+            where_resource: queryArg.whereResource,
           },
         }),
         providesTags: ["Unit"],
@@ -6435,9 +6487,17 @@ export type DemoteApiResponse =
 export type DemoteApiArg = {
   /** Plan the demotion and return the same response without writing anything. */
   dryRun?: boolean;
-  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each restore changed, or on a dry run would change. */
+  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each restore changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. */
   include?: string;
   demoteRequest: DemoteRequest;
+};
+export type DiffConfigurationsApiResponse = /** status 200 OK */ DiffResult;
+export type DiffConfigurationsApiArg = {
+  /** Comma-separated: Attribution to attach to each changed path the To side's MutationSources entry, which says what set the new value, and Unchanged to also list resources with no changes. */
+  include?: string;
+  /** Limit the diff to the resources this where expression selects on either side. */
+  whereResource?: string;
+  diffRequest: DiffRequest;
 };
 export type BulkDeleteFiltersApiResponse =
   | /** status 200 OK */ DeleteResponse[]
@@ -7080,7 +7140,7 @@ export type InvokeFunctionsOnOrgApiArg = {
     
     If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
   filter?: string;
-  /** Comma-separated parts of the result to return in addition to the default: ConfigData for the configuration the invocation produced, carried whether or not the invocation changed it. Without it, the configuration is present only when the invocation changed it, and an unchanged result is reported by DataHash alone. */
+  /** Comma-separated parts of the result to return in addition to the default: ConfigData for the configuration the invocation produced, carried whether or not the invocation changed it. Without it, the configuration is present only when the invocation changed it, and an unchanged result is reported by DataHash alone. Diff for what the invocation changed in each Unit, path by path with the values on both sides. */
   include?: string;
   /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
   resourceType?: string;
@@ -8358,7 +8418,7 @@ export type PromoteApiResponse =
 export type PromoteApiArg = {
   /** Plan the promotion, evaluate its gates, and return the same response without writing anything. */
   dryRun?: boolean;
-  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change. On a dry run it runs the merges a plan otherwise skips, so it is returned only when named. */
+  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. On a dry run either one runs the merges a plan otherwise skips, so they are returned only when named. */
   include?: string;
   promoteRequest: PromoteRequest;
 };
@@ -10441,7 +10501,7 @@ export type InvokeFunctionsApiArg = {
     
     If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
   filter?: string;
-  /** Comma-separated parts of the result to return in addition to the default: ConfigData for the configuration the invocation produced, carried whether or not the invocation changed it. Without it, the configuration is present only when the invocation changed it, and an unchanged result is reported by DataHash alone. */
+  /** Comma-separated parts of the result to return in addition to the default: ConfigData for the configuration the invocation produced, carried whether or not the invocation changed it. Without it, the configuration is present only when the invocation changed it, and an unchanged result is reported by DataHash alone. Diff for what the invocation changed in each Unit, path by path with the values on both sides. */
   include?: string;
   /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
   resourceType?: string;
@@ -11709,7 +11769,7 @@ export type CreateUnitApiArg = {
   mergeExternalSource?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
-  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, and MutationSources for what set each value in it. Neither is a field of a Unit, and both cost something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
+  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
   include?: string;
   unit: Unit;
 };
@@ -11845,7 +11905,7 @@ export type PatchUnitApiArg = {
   priorRevisions?: string;
   /** User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
   subgroup?: string;
-  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, and MutationSources for what set each value in it. Neither is a field of a Unit, and both cost something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
+  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
   include?: string;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -11982,7 +12042,7 @@ export type UpdateUnitApiArg = {
   priorRevisions?: string;
   /** User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
   subgroup?: string;
-  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, and MutationSources for what set each value in it. Neither is a field of a Unit, and both cost something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
+  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
   include?: string;
   unit: Unit;
 };
@@ -12011,7 +12071,7 @@ export type UploadUnitDataApiArg = {
   unitId: string;
   /** Human-readable description of this change, copied to the Revision it creates. */
   lastChangeDescription?: string;
-  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, and MutationSources for what set each value in it. Neither is a field of a Unit, and both cost something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
+  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
   include?: string;
   /** Dry run mode: return changed unit(s) but don't update configuration data */
   dryRun?: boolean;
@@ -12034,6 +12094,21 @@ export type UploadUnitDataApiArg = {
   /** User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
   subgroup?: string;
   body: string;
+};
+export type GetUnitDiffApiResponse = /** status 200 OK */ UnitDiff;
+export type GetUnitDiffApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a unit_id */
+  unitId: string;
+  /** The Revision on the From side: a number, a Revision ID, HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, or ChangeOrder:<id>, any of them optionally prefixed with Before:. */
+  from?: string;
+  /** The Revision on the To side, in the same syntax as from. */
+  to?: string;
+  /** Comma-separated: Attribution to attach to each changed path the To side's MutationSources entry, which says what set the new value, and Unchanged to also list resources with no changes. */
+  include?: string;
+  /** Limit the diff to the resources this where expression selects on either side. */
+  whereResource?: string;
 };
 export type SetUnitGuardApiResponse = /** status 200 OK */ UnitGuardResponse;
 export type SetUnitGuardApiArg = {
@@ -15272,6 +15347,99 @@ export type SearchUnitDataApiArg = {
   /** View slug or UUID. Applies the View's column definitions to extract values for each unit. If the View has a FilterID, its filter is ANDed with other filters. The View must have Of=Unit or a Filter with From=Unit. */
   view?: string;
 };
+export type SearchUnitDiffApiResponse = /** status 200 OK */ UnitDiff[];
+export type SearchUnitDiffApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Unit list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Unit).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Unit include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
+  resourceType?: string;
+  /** Where data: The specified string is an expression for the purpose of evaluating whether the configuration data matches the filter. It supports conjunctions using `AND` of relational expressions of the form *path* *operator* *literal*. The path specifications are dot-separated, for both map fields and array indices, as in `spec.template.spec.containers.0.image = 'ghcr.io/headlamp-k8s/headlamp:latest' AND spec.replicas > 1`. Path expressions support `*` for wildcard array or map segments and `?key=value` syntax for associative matches of array elements containing objects with a `key` attribute. Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `!~`, `~*`, `!~*`, `IN`, `NOT IN`. String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards, `ILIKE` for case-insensitive pattern matching, `!~~` for NOT LIKE. String regex operators: `~` for regex matching, `~*` for case-insensitive regex, `!~` and `!~*` for regex not matching (case-sensitive and insensitive). Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`. Boolean values support equality and inequality only. The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses, such as `spec.template.spec.containers.0.image#reference IN (':latest', ':arm64-latest')`. The syntax `.|` splits the path: the left side selects, and the right side is a property of what was selected. On the right side of a `.|`, and only there, `!=` is true when the property is absent: `spec.containers.*.|image != 'nginx'` selects the containers and asks that none of their images be nginx, which a container with no image satisfies. Everywhere else a path that is not present is not a match, `!=` included. String literals are quoted with single quotes, such as `'string'`. Integer and boolean literals are also supported for attributes of those types. The whole string must be query-encoded. */
+  whereData?: string;
+  /** Which engine answers where_data and resource_type: `sql` (the default) evaluates the expression against the stored resource projection in a single query, falling back to the function engine for the expressions it cannot translate; `function` invokes the where-filter function on each candidate Unit, reading every one's configuration; `shadow` runs both, answers with `function`, and logs any disagreement. Temporary: `function` is the escape hatch for one release, after which this parameter goes away. */
+  whereDataEngine?: string;
+  /** Where expression to match Triggers. Matched triggers are invoked on each unit to filter by validation results. Use with triggers_passed to control whether passing or failing units are returned (default: failing). */
+  whereTrigger?: string;
+  /** Filter UUID (with From=Trigger). The filter's matching triggers are invoked on units to filter by validation results. Can be combined with where_trigger. */
+  triggerFilter?: string;
+  /** When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
+  triggersPassed?: boolean;
+  /** View slug or UUID. Applies the View's column definitions to extract values for each unit. If the View has a FilterID, its filter is ANDed with other filters. The View must have Of=Unit or a Filter with From=Unit. */
+  view?: string;
+  /** The Revision on the From side: a number, a Revision ID, HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, or ChangeOrder:<id>, any of them optionally prefixed with Before:. */
+  from?: string;
+  /** The Revision on the To side, in the same syntax as from. */
+  to?: string;
+  /** Comma-separated: Attribution to attach to each changed path the To side's MutationSources entry, which says what set the new value, and Unchanged to also list resources with no changes. */
+  include?: string;
+  /** Limit the diff to the resources this where expression selects on either side. */
+  whereResource?: string;
+};
 export type ListAllUnitEventsApiResponse = /** status 200 OK */ UnitEventRead[];
 export type ListAllUnitEventsApiArg = {
   /** The specified string is an expression for the purpose of filtering
@@ -15474,7 +15642,7 @@ export type UploadApiResponse =
 export type UploadApiArg = {
   /** Plan the upload and return the same response without writing anything. */
   dryRun?: boolean;
-  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change. It costs something to return, and on a dry run it runs the merges a plan otherwise skips, so it is returned only when named. */
+  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. They cost something to return, and on a dry run either one runs the merges a plan otherwise skips, so they are returned only when named. */
   include?: string;
   uploadRequest: UploadRequest;
 };
@@ -17936,14 +18104,6 @@ export type ExtendedComponentRead = {
   Error?: ResponseError;
   Organization?: OrganizationRead;
 };
-export type ArrayElementAliasMap = {
-  [key: string]: {
-    [key: string]: string;
-  };
-};
-export type ArrayOrderMap = {
-  [key: string]: string[];
-};
 export type MutationType = "Add" | "Delete" | "Update" | "Replace" | "None";
 export type MutationInfo = {
   /** Function index or sequence number corresponding to the change */
@@ -17956,8 +18116,36 @@ export type MutationInfo = {
   /** Removed configuration data if MutationType is Delete and otherwise the new data */
   Value?: string;
 };
-export type MutationMap = {
-  [key: string]: MutationInfo;
+export type MergeKeyValue = {
+  Key?: string;
+  Value?: string;
+};
+export type PathSegment = {
+  /** The map key, for a map segment */
+  Field?: string;
+  /** The element's index on the From side; -1 for a map key or an element absent there */
+  FromIndex?: number;
+  /** The merge keys that identify the element, for an element of a merge-keyed array */
+  MergeKeys?: MergeKeyValue[];
+  /** The element's index on the To side; -1 for a map key or an element absent there */
+  ToIndex?: number;
+};
+export type PathChange = {
+  Attribution?: MutationInfo;
+  /** Add, Delete, Update, Replace, Reorder, or Rename */
+  ChangeType?: string;
+  /** The path in configuration path syntax, as --path arguments and where filters take it, with each unkeyed array element named by its index */
+  DisplayPath?: string;
+  /** The value on the From side: a scalar's text, or a YAML block for a map or array */
+  FromValue?: string;
+  /** A unified line diff, for multi-line string values */
+  Patch?: string;
+  /** The path as MutationSources and patch functions record it */
+  Path?: string;
+  /** The path split into its segments, for rendering without parsing the path syntax */
+  Segments?: PathSegment[] | null;
+  /** The value on the To side: a scalar's text, or a YAML block for a map or array */
+  ToValue?: string;
 };
 export type ResourceInfo = {
   /** Category of configuration element represented in the configuration data; Kubernetes resources are of category Resource, and application configuration files are of category AppConfig */
@@ -17970,6 +18158,33 @@ export type ResourceInfo = {
   ResourceNameWithoutScope?: string;
   /** Type of a resource in the system under management represented in the configuration data; Kubernetes resources are represented in the form <apiVersion>/<kind> (aka group-version-kind) */
   ResourceType?: string;
+};
+export type ResourceDiff = {
+  Attribution?: MutationInfo;
+  ChangeType?: MutationType;
+  /** Changes within the resource, for an Update, in document order */
+  Changes?: PathChange[];
+  /** The whole resource, for a Delete */
+  FromValue?: string;
+  PreviousResource?: ResourceInfo;
+  Resource?: ResourceInfo;
+  /** The whole resource, for an Add */
+  ToValue?: string;
+};
+export type ConfigDiff = {
+  /** One entry per resource that differs, in the To configuration's order; resources only on the From side follow where they were */
+  Resources?: ResourceDiff[] | null;
+};
+export type ArrayElementAliasMap = {
+  [key: string]: {
+    [key: string]: string;
+  };
+};
+export type ArrayOrderMap = {
+  [key: string]: string[];
+};
+export type MutationMap = {
+  [key: string]: MutationInfo;
 };
 export type ResourceMutation = {
   /** Names (with scopes, if any) used in current and prior revisions of this resource */
@@ -17990,6 +18205,7 @@ export type ResourceMutationList = ResourceMutation[];
 export type DemoteUnitResult = {
   /** Restore, Mark, or Unchanged. */
   Action?: string;
+  Diff?: ConfigDiff;
   /** The first Revision after the change that restoring drops, when the head had moved past where the change arrived. */
   DropsFromRevisionNum?: number;
   /** The last Revision that restoring drops. */
@@ -18043,6 +18259,33 @@ export type DemoteRequest = {
   TargetStage?: string;
   /** A where expression narrowing the Spaces to demote. Without any selector, every Space the ChangeOrder marked is demoted. */
   WhereSpace?: string;
+};
+export type DiffSideResult = {
+  /** The Revision the side resolved to, for a Unit side */
+  RevisionNum?: number;
+  /** The Space of the Unit, for a Unit side */
+  SpaceID?: string;
+  /** The Unit, for a Unit side */
+  UnitID?: string;
+};
+export type DiffResult = {
+  Diff?: ConfigDiff;
+  From?: DiffSideResult;
+  To?: DiffSideResult;
+};
+export type DiffSide = {
+  /** Configuration given inline, instead of a Unit's */
+  Data?: string;
+  /** The Unit's Revision, in the syntax unit update --restore takes; its head when omitted */
+  Revision?: string;
+  /** The toolchain of inline Data; defaults to the other side's */
+  ToolchainType?: string;
+  /** The Unit whose configuration this side is. Omitted for inline Data. */
+  UnitID?: string;
+};
+export type DiffRequest = {
+  From?: DiffSide;
+  To?: DiffSide;
 };
 export type ExtendedFilter = {
   Error?: ResponseError;
@@ -18106,6 +18349,7 @@ export type FunctionInvocationsResponse = {
   Conflicts?: MutationConflictList;
   /** SHA256 of the resulting configuration data, whether or not ConfigData is present */
   DataHash?: string;
+  Diff?: ConfigDiff;
   Error?: ResponseError;
   /** Functions produced new mutations (of type other than None) */
   HasNewMutations?: boolean;
@@ -18741,6 +18985,7 @@ export type PromoteUnitResult = {
   /** Upgrade, Resolve, Mark, Empty, Revive, Clone, Invoke, Unchanged, or Skip. */
   Action?: string;
   Conflicts?: MutationConflictList;
+  Diff?: ConfigDiff;
   Error?: ResponseError;
   HeadRevisionNum?: number;
   /** For a Resolve, and a Mark made by one, the Links resolved. */
@@ -20092,6 +20337,7 @@ export type UnitCreateOrUpdateResponse = {
   /** The configuration the operation produced; returned when include names ConfigData. */
   ConfigData?: string;
   Conflicts?: MutationConflictList;
+  Diff?: ConfigDiff;
   Error?: ResponseError;
   Links?: LinkCreateOrUpdateResponse[];
   MutationSources?: ResourceMutationList;
@@ -20101,6 +20347,7 @@ export type UnitCreateOrUpdateResponseRead = {
   /** The configuration the operation produced; returned when include names ConfigData. */
   ConfigData?: string;
   Conflicts?: MutationConflictList;
+  Diff?: ConfigDiff;
   Error?: ResponseError;
   Links?: LinkCreateOrUpdateResponseRead[];
   MutationSources?: ResourceMutationList;
@@ -20110,6 +20357,7 @@ export type UnitConflictsResponse = {
   /** Number of conflicts whose withheld change was applied */
   Applied?: number;
   Conflicts?: MutationConflictList;
+  Diff?: ConfigDiff;
   /** Number of conflicts dropped without changing the configuration data */
   Dismissed?: number;
   Error?: ResponseError;
@@ -20119,6 +20367,7 @@ export type UnitConflictsResponseRead = {
   /** Number of conflicts whose withheld change was applied */
   Applied?: number;
   Conflicts?: MutationConflictList;
+  Diff?: ConfigDiff;
   /** Number of conflicts dropped without changing the configuration data */
   Dismissed?: number;
   Error?: ResponseError;
@@ -20139,6 +20388,18 @@ export type UnitConflictsRequest = {
   DryRun?: boolean;
   /** Which outstanding conflicts to act on. Empty acts on all of them. */
   Select?: UnitConflictSelector[];
+};
+export type UnitDiff = {
+  Diff?: ConfigDiff;
+  Error?: ResponseError;
+  /** The Revision on the From side; 0 when the Unit has none there and the diff is against nothing */
+  FromRevisionNum?: number;
+  /** The Space of the Unit */
+  SpaceID?: string;
+  /** The Revision on the To side; 0 when the Unit has none there and the diff is against nothing */
+  ToRevisionNum?: number;
+  /** The Unit */
+  UnitID?: string;
 };
 export type UnitGuardResponse = {
   PathAnnotations?: PathAnnotationList;
@@ -20389,6 +20650,7 @@ export type UploadUnitResult = {
   /** Create, Update, Unchanged, Empty, Revive, or Adopt. */
   Action?: string;
   Conflicts?: MutationConflictList;
+  Diff?: ConfigDiff;
   Error?: ResponseError;
   Mutations?: ResourceMutationList;
   /** The resource identity this Unit is keyed by. */
@@ -20597,6 +20859,7 @@ export const {
   usePatchComponentMutation,
   useUpdateComponentMutation,
   useDemoteMutation,
+  useDiffConfigurationsMutation,
   useBulkDeleteFiltersMutation,
   useListAllFiltersQuery,
   useLazyListAllFiltersQuery,
@@ -20785,6 +21048,8 @@ export const {
   useDownloadUnitDataQuery,
   useLazyDownloadUnitDataQuery,
   useUploadUnitDataMutation,
+  useGetUnitDiffQuery,
+  useLazyGetUnitDiffQuery,
   useSetUnitGuardMutation,
   useListExtendedMutationsQuery,
   useLazyListExtendedMutationsQuery,
@@ -20849,6 +21114,8 @@ export const {
   useLazyListAllUnitActionsQuery,
   useSearchUnitDataQuery,
   useLazySearchUnitDataQuery,
+  useSearchUnitDiffQuery,
+  useLazySearchUnitDiffQuery,
   useListAllUnitEventsQuery,
   useLazyListAllUnitEventsQuery,
   useSearchUnitMutationSourcesQuery,
