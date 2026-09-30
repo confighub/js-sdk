@@ -57,6 +57,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
           },
         }),
@@ -74,7 +75,12 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
+            with_backing_units: queryArg.withBackingUnits,
+            backing_unit_space: queryArg.backingUnitSpace,
+            from_backing_units: queryArg.fromBackingUnits,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Component"],
@@ -90,6 +96,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             recursive: queryArg.recursive,
             recursive_force: queryArg.recursiveForce,
@@ -110,8 +117,13 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             refresh_triggers: queryArg.refreshTriggers,
+            with_backing_units: queryArg.withBackingUnits,
+            backing_unit_space: queryArg.backingUnitSpace,
+            from_backing_units: queryArg.fromBackingUnits,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Space"],
@@ -128,11 +140,18 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             name_prefixes: queryArg.namePrefixes,
             variant_labels: queryArg.variantLabels,
             name_pattern: queryArg.namePattern,
             allow_exists: queryArg.allowExists,
+            with_backing_units: queryArg.withBackingUnits,
+            backing_unit_space: queryArg.backingUnitSpace,
+            from_backing_units: queryArg.fromBackingUnits,
+            where_unit: queryArg.whereUnit,
+            filter_unit: queryArg.filterUnit,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Space"],
@@ -160,6 +179,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Attestation"],
@@ -175,6 +195,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
           },
         }),
@@ -192,6 +213,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Attribute"],
@@ -208,7 +230,11 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Attribute"],
@@ -225,11 +251,17 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             name_prefixes: queryArg.namePrefixes,
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            where_unit: queryArg.whereUnit,
+            filter_unit: queryArg.filterUnit,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Attribute"],
@@ -246,6 +278,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
           },
@@ -263,6 +296,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             detach: queryArg.detach,
           },
@@ -281,6 +315,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             summary: queryArg.summary,
           },
         }),
@@ -298,7 +333,9 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["BridgeWorker"],
@@ -348,6 +385,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             detach: queryArg.detach,
           },
@@ -366,6 +404,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["ChangeOrder"],
@@ -382,8 +421,10 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             refresh_spaces: queryArg.refreshSpaces,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["ChangeOrder"],
@@ -400,6 +441,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             name_prefixes: queryArg.namePrefixes,
             variant_labels: queryArg.variantLabels,
@@ -407,6 +449,7 @@ const injectedRtkApi = api
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["ChangeOrder"],
@@ -422,6 +465,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             detach: queryArg.detach,
           },
@@ -440,6 +484,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["ChangeSet"],
@@ -456,7 +501,9 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["ChangeSet"],
@@ -473,6 +520,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             name_prefixes: queryArg.namePrefixes,
             variant_labels: queryArg.variantLabels,
@@ -480,6 +528,7 @@ const injectedRtkApi = api
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["ChangeSet"],
@@ -496,6 +545,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
           },
@@ -513,6 +563,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
           },
         }),
@@ -530,6 +581,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["ChangeWorkflow"],
@@ -546,7 +598,11 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["ChangeWorkflow"],
@@ -563,6 +619,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             name_prefixes: queryArg.namePrefixes,
             variant_labels: queryArg.variantLabels,
@@ -570,6 +627,11 @@ const injectedRtkApi = api
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            where_unit: queryArg.whereUnit,
+            filter_unit: queryArg.filterUnit,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["ChangeWorkflow"],
@@ -586,6 +648,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
           },
@@ -604,6 +667,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Component"],
@@ -617,7 +681,10 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.component,
           params: {
+            with_backing_units: queryArg.withBackingUnits,
+            backing_unit_space: queryArg.backingUnitSpace,
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Component"],
@@ -650,6 +717,9 @@ const injectedRtkApi = api
           url: `/component/${queryArg.componentId}`,
           method: "PATCH",
           body: queryArg.body,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Component"],
       }),
@@ -661,6 +731,32 @@ const injectedRtkApi = api
           url: `/component/${queryArg.componentId}`,
           method: "PUT",
           body: queryArg.component,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Component"],
+      }),
+      getComponentDocument: build.query<
+        GetComponentDocumentApiResponse,
+        GetComponentDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/component/${queryArg.componentId}/document`,
+        }),
+        providesTags: ["Component"],
+      }),
+      updateComponentDocument: build.mutation<
+        UpdateComponentDocumentApiResponse,
+        UpdateComponentDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/component/${queryArg.componentId}/document`,
+          method: "POST",
+          body: queryArg.entityDocumentEdit,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Component"],
       }),
@@ -702,6 +798,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
           },
         }),
@@ -719,6 +816,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             entity: queryArg.entity,
             id: queryArg.id,
           },
@@ -737,7 +835,11 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Filter"],
@@ -754,6 +856,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             name_prefixes: queryArg.namePrefixes,
             variant_labels: queryArg.variantLabels,
@@ -761,6 +864,11 @@ const injectedRtkApi = api
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            where_unit: queryArg.whereUnit,
+            filter_unit: queryArg.filterUnit,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Filter"],
@@ -777,6 +885,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
           },
@@ -816,6 +925,7 @@ const injectedRtkApi = api
             other_data_source: queryArg.otherDataSource,
             where: queryArg.where,
             filter: queryArg.filter,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             resource_type: queryArg.resourceType,
             where_data: queryArg.whereData,
@@ -843,6 +953,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
           },
         }),
@@ -860,6 +971,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Invocation"],
@@ -876,7 +988,11 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Invocation"],
@@ -893,6 +1009,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             name_prefixes: queryArg.namePrefixes,
             variant_labels: queryArg.variantLabels,
@@ -900,6 +1017,11 @@ const injectedRtkApi = api
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            where_unit: queryArg.whereUnit,
+            filter_unit: queryArg.filterUnit,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Invocation"],
@@ -916,6 +1038,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
           },
@@ -933,6 +1056,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
           },
         }),
@@ -950,6 +1074,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Link"],
@@ -966,8 +1091,12 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             reverse: queryArg.reverse,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Link"],
@@ -987,6 +1116,12 @@ const injectedRtkApi = api
             from_downstream_where: queryArg.fromDownstreamWhere,
             to_downstream_where: queryArg.toDownstreamWhere,
             allow_exists: queryArg.allowExists,
+            include_hidden: queryArg.includeHidden,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            where_unit: queryArg.whereUnit,
+            filter_unit: queryArg.filterUnit,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Link"],
@@ -1049,6 +1184,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Organization"],
@@ -1098,6 +1234,9 @@ const injectedRtkApi = api
           url: `/organization/${queryArg.organizationId}`,
           method: "PUT",
           body: queryArg.organization,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Organization"],
       }),
@@ -1169,6 +1308,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Release"],
@@ -1185,6 +1325,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             limit: queryArg.limit,
             offset: queryArg.offset,
             order_by: queryArg.orderBy,
@@ -1206,6 +1347,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             limit: queryArg.limit,
             offset: queryArg.offset,
             order_by: queryArg.orderBy,
@@ -1226,6 +1368,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             limit: queryArg.limit,
             offset: queryArg.offset,
             order_by: queryArg.orderBy,
@@ -1246,6 +1389,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             limit: queryArg.limit,
             offset: queryArg.offset,
             order_by: queryArg.orderBy,
@@ -1263,6 +1407,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             summary: queryArg.summary,
           },
         }),
@@ -1274,7 +1419,10 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.space,
           params: {
+            with_backing_units: queryArg.withBackingUnits,
+            backing_unit_space: queryArg.backingUnitSpace,
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Space"],
@@ -1309,6 +1457,7 @@ const injectedRtkApi = api
           body: queryArg.body,
           params: {
             refresh_triggers: queryArg.refreshTriggers,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Space"],
@@ -1320,6 +1469,7 @@ const injectedRtkApi = api
           body: queryArg.space,
           params: {
             refresh_triggers: queryArg.refreshTriggers,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Space"],
@@ -1336,6 +1486,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Attestation"],
@@ -1379,6 +1530,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Attribute"],
@@ -1392,7 +1544,9 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.attribute,
           params: {
+            with_backing_units: queryArg.withBackingUnits,
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Attribute"],
@@ -1425,6 +1579,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/attribute/${queryArg.attributeId}`,
           method: "PATCH",
           body: queryArg.body,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Attribute"],
       }),
@@ -1436,6 +1593,32 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/attribute/${queryArg.attributeId}`,
           method: "PUT",
           body: queryArg.attribute,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Attribute"],
+      }),
+      getAttributeDocument: build.query<
+        GetAttributeDocumentApiResponse,
+        GetAttributeDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/attribute/${queryArg.attributeId}/document`,
+        }),
+        providesTags: ["Attribute"],
+      }),
+      updateAttributeDocument: build.mutation<
+        UpdateAttributeDocumentApiResponse,
+        UpdateAttributeDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/attribute/${queryArg.attributeId}/document`,
+          method: "POST",
+          body: queryArg.entityDocumentEdit,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Attribute"],
       }),
@@ -1451,6 +1634,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["BridgeWorker"],
@@ -1465,6 +1649,7 @@ const injectedRtkApi = api
           body: queryArg.bridgeWorker,
           params: {
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["BridgeWorker"],
@@ -1503,6 +1688,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/bridge_worker/${queryArg.bridgeWorkerId}`,
           method: "PATCH",
           body: queryArg.body,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["BridgeWorker"],
       }),
@@ -1514,6 +1702,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/bridge_worker/${queryArg.bridgeWorkerId}`,
           method: "PUT",
           body: queryArg.bridgeWorker,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["BridgeWorker"],
       }),
@@ -1556,6 +1747,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["ChangeOrder"],
@@ -1570,6 +1762,7 @@ const injectedRtkApi = api
           body: queryArg.changeOrder,
           params: {
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["ChangeOrder"],
@@ -1610,6 +1803,7 @@ const injectedRtkApi = api
           body: queryArg.body,
           params: {
             refresh_spaces: queryArg.refreshSpaces,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["ChangeOrder"],
@@ -1624,6 +1818,7 @@ const injectedRtkApi = api
           body: queryArg.changeOrder,
           params: {
             refresh_spaces: queryArg.refreshSpaces,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["ChangeOrder"],
@@ -1640,6 +1835,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["ChangeSet"],
@@ -1654,6 +1850,7 @@ const injectedRtkApi = api
           body: queryArg.changeSet,
           params: {
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["ChangeSet"],
@@ -1689,6 +1886,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/change_set/${queryArg.changeSetId}`,
           method: "PATCH",
           body: queryArg.body,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["ChangeSet"],
       }),
@@ -1700,6 +1900,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/change_set/${queryArg.changeSetId}`,
           method: "PUT",
           body: queryArg.changeSet,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["ChangeSet"],
       }),
@@ -1715,6 +1918,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["ChangeWorkflow"],
@@ -1728,7 +1932,9 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.changeWorkflow,
           params: {
+            with_backing_units: queryArg.withBackingUnits,
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["ChangeWorkflow"],
@@ -1764,6 +1970,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/change_workflow/${queryArg.changeWorkflowId}`,
           method: "PATCH",
           body: queryArg.body,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["ChangeWorkflow"],
       }),
@@ -1775,8 +1984,55 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/change_workflow/${queryArg.changeWorkflowId}`,
           method: "PUT",
           body: queryArg.changeWorkflow,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["ChangeWorkflow"],
+      }),
+      getChangeWorkflowDocument: build.query<
+        GetChangeWorkflowDocumentApiResponse,
+        GetChangeWorkflowDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/change_workflow/${queryArg.changeWorkflowId}/document`,
+        }),
+        providesTags: ["ChangeWorkflow"],
+      }),
+      updateChangeWorkflowDocument: build.mutation<
+        UpdateChangeWorkflowDocumentApiResponse,
+        UpdateChangeWorkflowDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/change_workflow/${queryArg.changeWorkflowId}/document`,
+          method: "POST",
+          body: queryArg.entityDocumentEdit,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["ChangeWorkflow"],
+      }),
+      getSpaceDocument: build.query<
+        GetSpaceDocumentApiResponse,
+        GetSpaceDocumentApiArg
+      >({
+        query: (queryArg) => ({ url: `/space/${queryArg.spaceId}/document` }),
+        providesTags: ["Space"],
+      }),
+      updateSpaceDocument: build.mutation<
+        UpdateSpaceDocumentApiResponse,
+        UpdateSpaceDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/document`,
+          method: "POST",
+          body: queryArg.entityDocumentEdit,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Space"],
       }),
       listFilters: build.query<ListFiltersApiResponse, ListFiltersApiArg>({
         query: (queryArg) => ({
@@ -1787,6 +2043,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             entity: queryArg.entity,
             id: queryArg.id,
           },
@@ -1800,7 +2057,9 @@ const injectedRtkApi = api
             method: "POST",
             body: queryArg.filter,
             params: {
+              with_backing_units: queryArg.withBackingUnits,
               allow_exists: queryArg.allowExists,
+              dry_run: queryArg.dryRun,
             },
           }),
           invalidatesTags: ["Filter"],
@@ -1830,6 +2089,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/filter/${queryArg.filterId}`,
           method: "PATCH",
           body: queryArg.body,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Filter"],
       }),
@@ -1839,10 +2101,36 @@ const injectedRtkApi = api
             url: `/space/${queryArg.spaceId}/filter/${queryArg.filterId}`,
             method: "PUT",
             body: queryArg.filter,
+            params: {
+              dry_run: queryArg.dryRun,
+            },
           }),
           invalidatesTags: ["Filter"],
         },
       ),
+      getFilterDocument: build.query<
+        GetFilterDocumentApiResponse,
+        GetFilterDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/filter/${queryArg.filterId}/document`,
+        }),
+        providesTags: ["Filter"],
+      }),
+      updateFilterDocument: build.mutation<
+        UpdateFilterDocumentApiResponse,
+        UpdateFilterDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/filter/${queryArg.filterId}/document`,
+          method: "POST",
+          body: queryArg.entityDocumentEdit,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Filter"],
+      }),
       listFunctions: build.query<ListFunctionsApiResponse, ListFunctionsApiArg>(
         {
           query: (queryArg) => ({
@@ -1877,6 +2165,7 @@ const injectedRtkApi = api
             other_data_source: queryArg.otherDataSource,
             where: queryArg.where,
             filter: queryArg.filter,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             resource_type: queryArg.resourceType,
             where_data: queryArg.whereData,
@@ -1901,6 +2190,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Invocation"],
@@ -1914,7 +2204,9 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.invocation,
           params: {
+            with_backing_units: queryArg.withBackingUnits,
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Invocation"],
@@ -1949,6 +2241,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/invocation/${queryArg.invocationId}`,
           method: "PATCH",
           body: queryArg.body,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Invocation"],
       }),
@@ -1960,6 +2255,32 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/invocation/${queryArg.invocationId}`,
           method: "PUT",
           body: queryArg.invocation,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Invocation"],
+      }),
+      getInvocationDocument: build.query<
+        GetInvocationDocumentApiResponse,
+        GetInvocationDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/invocation/${queryArg.invocationId}/document`,
+        }),
+        providesTags: ["Invocation"],
+      }),
+      updateInvocationDocument: build.mutation<
+        UpdateInvocationDocumentApiResponse,
+        UpdateInvocationDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/invocation/${queryArg.invocationId}/document`,
+          method: "POST",
+          body: queryArg.entityDocumentEdit,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Invocation"],
       }),
@@ -1972,6 +2293,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Link"],
@@ -1982,7 +2304,9 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.link,
           params: {
+            with_backing_units: queryArg.withBackingUnits,
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Link"],
@@ -2011,6 +2335,7 @@ const injectedRtkApi = api
           body: queryArg.body,
           params: {
             reverse: queryArg.reverse,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Link"],
@@ -2020,6 +2345,32 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/link/${queryArg.linkId}`,
           method: "PUT",
           body: queryArg.link,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Link"],
+      }),
+      getLinkDocument: build.query<
+        GetLinkDocumentApiResponse,
+        GetLinkDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/link/${queryArg.linkId}/document`,
+        }),
+        providesTags: ["Link"],
+      }),
+      updateLinkDocument: build.mutation<
+        UpdateLinkDocumentApiResponse,
+        UpdateLinkDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/link/${queryArg.linkId}/document`,
+          method: "POST",
+          body: queryArg.entityDocumentEdit,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Link"],
       }),
@@ -2035,6 +2386,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Release"],
@@ -2082,6 +2434,9 @@ const injectedRtkApi = api
             url: `/space/${queryArg.spaceId}/release/${queryArg.releaseId}`,
             method: "PATCH",
             body: queryArg.body,
+            params: {
+              dry_run: queryArg.dryRun,
+            },
           }),
           invalidatesTags: ["Release"],
         },
@@ -2094,6 +2449,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/release/${queryArg.releaseId}`,
           method: "PUT",
           body: queryArg.release,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Release"],
       }),
@@ -2125,6 +2483,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Tag"],
@@ -2136,6 +2495,7 @@ const injectedRtkApi = api
           body: queryArg.tag,
           params: {
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Tag"],
@@ -2165,6 +2525,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/tag/${queryArg.tagId}`,
           method: "PATCH",
           body: queryArg.body,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Tag"],
       }),
@@ -2173,6 +2536,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/tag/${queryArg.tagId}`,
           method: "PUT",
           body: queryArg.tag,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Tag"],
       }),
@@ -2185,6 +2551,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Target"],
@@ -2197,6 +2564,7 @@ const injectedRtkApi = api
             body: queryArg.target,
             params: {
               allow_exists: queryArg.allowExists,
+              dry_run: queryArg.dryRun,
             },
           }),
           invalidatesTags: ["Target"],
@@ -2231,6 +2599,7 @@ const injectedRtkApi = api
           body: queryArg.body,
           params: {
             refresh_triggers: queryArg.refreshTriggers,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Target"],
@@ -2243,6 +2612,7 @@ const injectedRtkApi = api
             body: queryArg.target,
             params: {
               refresh_triggers: queryArg.refreshTriggers,
+              dry_run: queryArg.dryRun,
             },
           }),
           invalidatesTags: ["Target"],
@@ -2257,6 +2627,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Trigger"],
@@ -2270,7 +2641,9 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.trigger,
           params: {
+            with_backing_units: queryArg.withBackingUnits,
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Trigger"],
@@ -2301,6 +2674,9 @@ const injectedRtkApi = api
             url: `/space/${queryArg.spaceId}/trigger/${queryArg.triggerId}`,
             method: "PATCH",
             body: queryArg.body,
+            params: {
+              dry_run: queryArg.dryRun,
+            },
           }),
           invalidatesTags: ["Trigger"],
         },
@@ -2313,6 +2689,32 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/trigger/${queryArg.triggerId}`,
           method: "PUT",
           body: queryArg.trigger,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Trigger"],
+      }),
+      getTriggerDocument: build.query<
+        GetTriggerDocumentApiResponse,
+        GetTriggerDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/trigger/${queryArg.triggerId}/document`,
+        }),
+        providesTags: ["Trigger"],
+      }),
+      updateTriggerDocument: build.mutation<
+        UpdateTriggerDocumentApiResponse,
+        UpdateTriggerDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/trigger/${queryArg.triggerId}/document`,
+          method: "POST",
+          body: queryArg.entityDocumentEdit,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["Trigger"],
       }),
@@ -2325,6 +2727,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             resource_type: queryArg.resourceType,
             where_data: queryArg.whereData,
             where_data_engine: queryArg.whereDataEngine,
@@ -2349,6 +2752,7 @@ const injectedRtkApi = api
             merge_external_source: queryArg.mergeExternalSource,
             allow_exists: queryArg.allowExists,
             include: queryArg.include,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Unit"],
@@ -2516,6 +2920,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Mutation"],
@@ -2565,6 +2970,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             limit: queryArg.limit,
             offset: queryArg.offset,
             order_by: queryArg.orderBy,
@@ -2604,6 +3010,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             limit: queryArg.limit,
             offset: queryArg.offset,
             order_by: queryArg.orderBy,
@@ -2680,6 +3087,7 @@ const injectedRtkApi = api
             limit: queryArg.limit,
             offset: queryArg.offset,
             order_by: queryArg.orderBy,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["UnitEvent"],
@@ -2704,6 +3112,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["View"],
@@ -2714,7 +3123,9 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.view,
           params: {
+            with_backing_units: queryArg.withBackingUnits,
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["View"],
@@ -2741,6 +3152,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/view/${queryArg.viewId}`,
           method: "PATCH",
           body: queryArg.body,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["View"],
       }),
@@ -2749,6 +3163,32 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/view/${queryArg.viewId}`,
           method: "PUT",
           body: queryArg.view,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["View"],
+      }),
+      getViewDocument: build.query<
+        GetViewDocumentApiResponse,
+        GetViewDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/view/${queryArg.viewId}/document`,
+        }),
+        providesTags: ["View"],
+      }),
+      updateViewDocument: build.mutation<
+        UpdateViewDocumentApiResponse,
+        UpdateViewDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/view/${queryArg.viewId}/document`,
+          method: "POST",
+          body: queryArg.entityDocumentEdit,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["View"],
       }),
@@ -2763,6 +3203,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             detach: queryArg.detach,
           },
@@ -2778,6 +3219,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Tag"],
@@ -2794,7 +3236,9 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Tag"],
@@ -2811,6 +3255,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             name_prefixes: queryArg.namePrefixes,
             variant_labels: queryArg.variantLabels,
@@ -2818,6 +3263,7 @@ const injectedRtkApi = api
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Tag"],
@@ -2832,6 +3278,7 @@ const injectedRtkApi = api
               where: queryArg.where,
               filter: queryArg.filter,
               contains: queryArg.contains,
+              include_hidden: queryArg.includeHidden,
               include: queryArg.include,
               dry_run: queryArg.dryRun,
             },
@@ -2850,6 +3297,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             detach: queryArg.detach,
           },
@@ -2868,6 +3316,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Target"],
@@ -2884,8 +3333,10 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             refresh_triggers: queryArg.refreshTriggers,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Target"],
@@ -2902,6 +3353,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
           },
@@ -2919,6 +3371,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
           },
         }),
@@ -2936,6 +3389,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Trigger"],
@@ -2952,7 +3406,11 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Trigger"],
@@ -2969,11 +3427,36 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             name_prefixes: queryArg.namePrefixes,
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            where_unit: queryArg.whereUnit,
+            filter_unit: queryArg.filterUnit,
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Trigger"],
+      }),
+      bulkMoveTriggers: build.mutation<
+        BulkMoveTriggersApiResponse,
+        BulkMoveTriggersApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/trigger/move`,
+          method: "POST",
+          body: queryArg.moveRequest,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Trigger"],
@@ -2989,6 +3472,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             detach: queryArg.detach,
           },
@@ -3004,6 +3488,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             resource_type: queryArg.resourceType,
             where_data: queryArg.whereData,
             where_data_engine: queryArg.whereDataEngine,
@@ -3027,6 +3512,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
             protect: queryArg.protect,
@@ -3064,6 +3550,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             name_prefixes: queryArg.namePrefixes,
             variant_labels: queryArg.variantLabels,
@@ -3074,6 +3561,7 @@ const injectedRtkApi = api
             include_outgoing_links_where: queryArg.includeOutgoingLinksWhere,
             upstream_revision: queryArg.upstreamRevision,
             syncback: queryArg.syncback,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["Unit"],
@@ -3089,6 +3577,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
           },
         }),
@@ -3106,6 +3595,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
           },
@@ -3122,6 +3612,7 @@ const injectedRtkApi = api
               where: queryArg.where,
               filter: queryArg.filter,
               contains: queryArg.contains,
+              include_hidden: queryArg.includeHidden,
               include: queryArg.include,
             },
           }),
@@ -3154,6 +3645,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             resource_type: queryArg.resourceType,
             where_data: queryArg.whereData,
             where_data_engine: queryArg.whereDataEngine,
@@ -3175,6 +3667,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             resource_type: queryArg.resourceType,
             where_data: queryArg.whereData,
             where_data_engine: queryArg.whereDataEngine,
@@ -3203,6 +3696,7 @@ const injectedRtkApi = api
             limit: queryArg.limit,
             offset: queryArg.offset,
             order_by: queryArg.orderBy,
+            include_hidden: queryArg.includeHidden,
             distinct_on: queryArg.distinctOn,
           },
         }),
@@ -3220,6 +3714,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
             resource_type: queryArg.resourceType,
             where_data: queryArg.whereData,
             where_data_engine: queryArg.whereDataEngine,
@@ -3250,6 +3745,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["User"],
@@ -3270,6 +3766,9 @@ const injectedRtkApi = api
           url: `/user/${queryArg.userId}/key`,
           method: "POST",
           body: queryArg.createUserKeyRequest,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
         }),
         invalidatesTags: ["User"],
       }),
@@ -3294,6 +3793,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
           },
         }),
@@ -3308,6 +3808,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["View"],
@@ -3324,7 +3825,11 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["View"],
@@ -3341,6 +3846,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             name_prefixes: queryArg.namePrefixes,
             variant_labels: queryArg.variantLabels,
@@ -3348,6 +3854,11 @@ const injectedRtkApi = api
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            where_unit: queryArg.whereUnit,
+            filter_unit: queryArg.filterUnit,
+            dry_run: queryArg.dryRun,
           },
         }),
         invalidatesTags: ["View"],
@@ -3364,6 +3875,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
           },
@@ -3412,7 +3924,7 @@ export type BulkDeleteComponentsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Component: AllowedChangeWorkflowIDs, Annotations, ChangeWorkflowRequired, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, Slug, UpdatedAt.
+    Supported attributes for filtering on Component: AllowedChangeWorkflowIDs, Annotations, BackingUnitID, ChangeWorkflowRequired, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, Slug, UpdatedAt, UpstreamComponentID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -3444,6 +3956,14 @@ export type BulkDeleteComponentsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Component entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Component.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -3491,7 +4011,7 @@ export type BulkPatchComponentsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Component: AllowedChangeWorkflowIDs, Annotations, ChangeWorkflowRequired, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, Slug, UpdatedAt.
+    Supported attributes for filtering on Component: AllowedChangeWorkflowIDs, Annotations, BackingUnitID, ChangeWorkflowRequired, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, Slug, UpdatedAt, UpstreamComponentID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -3523,6 +4043,14 @@ export type BulkPatchComponentsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Component entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Component.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -3531,6 +4059,14 @@ export type BulkPatchComponentsApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
+  /** Give each Component written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Component's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** The Space, by slug or ID, for the backing Units with_backing_units creates. Required with it: a Component is in no Space of its own to hold one. */
+  backingUnitSpace?: string;
+  /** Patch each selected Component with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
+  fromBackingUnits?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     AllowedChangeWorkflowIDs?: (string | null)[] | null;
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -3544,6 +4080,8 @@ export type BulkPatchComponentsApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -3595,7 +4133,7 @@ export type BulkDeleteSpacesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -3627,6 +4165,14 @@ export type BulkDeleteSpacesApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Space entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Space.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -3680,7 +4226,7 @@ export type BulkPatchSpacesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -3712,6 +4258,14 @@ export type BulkPatchSpacesApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Space entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Space.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -3720,8 +4274,16 @@ export type BulkPatchSpacesApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
-  /** If true, re-list the Triggers matching WhereTrigger and/or TriggerFilterID even if these fields have not changed */
+  /** If true, re-list the Triggers the Space selects (with WhereTrigger and/or TriggerFilterID, or the ones in it with neither) even if these fields have not changed */
   refreshTriggers?: boolean;
+  /** Give each Space written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Space's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** The Space, by slug or ID, for the backing Units with_backing_units creates. Required with it: a Space is in no Space of its own to hold one. */
+  backingUnitSpace?: string;
+  /** Patch each selected Space with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
+  fromBackingUnits?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -3735,6 +4297,8 @@ export type BulkPatchSpacesApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -3790,7 +4354,7 @@ export type BulkCreateSpacesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -3822,6 +4386,14 @@ export type BulkCreateSpacesApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Space entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Space.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -3838,6 +4410,56 @@ export type BulkCreateSpacesApiArg = {
   namePattern?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** Give each Space written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Space's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** The Space, by slug or ID, for the backing Units with_backing_units creates. Required with it: a Space is in no Space of its own to hold one. */
+  backingUnitSpace?: string;
+  /** Create Spaces from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
+  fromBackingUnits?: boolean;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    The Units to create entities from, with from_backing_units.
+    
+    The whole string must be query-encoded. */
+  whereUnit?: string;
+  /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+  filterUnit?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -3851,6 +4473,8 @@ export type BulkCreateSpacesApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -3913,7 +4537,7 @@ export type ListAllAttestationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Attestation: AttestationID, ChangeOrderID, Claims, CreatedAt, EvidenceAttestationIDs, ExpiresAt, Note, OrganizationID, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
+    Supported attributes for filtering on Attestation: AttestationID, ChangeOrderID, Claims, CreatedAt, EvidenceAttestationIDs, ExpiresAt, HiddenReason, Note, OrganizationID, Permissions, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -3962,6 +4586,14 @@ export type ListAllAttestationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Attestation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type BulkDeleteAttributesApiResponse =
   | /** status 200 OK */ DeleteResponse[]
@@ -4001,7 +4633,7 @@ export type BulkDeleteAttributesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Attribute: Annotations, AttributeID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, Labels, OrganizationID, Parameters, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Attribute: Annotations, AttributeID, BackingUnitID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, HiddenReason, Labels, OrganizationID, Parameters, Permissions, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamAttributeID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -4033,6 +4665,14 @@ export type BulkDeleteAttributesApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Attribute entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Attribute.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -4079,7 +4719,7 @@ export type ListAllAttributesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Attribute: Annotations, AttributeID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, Labels, OrganizationID, Parameters, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Attribute: Annotations, AttributeID, BackingUnitID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, HiddenReason, Labels, OrganizationID, Parameters, Permissions, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamAttributeID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -4128,6 +4768,14 @@ export type ListAllAttributesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Attribute entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type BulkPatchAttributesApiResponse =
   | /** status 200 OK */ AttributeCreateOrUpdateResponseRead[]
@@ -4167,7 +4815,7 @@ export type BulkPatchAttributesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Attribute: Annotations, AttributeID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, Labels, OrganizationID, Parameters, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Attribute: Annotations, AttributeID, BackingUnitID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, HiddenReason, Labels, OrganizationID, Parameters, Permissions, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamAttributeID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -4199,6 +4847,14 @@ export type BulkPatchAttributesApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Attribute entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Attribute.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -4207,6 +4863,12 @@ export type BulkPatchAttributesApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
+  /** Give each Attribute written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Attribute's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Patch each selected Attribute with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
+  fromBackingUnits?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -4220,11 +4882,16 @@ export type BulkPatchAttributesApiArg = {
     Description?: string | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     Parameters?: (object | null)[] | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     ResourceTypePaths?: (object | null)[] | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -4271,7 +4938,7 @@ export type BulkCreateAttributesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Attribute: Annotations, AttributeID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, Labels, OrganizationID, Parameters, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Attribute: Annotations, AttributeID, BackingUnitID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, HiddenReason, Labels, OrganizationID, Parameters, Permissions, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamAttributeID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -4303,6 +4970,14 @@ export type BulkCreateAttributesApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Attribute entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Attribute.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -4347,7 +5022,7 @@ export type BulkCreateAttributesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     Where expression to select destination spaces for cloning attributes
     
@@ -4367,6 +5042,54 @@ export type BulkCreateAttributesApiArg = {
   filterSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** Give each Attribute written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Attribute's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Create Attributes from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
+  fromBackingUnits?: boolean;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    The Units to create entities from, with from_backing_units.
+    
+    The whole string must be query-encoded. */
+  whereUnit?: string;
+  /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+  filterUnit?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -4380,11 +5103,16 @@ export type BulkCreateAttributesApiArg = {
     Description?: string | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     Parameters?: (object | null)[] | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     ResourceTypePaths?: (object | null)[] | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -4431,7 +5159,7 @@ export type BulkMoveAttributesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Attribute: Annotations, AttributeID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, Labels, OrganizationID, Parameters, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Attribute: Annotations, AttributeID, BackingUnitID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, HiddenReason, Labels, OrganizationID, Parameters, Permissions, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamAttributeID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -4463,6 +5191,14 @@ export type BulkMoveAttributesApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Attribute entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Attribute.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -4513,7 +5249,7 @@ export type BulkDeleteBridgeWorkersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on BridgeWorker: Annotations, BridgeWorkerID, Condition, CreatedAt, DisplayName, IPAddress, Labels, LastMessage, LastSeenAt, OrgRole, OrganizationID, Permissions, ProvidedInfo, Slug, SpaceID, UpdatedAt, UserID.
+    Supported attributes for filtering on BridgeWorker: Annotations, BridgeWorkerID, Condition, CreatedAt, DisplayName, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrgRole, OrganizationID, Permissions, ProvidedInfo, Slug, SpaceID, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -4545,6 +5281,14 @@ export type BulkDeleteBridgeWorkersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden BridgeWorker entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for BridgeWorker.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -4593,7 +5337,7 @@ export type ListAllBridgeWorkersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on BridgeWorker: Annotations, BridgeWorkerID, Condition, CreatedAt, DisplayName, IPAddress, Labels, LastMessage, LastSeenAt, OrgRole, OrganizationID, Permissions, ProvidedInfo, Slug, SpaceID, UpdatedAt, UserID.
+    Supported attributes for filtering on BridgeWorker: Annotations, BridgeWorkerID, Condition, CreatedAt, DisplayName, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrgRole, OrganizationID, Permissions, ProvidedInfo, Slug, SpaceID, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -4642,6 +5386,14 @@ export type ListAllBridgeWorkersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden BridgeWorker entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include summary information in the response */
   summary?: boolean;
 };
@@ -4683,7 +5435,7 @@ export type BulkPatchBridgeWorkersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on BridgeWorker: Annotations, BridgeWorkerID, Condition, CreatedAt, DisplayName, IPAddress, Labels, LastMessage, LastSeenAt, OrgRole, OrganizationID, Permissions, ProvidedInfo, Slug, SpaceID, UpdatedAt, UserID.
+    Supported attributes for filtering on BridgeWorker: Annotations, BridgeWorkerID, Condition, CreatedAt, DisplayName, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrgRole, OrganizationID, Permissions, ProvidedInfo, Slug, SpaceID, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -4715,6 +5467,14 @@ export type BulkPatchBridgeWorkersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden BridgeWorker entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for BridgeWorker.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -4723,6 +5483,8 @@ export type BulkPatchBridgeWorkersApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -4735,6 +5497,8 @@ export type BulkPatchBridgeWorkersApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -4874,7 +5638,7 @@ export type BulkDeleteChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -4906,6 +5670,14 @@ export type BulkDeleteChangeOrdersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden ChangeOrder entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for ChangeOrder.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -4954,7 +5726,7 @@ export type ListAllChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5003,6 +5775,14 @@ export type ListAllChangeOrdersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden ChangeOrder entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type BulkPatchChangeOrdersApiResponse =
   | /** status 200 OK */ ChangeOrderCreateOrUpdateResponseRead[]
@@ -5042,7 +5822,7 @@ export type BulkPatchChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5074,6 +5854,14 @@ export type BulkPatchChangeOrdersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden ChangeOrder entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for ChangeOrder.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -5084,6 +5872,8 @@ export type BulkPatchChangeOrdersApiArg = {
   include?: string;
   /** If true, re-evaluate WhereSpace and/or SpaceFilterID into InScopeSpaceIDs, and re-derive what the ChangeOrder covers if the Spaces they select have changed, even if neither field has changed. Has no effect on a ChangeOrder with neither set. */
   refreshSpaces?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     AbortedReason?: string | null;
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -5099,6 +5889,8 @@ export type BulkPatchChangeOrdersApiArg = {
     /** Friendly name for the entity. */
     DisplayName?: string | null;
     EndTagID?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     InScopeSpaceIDs?: (string | null)[] | null;
     InvocationID?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -5106,6 +5898,9 @@ export type BulkPatchChangeOrdersApiArg = {
       [key: string]: string | null;
     } | null;
     Parameters?: object | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     SpaceFilterID?: string | null;
@@ -5155,7 +5950,7 @@ export type BulkCreateChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5187,6 +5982,14 @@ export type BulkCreateChangeOrdersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden ChangeOrder entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for ChangeOrder.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -5235,7 +6038,7 @@ export type BulkCreateChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     Where expression to select destination spaces for cloning changeorders
     
@@ -5255,6 +6058,8 @@ export type BulkCreateChangeOrdersApiArg = {
   filterSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     AbortedReason?: string | null;
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -5270,6 +6075,8 @@ export type BulkCreateChangeOrdersApiArg = {
     /** Friendly name for the entity. */
     DisplayName?: string | null;
     EndTagID?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     InScopeSpaceIDs?: (string | null)[] | null;
     InvocationID?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -5277,6 +6084,9 @@ export type BulkCreateChangeOrdersApiArg = {
       [key: string]: string | null;
     } | null;
     Parameters?: object | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     SpaceFilterID?: string | null;
@@ -5326,7 +6136,7 @@ export type BulkDeleteChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5358,6 +6168,14 @@ export type BulkDeleteChangeSetsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden ChangeSet entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for ChangeSet.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -5406,7 +6224,7 @@ export type ListAllChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5455,6 +6273,14 @@ export type ListAllChangeSetsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden ChangeSet entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type BulkPatchChangeSetsApiResponse =
   | /** status 200 OK */ ChangeSetCreateOrUpdateResponseRead[]
@@ -5494,7 +6320,7 @@ export type BulkPatchChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5526,6 +6352,14 @@ export type BulkPatchChangeSetsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden ChangeSet entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for ChangeSet.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -5534,6 +6368,8 @@ export type BulkPatchChangeSetsApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -5546,9 +6382,14 @@ export type BulkPatchChangeSetsApiArg = {
     Description?: string | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -5594,7 +6435,7 @@ export type BulkCreateChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5626,6 +6467,14 @@ export type BulkCreateChangeSetsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden ChangeSet entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for ChangeSet.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -5674,7 +6523,7 @@ export type BulkCreateChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     Where expression to select destination spaces for cloning changesets
     
@@ -5694,6 +6543,8 @@ export type BulkCreateChangeSetsApiArg = {
   filterSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -5706,9 +6557,14 @@ export type BulkCreateChangeSetsApiArg = {
     Description?: string | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -5754,7 +6610,7 @@ export type BulkMoveChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5786,6 +6642,14 @@ export type BulkMoveChangeSetsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden ChangeSet entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for ChangeSet.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -5836,7 +6700,7 @@ export type BulkDeleteChangeWorkflowsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Labels, OrganizationID, Slug, SpaceID, Stages, UpdatedAt.
+    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5868,6 +6732,14 @@ export type BulkDeleteChangeWorkflowsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden ChangeWorkflow entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for ChangeWorkflow.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -5914,7 +6786,7 @@ export type ListAllChangeWorkflowsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Labels, OrganizationID, Slug, SpaceID, Stages, UpdatedAt.
+    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5963,6 +6835,14 @@ export type ListAllChangeWorkflowsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden ChangeWorkflow entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type BulkPatchChangeWorkflowsApiResponse =
   | /** status 200 OK */ ChangeWorkflowCreateOrUpdateResponseRead[]
@@ -6002,7 +6882,7 @@ export type BulkPatchChangeWorkflowsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Labels, OrganizationID, Slug, SpaceID, Stages, UpdatedAt.
+    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6034,6 +6914,14 @@ export type BulkPatchChangeWorkflowsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden ChangeWorkflow entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for ChangeWorkflow.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -6042,6 +6930,12 @@ export type BulkPatchChangeWorkflowsApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
+  /** Give each ChangeWorkflow written a backing Unit if it has none: a ConfigHub/YAML Unit holding the ChangeWorkflow's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Patch each selected ChangeWorkflow with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
+  fromBackingUnits?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -6059,9 +6953,14 @@ export type BulkPatchChangeWorkflowsApiArg = {
     DisplayName?: string | null;
     /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
     Final?: object | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -6109,7 +7008,7 @@ export type BulkCreateChangeWorkflowsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Labels, OrganizationID, Slug, SpaceID, Stages, UpdatedAt.
+    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6141,6 +7040,14 @@ export type BulkCreateChangeWorkflowsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden ChangeWorkflow entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for ChangeWorkflow.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -6189,7 +7096,7 @@ export type BulkCreateChangeWorkflowsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     Where expression to select destination spaces for cloning change workflows
     
@@ -6209,6 +7116,54 @@ export type BulkCreateChangeWorkflowsApiArg = {
   filterSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** Give each ChangeWorkflow written a backing Unit if it has none: a ConfigHub/YAML Unit holding the ChangeWorkflow's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Create ChangeWorkflows from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
+  fromBackingUnits?: boolean;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    The Units to create entities from, with from_backing_units.
+    
+    The whole string must be query-encoded. */
+  whereUnit?: string;
+  /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+  filterUnit?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -6226,9 +7181,14 @@ export type BulkCreateChangeWorkflowsApiArg = {
     DisplayName?: string | null;
     /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
     Final?: object | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -6276,7 +7236,7 @@ export type BulkMoveChangeWorkflowsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Labels, OrganizationID, Slug, SpaceID, Stages, UpdatedAt.
+    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6308,6 +7268,14 @@ export type BulkMoveChangeWorkflowsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden ChangeWorkflow entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for ChangeWorkflow.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -6357,7 +7325,7 @@ export type ListComponentsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Component: AllowedChangeWorkflowIDs, Annotations, ChangeWorkflowRequired, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, Slug, UpdatedAt.
+    Supported attributes for filtering on Component: AllowedChangeWorkflowIDs, Annotations, BackingUnitID, ChangeWorkflowRequired, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, Slug, UpdatedAt, UpstreamComponentID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6406,12 +7374,26 @@ export type ListComponentsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Component entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateComponentApiResponse =
   /** status 200 The Component a set of Variants make up. Each Variant is a Space naming the Component with ComponentID. The Component decides which ChangeWorkflows promotions and releases of its Variants may use, and whether one is required. */ ComponentRead;
 export type CreateComponentApiArg = {
+  /** Give each Component written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Component's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** The Space, by slug or ID, for the backing Units with_backing_units creates. Required with it: a Component is in no Space of its own to hold one. */
+  backingUnitSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   component: Component;
 };
 export type DeleteComponentApiResponse =
@@ -6448,6 +7430,8 @@ export type PatchComponentApiResponse =
 export type PatchComponentApiArg = {
   /** Unique identifier for a component_id */
   componentId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     AllowedChangeWorkflowIDs?: (string | null)[] | null;
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -6461,6 +7445,8 @@ export type PatchComponentApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -6479,7 +7465,24 @@ export type UpdateComponentApiResponse =
 export type UpdateComponentApiArg = {
   /** Unique identifier for a component_id */
   componentId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   component: Component;
+};
+export type GetComponentDocumentApiResponse =
+  /** status 200 OK */ EntityDocument;
+export type GetComponentDocumentApiArg = {
+  /** Unique identifier for a component_id */
+  componentId: string;
+};
+export type UpdateComponentDocumentApiResponse =
+  /** status 200 The Component a set of Variants make up. Each Variant is a Space naming the Component with ComponentID. The Component decides which ChangeWorkflows promotions and releases of its Variants may use, and whether one is required. */ ComponentRead;
+export type UpdateComponentDocumentApiArg = {
+  /** Unique identifier for a component_id */
+  componentId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  entityDocumentEdit: EntityDocumentEdit;
 };
 export type DemoteApiResponse =
   | /** status 200 OK */ DemoteResult
@@ -6537,7 +7540,7 @@ export type BulkDeleteFiltersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Filter: Annotations, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, Labels, OrganizationID, ResourceType, Slug, SpaceID, UpdatedAt, Where, WhereData.
+    Supported attributes for filtering on Filter: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, HiddenReason, IncludeHidden, Labels, OrganizationID, Permissions, ResourceType, Slug, SpaceID, UpdatedAt, UpstreamFilterID, Where, WhereData.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6569,6 +7572,14 @@ export type BulkDeleteFiltersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Filter entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Filter.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -6615,7 +7626,7 @@ export type ListAllFiltersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Filter: Annotations, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, Labels, OrganizationID, ResourceType, Slug, SpaceID, UpdatedAt, Where, WhereData.
+    Supported attributes for filtering on Filter: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, HiddenReason, IncludeHidden, Labels, OrganizationID, Permissions, ResourceType, Slug, SpaceID, UpdatedAt, UpstreamFilterID, Where, WhereData.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6664,6 +7675,14 @@ export type ListAllFiltersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Filter entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Entity type to filter for (e.g., Unit, Space). Must be specified together with 'id' parameter. */
   entity?: string;
   /** Entity ID to filter for. Must be specified together with 'entity' parameter. */
@@ -6707,7 +7726,7 @@ export type BulkPatchFiltersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Filter: Annotations, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, Labels, OrganizationID, ResourceType, Slug, SpaceID, UpdatedAt, Where, WhereData.
+    Supported attributes for filtering on Filter: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, HiddenReason, IncludeHidden, Labels, OrganizationID, Permissions, ResourceType, Slug, SpaceID, UpdatedAt, UpstreamFilterID, Where, WhereData.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6739,6 +7758,14 @@ export type BulkPatchFiltersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Filter entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Filter.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -6747,6 +7774,12 @@ export type BulkPatchFiltersApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
+  /** Give each Filter written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Filter's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Patch each selected Filter with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
+  fromBackingUnits?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -6760,9 +7793,15 @@ export type BulkPatchFiltersApiArg = {
     DisplayName?: string | null;
     From?: string | null;
     FromSpaceID?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
+    IncludeHidden?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     ResourceType?: string | null;
     /** Unique URL-safe identifier for the entity. */
@@ -6811,7 +7850,7 @@ export type BulkCreateFiltersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Filter: Annotations, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, Labels, OrganizationID, ResourceType, Slug, SpaceID, UpdatedAt, Where, WhereData.
+    Supported attributes for filtering on Filter: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, HiddenReason, IncludeHidden, Labels, OrganizationID, Permissions, ResourceType, Slug, SpaceID, UpdatedAt, UpstreamFilterID, Where, WhereData.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6843,6 +7882,14 @@ export type BulkCreateFiltersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Filter entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Filter.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -6891,7 +7938,7 @@ export type BulkCreateFiltersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     Where expression to select destination spaces for cloning filters
     
@@ -6911,6 +7958,54 @@ export type BulkCreateFiltersApiArg = {
   filterSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** Give each Filter written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Filter's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Create Filters from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
+  fromBackingUnits?: boolean;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    The Units to create entities from, with from_backing_units.
+    
+    The whole string must be query-encoded. */
+  whereUnit?: string;
+  /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+  filterUnit?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -6924,9 +8019,15 @@ export type BulkCreateFiltersApiArg = {
     DisplayName?: string | null;
     From?: string | null;
     FromSpaceID?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
+    IncludeHidden?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     ResourceType?: string | null;
     /** Unique URL-safe identifier for the entity. */
@@ -6975,7 +8076,7 @@ export type BulkMoveFiltersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Filter: Annotations, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, Labels, OrganizationID, ResourceType, Slug, SpaceID, UpdatedAt, Where, WhereData.
+    Supported attributes for filtering on Filter: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, HiddenReason, IncludeHidden, Labels, OrganizationID, Permissions, ResourceType, Slug, SpaceID, UpdatedAt, UpstreamFilterID, Where, WhereData.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -7007,6 +8108,14 @@ export type BulkMoveFiltersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Filter entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Filter.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -7122,7 +8231,7 @@ export type InvokeFunctionsOnOrgApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -7140,6 +8249,14 @@ export type InvokeFunctionsOnOrgApiArg = {
     
     If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
   filter?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Comma-separated parts of the result to return in addition to the default: ConfigData for the configuration the invocation produced, carried whether or not the invocation changed it. Without it, the configuration is present only when the invocation changed it, and an unchanged result is reported by DataHash alone. Diff for what the invocation changed in each Unit, path by path with the values on both sides. */
   include?: string;
   /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
@@ -7199,7 +8316,7 @@ export type BulkDeleteInvocationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Invocation: Annotations, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, InvocationID, Labels, OrganizationID, Parameters, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
     
     The functions an Invocation calls are addressed with dot notation into `FunctionInvocations`: `FunctionInvocations.*.FunctionName = 'set-image'` matches an Invocation that calls set-image anywhere in its list, and `FunctionInvocations.0.FunctionName` addresses the first function it calls.
     
@@ -7233,6 +8350,14 @@ export type BulkDeleteInvocationsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Invocation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Invocation.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -7279,7 +8404,7 @@ export type ListAllInvocationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Invocation: Annotations, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, InvocationID, Labels, OrganizationID, Parameters, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
     
     The functions an Invocation calls are addressed with dot notation into `FunctionInvocations`: `FunctionInvocations.*.FunctionName = 'set-image'` matches an Invocation that calls set-image anywhere in its list, and `FunctionInvocations.0.FunctionName` addresses the first function it calls.
     
@@ -7330,6 +8455,14 @@ export type ListAllInvocationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Invocation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type BulkPatchInvocationsApiResponse =
   | /** status 200 OK */ InvocationCreateOrUpdateResponseRead[]
@@ -7369,7 +8502,7 @@ export type BulkPatchInvocationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Invocation: Annotations, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, InvocationID, Labels, OrganizationID, Parameters, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
     
     The functions an Invocation calls are addressed with dot notation into `FunctionInvocations`: `FunctionInvocations.*.FunctionName = 'set-image'` matches an Invocation that calls set-image anywhere in its list, and `FunctionInvocations.0.FunctionName` addresses the first function it calls.
     
@@ -7403,6 +8536,14 @@ export type BulkPatchInvocationsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Invocation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Invocation.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -7411,6 +8552,12 @@ export type BulkPatchInvocationsApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
+  /** Give each Invocation written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Invocation's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Patch each selected Invocation with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
+  fromBackingUnits?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -7424,11 +8571,16 @@ export type BulkPatchInvocationsApiArg = {
     /** Friendly name for the entity. */
     DisplayName?: string | null;
     FunctionInvocations?: (object | null)[] | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     Parameters?: (object | null)[] | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     ToolchainType?: string | null;
@@ -7474,7 +8626,7 @@ export type BulkCreateInvocationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Invocation: Annotations, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, InvocationID, Labels, OrganizationID, Parameters, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
     
     The functions an Invocation calls are addressed with dot notation into `FunctionInvocations`: `FunctionInvocations.*.FunctionName = 'set-image'` matches an Invocation that calls set-image anywhere in its list, and `FunctionInvocations.0.FunctionName` addresses the first function it calls.
     
@@ -7508,6 +8660,14 @@ export type BulkCreateInvocationsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Invocation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Invocation.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -7556,7 +8716,7 @@ export type BulkCreateInvocationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     Where expression to select destination spaces for cloning invocations
     
@@ -7576,6 +8736,54 @@ export type BulkCreateInvocationsApiArg = {
   filterSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** Give each Invocation written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Invocation's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Create Invocations from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
+  fromBackingUnits?: boolean;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    The Units to create entities from, with from_backing_units.
+    
+    The whole string must be query-encoded. */
+  whereUnit?: string;
+  /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+  filterUnit?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -7589,11 +8797,16 @@ export type BulkCreateInvocationsApiArg = {
     /** Friendly name for the entity. */
     DisplayName?: string | null;
     FunctionInvocations?: (object | null)[] | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     Parameters?: (object | null)[] | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     ToolchainType?: string | null;
@@ -7639,7 +8852,7 @@ export type BulkMoveInvocationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Invocation: Annotations, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, InvocationID, Labels, OrganizationID, Parameters, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -7671,6 +8884,14 @@ export type BulkMoveInvocationsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Invocation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Invocation.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -7721,7 +8942,7 @@ export type BulkDeleteLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     filter
     
@@ -7755,6 +8976,14 @@ export type BulkDeleteLinksApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Link entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Link.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -7801,7 +9030,7 @@ export type SearchListLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -7850,6 +9079,14 @@ export type SearchListLinksApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Link entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type BulkPatchLinksApiResponse =
   | /** status 200 OK */ LinkCreateOrUpdateResponseRead[]
@@ -7889,7 +9126,7 @@ export type BulkPatchLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     filter
     
@@ -7923,6 +9160,14 @@ export type BulkPatchLinksApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Link entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Link.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -7933,6 +9178,12 @@ export type BulkPatchLinksApiArg = {
   include?: string;
   /** Swap the FromUnit and ToUnit directions of the links */
   reverse?: boolean;
+  /** Give each Link written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Link's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Patch each selected Link with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
+  fromBackingUnits?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -7955,11 +9206,16 @@ export type BulkPatchLinksApiArg = {
     Guards?: {
       [key: string]: string | null;
     } | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     MergeEnableSubtraction?: boolean | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     Protect?: boolean | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -8015,7 +9271,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     Where expression to select source links to copy
     
@@ -8069,7 +9325,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     Where expression to find downstream UpgradeUnit links from each source link's FromUnit. Creates one copy per match. Required if reverse is not specified.
     
@@ -8109,7 +9365,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     Where expression to find downstream UpgradeUnit link from each source link's ToUnit. Exactly one match required. If omitted, ToUnitID/ToSpaceID are unchanged.
     
@@ -8117,6 +9373,62 @@ export type BulkCreateLinksApiArg = {
   toDownstreamWhere?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** Hidden Link entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Give each Link written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Link's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Create Links from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
+  fromBackingUnits?: boolean;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    The Units to create entities from, with from_backing_units.
+    
+    The whole string must be query-encoded. */
+  whereUnit?: string;
+  /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+  filterUnit?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -8139,11 +9451,16 @@ export type BulkCreateLinksApiArg = {
     Guards?: {
       [key: string]: string | null;
     } | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     MergeEnableSubtraction?: boolean | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     Protect?: boolean | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -8224,7 +9541,7 @@ export type ListOrganizationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Organization: Annotations, CreatedAt, DeleteGates, DisplayName, EmailDomain, ExternalID, Labels, OrganizationID, Slug, UpdatedAt.
+    Supported attributes for filtering on Organization: Annotations, CreatedAt, DeleteGates, DisplayName, EmailDomain, ExternalID, HiddenReason, Labels, OrganizationID, Slug, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -8273,6 +9590,14 @@ export type ListOrganizationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Organization entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateOrganizationApiResponse =
   /** status 200 The top-level container for an organization using ConfigHub. */ OrganizationRead;
@@ -8315,6 +9640,8 @@ export type UpdateOrganizationApiResponse =
 export type UpdateOrganizationApiArg = {
   /** Unique identifier for a organization_id */
   organizationId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   organization: Organization;
 };
 export type ListOrganizationMembersApiResponse =
@@ -8459,7 +9786,7 @@ export type ListAllReleasesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, Labels, ManifestDigest, OrganizationID, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt.
+    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -8508,6 +9835,14 @@ export type ListAllReleasesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Release entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type ListAllResourcesApiResponse =
   /** status 200 OK */ ExtendedResourceRead[];
@@ -8546,7 +9881,7 @@ export type ListAllResourcesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Resource: CreatedAt, Data, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt.
+    Supported attributes for filtering on Resource: CreatedAt, Data, HiddenReason, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt.
     
     Sub-paths of the JSON configuration data are addressed with dot notation, such as `Data.spec.replicas > 1`.
     
@@ -8597,6 +9932,14 @@ export type ListAllResourcesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Resource entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Maximum number of Resource entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. */
   limit?: number;
   /** Number of Resource entities to skip before returning results. Typically used together with 'limit' for pagination. If not specified, no entities are skipped. */
@@ -8605,7 +9948,7 @@ export type ListAllResourcesApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Resource: CreatedAt, Data, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt.
+    Supported attributes for ordering Resource: CreatedAt, Data, HiddenReason, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -8655,7 +9998,7 @@ export type ListAllRevisionsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list tagged Revisions use `Tags ? '<tag-id>'`.
     
@@ -8706,6 +10049,14 @@ export type ListAllRevisionsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Revision entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Maximum number of Revision entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. */
   limit?: number;
   /** Number of Revision entities to skip before returning results. Typically used together with 'limit' for pagination. If not specified, no entities are skipped. */
@@ -8714,7 +10065,7 @@ export type ListAllRevisionsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for ordering Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -8767,7 +10118,7 @@ export type SearchRevisionDataApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list tagged Revisions use `Tags ? '<tag-id>'`.
     
@@ -8818,6 +10169,14 @@ export type SearchRevisionDataApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Revision entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Maximum number of Revision entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. */
   limit?: number;
   /** Number of Revision entities to skip before returning results. Typically used together with 'limit' for pagination. If not specified, no entities are skipped. */
@@ -8826,7 +10185,7 @@ export type SearchRevisionDataApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for ordering Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -8880,7 +10239,7 @@ export type SearchRevisionMutationSourcesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list tagged Revisions use `Tags ? '<tag-id>'`.
     
@@ -8931,6 +10290,14 @@ export type SearchRevisionMutationSourcesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Revision entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Maximum number of Revision entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. */
   limit?: number;
   /** Number of Revision entities to skip before returning results. Typically used together with 'limit' for pagination. If not specified, no entities are skipped. */
@@ -8939,7 +10306,7 @@ export type SearchRevisionMutationSourcesApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for ordering Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -8992,7 +10359,7 @@ export type ListSpacesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -9041,14 +10408,28 @@ export type ListSpacesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Space entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Return summarized entity data */
   summary?: boolean;
 };
 export type CreateSpaceApiResponse =
   /** status 200 The logical container for most entities in ConfigHub. Namespaces triggers, units, targets, workers, and other entities. */ SpaceRead;
 export type CreateSpaceApiArg = {
+  /** Give each Space written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Space's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** The Space, by slug or ID, for the backing Units with_backing_units creates. Required with it: a Space is in no Space of its own to hold one. */
+  backingUnitSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   space: Space;
 };
 export type DeleteSpaceApiResponse =
@@ -9092,8 +10473,10 @@ export type PatchSpaceApiResponse =
 export type PatchSpaceApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
-  /** If true, re-list the Triggers matching WhereTrigger and/or TriggerFilterID even if these fields have not changed */
+  /** If true, re-list the Triggers the Space selects (with WhereTrigger and/or TriggerFilterID, or the ones in it with neither) even if these fields have not changed */
   refreshTriggers?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -9107,6 +10490,8 @@ export type PatchSpaceApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -9129,8 +10514,10 @@ export type UpdateSpaceApiResponse =
 export type UpdateSpaceApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
-  /** If true, re-list the Triggers matching WhereTrigger and/or TriggerFilterID even if these fields have not changed */
+  /** If true, re-list the Triggers the Space selects (with WhereTrigger and/or TriggerFilterID, or the ones in it with neither) even if these fields have not changed */
   refreshTriggers?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   space: Space;
 };
 export type ListExtendedAttestationsApiResponse =
@@ -9172,7 +10559,7 @@ export type ListExtendedAttestationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Attestation: AttestationID, ChangeOrderID, Claims, CreatedAt, EvidenceAttestationIDs, ExpiresAt, Note, OrganizationID, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
+    Supported attributes for filtering on Attestation: AttestationID, ChangeOrderID, Claims, CreatedAt, EvidenceAttestationIDs, ExpiresAt, HiddenReason, Note, OrganizationID, Permissions, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -9221,6 +10608,14 @@ export type ListExtendedAttestationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Attestation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateAttestationApiResponse =
   /** status 200 OK */ AttestationCreateResponseRead;
@@ -9295,7 +10690,7 @@ export type ListAttributesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Attribute: Annotations, AttributeID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, Labels, OrganizationID, Parameters, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Attribute: Annotations, AttributeID, BackingUnitID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, HiddenReason, Labels, OrganizationID, Parameters, Permissions, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamAttributeID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -9344,6 +10739,14 @@ export type ListAttributesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Attribute entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateAttributeApiResponse =
   /** status 200 Defines a dynamic configuration attribute that registers getter and setter functions
@@ -9353,8 +10756,12 @@ type that can be read and written using generated get-<slug> and set-<slug> func
 export type CreateAttributeApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
+  /** Give each Attribute written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Attribute's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   attribute: Attribute;
 };
 export type DeleteAttributeApiResponse =
@@ -9400,6 +10807,8 @@ export type PatchAttributeApiArg = {
   spaceId: string;
   /** Unique identifier for a attribute_id */
   attributeId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -9413,11 +10822,16 @@ export type PatchAttributeApiArg = {
     Description?: string | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     Parameters?: (object | null)[] | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     ResourceTypePaths?: (object | null)[] | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -9436,7 +10850,31 @@ export type UpdateAttributeApiArg = {
   spaceId: string;
   /** Unique identifier for a attribute_id */
   attributeId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   attribute: Attribute;
+};
+export type GetAttributeDocumentApiResponse =
+  /** status 200 OK */ EntityDocument;
+export type GetAttributeDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a attribute_id */
+  attributeId: string;
+};
+export type UpdateAttributeDocumentApiResponse =
+  /** status 200 Defines a dynamic configuration attribute that registers getter and setter functions
+and their associated paths in a Space's FunctionExecutor. Attributes enable per-Space
+customization of the function registry by specifying a set of paths within a resource
+type that can be read and written using generated get-<slug> and set-<slug> functions. */ AttributeRead;
+export type UpdateAttributeDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a attribute_id */
+  attributeId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  entityDocumentEdit: EntityDocumentEdit;
 };
 export type ListBridgeWorkersApiResponse =
   /** status 200 OK */ ExtendedBridgeWorkerRead[];
@@ -9477,7 +10915,7 @@ export type ListBridgeWorkersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on BridgeWorker: Annotations, BridgeWorkerID, Condition, CreatedAt, DisplayName, IPAddress, Labels, LastMessage, LastSeenAt, OrgRole, OrganizationID, Permissions, ProvidedInfo, Slug, SpaceID, UpdatedAt, UserID.
+    Supported attributes for filtering on BridgeWorker: Annotations, BridgeWorkerID, Condition, CreatedAt, DisplayName, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrgRole, OrganizationID, Permissions, ProvidedInfo, Slug, SpaceID, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -9526,6 +10964,14 @@ export type ListBridgeWorkersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden BridgeWorker entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateBridgeWorkerApiResponse =
   /** status 200 BridgeWorker represents a bridge worker in ConfigHub.
@@ -9541,6 +10987,8 @@ export type CreateBridgeWorkerApiArg = {
   spaceId: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   bridgeWorker: BridgeWorker;
 };
 export type DeleteBridgeWorkerApiResponse =
@@ -9592,6 +11040,8 @@ export type PatchBridgeWorkerApiArg = {
   spaceId: string;
   /** Unique identifier for a bridge_worker_id */
   bridgeWorkerId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -9604,6 +11054,8 @@ export type PatchBridgeWorkerApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -9633,6 +11085,8 @@ export type UpdateBridgeWorkerApiArg = {
   spaceId: string;
   /** Unique identifier for a bridge_worker_id */
   bridgeWorkerId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   bridgeWorker: BridgeWorker;
 };
 export type ListBridgeWorkerFunctionsApiResponse = /** status 200 OK */ {
@@ -9703,7 +11157,7 @@ export type ListChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -9752,6 +11206,14 @@ export type ListChangeOrdersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden ChangeOrder entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateChangeOrderApiResponse =
   /** status 200 Defines a change's identity as it moves between Spaces. */ ChangeOrderRead;
@@ -9760,6 +11222,8 @@ export type CreateChangeOrderApiArg = {
   spaceId: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   changeOrder: ChangeOrder;
 };
 export type DeleteChangeOrderApiResponse =
@@ -9806,6 +11270,8 @@ export type PatchChangeOrderApiArg = {
   changeOrderId: string;
   /** If true, re-evaluate WhereSpace and/or SpaceFilterID into InScopeSpaceIDs, and re-derive what the ChangeOrder covers if the Spaces they select have changed, even if neither field has changed. Has no effect on a ChangeOrder with neither set. */
   refreshSpaces?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     AbortedReason?: string | null;
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -9821,6 +11287,8 @@ export type PatchChangeOrderApiArg = {
     /** Friendly name for the entity. */
     DisplayName?: string | null;
     EndTagID?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     InScopeSpaceIDs?: (string | null)[] | null;
     InvocationID?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -9828,6 +11296,9 @@ export type PatchChangeOrderApiArg = {
       [key: string]: string | null;
     } | null;
     Parameters?: object | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     SpaceFilterID?: string | null;
@@ -9848,6 +11319,8 @@ export type UpdateChangeOrderApiArg = {
   changeOrderId: string;
   /** If true, re-evaluate WhereSpace and/or SpaceFilterID into InScopeSpaceIDs, and re-derive what the ChangeOrder covers if the Spaces they select have changed, even if neither field has changed. Has no effect on a ChangeOrder with neither set. */
   refreshSpaces?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   changeOrder: ChangeOrder;
 };
 export type ListChangeSetsApiResponse =
@@ -9889,7 +11362,7 @@ export type ListChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, Labels, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -9938,6 +11411,14 @@ export type ListChangeSetsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden ChangeSet entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateChangeSetApiResponse =
   /** status 200 Defines an entity changeset. */ ChangeSetRead;
@@ -9946,6 +11427,8 @@ export type CreateChangeSetApiArg = {
   spaceId: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   changeSet: ChangeSet;
 };
 export type DeleteChangeSetApiResponse =
@@ -9990,6 +11473,8 @@ export type PatchChangeSetApiArg = {
   spaceId: string;
   /** Unique identifier for a change_set_id */
   changeSetId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -10002,9 +11487,14 @@ export type PatchChangeSetApiArg = {
     Description?: string | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -10019,6 +11509,8 @@ export type UpdateChangeSetApiArg = {
   spaceId: string;
   /** Unique identifier for a change_set_id */
   changeSetId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   changeSet: ChangeSet;
 };
 export type ListChangeWorkflowsApiResponse =
@@ -10060,7 +11552,7 @@ export type ListChangeWorkflowsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Labels, OrganizationID, Slug, SpaceID, Stages, UpdatedAt.
+    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -10109,14 +11601,26 @@ export type ListChangeWorkflowsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden ChangeWorkflow entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateChangeWorkflowApiResponse =
   /** status 200 Declares how a change is promoted: the ordered stages it moves through, which Spaces each stage selects, and the gates that have to pass before it enters one. */ ChangeWorkflowRead;
 export type CreateChangeWorkflowApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
+  /** Give each ChangeWorkflow written a backing Unit if it has none: a ConfigHub/YAML Unit holding the ChangeWorkflow's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   changeWorkflow: ChangeWorkflow;
 };
 export type DeleteChangeWorkflowApiResponse =
@@ -10159,6 +11663,8 @@ export type PatchChangeWorkflowApiArg = {
   spaceId: string;
   /** Unique identifier for a change_workflow_id */
   changeWorkflowId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -10176,9 +11682,14 @@ export type PatchChangeWorkflowApiArg = {
     DisplayName?: string | null;
     /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
     Final?: object | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -10195,7 +11706,42 @@ export type UpdateChangeWorkflowApiArg = {
   spaceId: string;
   /** Unique identifier for a change_workflow_id */
   changeWorkflowId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   changeWorkflow: ChangeWorkflow;
+};
+export type GetChangeWorkflowDocumentApiResponse =
+  /** status 200 OK */ EntityDocument;
+export type GetChangeWorkflowDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a change_workflow_id */
+  changeWorkflowId: string;
+};
+export type UpdateChangeWorkflowDocumentApiResponse =
+  /** status 200 Declares how a change is promoted: the ordered stages it moves through, which Spaces each stage selects, and the gates that have to pass before it enters one. */ ChangeWorkflowRead;
+export type UpdateChangeWorkflowDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a change_workflow_id */
+  changeWorkflowId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  entityDocumentEdit: EntityDocumentEdit;
+};
+export type GetSpaceDocumentApiResponse = /** status 200 OK */ EntityDocument;
+export type GetSpaceDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+};
+export type UpdateSpaceDocumentApiResponse =
+  /** status 200 The logical container for most entities in ConfigHub. Namespaces triggers, units, targets, workers, and other entities. */ SpaceRead;
+export type UpdateSpaceDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  entityDocumentEdit: EntityDocumentEdit;
 };
 export type ListFiltersApiResponse = /** status 200 OK */ ExtendedFilterRead[];
 export type ListFiltersApiArg = {
@@ -10235,7 +11781,7 @@ export type ListFiltersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Filter: Annotations, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, Labels, OrganizationID, ResourceType, Slug, SpaceID, UpdatedAt, Where, WhereData.
+    Supported attributes for filtering on Filter: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, HiddenReason, IncludeHidden, Labels, OrganizationID, Permissions, ResourceType, Slug, SpaceID, UpdatedAt, UpstreamFilterID, Where, WhereData.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -10284,6 +11830,14 @@ export type ListFiltersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Filter entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Entity type to filter for (e.g., Unit, Space). Must be specified together with 'id' parameter. */
   entity?: string;
   /** Entity ID to filter for. Must be specified together with 'entity' parameter. */
@@ -10294,8 +11848,12 @@ export type CreateFilterApiResponse =
 export type CreateFilterApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
+  /** Give each Filter written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Filter's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   filter: Filter;
 };
 export type DeleteFilterApiResponse =
@@ -10337,6 +11895,8 @@ export type PatchFilterApiArg = {
   spaceId: string;
   /** Unique identifier for a filter_id */
   filterId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -10350,9 +11910,15 @@ export type PatchFilterApiArg = {
     DisplayName?: string | null;
     From?: string | null;
     FromSpaceID?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
+    IncludeHidden?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     ResourceType?: string | null;
     /** Unique URL-safe identifier for the entity. */
@@ -10370,7 +11936,27 @@ export type UpdateFilterApiArg = {
   spaceId: string;
   /** Unique identifier for a filter_id */
   filterId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   filter: Filter;
+};
+export type GetFilterDocumentApiResponse = /** status 200 OK */ EntityDocument;
+export type GetFilterDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a filter_id */
+  filterId: string;
+};
+export type UpdateFilterDocumentApiResponse =
+  /** status 200 Defines an entity filter. */ FilterRead;
+export type UpdateFilterDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a filter_id */
+  filterId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  entityDocumentEdit: EntityDocumentEdit;
 };
 export type ListFunctionsApiResponse = /** status 200 OK */ {
   [key: string]: {
@@ -10483,7 +12069,7 @@ export type InvokeFunctionsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -10501,6 +12087,14 @@ export type InvokeFunctionsApiArg = {
     
     If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
   filter?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Comma-separated parts of the result to return in addition to the default: ConfigData for the configuration the invocation produced, carried whether or not the invocation changed it. Without it, the configuration is present only when the invocation changed it, and an unchanged result is reported by DataHash alone. Diff for what the invocation changed in each Unit, path by path with the values on both sides. */
   include?: string;
   /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
@@ -10558,7 +12152,7 @@ export type ListInvocationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Invocation: Annotations, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, InvocationID, Labels, OrganizationID, Parameters, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
     
     The functions an Invocation calls are addressed with dot notation into `FunctionInvocations`: `FunctionInvocations.*.FunctionName = 'set-image'` matches an Invocation that calls set-image anywhere in its list, and `FunctionInvocations.0.FunctionName` addresses the first function it calls.
     
@@ -10609,14 +12203,26 @@ export type ListInvocationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Invocation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateInvocationApiResponse =
   /** status 200 Defines a stored, reusable call to one or more functions, executed in the order they are listed. */ InvocationRead;
 export type CreateInvocationApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
+  /** Give each Invocation written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Invocation's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   invocation: Invocation;
 };
 export type DeleteInvocationApiResponse =
@@ -10659,6 +12265,8 @@ export type PatchInvocationApiArg = {
   spaceId: string;
   /** Unique identifier for a invocation_id */
   invocationId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -10672,11 +12280,16 @@ export type PatchInvocationApiArg = {
     /** Friendly name for the entity. */
     DisplayName?: string | null;
     FunctionInvocations?: (object | null)[] | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     Parameters?: (object | null)[] | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     ToolchainType?: string | null;
@@ -10691,7 +12304,28 @@ export type UpdateInvocationApiArg = {
   spaceId: string;
   /** Unique identifier for a invocation_id */
   invocationId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   invocation: Invocation;
+};
+export type GetInvocationDocumentApiResponse =
+  /** status 200 OK */ EntityDocument;
+export type GetInvocationDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a invocation_id */
+  invocationId: string;
+};
+export type UpdateInvocationDocumentApiResponse =
+  /** status 200 Defines a stored, reusable call to one or more functions, executed in the order they are listed. */ InvocationRead;
+export type UpdateInvocationDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a invocation_id */
+  invocationId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  entityDocumentEdit: EntityDocumentEdit;
 };
 export type ListLinksApiResponse = /** status 200 OK */ ExtendedLinkRead[];
 export type ListLinksApiArg = {
@@ -10731,7 +12365,7 @@ export type ListLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -10780,6 +12414,14 @@ export type ListLinksApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Link entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateLinkApiResponse =
   /** status 200 Link connects two config Units in a dependency / producer-consumer relationship.
@@ -10789,8 +12431,12 @@ Links must be created in the same Space as the From Unit. */ LinkRead;
 export type CreateLinkApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
+  /** Give each Link written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Link's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   link: Link;
 };
 export type DeleteLinkApiResponse =
@@ -10837,6 +12483,8 @@ export type PatchLinkApiArg = {
   linkId: string;
   /** Swap the FromUnit and ToUnit directions of the link */
   reverse?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -10859,11 +12507,16 @@ export type PatchLinkApiArg = {
     Guards?: {
       [key: string]: string | null;
     } | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     MergeEnableSubtraction?: boolean | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     Protect?: boolean | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -10891,7 +12544,30 @@ export type UpdateLinkApiArg = {
   spaceId: string;
   /** Unique identifier for a link_id */
   linkId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   link: Link;
+};
+export type GetLinkDocumentApiResponse = /** status 200 OK */ EntityDocument;
+export type GetLinkDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a link_id */
+  linkId: string;
+};
+export type UpdateLinkDocumentApiResponse =
+  /** status 200 Link connects two config Units in a dependency / producer-consumer relationship.
+A Link indicates that selected config data from the upstream To Unit (the producer)
+should be propagated to the downstream From Unit (the consumer).
+Links must be created in the same Space as the From Unit. */ LinkRead;
+export type UpdateLinkDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a link_id */
+  linkId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  entityDocumentEdit: EntityDocumentEdit;
 };
 export type ListExtendedReleasesApiResponse =
   /** status 200 OK */ ExtendedReleaseRead[];
@@ -10932,7 +12608,7 @@ export type ListExtendedReleasesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, Labels, ManifestDigest, OrganizationID, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt.
+    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -10981,6 +12657,14 @@ export type ListExtendedReleasesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Release entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type PublishReleaseApiResponse =
   /** status 200 Release is a published bundle of the configuration of the Units in a Space that are assigned to a Target. It is created by publishing, taken out of service by withdrawing, and removed by deleting; its bundled content is never updated, though its Labels, Annotations, and DeleteGates can be. The bundle is stored as an OCI image (a tar.gz layer plus manifest) so it can be served to and consumed by the Target. */ ReleaseRead;
@@ -11031,6 +12715,8 @@ export type PatchReleaseApiArg = {
   spaceId: string;
   /** Unique identifier for a release_id */
   releaseId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -11040,9 +12726,14 @@ export type PatchReleaseApiArg = {
     DeleteGates?: {
       [key: string]: boolean | null;
     } | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
     Version?: number | null;
@@ -11055,6 +12746,8 @@ export type UpdateReleaseApiArg = {
   spaceId: string;
   /** Unique identifier for a release_id */
   releaseId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   release: Release;
 };
 export type DownloadReleaseDataApiResponse = /** status 200 OK */ string;
@@ -11110,7 +12803,7 @@ export type ListTagsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
+    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -11159,6 +12852,14 @@ export type ListTagsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Tag entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateTagApiResponse =
   /** status 200 Defines a Tag that can be used to identify a set of Revisions across Units. */ TagRead;
@@ -11167,6 +12868,8 @@ export type CreateTagApiArg = {
   spaceId: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   tag: Tag;
 };
 export type DeleteTagApiResponse =
@@ -11210,6 +12913,8 @@ export type PatchTagApiArg = {
   spaceId: string;
   /** Unique identifier for a tag_id */
   tagId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -11221,9 +12926,14 @@ export type PatchTagApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -11238,6 +12948,8 @@ export type UpdateTagApiArg = {
   spaceId: string;
   /** Unique identifier for a tag_id */
   tagId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   tag: Tag;
 };
 export type ListTargetsApiResponse = /** status 200 OK */ ExtendedTargetRead[];
@@ -11278,7 +12990,7 @@ export type ListTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, BridgeHandle, BridgeWorkerID, ConfigTypes, CreatedAt, DeleteGates, DisplayName, Facts, Labels, LiveStateType, Options, OrganizationID, Permissions, ProviderType, Slug, SpaceID, TargetID, ToolchainType, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Target: Annotations, BridgeHandle, BridgeWorkerID, ConfigTypes, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, LiveStateType, Options, OrganizationID, Permissions, ProviderType, Slug, SpaceID, TargetID, ToolchainType, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -11327,6 +13039,14 @@ export type ListTargetsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Target entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateTargetApiResponse =
   /** status 200 Target represents a deployment target in ConfigHub. It defines where configuration should be applied, including the toolchain type (e.g., Kubernetes/YAML, AppConfig/Properties, AppConfig/YAML, AppConfig/TOML, AppConfig/INI, AppConfig/JSON, AppConfig/Env, AppConfig/Text) and provider (e.g., ArgoCDOCI, FluxOCI). Each Target is associated with a specific BridgeWorker that handles the actual deployment actions (e.g. Apply, Destroy). */ TargetRead;
@@ -11335,6 +13055,8 @@ export type CreateTargetApiArg = {
   spaceId: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   target: Target;
 };
 export type DeleteTargetApiResponse =
@@ -11380,6 +13102,8 @@ export type PatchTargetApiArg = {
   targetId: string;
   /** Re-list the Triggers matching WhereTrigger and/or TriggerFilterID even if these fields have not changed */
   refreshTriggers?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -11397,6 +13121,8 @@ export type PatchTargetApiArg = {
     Facts?: {
       [key: string]: string | null;
     } | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -11428,6 +13154,8 @@ export type UpdateTargetApiArg = {
   targetId: string;
   /** Re-list the Triggers matching WhereTrigger and/or TriggerFilterID even if these fields have not changed */
   refreshTriggers?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   target: Target;
 };
 export type ListTriggersApiResponse =
@@ -11469,7 +13197,7 @@ export type ListTriggersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Trigger: Annotations, Arguments, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, InvocationID, Labels, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, Validating, Warn, WhereResource, WhereUnit.
+    Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
     
     A Trigger returns the function it invokes inline rather than in a FunctionInvocation object, so `where` names FunctionName and Arguments directly. The arguments are addressed with dot notation into `Arguments`, which is a list: `Arguments.?ParameterName=attribute-name.Value = 'owner'` reads the argument bound to a named parameter, `Arguments.*.Value` matches any argument's value, and `Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
     
@@ -11520,6 +13248,14 @@ export type ListTriggersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Trigger entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateTriggerApiResponse =
   /** status 200 Defines an automated function invocation that executes in response to specific
@@ -11534,8 +13270,12 @@ triggers can be set to Warn mode to produce non-blocking ValidationWarnings inst
 export type CreateTriggerApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
+  /** Give each Trigger written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Trigger's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   trigger: Trigger;
 };
 export type DeleteTriggerApiResponse =
@@ -11585,6 +13325,8 @@ export type PatchTriggerApiArg = {
   spaceId: string;
   /** Unique identifier for a trigger_id */
   triggerId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -11610,6 +13352,8 @@ export type PatchTriggerApiArg = {
     Guards?: {
       [key: string]: string | null;
     } | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     InvocationID?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
@@ -11618,6 +13362,9 @@ export type PatchTriggerApiArg = {
     OtherDataSource?: string | null;
     /** Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
     Params?: object | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     Protect?: boolean | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -11646,7 +13393,35 @@ export type UpdateTriggerApiArg = {
   spaceId: string;
   /** Unique identifier for a trigger_id */
   triggerId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   trigger: Trigger;
+};
+export type GetTriggerDocumentApiResponse = /** status 200 OK */ EntityDocument;
+export type GetTriggerDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a trigger_id */
+  triggerId: string;
+};
+export type UpdateTriggerDocumentApiResponse =
+  /** status 200 Defines an automated function invocation that executes in response to specific
+Unit lifecycle events in ConfigHub. Triggers can be used to implement validation rules,
+automated transformations, or other custom logic that should run when configuration
+changes occur. Each Trigger is associated with a specific Space and can be configured
+to execute on events.
+
+Triggers can be either validating (checking configuration validity without modifying it)
+or mutating (making changes to the configuration). They can be disabled, and validating
+triggers can be set to Warn mode to produce non-blocking ValidationWarnings instead of ValidationErrors. */ TriggerRead;
+export type UpdateTriggerDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a trigger_id */
+  triggerId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  entityDocumentEdit: EntityDocumentEdit;
 };
 export type ListUnitsApiResponse = /** status 200 OK */ ExtendedUnitRead[];
 export type ListUnitsApiArg = {
@@ -11686,7 +13461,7 @@ export type ListUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -11737,6 +13512,14 @@ export type ListUnitsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
   resourceType?: string;
   /** Where data: The specified string is an expression for the purpose of evaluating whether the configuration data matches the filter. It supports conjunctions using `AND` of relational expressions of the form *path* *operator* *literal*. The path specifications are dot-separated, for both map fields and array indices, as in `spec.template.spec.containers.0.image = 'ghcr.io/headlamp-k8s/headlamp:latest' AND spec.replicas > 1`. Path expressions support `*` for wildcard array or map segments and `?key=value` syntax for associative matches of array elements containing objects with a `key` attribute. Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `!~`, `~*`, `!~*`, `IN`, `NOT IN`. String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards, `ILIKE` for case-insensitive pattern matching, `!~~` for NOT LIKE. String regex operators: `~` for regex matching, `~*` for case-insensitive regex, `!~` and `!~*` for regex not matching (case-sensitive and insensitive). Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`. Boolean values support equality and inequality only. The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses, such as `spec.template.spec.containers.0.image#reference IN (':latest', ':arm64-latest')`. The syntax `.|` splits the path: the left side selects, and the right side is a property of what was selected. On the right side of a `.|`, and only there, `!=` is true when the property is absent: `spec.containers.*.|image != 'nginx'` selects the containers and asks that none of their images be nginx, which a container with no image satisfies. Everywhere else a path that is not present is not a match, `!=` included. String literals are quoted with single quotes, such as `'string'`. Integer and boolean literals are also supported for attributes of those types. The whole string must be query-encoded. */
@@ -11771,6 +13554,8 @@ export type CreateUnitApiArg = {
   allowExists?: string;
   /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
   include?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   unit: Unit;
 };
 export type DeleteUnitApiResponse =
@@ -11877,7 +13662,7 @@ export type PatchUnitApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
+    Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
     
     Selects Mutations of this Unit whose paths the merge must not overwrite, unioned with the Protected values stored on the Unit's MutationSources.
     
@@ -11924,12 +13709,17 @@ export type PatchUnitApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     /** LastChangeDescription is a human-readable description of the last change. This description is copied to the new Revision when the Data is changed. */
     LastChangeDescription?: string | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     ProviderType?: string | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -12014,7 +13804,7 @@ export type UpdateUnitApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
+    Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
     
     Selects Mutations of this Unit whose paths the merge must not overwrite, unioned with the Protected values stored on the Unit's MutationSources.
     
@@ -12159,7 +13949,7 @@ export type ListExtendedMutationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
+    Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
     
     The function invoked is returned as a FunctionInvocation object, and `where` names its fields the same way: `FunctionInvocation.FunctionName`, `FunctionInvocation.Guards.<reason>`, and `FunctionInvocation.Arguments`, which is a list addressed with dot notation. `FunctionInvocation.Arguments.?ParameterName=container-image.Value LIKE 'nginx%'` reads the argument bound to a named parameter, `FunctionInvocation.Arguments.*.Value` matches any argument's value, and `FunctionInvocation.Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
     
@@ -12210,6 +14000,14 @@ export type ListExtendedMutationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Mutation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type GetExtendedMutationApiResponse =
   /** status 200 OK */ ExtendedMutationRead;
@@ -12296,7 +14094,7 @@ export type ListExtendedResourcesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Resource: CreatedAt, Data, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt.
+    Supported attributes for filtering on Resource: CreatedAt, Data, HiddenReason, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt.
     
     Sub-paths of the JSON configuration data are addressed with dot notation, such as `Data.spec.replicas > 1`.
     
@@ -12347,6 +14145,14 @@ export type ListExtendedResourcesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Resource entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Maximum number of Resource entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. */
   limit?: number;
   /** Number of Resource entities to skip before returning results. Typically used together with 'limit' for pagination. If not specified, no entities are skipped. */
@@ -12355,7 +14161,7 @@ export type ListExtendedResourcesApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Resource: CreatedAt, Data, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt.
+    Supported attributes for ordering Resource: CreatedAt, Data, HiddenReason, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -12400,7 +14206,7 @@ export type GetExtendedResourceApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Resource: CreatedAt, Data, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt.
+    Supported attributes for ordering Resource: CreatedAt, Data, HiddenReason, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -12456,7 +14262,7 @@ export type ListExtendedRevisionsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list a tagged Revision use `Tags ? '<tag-id>'`.
     
@@ -12507,6 +14313,14 @@ export type ListExtendedRevisionsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Revision entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Maximum number of Revision entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. */
   limit?: number;
   /** Number of Revision entities to skip before returning results. Typically used together with 'limit' for pagination. If not specified, no entities are skipped. */
@@ -12515,7 +14329,7 @@ export type ListExtendedRevisionsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for ordering Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -12556,7 +14370,7 @@ export type GetExtendedRevisionApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for ordering Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -12709,7 +14523,7 @@ export type ListUnitEventsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on UnitEvent: Action, BridgeWorkerID, CreatedAt, OrganizationID, QueuedOperationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
+    Supported attributes for filtering on UnitEvent: Action, BridgeWorkerID, CreatedAt, HiddenReason, OrganizationID, QueuedOperationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -12749,7 +14563,7 @@ export type ListUnitEventsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering UnitEvent: Action, BridgeWorkerID, CreatedAt, OrganizationID, QueuedOperationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
+    Supported attributes for ordering UnitEvent: Action, BridgeWorkerID, CreatedAt, HiddenReason, OrganizationID, QueuedOperationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -12757,6 +14571,14 @@ export type ListUnitEventsApiArg = {
     
     The whole string must be query-encoded. */
   orderBy?: string;
+  /** Hidden UnitEvent entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type GetUnitEventApiResponse =
   /** status 200 UnitEvent represents an event of action performed on a Unit's configuration. Each action tracks
@@ -12779,7 +14601,7 @@ export type GetUnitEventApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering UnitEvent: Action, BridgeWorkerID, CreatedAt, OrganizationID, QueuedOperationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
+    Supported attributes for ordering UnitEvent: Action, BridgeWorkerID, CreatedAt, HiddenReason, OrganizationID, QueuedOperationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -12828,7 +14650,7 @@ export type ListViewsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on View: Annotations, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Slug, SpaceID, UpdatedAt, ViewID.
+    Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -12877,14 +14699,26 @@ export type ListViewsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden View entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type CreateViewApiResponse =
   /** status 200 Defines an entity view. */ ViewRead;
 export type CreateViewApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
+  /** Give each View written a backing Unit if it has none: a ConfigHub/YAML Unit holding the View's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   view: View;
 };
 export type DeleteViewApiResponse =
@@ -12926,6 +14760,8 @@ export type PatchViewApiArg = {
   spaceId: string;
   /** Unique identifier for a view_id */
   viewId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -12940,6 +14776,8 @@ export type PatchViewApiArg = {
     DisplayName?: string | null;
     FilterID?: string | null;
     GroupBy?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -12947,6 +14785,9 @@ export type PatchViewApiArg = {
     Of?: string | null;
     OrderBy?: string | null;
     OrderByDirection?: string | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
@@ -12960,7 +14801,27 @@ export type UpdateViewApiArg = {
   spaceId: string;
   /** Unique identifier for a view_id */
   viewId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   view: View;
+};
+export type GetViewDocumentApiResponse = /** status 200 OK */ EntityDocument;
+export type GetViewDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a view_id */
+  viewId: string;
+};
+export type UpdateViewDocumentApiResponse =
+  /** status 200 Defines an entity view. */ ViewRead;
+export type UpdateViewDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a view_id */
+  viewId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  entityDocumentEdit: EntityDocumentEdit;
 };
 export type BulkDeleteTagsApiResponse =
   | /** status 200 OK */ DeleteResponse[]
@@ -13000,7 +14861,7 @@ export type BulkDeleteTagsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
+    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -13032,6 +14893,14 @@ export type BulkDeleteTagsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Tag entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Tag.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -13079,7 +14948,7 @@ export type ListAllTagsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
+    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -13128,6 +14997,14 @@ export type ListAllTagsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Tag entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type BulkPatchTagsApiResponse =
   | /** status 200 OK */ TagCreateOrUpdateResponseRead[]
@@ -13167,7 +15044,7 @@ export type BulkPatchTagsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
+    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -13199,6 +15076,14 @@ export type BulkPatchTagsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Tag entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Tag.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -13207,6 +15092,8 @@ export type BulkPatchTagsApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -13218,9 +15105,14 @@ export type BulkPatchTagsApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -13266,7 +15158,7 @@ export type BulkCreateTagsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
+    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -13298,6 +15190,14 @@ export type BulkCreateTagsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Tag entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Tag.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -13346,7 +15246,7 @@ export type BulkCreateTagsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     Where expression to select destination spaces for cloning tags
     
@@ -13366,6 +15266,8 @@ export type BulkCreateTagsApiArg = {
   filterSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -13377,9 +15279,14 @@ export type BulkCreateTagsApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -13425,7 +15332,7 @@ export type BulkMoveTagsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
+    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -13457,6 +15364,14 @@ export type BulkMoveTagsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Tag entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Tag.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -13507,7 +15422,7 @@ export type BulkDeleteTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, BridgeHandle, BridgeWorkerID, ConfigTypes, CreatedAt, DeleteGates, DisplayName, Facts, Labels, LiveStateType, Options, OrganizationID, Permissions, ProviderType, Slug, SpaceID, TargetID, ToolchainType, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Target: Annotations, BridgeHandle, BridgeWorkerID, ConfigTypes, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, LiveStateType, Options, OrganizationID, Permissions, ProviderType, Slug, SpaceID, TargetID, ToolchainType, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -13539,6 +15454,14 @@ export type BulkDeleteTargetsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Target entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Target.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -13587,7 +15510,7 @@ export type ListAllTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, BridgeHandle, BridgeWorkerID, ConfigTypes, CreatedAt, DeleteGates, DisplayName, Facts, Labels, LiveStateType, Options, OrganizationID, Permissions, ProviderType, Slug, SpaceID, TargetID, ToolchainType, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Target: Annotations, BridgeHandle, BridgeWorkerID, ConfigTypes, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, LiveStateType, Options, OrganizationID, Permissions, ProviderType, Slug, SpaceID, TargetID, ToolchainType, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -13636,6 +15559,14 @@ export type ListAllTargetsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Target entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type BulkPatchTargetsApiResponse =
   | /** status 200 OK */ TargetCreateOrUpdateResponseRead[]
@@ -13675,7 +15606,7 @@ export type BulkPatchTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, BridgeHandle, BridgeWorkerID, ConfigTypes, CreatedAt, DeleteGates, DisplayName, Facts, Labels, LiveStateType, Options, OrganizationID, Permissions, ProviderType, Slug, SpaceID, TargetID, ToolchainType, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Target: Annotations, BridgeHandle, BridgeWorkerID, ConfigTypes, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, LiveStateType, Options, OrganizationID, Permissions, ProviderType, Slug, SpaceID, TargetID, ToolchainType, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -13707,6 +15638,14 @@ export type BulkPatchTargetsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Target entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Target.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -13717,6 +15656,8 @@ export type BulkPatchTargetsApiArg = {
   include?: string;
   /** Re-list the Triggers matching WhereTrigger and/or TriggerFilterID even if these fields have not changed */
   refreshTriggers?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -13734,6 +15675,8 @@ export type BulkPatchTargetsApiArg = {
     Facts?: {
       [key: string]: string | null;
     } | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -13794,7 +15737,7 @@ export type BulkMoveTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, BridgeHandle, BridgeWorkerID, ConfigTypes, CreatedAt, DeleteGates, DisplayName, Facts, Labels, LiveStateType, Options, OrganizationID, Permissions, ProviderType, Slug, SpaceID, TargetID, ToolchainType, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Target: Annotations, BridgeHandle, BridgeWorkerID, ConfigTypes, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, LiveStateType, Options, OrganizationID, Permissions, ProviderType, Slug, SpaceID, TargetID, ToolchainType, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -13826,6 +15769,14 @@ export type BulkMoveTargetsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Target entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Target.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -13876,7 +15827,7 @@ export type BulkDeleteTriggersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Trigger: Annotations, Arguments, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, InvocationID, Labels, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, Validating, Warn, WhereResource, WhereUnit.
+    Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
     
     A Trigger returns the function it invokes inline rather than in a FunctionInvocation object, so `where` names FunctionName and Arguments directly. The arguments are addressed with dot notation into `Arguments`, which is a list: `Arguments.?ParameterName=attribute-name.Value = 'owner'` reads the argument bound to a named parameter, `Arguments.*.Value` matches any argument's value, and `Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
     
@@ -13910,6 +15861,14 @@ export type BulkDeleteTriggersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Trigger entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Trigger.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -13956,7 +15915,7 @@ export type ListAllTriggersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Trigger: Annotations, Arguments, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, InvocationID, Labels, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, Validating, Warn, WhereResource, WhereUnit.
+    Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
     
     A Trigger returns the function it invokes inline rather than in a FunctionInvocation object, so `where` names FunctionName and Arguments directly. The arguments are addressed with dot notation into `Arguments`, which is a list: `Arguments.?ParameterName=attribute-name.Value = 'owner'` reads the argument bound to a named parameter, `Arguments.*.Value` matches any argument's value, and `Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
     
@@ -14007,6 +15966,14 @@ export type ListAllTriggersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Trigger entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type BulkPatchTriggersApiResponse =
   | /** status 200 OK */ TriggerCreateOrUpdateResponseRead[]
@@ -14046,7 +16013,7 @@ export type BulkPatchTriggersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Trigger: Annotations, Arguments, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, InvocationID, Labels, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, Validating, Warn, WhereResource, WhereUnit.
+    Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
     
     A Trigger returns the function it invokes inline rather than in a FunctionInvocation object, so `where` names FunctionName and Arguments directly. The arguments are addressed with dot notation into `Arguments`, which is a list: `Arguments.?ParameterName=attribute-name.Value = 'owner'` reads the argument bound to a named parameter, `Arguments.*.Value` matches any argument's value, and `Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
     
@@ -14080,6 +16047,14 @@ export type BulkPatchTriggersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Trigger entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Trigger.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -14088,6 +16063,12 @@ export type BulkPatchTriggersApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
+  /** Give each Trigger written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Trigger's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Patch each selected Trigger with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
+  fromBackingUnits?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -14113,6 +16094,8 @@ export type BulkPatchTriggersApiArg = {
     Guards?: {
       [key: string]: string | null;
     } | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     InvocationID?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
@@ -14121,6 +16104,9 @@ export type BulkPatchTriggersApiArg = {
     OtherDataSource?: string | null;
     /** Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
     Params?: object | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     Protect?: boolean | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -14172,7 +16158,7 @@ export type BulkCreateTriggersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Trigger: Annotations, Arguments, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, InvocationID, Labels, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, Validating, Warn, WhereResource, WhereUnit.
+    Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
     
     A Trigger returns the function it invokes inline rather than in a FunctionInvocation object, so `where` names FunctionName and Arguments directly. The arguments are addressed with dot notation into `Arguments`, which is a list: `Arguments.?ParameterName=attribute-name.Value = 'owner'` reads the argument bound to a named parameter, `Arguments.*.Value` matches any argument's value, and `Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
     
@@ -14206,6 +16192,14 @@ export type BulkCreateTriggersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Trigger entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Trigger.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -14250,7 +16244,7 @@ export type BulkCreateTriggersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     Where expression to select destination spaces for cloning triggers
     
@@ -14270,6 +16264,54 @@ export type BulkCreateTriggersApiArg = {
   filterSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** Give each Trigger written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Trigger's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Create Triggers from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
+  fromBackingUnits?: boolean;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    The Units to create entities from, with from_backing_units.
+    
+    The whole string must be query-encoded. */
+  whereUnit?: string;
+  /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+  filterUnit?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -14295,6 +16337,8 @@ export type BulkCreateTriggersApiArg = {
     Guards?: {
       [key: string]: string | null;
     } | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     InvocationID?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
@@ -14303,6 +16347,9 @@ export type BulkCreateTriggersApiArg = {
     OtherDataSource?: string | null;
     /** Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
     Params?: object | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     Protect?: boolean | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -14315,6 +16362,96 @@ export type BulkCreateTriggersApiArg = {
     WhereResource?: string | null;
     WhereUnit?: string | null;
   };
+};
+export type BulkMoveTriggersApiResponse =
+  | /** status 200 OK */ MoveResponse[]
+  | /** status 207 Multi-Status: nothing was moved, or some moved and others did not */ MoveResponse[];
+export type BulkMoveTriggersApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Triggers returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Trigger list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Trigger).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Trigger include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Trigger entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Trigger.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Trigger are BridgeWorkerID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Report what the move would do, and what would stop it, without moving anything */
+  dryRun?: boolean;
+  moveRequest: MoveRequest;
 };
 export type BulkDeleteUnitsApiResponse =
   | /** status 200 OK */ DeleteResponse[]
@@ -14354,7 +16491,7 @@ export type BulkDeleteUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -14388,6 +16525,14 @@ export type BulkDeleteUnitsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Unit.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -14435,7 +16580,7 @@ export type ListAllUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -14486,6 +16631,14 @@ export type ListAllUnitsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
   resourceType?: string;
   /** Where data: The specified string is an expression for the purpose of evaluating whether the configuration data matches the filter. It supports conjunctions using `AND` of relational expressions of the form *path* *operator* *literal*. The path specifications are dot-separated, for both map fields and array indices, as in `spec.template.spec.containers.0.image = 'ghcr.io/headlamp-k8s/headlamp:latest' AND spec.replicas > 1`. Path expressions support `*` for wildcard array or map segments and `?key=value` syntax for associative matches of array elements containing objects with a `key` attribute. Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `!~`, `~*`, `!~*`, `IN`, `NOT IN`. String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards, `ILIKE` for case-insensitive pattern matching, `!~~` for NOT LIKE. String regex operators: `~` for regex matching, `~*` for case-insensitive regex, `!~` and `!~*` for regex not matching (case-sensitive and insensitive). Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`. Boolean values support equality and inequality only. The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses, such as `spec.template.spec.containers.0.image#reference IN (':latest', ':arm64-latest')`. The syntax `.|` splits the path: the left side selects, and the right side is a property of what was selected. On the right side of a `.|`, and only there, `!=` is true when the property is absent: `spec.containers.*.|image != 'nginx'` selects the containers and asks that none of their images be nginx, which a container with no image satisfies. Everywhere else a path that is not present is not a match, `!=` included. String literals are quoted with single quotes, such as `'string'`. Integer and boolean literals are also supported for attributes of those types. The whole string must be query-encoded. */
@@ -14539,7 +16692,7 @@ export type BulkPatchUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -14573,6 +16726,14 @@ export type BulkPatchUnitsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Unit.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -14641,7 +16802,7 @@ export type BulkPatchUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
+    Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
     
     Selects Mutations of this Unit whose paths the merge must not overwrite, unioned with the Protected values stored on the Unit's MutationSources.
     
@@ -14686,12 +16847,17 @@ export type BulkPatchUnitsApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     /** LastChangeDescription is a human-readable description of the last change. This description is copied to the new Revision when the Data is changed. */
     LastChangeDescription?: string | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     ProviderType?: string | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -14745,7 +16911,7 @@ export type BulkCreateUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -14779,6 +16945,14 @@ export type BulkCreateUnitsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Unit.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -14827,7 +17001,7 @@ export type BulkCreateUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     Where expression to select destination spaces for cloning units
     
@@ -14881,7 +17055,7 @@ export type BulkCreateUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     Where expression to filter outgoing links (links to units outside the cloned set) for copying. If non-empty, matching outgoing links are also copied with FromUnitID retargeted to the cloned unit.
     
@@ -14891,6 +17065,8 @@ export type BulkCreateUnitsApiArg = {
   upstreamRevision?: string;
   /** Also create a MergeUnits Link from each upstream Unit back to its clone, alongside the UpgradeUnit Link a clone always gets. The upgrade Link carries changes from the upstream Unit into the clone; this one carries them the other way, which is what makes a clone usable as a draft: change it, review it, then resolve the Link (resolve=Link:...) on the upstream Unit to merge the change home. A Unit may be the source of several of these -- one per outstanding draft -- so each is named for the clone it takes changes from (syncback-<space>-<unit>) rather than for the Unit they all point at. The Link is created in the upstream Unit's Space, which the caller must be allowed to create Links in. Requires upstream_unit_id (or, in bulk, a source Unit to clone). */
   syncback?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -14908,12 +17084,17 @@ export type BulkCreateUnitsApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
     } | null;
     /** LastChangeDescription is a human-readable description of the last change. This description is copied to the new Revision when the Data is changed. */
     LastChangeDescription?: string | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     ProviderType?: string | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
@@ -14967,7 +17148,7 @@ export type BulkCancelUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -15001,6 +17182,14 @@ export type BulkCancelUnitsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Unit.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -15048,7 +17237,7 @@ export type BulkMoveUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -15082,6 +17271,14 @@ export type BulkMoveUnitsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Unit.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -15132,7 +17329,7 @@ export type BulkTagUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -15166,6 +17363,14 @@ export type BulkTagUnitsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for Unit.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -15281,7 +17486,7 @@ export type SearchUnitDataApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -15332,6 +17537,14 @@ export type SearchUnitDataApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
   resourceType?: string;
   /** Where data: The specified string is an expression for the purpose of evaluating whether the configuration data matches the filter. It supports conjunctions using `AND` of relational expressions of the form *path* *operator* *literal*. The path specifications are dot-separated, for both map fields and array indices, as in `spec.template.spec.containers.0.image = 'ghcr.io/headlamp-k8s/headlamp:latest' AND spec.replicas > 1`. Path expressions support `*` for wildcard array or map segments and `?key=value` syntax for associative matches of array elements containing objects with a `key` attribute. Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `!~`, `~*`, `!~*`, `IN`, `NOT IN`. String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards, `ILIKE` for case-insensitive pattern matching, `!~~` for NOT LIKE. String regex operators: `~` for regex matching, `~*` for case-insensitive regex, `!~` and `!~*` for regex not matching (case-sensitive and insensitive). Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`. Boolean values support equality and inequality only. The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses, such as `spec.template.spec.containers.0.image#reference IN (':latest', ':arm64-latest')`. The syntax `.|` splits the path: the left side selects, and the right side is a property of what was selected. On the right side of a `.|`, and only there, `!=` is true when the property is absent: `spec.containers.*.|image != 'nginx'` selects the containers and asks that none of their images be nginx, which a container with no image satisfies. Everywhere else a path that is not present is not a match, `!=` included. String literals are quoted with single quotes, such as `'string'`. Integer and boolean literals are also supported for attributes of those types. The whole string must be query-encoded. */
@@ -15383,7 +17596,7 @@ export type SearchUnitDiffApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -15417,6 +17630,14 @@ export type SearchUnitDiffApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
   resourceType?: string;
   /** Where data: The specified string is an expression for the purpose of evaluating whether the configuration data matches the filter. It supports conjunctions using `AND` of relational expressions of the form *path* *operator* *literal*. The path specifications are dot-separated, for both map fields and array indices, as in `spec.template.spec.containers.0.image = 'ghcr.io/headlamp-k8s/headlamp:latest' AND spec.replicas > 1`. Path expressions support `*` for wildcard array or map segments and `?key=value` syntax for associative matches of array elements containing objects with a `key` attribute. Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `!~`, `~*`, `!~*`, `IN`, `NOT IN`. String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards, `ILIKE` for case-insensitive pattern matching, `!~~` for NOT LIKE. String regex operators: `~` for regex matching, `~*` for case-insensitive regex, `!~` and `!~*` for regex not matching (case-sensitive and insensitive). Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`. Boolean values support equality and inequality only. The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses, such as `spec.template.spec.containers.0.image#reference IN (':latest', ':arm64-latest')`. The syntax `.|` splits the path: the left side selects, and the right side is a property of what was selected. On the right side of a `.|`, and only there, `!=` is true when the property is absent: `spec.containers.*.|image != 'nginx'` selects the containers and asks that none of their images be nginx, which a container with no image satisfies. Everywhere else a path that is not present is not a match, `!=` included. String literals are quoted with single quotes, such as `'string'`. Integer and boolean literals are also supported for attributes of those types. The whole string must be query-encoded. */
@@ -15476,7 +17697,7 @@ export type ListAllUnitEventsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on UnitEvent: Action, BridgeWorkerID, CreatedAt, OrganizationID, QueuedOperationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
+    Supported attributes for filtering on UnitEvent: Action, BridgeWorkerID, CreatedAt, HiddenReason, OrganizationID, QueuedOperationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -15516,7 +17737,7 @@ export type ListAllUnitEventsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering UnitEvent: Action, BridgeWorkerID, CreatedAt, OrganizationID, QueuedOperationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
+    Supported attributes for ordering UnitEvent: Action, BridgeWorkerID, CreatedAt, HiddenReason, OrganizationID, QueuedOperationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -15524,6 +17745,14 @@ export type ListAllUnitEventsApiArg = {
     
     The whole string must be query-encoded. */
   orderBy?: string;
+  /** Hidden UnitEvent entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Entity to return at most one UnitEvent per. The result set applies DISTINCT ON this key, keeping the most recent row for each.
     
     Supported values: Unit, Off.
@@ -15570,7 +17799,7 @@ export type SearchUnitMutationSourcesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -15621,6 +17850,14 @@ export type SearchUnitMutationSourcesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
   resourceType?: string;
   /** Where data: The specified string is an expression for the purpose of evaluating whether the configuration data matches the filter. It supports conjunctions using `AND` of relational expressions of the form *path* *operator* *literal*. The path specifications are dot-separated, for both map fields and array indices, as in `spec.template.spec.containers.0.image = 'ghcr.io/headlamp-k8s/headlamp:latest' AND spec.replicas > 1`. Path expressions support `*` for wildcard array or map segments and `?key=value` syntax for associative matches of array elements containing objects with a `key` attribute. Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `!~`, `~*`, `!~*`, `IN`, `NOT IN`. String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards, `ILIKE` for case-insensitive pattern matching, `!~~` for NOT LIKE. String regex operators: `~` for regex matching, `~*` for case-insensitive regex, `!~` and `!~*` for regex not matching (case-sensitive and insensitive). Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`. Boolean values support equality and inequality only. The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses, such as `spec.template.spec.containers.0.image#reference IN (':latest', ':arm64-latest')`. The syntax `.|` splits the path: the left side selects, and the right side is a property of what was selected. On the right side of a `.|`, and only there, `!=` is true when the property is absent: `spec.containers.*.|image != 'nginx'` selects the containers and asks that none of their images be nginx, which a container with no image satisfies. Everywhere else a path that is not present is not a match, `!=` included. String literals are quoted with single quotes, such as `'string'`. Integer and boolean literals are also supported for attributes of those types. The whole string must be query-encoded. */
@@ -15682,7 +17919,7 @@ export type ListUsersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on User: CreatedAt, DisplayName, ExternalID, Slug, UpdatedAt, UserID, Username.
+    Supported attributes for filtering on User: CreatedAt, DisplayName, ExternalID, HiddenReason, Slug, UpdatedAt, UserID, Username.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -15714,6 +17951,14 @@ export type ListUsersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden User entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type GetUserApiResponse =
   /** status 200 a User in Confighub. */ UserRead;
@@ -15730,6 +17975,8 @@ export type CreateUserKeyApiResponse = /** status 200 OK */ UserKey;
 export type CreateUserKeyApiArg = {
   /** UUID of the identity whose keys are being managed. For a worker this is its bot user, BridgeWorker.UserID, not the worker's own id. */
   userId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   createUserKeyRequest: CreateUserKeyRequest;
 };
 export type DeleteUserKeyApiResponse =
@@ -15778,7 +18025,7 @@ export type BulkDeleteViewsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on View: Annotations, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Slug, SpaceID, UpdatedAt, ViewID.
+    Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -15810,6 +18057,14 @@ export type BulkDeleteViewsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden View entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for View.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -15855,7 +18110,7 @@ export type ListAllViewsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on View: Annotations, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Slug, SpaceID, UpdatedAt, ViewID.
+    Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -15904,6 +18159,14 @@ export type ListAllViewsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Hidden View entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
 };
 export type BulkPatchViewsApiResponse =
   | /** status 200 OK */ ViewCreateOrUpdateResponseRead[]
@@ -15943,7 +18206,7 @@ export type BulkPatchViewsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on View: Annotations, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Slug, SpaceID, UpdatedAt, ViewID.
+    Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -15975,6 +18238,14 @@ export type BulkPatchViewsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden View entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for View.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -15983,6 +18254,12 @@ export type BulkPatchViewsApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
+  /** Give each View written a backing Unit if it has none: a ConfigHub/YAML Unit holding the View's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Patch each selected View with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
+  fromBackingUnits?: boolean;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -15997,6 +18274,8 @@ export type BulkPatchViewsApiArg = {
     DisplayName?: string | null;
     FilterID?: string | null;
     GroupBy?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -16004,6 +18283,9 @@ export type BulkPatchViewsApiArg = {
     Of?: string | null;
     OrderBy?: string | null;
     OrderByDirection?: string | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
@@ -16048,7 +18330,7 @@ export type BulkCreateViewsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on View: Annotations, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Slug, SpaceID, UpdatedAt, ViewID.
+    Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -16080,6 +18362,14 @@ export type BulkCreateViewsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden View entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for View.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -16128,7 +18418,7 @@ export type BulkCreateViewsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     Where expression to select destination spaces for cloning views
     
@@ -16148,6 +18438,54 @@ export type BulkCreateViewsApiArg = {
   filterSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** Give each View written a backing Unit if it has none: a ConfigHub/YAML Unit holding the View's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Create Views from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
+  fromBackingUnits?: boolean;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, BridgeWorkerID, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastActionAt, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, TargetOptions, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    The Units to create entities from, with from_backing_units.
+    
+    The whole string must be query-encoded. */
+  whereUnit?: string;
+  /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+  filterUnit?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -16162,6 +18500,8 @@ export type BulkCreateViewsApiArg = {
     DisplayName?: string | null;
     FilterID?: string | null;
     GroupBy?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
     /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
     Labels?: {
       [key: string]: string | null;
@@ -16169,6 +18509,9 @@ export type BulkCreateViewsApiArg = {
     Of?: string | null;
     OrderBy?: string | null;
     OrderByDirection?: string | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
@@ -16213,7 +18556,7 @@ export type BulkMoveViewsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on View: Annotations, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Slug, SpaceID, UpdatedAt, ViewID.
+    Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -16245,6 +18588,14 @@ export type BulkMoveViewsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Hidden View entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
   /** Include clause for expanding related entities in the response for View.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -16323,6 +18674,8 @@ export type Component = {
   };
   /** Friendly name for the entity. */
   DisplayName?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -16342,6 +18695,7 @@ export type ComponentRead = {
   Annotations?: {
     [key: string]: string;
   };
+  BackingUnitID?: string;
   /** Whether a ChangeWorkflow must be used for promotions and releases of this component's Variants. Changing it requires Manage permission on the component. (optional) */
   ChangeWorkflowRequired?: boolean;
   /** Unique identifier for a component. */
@@ -16356,6 +18710,8 @@ export type ComponentRead = {
   DisplayName?: string;
   /** The type of entity. */
   EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -16367,6 +18723,7 @@ export type ComponentRead = {
   Slug: string;
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  UpstreamComponentID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
@@ -16393,6 +18750,8 @@ export type Space = {
   };
   /** Friendly name for the entity. */
   DisplayName?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -16444,11 +18803,11 @@ export type Space = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Attribute: Annotations, AttributeID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, Labels, OrganizationID, Parameters, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Attribute: Annotations, AttributeID, BackingUnitID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, HiddenReason, Labels, OrganizationID, Parameters, Permissions, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamAttributeID.
     
     The whole string must be query-encoded. */
   WhereAttribute?: string;
-  /** Filter expression to identify Triggers that should be invoked on Units within this Space. The specified string is an expression for the purpose of filtering
+  /** Filter expression to identify Triggers that should be invoked on Units within this Space. With neither it nor TriggerFilterID, the Triggers in the Space are invoked; a clone of such a Space selects the Triggers in the Space it was cloned from. The specified string is an expression for the purpose of filtering
     the list of Triggers returned. The expression syntax was inspired by SQL.
     It supports conjunctions using `AND` of relational expressions of the form *attribute*
     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
@@ -16482,7 +18841,7 @@ export type Space = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Trigger: Annotations, Arguments, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, InvocationID, Labels, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, Validating, Warn, WhereResource, WhereUnit.
+    Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
     
     The whole string must be query-encoded. */
   WhereTrigger?: string;
@@ -16498,6 +18857,7 @@ export type SpaceRead = {
   AttributeHash?: string;
   /** List of Attribute IDs the Space's function executor is built from: those that match the WhereAttribute and/or AttributeFilterID criteria, or, when neither is set, the Attributes in the Space. (readonly) */
   AttributeIDs?: Uuid[];
+  BackingUnitID?: string;
   /** Reference to the Component this Space is a Variant of. (optional) */
   ComponentID?: string;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
@@ -16510,6 +18870,8 @@ export type SpaceRead = {
   DisplayName?: string;
   /** The type of entity. */
   EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -16526,10 +18888,11 @@ export type SpaceRead = {
   /** Reference to a Filter entity used to identify Triggers that should be invoked on Units within this Space. The Filter's From field must be set to 'Trigger'. */
   TriggerFilterID?: string;
   TriggerHash?: string;
-  /** List of Trigger IDs that match the WhereTrigger and/or TriggerFilterID criteria. (readonly) */
+  /** List of Trigger IDs that match the WhereTrigger and/or TriggerFilterID criteria, or, with neither, of the Triggers in the Space. (readonly) */
   TriggerIDs?: Uuid[];
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  UpstreamSpaceID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
   /** Filter expression to identify Attributes that should be registered in the Space's FunctionExecutor. The specified string is an expression for the purpose of filtering
@@ -16566,11 +18929,11 @@ export type SpaceRead = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Attribute: Annotations, AttributeID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, Labels, OrganizationID, Parameters, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt.
+    Supported attributes for filtering on Attribute: Annotations, AttributeID, BackingUnitID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, HiddenReason, Labels, OrganizationID, Parameters, Permissions, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamAttributeID.
     
     The whole string must be query-encoded. */
   WhereAttribute?: string;
-  /** Filter expression to identify Triggers that should be invoked on Units within this Space. The specified string is an expression for the purpose of filtering
+  /** Filter expression to identify Triggers that should be invoked on Units within this Space. With neither it nor TriggerFilterID, the Triggers in the Space are invoked; a clone of such a Space selects the Triggers in the Space it was cloned from. The specified string is an expression for the purpose of filtering
     the list of Triggers returned. The expression syntax was inspired by SQL.
     It supports conjunctions using `AND` of relational expressions of the form *attribute*
     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
@@ -16604,7 +18967,7 @@ export type SpaceRead = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Trigger: Annotations, Arguments, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, InvocationID, Labels, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, Validating, Warn, WhereResource, WhereUnit.
+    Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
     
     The whole string must be query-encoded. */
   WhereTrigger?: string;
@@ -16630,10 +18993,13 @@ export type Attestation = {
   EvidenceAttestationIDs?: Uuid[];
   /** When the Attestation stops satisfying requirements. Optional. */
   ExpiresAt?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** The attester's reason, in their own words. */
   Note?: string;
   /** The Organization the Attestation belongs to. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** A published Release the claim is about. */
   ReleaseID?: string;
   /** The outcome: Pass or Fail. For an Approval, approve or reject. Defaults to Pass. */
@@ -16664,10 +19030,13 @@ export type AttestationRead = {
   EvidenceAttestationIDs?: Uuid[];
   /** When the Attestation stops satisfying requirements. Optional. */
   ExpiresAt?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** The attester's reason, in their own words. */
   Note?: string;
   /** The Organization the Attestation belongs to. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** A published Release the claim is about. */
   ReleaseID?: string;
   /** The outcome: Pass or Fail. For an Approval, approve or reject. Defaults to Pass. */
@@ -16728,6 +19097,7 @@ export type AttestRequest = {
   EvidenceAttestationIDs?: Uuid[];
   ExpiresAt?: string;
   Note?: string;
+  Permissions?: Permissions;
   ReleaseID?: string;
   Result?: string;
   Revision?: string;
@@ -16751,6 +19121,8 @@ export type Organization = {
   DisplayName?: string;
   /** Unique email domain name for the External Identity Provider record matching this organization */
   EmailDomain?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -16781,6 +19153,8 @@ export type OrganizationRead = {
   EntityType?: string;
   /** Unique identifier for the External Identity Provider record matching this organization. */
   ExternalID?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -16919,6 +19293,8 @@ export type Attribute = {
   Description?: string;
   /** Friendly name for the entity. */
   DisplayName?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -16927,6 +19303,7 @@ export type Attribute = {
   OrganizationID?: string;
   /** Parameters specifies the function parameters for the getter and setter functions. */
   Parameters?: FunctionParameter[] | null;
+  Permissions?: Permissions;
   /** ResourceTypePaths maps resource types to their path-to-visitor-info mappings. */
   ResourceTypePaths?: ResourceTypePathsEntry[] | null;
   /** Unique URL-safe identifier for the entity. */
@@ -16945,6 +19322,7 @@ export type AttributeRead = {
   };
   /** AttributeID uniquely identifies an attribute within the system. */
   AttributeID?: string;
+  BackingUnitID?: string;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
   CreatedAt?: string;
   /** DataType specifies the data type of the attribute value. Must be one of: string, int, bool. */
@@ -16961,6 +19339,8 @@ export type AttributeRead = {
   EntityType?: string;
   /** Hash is a SHA256 hash of the attribute's defining properties. (readonly) */
   Hash?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -16969,6 +19349,7 @@ export type AttributeRead = {
   OrganizationID?: string;
   /** Parameters specifies the function parameters for the getter and setter functions. */
   Parameters?: FunctionParameter[] | null;
+  Permissions?: Permissions;
   /** ResourceTypePaths maps resource types to their path-to-visitor-info mappings. */
   ResourceTypePaths?: ResourceTypePathsEntry[] | null;
   /** Unique URL-safe identifier for the entity. */
@@ -16981,6 +19362,7 @@ export type AttributeRead = {
   ToolchainType: string;
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  UpstreamAttributeID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
@@ -17004,11 +19386,20 @@ export type AttributeCreateOrUpdateResponseRead = {
   Attribute?: AttributeRead;
   Error?: ResponseError;
 };
+export type SelectionChange = {
+  EntityID?: string;
+  EntityType?: string;
+  Refreshed?: boolean;
+  Selects?: boolean;
+  Slug?: string;
+  SpaceSlug?: string;
+};
 export type MoveResponse = {
   EntityID?: string;
   Error?: ResponseError;
   Moved?: boolean;
   MovedTagSlugs?: string[];
+  SelectionChanges?: SelectionChange[];
   Slug?: string;
 };
 export type MoveRequest = {
@@ -17129,6 +19520,8 @@ export type BridgeWorker = {
   };
   /** Friendly name for the entity. */
   DisplayName?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -17167,6 +19560,8 @@ export type BridgeWorkerRead = {
   DisplayName?: string;
   /** The type of entity. */
   EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** IPAddress is the IP address from which the worker last connected. */
   IPAddress?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -17401,6 +19796,8 @@ export type ChangeOrder = {
   DisplayName?: string;
   /** EndTagID is the identifier of the set of Revisions that end the ChangeOrder. The ChangeOrder always mints this Tag itself; supplying one at creation adopts its marks as the boundary, and the supplied Tag is recorded as AdoptedEndTagID and never written to. Without one the boundary is each Unit's head Revision. */
   EndTagID?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** InScopeSpaceIDs is where the ChangeOrder is headed: the Spaces it propagates into, recorded as a list rather than asked again on each read. When WhereSpace or SpaceFilterID is set, the server writes it from that selection, and a write naming a different list is refused; otherwise the client supplies it. Empty names a change without saying where it is headed, in which case the Spaces the ChangeOrder's Links reach when its scope is derived are recorded instead; an Invoke ChangeOrder has no Links to fall back on and requires a non-empty list. ResolvedSpaceIDs and ReleasedSpaceIDs are measured against it. Changing it re-derives what the ChangeOrder covers. */
   InScopeSpaceIDs?: Uuid[];
   /** InvocationID is the Invocation an Invoke ChangeOrder runs. Required for that UpdateType and refused for the others. Naming it here is what makes every Space in scope receive the same update: the invoke API takes what it runs from the ChangeOrder. Immutable. */
@@ -17415,6 +19812,7 @@ export type ChangeOrder = {
   Parameters?: {
     [key: string]: any;
   };
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** SpaceFilterID references a Filter (with From=Space) selecting where the ChangeOrder is headed, ANDed with WhereSpace when both are set. While either is set, the server evaluates the selection into InScopeSpaceIDs. */
@@ -17461,7 +19859,7 @@ export type ChangeOrder = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   WhereSpace?: string;
@@ -17523,6 +19921,8 @@ export type ChangeOrderRead = {
   EndTagID?: string;
   /** The type of entity. */
   EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** InScopeSpaceIDs is where the ChangeOrder is headed: the Spaces it propagates into, recorded as a list rather than asked again on each read. When WhereSpace or SpaceFilterID is set, the server writes it from that selection, and a write naming a different list is refused; otherwise the client supplies it. Empty names a change without saying where it is headed, in which case the Spaces the ChangeOrder's Links reach when its scope is derived are recorded instead; an Invoke ChangeOrder has no Links to fall back on and requires a non-empty list. ResolvedSpaceIDs and ReleasedSpaceIDs are measured against it. Changing it re-derives what the ChangeOrder covers. */
   InScopeSpaceIDs?: Uuid[];
   /** InvocationID is the Invocation an Invoke ChangeOrder runs. Required for that UpdateType and refused for the others. Naming it here is what makes every Space in scope receive the same update: the invoke API takes what it runs from the ChangeOrder. Immutable. */
@@ -17537,6 +19937,7 @@ export type ChangeOrderRead = {
   Parameters?: {
     [key: string]: any;
   };
+  Permissions?: Permissions;
   PromotionFailures?: ChangeOrderPromotionFailure[];
   PromotionOverrides?: ChangeOrderPromotionOverride[];
   /** ReleasedRestoredSpaceIDs is where the undoing has been released: the Spaces in RestoredSpaceIDs whose Units are released at or past the Revision the restore Tag marks. Covering ReleasedSpaceIDs is what State reports as RestoreReleased. Derived when the ChangeOrder is read. */
@@ -17609,7 +20010,7 @@ export type ChangeOrderRead = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, ComponentID, CreatedAt, DeleteGates, DisplayName, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   WhereSpace?: string;
@@ -17627,12 +20028,15 @@ export type Tag = {
   };
   /** Friendly name for the entity. */
   DisplayName?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** Unique identifier for a space. */
@@ -17661,12 +20065,15 @@ export type TagRead = {
   DisplayName?: string;
   /** The type of entity. */
   EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** ReleaseID is the optional ID of the Release that made this Tag. */
   ReleaseID?: string;
   /** Unique URL-safe identifier for the entity. */
@@ -17728,6 +20135,8 @@ export type Invocation = {
   /** Friendly name for the entity. */
   DisplayName?: string;
   FunctionInvocations: FunctionInvocationList;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** InvocationID uniquely identifies a invocation within the system. */
   InvocationID?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -17737,6 +20146,7 @@ export type Invocation = {
   /** Unique identifier for an organization. */
   OrganizationID?: string;
   Parameters?: FunctionParameter[];
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** Unique identifier for a space. */
@@ -17752,6 +20162,7 @@ export type InvocationRead = {
   Annotations?: {
     [key: string]: string;
   };
+  BackingUnitID?: string;
   /** Unique identifier for a Bridge Worker to execute the functions specified by the Invocation. If unspecified, use the builtin function executor. */
   BridgeWorkerID?: string;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
@@ -17767,6 +20178,8 @@ export type InvocationRead = {
   FunctionInvocations: FunctionInvocationList;
   /** SHA256 hash of the functions and their arguments encoded as hexadecimal. */
   Hash?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** InvocationID uniquely identifies a invocation within the system. */
   InvocationID?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -17776,6 +20189,7 @@ export type InvocationRead = {
   /** Unique identifier for an organization. */
   OrganizationID?: string;
   Parameters?: FunctionParameter[];
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** Unique identifier for a space. */
@@ -17787,6 +20201,7 @@ export type InvocationRead = {
   ToolchainType: string;
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  UpstreamInvocationID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
@@ -17807,12 +20222,16 @@ export type Filter = {
   From: string;
   /** FromSpaceID optionally specifies a Space to filter within. Only relevant for spaced entity spaces. (optional) */
   FromSpaceID?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  IncludeHidden?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Resource type to match for the desired ToolchainType, for example apps/v1/Deployment. Valid only for Units. (optional) */
   ResourceType?: string;
   /** Unique URL-safe identifier for the entity. */
@@ -17831,6 +20250,7 @@ export type FilterRead = {
   Annotations?: {
     [key: string]: string;
   };
+  BackingUnitID?: string;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
   CreatedAt?: string;
   /** An optional set of gates that, if any is present, will block deletion. */
@@ -17849,12 +20269,16 @@ export type FilterRead = {
   FromSpaceID?: string;
   /** SHA256 hash of the filter parameters encoded as hexadecimal. (readonly) */
   Hash?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  IncludeHidden?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Resource type to match for the desired ToolchainType, for example apps/v1/Deployment. Valid only for Units. (optional) */
   ResourceType?: string;
   /** Unique URL-safe identifier for the entity. */
@@ -17865,6 +20289,7 @@ export type FilterRead = {
   SpaceSlug?: string;
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  UpstreamFilterID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
   /** Where specifices the where filter expression in the syntax used in list and search API query parameters. (optional) */
@@ -17919,12 +20344,15 @@ export type ChangeSet = {
   Description?: string;
   /** Friendly name for the entity. */
   DisplayName?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** Unique identifier for a space. */
@@ -17953,12 +20381,15 @@ export type ChangeSetRead = {
   EndTagID?: string;
   /** The type of entity. */
   EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** Unique identifier for a space. */
@@ -18018,12 +20449,15 @@ export type ChangeWorkflow = {
   /** Friendly name for the entity. */
   DisplayName?: string;
   Final?: ChangeWorkflowFinalStage;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** Unique identifier for a space. */
@@ -18040,6 +20474,7 @@ export type ChangeWorkflowRead = {
   };
   /** The Attestations a stage, its releases, or Final may require. Declared once and named wherever they apply. */
   AttestationPrerequisites?: ChangeWorkflowAttestationPrerequisite[];
+  BackingUnitID?: string;
   /** ChangeWorkflowID uniquely identifies a change workflow within the system. */
   ChangeWorkflowID?: string;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
@@ -18055,12 +20490,15 @@ export type ChangeWorkflowRead = {
   /** The type of entity. */
   EntityType?: string;
   Final?: ChangeWorkflowFinalStage;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** Unique identifier for a space. */
@@ -18071,6 +20509,7 @@ export type ChangeWorkflowRead = {
   Stages: ChangeWorkflowStage[];
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  UpstreamChangeWorkflowID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
@@ -18103,6 +20542,20 @@ export type ExtendedComponentRead = {
   Component?: ComponentRead;
   Error?: ResponseError;
   Organization?: OrganizationRead;
+};
+export type EntityDocument = {
+  /** The entity's document, in YAML: the fields a write can set, with the entities it refers to named rather than identified by ID. */
+  Document: string;
+  /** The entity's Version when the document was rendered, which an edit of it sends back. */
+  Version: number;
+};
+export type EntityDocumentEdit = {
+  /** The document as it was read. */
+  Base: string;
+  /** The document as it was edited. */
+  Document: string;
+  /** The Version that came with the document read. The edit is refused if the entity's Version has changed since. */
+  Version: number;
 };
 export type MutationType = "Add" | "Delete" | "Update" | "Replace" | "None";
 export type MutationInfo = {
@@ -18493,6 +20946,8 @@ export type Unit = {
   };
   /** Friendly name for the entity. */
   DisplayName?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -18502,6 +20957,7 @@ export type Unit = {
   /** Unique identifier for an organization. */
   OrganizationID?: string;
   PathAnnotations?: PathAnnotationList;
+  Permissions?: Permissions;
   /** ProviderType identifies which bridge to use in the case that the Target supports multiple ProviderTypes. */
   ProviderType?: string;
   /** Unique URL-safe identifier for the entity. */
@@ -18642,19 +21098,22 @@ export type UnitRead = {
   HeadUnitActionNum?: number;
   /** Sequence number of the head unit event. */
   HeadUnitEventNum?: number;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
   };
   /** LastChangeDescription is a human-readable description of the last change. This description is copied to the new Revision when the Data is changed. */
   LastChangeDescription?: string;
-  /** Sequence number of the last Revision published in a Release. 0 if no Revision has been released. */
+  /** Sequence number of the last Revision published in a Release, or for a backing Unit the last Revision its entity took. 0 if there is none. */
   LastReleasedRevisionNum?: number;
   /** Attribute paths that this Unit needs from upstream Units via NeedsProvides Links. Computed from get-needed and stored on data updates. */
   NeededPaths?: AttributeValue[];
   /** Unique identifier for an organization. */
   OrganizationID?: string;
   PathAnnotations?: PathAnnotationList;
+  Permissions?: Permissions;
   /** Attribute paths that this Unit provides to downstream Units via NeedsProvides Links. Computed from get-provided and stored on data updates. */
   ProvidedPaths?: AttributeInfo[];
   /** ProviderType identifies which bridge to use in the case that the Target supports multiple ProviderTypes. */
@@ -18779,6 +21238,8 @@ export type Link = {
   /** Unique identifier of the downstream (consumer) Unit. Links must be in the same space as the source unit. */
   FromUnitID: string;
   Guards?: GuardStamp;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -18789,6 +21250,7 @@ export type Link = {
   MergeEnableSubtraction?: boolean;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Records the paths this Link's resolve writes as protected local overrides, so a later merge from upstream does not overwrite them. Without it the resolve claims nothing, as any other change does. Refused on UpgradeUnit and MergeUnits Links, where the upstream keeps updating what it delivered and protecting that content would freeze the downstream one merge in. */
   Protect?: boolean;
   /** Unique URL-safe identifier for the entity. */
@@ -18825,6 +21287,7 @@ export type LinkRead = {
   };
   /** Automatically update the downstream Unit when the upstream Unit changes. A Link created without an UpdateType is a NeedsProvides Link with AutoUpdate set, which is what such a Link has always done. */
   AutoUpdate?: boolean;
+  BackingUnitID?: string;
   Bindings?: BindingList;
   Clearance?: Clearance;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
@@ -18848,6 +21311,8 @@ export type LinkRead = {
   Guards?: GuardStamp;
   /** SHA256 hash of the resolution-relevant Link fields, used to detect changes that require re-resolution. */
   Hash?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -18858,6 +21323,7 @@ export type LinkRead = {
   MergeEnableSubtraction?: boolean;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Records the paths this Link's resolve writes as protected local overrides, so a later merge from upstream does not overwrite them. Without it the resolve claims nothing, as any other change does. Refused on UpgradeUnit and MergeUnits Links, where the upstream keeps updating what it delivered and protecting that content would freeze the downstream one merge in. */
   Protect?: boolean;
   /** Unique URL-safe identifier for the entity. */
@@ -19082,11 +21548,14 @@ export type Release = {
   DeleteGates?: {
     [key: string]: boolean;
   };
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
   };
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Unique identifier for a Release. */
   ReleaseID?: string;
   SpaceID?: string;
@@ -19113,6 +21582,8 @@ export type ReleaseRead = {
   Digest?: string;
   /** The type of entity. */
   EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -19120,6 +21591,7 @@ export type ReleaseRead = {
   /** OCI digest (sha256:...) of the Release's OCI image manifest. */
   ManifestDigest?: string;
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Whether the Release is currently served to its consuming Target. Set when the Release is published and cleared when it is withdrawn; a withdrawn Release is retained until deleted. */
   Published?: boolean;
   /** Unique identifier for a Release. */
@@ -19154,6 +21626,8 @@ export type ExtendedReleaseRead = {
 export type Resource = {
   /** Configuration data of the resource, represented as JSON. */
   Data?: object;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** Unique identifier for an Organization. */
   OrganizationID?: string;
   /** Unique identifier for a Resource. */
@@ -19182,6 +21656,8 @@ export type ResourceRead = {
   Data?: object;
   /** The type of entity. */
   EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** Unique identifier for an Organization. */
   OrganizationID?: string;
   /** Unique identifier for a Resource. */
@@ -19241,6 +21717,8 @@ export type Target = {
   Facts?: {
     [key: string]: string;
   };
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -19309,7 +21787,7 @@ export type Target = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Trigger: Annotations, Arguments, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, InvocationID, Labels, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, Validating, Warn, WhereResource, WhereUnit.
+    Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
     
     The whole string must be query-encoded. */
   WhereTrigger?: string;
@@ -19339,6 +21817,8 @@ export type TargetRead = {
   Facts?: {
     [key: string]: string;
   };
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -19414,7 +21894,7 @@ export type TargetRead = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Trigger: Annotations, Arguments, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, InvocationID, Labels, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, Validating, Warn, WhereResource, WhereUnit.
+    Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
     
     The whole string must be query-encoded. */
   WhereTrigger?: string;
@@ -19454,6 +21934,8 @@ export type View = {
   FilterID?: string;
   /** Column to group by (optional). */
   GroupBy?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -19466,6 +21948,7 @@ export type View = {
   OrderByDirection?: string;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** Unique identifier for a space. */
@@ -19480,6 +21963,7 @@ export type ViewRead = {
   Annotations?: {
     [key: string]: string;
   };
+  BackingUnitID?: string;
   /** Columns to display, in order. (optional) */
   Columns?: Column[];
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
@@ -19496,6 +21980,8 @@ export type ViewRead = {
   FilterID?: string;
   /** Column to group by (optional). */
   GroupBy?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -19508,6 +21994,7 @@ export type ViewRead = {
   OrderByDirection?: string;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** Unique identifier for a space. */
@@ -19516,6 +22003,7 @@ export type ViewRead = {
   SpaceSlug?: string;
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  UpstreamViewID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
   /** ViewID uniquely identifies a view within the system. */
@@ -19557,6 +22045,8 @@ export type Revision = {
   DataHash?: string;
   /** User description of the change. It is copied from the LastChangeDescription field of the Unit at the time the change was made that created the Revision. */
   Description?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** Attribute paths this Revision's configuration needs from upstream Units via NeedsProvides Links. */
   NeededPaths?: AttributeValue[];
   /** Unique identifier for an Organization. */
@@ -19646,6 +22136,8 @@ export type RevisionRead = {
   Description?: string;
   /** The type of entity. */
   EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** Attribute paths this Revision's configuration needs from upstream Units via NeedsProvides Links. */
   NeededPaths?: AttributeValue[];
   /** Unique identifier for an Organization. */
@@ -19717,6 +22209,8 @@ export type User = {
   DisplayName?: string;
   /** Unique identifier for the External Identity Provider record matching this User. */
   ExternalID?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** The URL to get the profile avatar picture of the User. */
   ProfilePictureURL?: string;
   /** Unique URL-safe identifier for the entity. */
@@ -19737,6 +22231,8 @@ export type UserRead = {
   EntityType?: string;
   /** Unique identifier for the External Identity Provider record matching this User. */
   ExternalID?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** The URL to get the profile avatar picture of the User. */
   ProfilePictureURL?: string;
   /** Unique URL-safe identifier for the entity. */
@@ -19829,6 +22325,8 @@ export type Trigger = {
   /** Function name */
   FunctionName?: string;
   Guards?: GuardStamp;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** InvocationID is the identifier of the function to be invoked, if there is a corresponding Invocation. */
   InvocationID?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -19843,6 +22341,7 @@ export type Trigger = {
   Params?: {
     [key: string]: any;
   };
+  Permissions?: Permissions;
   /** Protect indicates whether the paths this trigger's function writes are recorded as protected local overrides, so a later merge from upstream does not overwrite them. A change claims nothing by default and so does a trigger; set this for a trigger that decides a value on the Unit's behalf and will not be back to decide it again, such as a PostClone trigger customizing a variant. Only meaningful for a mutating trigger. */
   Protect?: boolean;
   /** Unique URL-safe identifier for the entity. */
@@ -19872,6 +22371,7 @@ export type TriggerRead = {
   };
   /** Function arguments */
   Arguments?: FunctionArgument[] | null;
+  BackingUnitID?: string;
   /** Unique identifier for a Bridge Worker to execute the function specified by the Trigger. If unspecified, use the builtin function executor. */
   BridgeWorkerID?: string;
   Clearance?: Clearance;
@@ -19899,6 +22399,8 @@ export type TriggerRead = {
   Guards?: GuardStamp;
   /** SHA256 hash of the trigger's specification fields, used to detect changes. */
   Hash?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** InvocationID is the identifier of the function to be invoked, if there is a corresponding Invocation. */
   InvocationID?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -19913,6 +22415,7 @@ export type TriggerRead = {
   Params?: {
     [key: string]: any;
   };
+  Permissions?: Permissions;
   /** Protect indicates whether the paths this trigger's function writes are recorded as protected local overrides, so a later merge from upstream does not overwrite them. A change claims nothing by default and so does a trigger; set this for a trigger that decides a value on the Unit's behalf and will not be back to decide it again, such as a PostClone trigger customizing a variant. Only meaningful for a mutating trigger. */
   Protect?: boolean;
   /** Unique URL-safe identifier for the entity. */
@@ -19930,6 +22433,7 @@ export type TriggerRead = {
   UnitFilterID?: string;
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  UpstreamTriggerID?: string;
   /** Validating indicates whether this is a validating function (true) or not (false).
             When false, the function can be either mutating (modifying configuration) or readonly returning an AttributeValueList (extracting values without modification).
             Validating functions check configuration validity without modifying it.
@@ -20030,6 +22534,7 @@ export type AttestationCreateRequest = {
   EvidenceAttestationIDs?: Uuid[];
   ExpiresAt?: string;
   Note?: string;
+  Permissions?: Permissions;
   ReleaseID?: string;
   Result?: string;
   Revision?: string;
@@ -20072,6 +22577,7 @@ export type ReleasePublishRequest = {
   Labels?: {
     [key: string]: string;
   };
+  Permissions?: Permissions;
   /** Optional Tag ID identifying the tagged Revision to bundle. For each Unit assigned to the Space's ReleaseTarget, the highest-numbered Revision carrying this Tag is bundled at that Revision instead of the Unit's head Revision. A Unit with no matching tagged Revision falls back to its head Revision. When omitted, each Unit is bundled at its head Revision and publishing creates a Tag named release-<ReleaseNum>, applies it to each bundled Revision, and sets it as the Release's TagID. */
   TagID?: string;
 };
@@ -20138,6 +22644,8 @@ export type ResourceInfoType2 = {
 export type Mutation = {
   BridgeWorkerID?: string;
   FunctionInvocation?: FunctionInvocation;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** InvocationID is the identifier of the function invoked, if there is a corresponding Invocation. */
   InvocationID?: string;
   InvocationParams?: {
@@ -20188,6 +22696,8 @@ export type MutationRead = {
   /** The type of entity. */
   EntityType?: string;
   FunctionInvocation?: FunctionInvocation;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   /** InvocationID is the identifier of the function invoked, if there is a corresponding Invocation. */
   InvocationID?: string;
   InvocationParams?: {
@@ -20241,6 +22751,8 @@ export type UnitEvent = {
   Action?: ActionType;
   /** BridgeWorkerID is the ID of the bridge worker that performed this action. This field is populated from the Target's BridgeWorkerID when the event is created. */
   BridgeWorkerID?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   Message?: string;
   /** Unique identifier for an Organization. */
   OrganizationID?: string;
@@ -20270,6 +22782,8 @@ export type UnitEventRead = {
   CreatedAt?: string;
   /** The type of entity. */
   EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
   Message?: string;
   /** Unique identifier for an Organization. */
   OrganizationID?: string;
@@ -20858,6 +23372,9 @@ export const {
   useLazyGetComponentQuery,
   usePatchComponentMutation,
   useUpdateComponentMutation,
+  useGetComponentDocumentQuery,
+  useLazyGetComponentDocumentQuery,
+  useUpdateComponentDocumentMutation,
   useDemoteMutation,
   useDiffConfigurationsMutation,
   useBulkDeleteFiltersMutation,
@@ -20936,6 +23453,9 @@ export const {
   useLazyGetAttributeQuery,
   usePatchAttributeMutation,
   useUpdateAttributeMutation,
+  useGetAttributeDocumentQuery,
+  useLazyGetAttributeDocumentQuery,
+  useUpdateAttributeDocumentMutation,
   useListBridgeWorkersQuery,
   useLazyListBridgeWorkersQuery,
   useCreateBridgeWorkerMutation,
@@ -20974,6 +23494,12 @@ export const {
   useLazyGetChangeWorkflowQuery,
   usePatchChangeWorkflowMutation,
   useUpdateChangeWorkflowMutation,
+  useGetChangeWorkflowDocumentQuery,
+  useLazyGetChangeWorkflowDocumentQuery,
+  useUpdateChangeWorkflowDocumentMutation,
+  useGetSpaceDocumentQuery,
+  useLazyGetSpaceDocumentQuery,
+  useUpdateSpaceDocumentMutation,
   useListFiltersQuery,
   useLazyListFiltersQuery,
   useCreateFilterMutation,
@@ -20982,6 +23508,9 @@ export const {
   useLazyGetFilterQuery,
   usePatchFilterMutation,
   useUpdateFilterMutation,
+  useGetFilterDocumentQuery,
+  useLazyGetFilterDocumentQuery,
+  useUpdateFilterDocumentMutation,
   useListFunctionsQuery,
   useLazyListFunctionsQuery,
   useInvokeFunctionsMutation,
@@ -20993,6 +23522,9 @@ export const {
   useLazyGetInvocationQuery,
   usePatchInvocationMutation,
   useUpdateInvocationMutation,
+  useGetInvocationDocumentQuery,
+  useLazyGetInvocationDocumentQuery,
+  useUpdateInvocationDocumentMutation,
   useListLinksQuery,
   useLazyListLinksQuery,
   useCreateLinkMutation,
@@ -21001,6 +23533,9 @@ export const {
   useLazyGetLinkQuery,
   usePatchLinkMutation,
   useUpdateLinkMutation,
+  useGetLinkDocumentQuery,
+  useLazyGetLinkDocumentQuery,
+  useUpdateLinkDocumentMutation,
   useListExtendedReleasesQuery,
   useLazyListExtendedReleasesQuery,
   usePublishReleaseMutation,
@@ -21036,6 +23571,9 @@ export const {
   useLazyGetTriggerQuery,
   usePatchTriggerMutation,
   useUpdateTriggerMutation,
+  useGetTriggerDocumentQuery,
+  useLazyGetTriggerDocumentQuery,
+  useUpdateTriggerDocumentMutation,
   useListUnitsQuery,
   useLazyListUnitsQuery,
   useCreateUnitMutation,
@@ -21086,6 +23624,9 @@ export const {
   useLazyGetViewQuery,
   usePatchViewMutation,
   useUpdateViewMutation,
+  useGetViewDocumentQuery,
+  useLazyGetViewDocumentQuery,
+  useUpdateViewDocumentMutation,
   useBulkDeleteTagsMutation,
   useListAllTagsQuery,
   useLazyListAllTagsQuery,
@@ -21102,6 +23643,7 @@ export const {
   useLazyListAllTriggersQuery,
   useBulkPatchTriggersMutation,
   useBulkCreateTriggersMutation,
+  useBulkMoveTriggersMutation,
   useBulkDeleteUnitsMutation,
   useListAllUnitsQuery,
   useLazyListAllUnitsQuery,

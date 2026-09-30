@@ -7,6 +7,64 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.6.9 — 2026-09-30
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: List and Search responses, and bulk operations,
+  leave out hidden entities, those with a `HiddenReason`, unless `include_hidden` names the
+  reason or is `*`, or the `where` clause names the entities by Slug or ID. A Filter's
+  `IncludeHidden` adds to `include_hidden` where the Filter is applied. ConfigHub/YAML Units, which hold
+  other entities' configuration, are hidden with the reason `BackingUnit`.
+
+### API
+
+Compared with ConfigHub `v0.6.8`:
+
+#### Added (309)
+
+- path `/component/{component_id}/document`
+- path `/space/{space_id}/attribute/{attribute_id}/document`
+- path `/space/{space_id}/change_workflow/{change_workflow_id}/document`
+- path `/space/{space_id}/document`
+- path `/space/{space_id}/filter/{filter_id}/document`
+- path `/space/{space_id}/invocation/{invocation_id}/document`
+- path `/space/{space_id}/link/{link_id}/document`
+- path `/space/{space_id}/trigger/{trigger_id}/document`
+- path `/space/{space_id}/view/{view_id}/document`
+- path `/trigger/move`
+- parameter `include_hidden` on `DELETE /_component`
+- parameter `include_hidden` on `PATCH /_component`
+- parameter `with_backing_units` on `PATCH /_component`
+- parameter `backing_unit_space` on `PATCH /_component`
+- parameter `from_backing_units` on `PATCH /_component`
+- parameter `dry_run` on `PATCH /_component`
+- parameter `include_hidden` on `DELETE /_space`
+- parameter `include_hidden` on `PATCH /_space`
+- parameter `with_backing_units` on `PATCH /_space`
+- parameter `backing_unit_space` on `PATCH /_space`
+- parameter `from_backing_units` on `PATCH /_space`
+- parameter `dry_run` on `PATCH /_space`
+- parameter `include_hidden` on `POST /_space`
+- parameter `with_backing_units` on `POST /_space`
+- parameter `backing_unit_space` on `POST /_space`
+- parameter `from_backing_units` on `POST /_space`
+- parameter `where_unit` on `POST /_space`
+- parameter `filter_unit` on `POST /_space`
+- parameter `dry_run` on `POST /_space`
+- parameter `include_hidden` on `GET /attestation`
+- parameter `include_hidden` on `DELETE /attribute`
+- parameter `include_hidden` on `GET /attribute`
+- parameter `include_hidden` on `PATCH /attribute`
+- parameter `with_backing_units` on `PATCH /attribute`
+- parameter `from_backing_units` on `PATCH /attribute`
+- parameter `dry_run` on `PATCH /attribute`
+- parameter `include_hidden` on `POST /attribute`
+- parameter `with_backing_units` on `POST /attribute`
+- parameter `from_backing_units` on `POST /attribute`
+- parameter `where_unit` on `POST /attribute`
+- …and 269 more
+
 ## 0.6.8 — 2026-09-29
 
 ### API
