@@ -7,6 +7,52 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.7.0 — 2026-09-30
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query` (breaking): a Target no longer names a worker, a
+  provider or a toolchain. `Target` loses `BridgeWorkerID`, `BridgeHandle`, `ToolchainType`,
+  `ProviderType`, `LiveStateType`, `ConfigTypes`, `Options` and `Parameters`, and
+  `TargetConfigType` is gone; `ExtendedTarget` loses `BridgeWorker`. `Unit` loses
+  `TargetOptions` and `BridgeWorkerID`, and `ExtendedUnit` loses `BridgeWorker`.
+  `WorkerInfo` loses `BridgeWorkerInfo`, along with `SupportedConfigType`, `ConfigType` and
+  `BridgeOption`. `ExtendedBridgeWorker` loses `TargetCount`, and `ExtendedSpace`'s
+  `TargetCountByToolchainType` is replaced by `TotalTargetCount`. Listing functions takes
+  `entity=worker` only. A worker is given access to a Target by granting its bot user View and
+  ViewChildren in the Target's `Permissions`.
+
+### API
+
+Compared with ConfigHub `v0.6.9`:
+
+#### Removed (20), breaking for code typed against them
+
+- schema `BridgeOption`
+- schema `BridgeWorkerInfo`
+- field `ExtendedBridgeWorker.TargetCount`
+- field `ExtendedSpace.TargetCountByToolchainType`
+- field `ExtendedTarget.BridgeWorker`
+- field `ExtendedUnit.BridgeWorker`
+- schema `SupportedConfigType`
+- field `Target.BridgeHandle`
+- field `Target.BridgeWorkerID`
+- field `Target.ConfigTypes`
+- field `Target.LiveStateType`
+- field `Target.Options`
+- field `Target.Parameters`
+- field `Target.ProviderType`
+- field `Target.ToolchainType`
+- schema `TargetConfigType`
+- schema `TargetType2`
+- field `Unit.BridgeWorkerID`
+- field `Unit.TargetOptions`
+- field `WorkerInfo.BridgeWorkerInfo`
+
+#### Added (1)
+
+- field `ExtendedSpace.TotalTargetCount`
+
 ## 0.6.9 — 2026-09-30
 
 ### Changes
