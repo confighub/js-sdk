@@ -17,6 +17,7 @@ export const addTagTypes = [
   "Unit",
   "Filter",
   "Function",
+  "Group",
   "Meta",
   "Invocation",
   "Link",
@@ -937,6 +938,27 @@ const injectedRtkApi = api
           },
         }),
         invalidatesTags: ["Function"],
+      }),
+      listExtendedGroups: build.query<
+        ListExtendedGroupsApiResponse,
+        ListExtendedGroupsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/group`,
+          params: {
+            where: queryArg.where,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+          },
+        }),
+        providesTags: ["Group"],
+      }),
+      getExtendedGroup: build.query<
+        GetExtendedGroupApiResponse,
+        GetExtendedGroupApiArg
+      >({
+        query: (queryArg) => ({ url: `/group/${queryArg.groupId}` }),
+        providesTags: ["Group"],
       }),
       apiInfo: build.query<ApiInfoApiResponse, ApiInfoApiArg>({
         query: () => ({ url: `/info` }),
@@ -3745,13 +3767,19 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            select: queryArg.select,
             include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["User"],
       }),
       getUser: build.query<GetUserApiResponse, GetUserApiArg>({
-        query: (queryArg) => ({ url: `/user/${queryArg.userId}` }),
+        query: (queryArg) => ({
+          url: `/user/${queryArg.userId}`,
+          params: {
+            select: queryArg.select,
+          },
+        }),
         providesTags: ["User"],
       }),
       listUserKeys: build.query<ListUserKeysApiResponse, ListUserKeysApiArg>({
@@ -8275,6 +8303,78 @@ export type InvokeFunctionsOnOrgApiArg = {
   view?: string;
   functionInvocationsRequest: FunctionInvocationsRequest;
 };
+export type ListExtendedGroupsApiResponse =
+  /** status 200 OK */ ExtendedGroupRead[];
+export type ListExtendedGroupsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Groups returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Group: CreatedAt, DisplayName, ExternalID, GroupID, Slug, UpdatedAt.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Group include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Group entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+};
+export type GetExtendedGroupApiResponse =
+  /** status 200 Group with additional related entities expanded based on the request's include parameter. */ ExtendedGroupRead;
+export type GetExtendedGroupApiArg = {
+  /** Unique identifier for a group_id */
+  groupId: string;
+};
 export type ApiInfoApiResponse =
   /** status 200 Information provided to clients by the server. */ ApiInfoRead;
 export type ApiInfoApiArg = void;
@@ -8942,7 +9042,7 @@ export type BulkDeleteLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     filter
     
@@ -9030,7 +9130,7 @@ export type SearchListLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -9126,7 +9226,7 @@ export type BulkPatchLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     filter
     
@@ -9190,7 +9290,6 @@ export type BulkPatchLinksApiArg = {
       [key: string]: string | null;
     } | null;
     AutoUpdate?: boolean | null;
-    Bindings?: (object | null)[] | null;
     Clearance?: (object | null)[] | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
@@ -9212,6 +9311,7 @@ export type BulkPatchLinksApiArg = {
     Labels?: {
       [key: string]: string | null;
     } | null;
+    ManualBindings?: (object | null)[] | null;
     MergeEnableSubtraction?: boolean | null;
     Permissions?: {
       [key: string]: object | null;
@@ -9271,7 +9371,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     Where expression to select source links to copy
     
@@ -9325,7 +9425,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     Where expression to find downstream UpgradeUnit links from each source link's FromUnit. Creates one copy per match. Required if reverse is not specified.
     
@@ -9365,7 +9465,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     Where expression to find downstream UpgradeUnit link from each source link's ToUnit. Exactly one match required. If omitted, ToUnitID/ToSpaceID are unchanged.
     
@@ -9435,7 +9535,6 @@ export type BulkCreateLinksApiArg = {
       [key: string]: string | null;
     } | null;
     AutoUpdate?: boolean | null;
-    Bindings?: (object | null)[] | null;
     Clearance?: (object | null)[] | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
@@ -9457,6 +9556,7 @@ export type BulkCreateLinksApiArg = {
     Labels?: {
       [key: string]: string | null;
     } | null;
+    ManualBindings?: (object | null)[] | null;
     MergeEnableSubtraction?: boolean | null;
     Permissions?: {
       [key: string]: object | null;
@@ -9505,7 +9605,7 @@ export type GetOAuthClientApiArg = {
   oauthClient: string;
 };
 export type ListOrganizationsApiResponse =
-  /** status 200 OK */ OrganizationRead[];
+  /** status 200 OK */ ExtendedOrganizationRead[];
 export type ListOrganizationsApiArg = {
   /** The specified string is an expression for the purpose of filtering
     the list of Organizations returned. The expression syntax was inspired by SQL.
@@ -9613,7 +9713,7 @@ export type DeleteOrganizationApiArg = {
   organizationId: string;
 };
 export type GetOrganizationApiResponse =
-  /** status 200 The top-level container for an organization using ConfigHub. */ OrganizationRead;
+  /** status 200 OK */ ExtendedOrganizationRead;
 export type GetOrganizationApiArg = {
   /** Include clause for expanding related entities in the response for Organization.
     The attribute names are case-sensitive, PascalCase, and
@@ -9645,7 +9745,7 @@ export type UpdateOrganizationApiArg = {
   organization: Organization;
 };
 export type ListOrganizationMembersApiResponse =
-  /** status 200 OK */ OrganizationMember[];
+  /** status 200 OK */ ExtendedOrganizationMember[];
 export type ListOrganizationMembersApiArg = {
   /** Unique identifier for a organization_id */
   organizationId: string;
@@ -9732,7 +9832,7 @@ export type DeleteOrganizationMemberApiArg = {
   organizationMemberId: string;
 };
 export type GetOrganizationMemberApiResponse =
-  /** status 200 a User given membership on the Organization */ OrganizationMember;
+  /** status 200 OK */ ExtendedOrganizationMember;
 export type GetOrganizationMemberApiArg = {
   /** Unique identifier for a organization_id */
   organizationId: string;
@@ -12365,7 +12465,7 @@ export type ListLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -12491,7 +12591,6 @@ export type PatchLinkApiArg = {
       [key: string]: string | null;
     } | null;
     AutoUpdate?: boolean | null;
-    Bindings?: (object | null)[] | null;
     Clearance?: (object | null)[] | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
@@ -12513,6 +12612,7 @@ export type PatchLinkApiArg = {
     Labels?: {
       [key: string]: string | null;
     } | null;
+    ManualBindings?: (object | null)[] | null;
     MergeEnableSubtraction?: boolean | null;
     Permissions?: {
       [key: string]: object | null;
@@ -17027,7 +17127,7 @@ export type BulkCreateUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
     Where expression to filter outgoing links (links to units outside the cloned set) for copying. If non-empty, matching outgoing links are also copied with FromUnitID retargeted to the cloned unit.
     
@@ -17851,7 +17951,7 @@ export type UploadApiArg = {
   include?: string;
   uploadRequest: UploadRequest;
 };
-export type ListUsersApiResponse = /** status 200 OK */ UserRead[];
+export type ListUsersApiResponse = /** status 200 OK */ ExtendedUserRead[];
 export type ListUsersApiArg = {
   /** The specified string is an expression for the purpose of filtering
     the list of Users returned. The expression syntax was inspired by SQL.
@@ -17887,7 +17987,7 @@ export type ListUsersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on User: CreatedAt, DisplayName, ExternalID, HiddenReason, Slug, UpdatedAt, UserID, Username.
+    Supported attributes for filtering on User: CreatedAt, DisplayName, ExternalID, GroupIDs, HiddenReason, Slug, UpdatedAt, UserID, Username.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -17919,6 +18019,15 @@ export type ListUsersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Select clause for specifying which fields to include in the response for User.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, UserID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
   /** Hidden User entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -17928,9 +18037,17 @@ export type ListUsersApiArg = {
     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
   includeHidden?: string;
 };
-export type GetUserApiResponse =
-  /** status 200 a User in Confighub. */ UserRead;
+export type GetUserApiResponse = /** status 200 OK */ ExtendedUserRead;
 export type GetUserApiArg = {
+  /** Select clause for specifying which fields to include in the response for User.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, UserID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
   /** Unique identifier for a user_id */
   userId: string;
 };
@@ -18618,6 +18735,9 @@ export type StandardErrorResponse = {
 };
 export type Uuid = string;
 export type Subjects = {
+  GroupIDs?: {
+    [key: string]: boolean;
+  };
   UserIDs?: {
     [key: string]: boolean;
   };
@@ -20787,6 +20907,46 @@ export type FunctionInvocationsRequest = {
   /** WhereResource restricts which resources functions operate on using ConfigHub metadata path expressions (ConfigHub.ResourceName, ConfigHub.ResourceNameWithoutScope, ConfigHub.ResourceType, ConfigHub.ResourceCategory). */
   WhereResource?: string;
 };
+export type Group = {
+  /** Friendly name for the entity. */
+  DisplayName?: string;
+  /** Unique identifier for a Group. (readonly) */
+  GroupID?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** Unique URL-safe identifier for the entity. */
+  Slug: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type GroupRead = {
+  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
+  CreatedAt?: string;
+  /** Friendly name for the entity. */
+  DisplayName?: string;
+  /** The type of entity. */
+  EntityType?: string;
+  /** Unique identifier for the External Identity Provider record matching this Group. */
+  ExternalID?: string;
+  /** Unique identifier for a Group. (readonly) */
+  GroupID?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** Unique URL-safe identifier for the entity. */
+  Slug: string;
+  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
+  UpdatedAt?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type ExtendedGroup = {
+  Error?: ResponseError;
+  Group?: Group;
+};
+export type ExtendedGroupRead = {
+  Error?: ResponseError;
+  Group?: GroupRead;
+};
 export type ApiInfo = {};
 export type ApiInfoRead = {
   AuthIssuer?: string;
@@ -21087,10 +21247,10 @@ export type UnitRead = {
 export type Binding = {
   /** Shared attribute name that matched the need to the provide */
   AttributeName?: string;
-  /** Whether this binding should be automatically updated when the provided value changes; if false, the binding is manual and will not be modified by automatic resolution */
-  AutoUpdate?: boolean;
   /** DataType of the bound value */
   DataType?: string;
+  /** Identifies a binding within its Link's ManualBindings, so that a merge of two versions of the Link matches bindings by Key rather than by position. Optional, and unique within the list when present. Letters, digits, '-' and '_', starting with a letter or digit; at most 128 characters. */
+  Key?: string;
   /** Resolved path within the needed resource */
   NeededPath?: string;
   NeededResource?: ResourceInfo;
@@ -21106,6 +21266,8 @@ export type PathExpression = {
   Evaluator?: string;
   /** Go template or CEL expression that evaluates to the value to write. Parameters and FunctionContext fields are in scope. */
   Expression?: string;
+  /** Identifies the entry within DownstreamPaths, so that a merge of two versions of the Link matches entries by Key rather than by position. Optional, and unique within the list when present. Letters, digits, '-' and '_', starting with a letter or digit; at most 128 characters. */
+  Key?: string;
   /** Names of upstream values referenced by Expression. Each entry must be a legal identifier and must match a Name in UpstreamPaths or UpstreamGetters. */
   Parameters?: string[];
   /** Unresolved path within Resource to write via set-attributes */
@@ -21114,6 +21276,8 @@ export type PathExpression = {
 };
 export type ParameterizedFunction = {
   FunctionInvocation?: FunctionInvocation;
+  /** Identifies the entry within DownstreamSetters, so that a merge of two versions of the Link matches entries by Key rather than by position. Optional, and unique within the list when present. Letters, digits, '-' and '_', starting with a letter or digit; at most 128 characters. */
+  Key?: string;
   /** Names of upstream values whose values are exposed to string-argument template expansion. Each entry must match a Name in UpstreamPaths or UpstreamGetters. */
   Parameters?: string[];
 };
@@ -21161,6 +21325,7 @@ export type Link = {
   };
   /** Unique identifier for a Link. */
   LinkID?: string;
+  ManualBindings?: BindingList;
   /** Enables the subtraction (override-preservation) step of the merge performed when resolving this Link. When false (the default), the source patch is applied without subtraction and the downstream Unit's local differences are preserved by the stored Mutation Protected values alone, widened by WhereMutation if it is set. When true, the merge additionally subtracts the downstream Unit's local differences from the source patch and the stored values are not consulted. Only meaningful for UpgradeUnit and MergeUnits Links. */
   MergeEnableSubtraction?: boolean;
   /** Unique identifier for an organization. */
@@ -21234,6 +21399,7 @@ export type LinkRead = {
   };
   /** Unique identifier for a Link. */
   LinkID?: string;
+  ManualBindings?: BindingList;
   /** Enables the subtraction (override-preservation) step of the merge performed when resolving this Link. When false (the default), the source patch is applied without subtraction and the downstream Unit's local differences are preserved by the stored Mutation Protected values alone, widened by WhereMutation if it is set. When true, the merge additionally subtracts the downstream Unit's local differences from the source patch and the stored values are not consulted. Only meaningful for UpgradeUnit and MergeUnits Links. */
   MergeEnableSubtraction?: boolean;
   /** Unique identifier for an organization. */
@@ -21348,6 +21514,18 @@ export type OAuthClientRead = {
   OrganizationID?: string;
   /** Exact redirect URIs permitted for the app's login (no wildcards). */
   RedirectURIs?: string[] | null;
+};
+export type ExtendedOrganization = {
+  Error?: ResponseError;
+  Organization?: Organization;
+};
+export type ExtendedOrganizationRead = {
+  Error?: ResponseError;
+  Organization?: OrganizationRead;
+};
+export type ExtendedOrganizationMember = {
+  Error?: ResponseError;
+  OrganizationMember?: OrganizationMember;
 };
 export type PromoteLinkResult = {
   /** Create, Unchanged, Skip, or Orphaned. */
@@ -22067,6 +22245,8 @@ export type User = {
   DisplayName?: string;
   /** Unique identifier for the External Identity Provider record matching this User. */
   ExternalID?: string;
+  /** The Groups the User belongs to, from the identity provider's claims at their last login. (readonly) */
+  GroupIDs?: Uuid[];
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
   /** The URL to get the profile avatar picture of the User. */
@@ -22089,6 +22269,8 @@ export type UserRead = {
   EntityType?: string;
   /** Unique identifier for the External Identity Provider record matching this User. */
   ExternalID?: string;
+  /** The Groups the User belongs to, from the identity provider's claims at their last login. (readonly) */
+  GroupIDs?: Uuid[];
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
   /** The URL to get the profile avatar picture of the User. */
@@ -23151,6 +23333,14 @@ export type UploadRequest = {
   /** Slug pattern for created Spaces, over the Space's Component and labels. Default {{.Component.Slug}}-{{.Labels.Variant}}. */
   SpacePattern?: string;
 };
+export type ExtendedUser = {
+  Error?: ResponseError;
+  User?: User;
+};
+export type ExtendedUserRead = {
+  Error?: ResponseError;
+  User?: UserRead;
+};
 export type UserKey = {
   CreatedAt?: string;
   Description?: string;
@@ -23236,6 +23426,10 @@ export const {
   useListOrgFunctionsQuery,
   useLazyListOrgFunctionsQuery,
   useInvokeFunctionsOnOrgMutation,
+  useListExtendedGroupsQuery,
+  useLazyListExtendedGroupsQuery,
+  useGetExtendedGroupQuery,
+  useLazyGetExtendedGroupQuery,
   useApiInfoQuery,
   useLazyApiInfoQuery,
   useBulkDeleteInvocationsMutation,

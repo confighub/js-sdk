@@ -7,6 +7,49 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.0 — 2026-10-01
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query` (breaking): a Link's bindings are split by who makes
+  them. `ManualBindings` holds the ones stated by hand, which resolution uses as they are,
+  including an Insert Link's one binding; `Bindings` holds the ones resolution finds, and is now
+  read-only. `Binding` loses `AutoUpdate`, since the list a Binding is in says which kind it is,
+  and gains an optional `Key`, as do the entries of `DownstreamPaths` and `DownstreamSetters`,
+  so that a merge matches entries by Key rather than by position.
+- `@confighub/api`, `@confighub/rtk-query` (breaking): Get and List of an Organization, an
+  OrganizationMember and a User return the entity in an envelope, as every other entity's do:
+  `ExtendedOrganization`, `ExtendedOrganizationMember` and `ExtendedUser`, with the entity in
+  `.Organization`, `.OrganizationMember` and `.User`. `GET /me` still returns a bare
+  `OrganizationMember`, and Create and Update still return the bare entity.
+- `@confighub/api`, `@confighub/rtk-query`: Get and List of a User take `select`.
+
+### API
+
+Compared with ConfigHub `v0.7.0`:
+
+#### Removed (1), breaking for code typed against them
+
+- field `Binding.AutoUpdate`
+
+#### Added (15)
+
+- path `/group`
+- path `/group/{group_id}`
+- parameter `select` on `GET /user`
+- parameter `select` on `GET /user/{user_id}`
+- field `Binding.Key`
+- field `Link.ManualBindings`
+- field `ParameterizedFunction.Key`
+- field `PathExpression.Key`
+- field `Subjects.GroupIDs`
+- field `User.GroupIDs`
+- schema `ExtendedGroup`
+- schema `ExtendedOrganization`
+- schema `ExtendedOrganizationMember`
+- schema `ExtendedUser`
+- schema `Group`
+
 ## 0.7.0 — 2026-09-30
 
 ### Changes
