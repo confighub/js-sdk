@@ -595,10 +595,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List ExtendedGroups
-         * @description List ExtendedGroups
+         * List Groups
+         * @description List Groups
          */
-        get: operations["ListExtendedGroups"];
+        get: operations["ListGroups"];
         put?: never;
         post?: never;
         delete?: never;
@@ -615,13 +615,37 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get ExtendedGroup
-         * @description Get ExtendedGroup
+         * Get Group
+         * @description Get Group
          */
-        get: operations["GetExtendedGroup"];
+        get: operations["GetGroup"];
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/group/{group_id}/user/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add a bot User to a Group
+         * @description Add the bot User of a BridgeWorker in the caller's Organization to the Group. Other Users' Group memberships are managed in the identity provider. An organization admin or manager may. So may a member of the Group who has Manage permission on the bot User's BridgeWorker. Adding a bot that is already a member does nothing. Returns the bot User with its GroupIDs.
+         */
+        post: operations["AddGroupBotUser"];
+        /**
+         * Remove a bot User from a Group
+         * @description Remove the bot User of a BridgeWorker in the caller's Organization from the Group. An organization admin or manager may. So may a member of the Group who has Manage permission on the bot User's BridgeWorker. Removing a bot that is not a member does nothing. Returns the bot User with its GroupIDs.
+         */
+        delete: operations["RemoveGroupBotUser"];
         options?: never;
         head?: never;
         patch?: never;
@@ -3633,7 +3657,7 @@ export interface components {
              */
             readonly ClaimToken?: string;
             /** @description Condition represents the worker's readiness state (Ready, NotReady, Unresponsive, Disconnected). */
-            Condition?: string;
+            readonly Condition?: string;
             /**
              * Format: date-time
              * @description The timestamp when the entity was created in "2023-01-01T12:00:00Z" format.
@@ -3780,7 +3804,8 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             ChangeOrderID?: string;
-            ChangeWorkflow?: components["schemas"]["ChangeWorkflowSpec"];
+            /** @description ChangeWorkflow governs how this ChangeOrder is promoted: the ordered stages it moves through and the gates that have to pass before it enters one. It is a copy taken when the workflow was associated, not a reference, so editing the ChangeWorkflow afterwards cannot change the rules a rollout already started under. Empty is a ChangeOrder no workflow governs, which is promoted ungated. */
+            readonly ChangeWorkflow?: components["schemas"]["ChangeWorkflowSpec"];
             /**
              * Format: uuid
              * @description ChangeWorkflowID is the ChangeWorkflow this ChangeOrder is promoted under. It says which workflow the stored copy was taken from, and keeps saying so after that workflow has been edited or deleted, which is why it is not a foreign key.
@@ -3834,8 +3859,12 @@ export interface components {
                 [key: string]: unknown;
             };
             Permissions?: components["schemas"]["Permissions"];
+            /** @description PromotionFailures records each promotion that did not complete: who ran it, when, into which Stage, and each Space it failed or was blocked in, with the Space's error or reason and the error of each Unit and Link whose write failed. The most recent entries are kept. Set by the server. (readonly) */
             readonly PromotionFailures?: components["schemas"]["ChangeOrderPromotionFailure"][];
+            /** @description PromotionOverrides records each promotion forced into a Stage whose gates did not hold: who forced it, when, into which Stage and Spaces, why, and which gates failed. The most recent entries are kept. Set by the server. (readonly) */
             readonly PromotionOverrides?: components["schemas"]["ChangeOrderPromotionOverride"][];
+            /** @description Promotions records each promotion that wrote the change into Spaces: who ran it, when, into which Stage, and which Spaces. A promotion entering several Stages records one entry per Stage. The most recent entries are kept. Set by the server. (readonly) */
+            readonly Promotions?: components["schemas"]["ChangeOrderPromotion"][];
             /** @description ReleasedRestoredSpaceIDs is where the undoing has been released: the Spaces in RestoredSpaceIDs whose Units are released at or past the Revision the restore Tag marks. Covering ReleasedSpaceIDs is what State reports as RestoreReleased. Derived when the ChangeOrder is read. */
             readonly ReleasedRestoredSpaceIDs?: components["schemas"]["UUID"][];
             /** @description ReleasedSpaceIDs is where the ChangeOrder has been released: the Spaces in scope whose Units in the Space's release are applied at or past the Revision the end Tag marks. Derived when the ChangeOrder is read. */
@@ -3939,12 +3968,26 @@ export interface components {
              *     The whole string must be query-encoded.
              */
             WhereSpace?: string;
-            /** @description WhereUnit narrows which Units of each Space in scope an Invoke ChangeOrder covers, and is refused on the other UpdateTypes. Empty covers every Unit. Unlike InScopeSpaceIDs it is asked again on every read, so a Unit added to a Space afterwards counts against that Space. Immutable. */
+            /** @description WhereUnit narrows which Units of each Space in scope an Invoke ChangeOrder covers, and is refused on the other UpdateTypes. It takes what the where parameter of the Unit list does, attributes of what a Unit refers to included, as in `Space.Labels.Environment = 'prod'`. Empty covers every Unit. Unlike InScopeSpaceIDs it is asked again on every read, so a Unit added to a Space afterwards counts against that Space. Immutable. */
             WhereUnit?: string;
         };
         ChangeOrderCreateOrUpdateResponse: {
             ChangeOrder?: components["schemas"]["ChangeOrder"];
             Error?: components["schemas"]["ResponseError"];
+        };
+        ChangeOrderPromotion: {
+            /**
+             * Format: date-time
+             * @example 2006-01-02T15:04:05Z07:00
+             */
+            PromotedAt?: string;
+            SpaceIDs?: components["schemas"]["UUID"][];
+            Stage?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UserID?: string;
         };
         ChangeOrderPromotionFailure: {
             /**
@@ -3953,16 +3996,26 @@ export interface components {
              */
             FailedAt?: string;
             Spaces?: components["schemas"]["ChangeOrderPromotionFailureSpace"][];
-            TargetStage?: string;
+            Stage?: string;
             /**
              * Format: uuid
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             UserID?: string;
         };
+        ChangeOrderPromotionFailureLink: {
+            Error?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            LinkID?: string;
+            Slug?: string;
+        };
         ChangeOrderPromotionFailureSpace: {
             Action?: string;
             Error?: string;
+            Links?: components["schemas"]["ChangeOrderPromotionFailureLink"][];
             Reason?: string;
             /**
              * Format: uuid
@@ -3990,6 +4043,7 @@ export interface components {
              */
             OverriddenAt?: string;
             Reason?: string;
+            SpaceIDs?: components["schemas"]["UUID"][];
             Stage?: string;
             /**
              * Format: uuid
@@ -4226,10 +4280,15 @@ export interface components {
         };
         Column: {
             ColumnSource?: components["schemas"]["ColumnSource"];
+            /** @description The kind of value: MetadataAttribute, MetadataExpression, DataPath or DataExpression. */
             ColumnType?: string;
+            /** @description The expected data type of the column value: string, int, bool, uuid or time. */
             DataType?: string;
+            /** @description Group by this column. Priority is in column list order, after the View's GroupBy. */
             GroupBy?: boolean;
+            /** @description The display name for the column. */
             Name: string;
+            /** @description Sort by this column, ASC or DESC. Priority is in column list order, after the View's OrderBy. */
             OrderByDirection?: string;
         };
         ColumnSource: {
@@ -5006,7 +5065,7 @@ export interface components {
             /** @description Supported ToolchainTypes */
             ToolchainTypes?: string[] | null;
         };
-        /** @description A Group of Users, a subject in an entity's Permissions. Groups and their membership are managed in the identity provider, and like Users are not scoped to an Organization; a Group is provisioned when a User in it logs in. */
+        /** @description A Group of Users, a subject in an entity's Permissions. Groups and their membership are managed in the identity provider, and like Users are not scoped to an Organization; a Group is provisioned when a User in it logs in. Bot Users are the exception: they are added to a Group through the API. */
         Group: {
             /**
              * Format: date-time
@@ -5170,7 +5229,8 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             readonly BackingUnitID?: string;
-            Bindings?: components["schemas"]["BindingList"];
+            /** @description The needs/provides attribute bindings resolution found for this Link and keeps up to date: one for each needed attribute of the downstream Unit it matched with an attribute the upstream Unit provides. Set by the server, and rebuilt by each resolve. A needed attribute that a binding in ManualBindings names is not matched again. */
+            readonly Bindings?: components["schemas"]["BindingList"];
             Clearance?: components["schemas"]["Clearance"];
             /**
              * Format: date-time
@@ -6021,6 +6081,12 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly UpdatedAt?: string;
+            /**
+             * Format: uuid
+             * @description The User who published the Release. Absent for Releases published before it was recorded. (readonly)
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly UserID?: string;
             /**
              * Format: int64
              * @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update.
@@ -6960,10 +7026,6 @@ export interface components {
             OrganizationID?: string;
             /** @description Specifies the source of additional configuration data to pass to functions that need it (e.g., vet-immutable needs a baseline revision to compare against). Uses revision specifier format such as LastReleasedRevisionNum or Before:HeadRevisionNum. */
             OtherDataSource?: string;
-            /** @description Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
-            Params?: {
-                [key: string]: unknown;
-            };
             Permissions?: components["schemas"]["Permissions"];
             /**
              * @description Protect indicates whether the paths this trigger's function writes are recorded as protected local overrides, so a later merge from upstream does not overwrite them. A change claims nothing by default and so does a trigger; set this for a trigger that decides a value on the Unit's behalf and will not be back to decide it again, such as a PostClone trigger customizing a variant. Only meaningful for a mutating trigger.
@@ -7029,7 +7091,7 @@ export interface components {
             Warn?: boolean;
             /** @description Restricts which resources within a Unit's configuration data the Trigger's function operates on, using ConfigHub metadata path expressions. */
             WhereResource?: string;
-            /** @description A filter expression to restrict which Units this Trigger applies to. */
+            /** @description A filter expression to restrict which Units this Trigger applies to. It takes what the where parameter of the Unit list does, attributes of what a Unit refers to included, as in `Space.Labels.Environment = 'prod'` and `UpstreamUnit.Slug = 'base'`. */
             WhereUnit?: string;
         };
         TriggerCreateOrUpdateResponse: {
@@ -7067,7 +7129,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             ChangeSetID?: string;
-            Conflicts?: components["schemas"]["MutationConflictList"];
+            readonly Conflicts?: components["schemas"]["MutationConflictList"];
             /**
              * Format: date-time
              * @description The timestamp when the entity was created in "2023-01-01T12:00:00Z" format.
@@ -7142,7 +7204,8 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
-            PathAnnotations?: components["schemas"]["PathAnnotationList"];
+            /** @description Annotations on locations within the Unit's configuration data, by resource and path. */
+            readonly PathAnnotations?: components["schemas"]["PathAnnotationList"];
             Permissions?: components["schemas"]["Permissions"];
             /** @description Attribute paths that this Unit provides to downstream Units via NeedsProvides Links. Computed from get-provided and stored on data updates. */
             readonly ProvidedPaths?: components["schemas"]["AttributeInfo"][];
@@ -7797,7 +7860,7 @@ export interface components {
             readonly EntityType?: string;
             /** @description Unique identifier for the External Identity Provider record matching this User. */
             ExternalID?: string;
-            /** @description The Groups the User belongs to, from the identity provider's claims at their last login. (readonly) */
+            /** @description The Groups the User belongs to, from the identity provider's claims at their last login. A bot User's Groups are the ones it was added to through the Group API instead. (readonly) */
             GroupIDs?: components["schemas"]["UUID"][];
             /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
             HiddenReason?: string;
@@ -7976,9 +8039,9 @@ export interface components {
         };
         WorkerInfo: {
             FunctionWorkerInfo?: components["schemas"]["FunctionWorkerInfo"];
-            /** @description If true, this is a server-hosted worker. */
+            /** @description If true, this is a server-hosted worker. It cannot be changed after the worker is created. */
             IsServerWorker?: boolean;
-            /** @description If true, the server worker operates using the requesting user's identity rather than the worker's bot identity. Requires IsServerWorker to be true. */
+            /** @description If true, the server worker operates using the requesting user's identity rather than the worker's bot identity. Requires IsServerWorker to be true. It cannot be changed after the worker is created. */
             UseUserIdentity?: boolean;
         };
     };
@@ -8569,6 +8632,8 @@ export interface operations {
                 where_unit?: string;
                 /** @description A Filter, by ID, over the Units to create entities from, with from_backing_units. */
                 filter_unit?: string;
+                /** @description With from_backing_units, patch a Space a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Space is returned as it is. */
+                patch_existing?: boolean;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
                 dry_run?: boolean;
             };
@@ -9808,6 +9873,8 @@ export interface operations {
                 where_unit?: string;
                 /** @description A Filter, by ID, over the Units to create entities from, with from_backing_units. */
                 filter_unit?: string;
+                /** @description With from_backing_units, patch a Attribute a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Attribute is returned as it is. */
+                patch_existing?: boolean;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
                 dry_run?: boolean;
             };
@@ -10991,7 +11058,6 @@ export interface operations {
                     Annotations?: {
                         [key: string]: string | null;
                     } | null;
-                    Condition?: string | null;
                     /** @description An optional set of gates that, if any is present, will block deletion */
                     DeleteGates?: {
                         [key: string]: boolean | null;
@@ -11457,7 +11523,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -11635,7 +11701,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -11931,7 +11997,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -12127,7 +12193,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -13769,6 +13835,8 @@ export interface operations {
                 where_unit?: string;
                 /** @description A Filter, by ID, over the Units to create entities from, with from_backing_units. */
                 filter_unit?: string;
+                /** @description With from_backing_units, patch a ChangeWorkflow a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the ChangeWorkflow is returned as it is. */
+                patch_existing?: boolean;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
                 dry_run?: boolean;
             };
@@ -15968,6 +16036,8 @@ export interface operations {
                 where_unit?: string;
                 /** @description A Filter, by ID, over the Units to create entities from, with from_backing_units. */
                 filter_unit?: string;
+                /** @description With from_backing_units, patch a Filter a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Filter is returned as it is. */
+                patch_existing?: boolean;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
                 dry_run?: boolean;
             };
@@ -17078,7 +17148,7 @@ export interface operations {
             };
         };
     };
-    ListExtendedGroups: {
+    ListGroups: {
         parameters: {
             query?: {
                 /**
@@ -17122,6 +17192,20 @@ export interface operations {
                  */
                 where?: string;
                 /**
+                 * @description UUID of a Filter entity to apply to the Group list.
+                 *
+                 *     The Filter must be in the same Organization as the user credentials.
+                 *
+                 *     The Filter's From field must match the entity type being filtered (Group).
+                 *
+                 *     For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+                 *
+                 *     The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+                 *
+                 *     If both 'filter' and 'where' parameters are specified, they are combined with AND logic.
+                 */
+                filter?: string;
+                /**
                  * @description Free text search that approximately matches the specified string against string fields and map keys/values.
                  *
                  *     The search is case-insensitive and uses pattern matching to find entities containing the text.
@@ -17139,6 +17223,17 @@ export interface operations {
                  *     The whole string must be query-encoded.
                  */
                 contains?: string;
+                /**
+                 * @description Select clause for specifying which fields to include in the response for Group.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *     If not specified, all fields are returned.
+                 *     Entity and parent IDs (like OrganizationID, SpaceID, GroupID) and Slug are always returned regardless of the select parameter.
+                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+                 *     The whole string must be query-encoded.
+                 */
+                select?: string;
                 /**
                  * @description Hidden Group entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
                  *
@@ -17165,7 +17260,7 @@ export interface operations {
                     "application/json": components["schemas"]["ExtendedGroup"][];
                 };
             };
-            /** @description ExtendedGroup request is invalid (Bad Request). */
+            /** @description Group request is invalid (Bad Request). */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -17192,7 +17287,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description ExtendedGroup not found. */
+            /** @description Group not found. */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -17201,7 +17296,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Something went wrong while processing ExtendedGroup. */
+            /** @description Something went wrong while processing Group. */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -17221,9 +17316,21 @@ export interface operations {
             };
         };
     };
-    GetExtendedGroup: {
+    GetGroup: {
         parameters: {
-            query?: never;
+            query?: {
+                /**
+                 * @description Select clause for specifying which fields to include in the response for Group.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *     If not specified, all fields are returned.
+                 *     Entity and parent IDs (like OrganizationID, SpaceID, GroupID) and Slug are always returned regardless of the select parameter.
+                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+                 *     The whole string must be query-encoded.
+                 */
+                select?: string;
+            };
             header?: never;
             path: {
                 /** @description Unique identifier for a group_id */
@@ -17242,7 +17349,7 @@ export interface operations {
                     "application/json": components["schemas"]["ExtendedGroup"];
                 };
             };
-            /** @description ExtendedGroup request is invalid (Bad Request). */
+            /** @description Group request is invalid (Bad Request). */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -17269,7 +17376,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description ExtendedGroup not found. */
+            /** @description Group not found. */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -17278,7 +17385,192 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Something went wrong while processing ExtendedGroup. */
+            /** @description Something went wrong while processing Group. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    AddGroupBotUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Unique identifier for a group_id */
+                group_id: string;
+                /** @description Unique identifier for a user_id */
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description a User in Confighub. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                };
+            };
+            /** @description Group request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Group not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Group data conflict. Data has changed since last read. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing Group. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    RemoveGroupBotUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Unique identifier for a group_id */
+                group_id: string;
+                /** @description Unique identifier for a user_id */
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description a User in Confighub. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                };
+            };
+            /** @description Group request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Group not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Group is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Group could not be deleted. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing Group. */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -17707,6 +17999,8 @@ export interface operations {
                 where_unit?: string;
                 /** @description A Filter, by ID, over the Units to create entities from, with from_backing_units. */
                 filter_unit?: string;
+                /** @description With from_backing_units, patch a Invocation a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Invocation is returned as it is. */
+                patch_existing?: boolean;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
                 dry_run?: boolean;
             };
@@ -18846,6 +19140,8 @@ export interface operations {
                 where_unit?: string;
                 /** @description A Filter, by ID, over the Units to create entities from, with from_backing_units. */
                 filter_unit?: string;
+                /** @description With from_backing_units, patch a Link a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Link is returned as it is. */
+                patch_existing?: boolean;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
                 dry_run?: boolean;
             };
@@ -21066,7 +21362,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt.
+                 *     Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -24611,7 +24907,6 @@ export interface operations {
                     Annotations?: {
                         [key: string]: string | null;
                     } | null;
-                    Condition?: string | null;
                     /** @description An optional set of gates that, if any is present, will block deletion */
                     DeleteGates?: {
                         [key: string]: boolean | null;
@@ -24947,7 +25242,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -30416,7 +30711,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt.
+                 *     Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -33282,8 +33577,6 @@ export interface operations {
                         [key: string]: string | null;
                     } | null;
                     OtherDataSource?: string | null;
-                    /** @description Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
-                    Params?: Record<string, never> | null;
                     Permissions?: {
                         [key: string]: Record<string, never> | null;
                     } | null;
@@ -39902,6 +40195,8 @@ export interface operations {
                 where_unit?: string;
                 /** @description A Filter, by ID, over the Units to create entities from, with from_backing_units. */
                 filter_unit?: string;
+                /** @description With from_backing_units, patch a Trigger a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Trigger is returned as it is. */
+                patch_existing?: boolean;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
                 dry_run?: boolean;
             };
@@ -39946,8 +40241,6 @@ export interface operations {
                         [key: string]: string | null;
                     } | null;
                     OtherDataSource?: string | null;
-                    /** @description Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
-                    Params?: Record<string, never> | null;
                     Permissions?: {
                         [key: string]: Record<string, never> | null;
                     } | null;
@@ -40400,8 +40693,6 @@ export interface operations {
                         [key: string]: string | null;
                     } | null;
                     OtherDataSource?: string | null;
-                    /** @description Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
-                    Params?: Record<string, never> | null;
                     Permissions?: {
                         [key: string]: Record<string, never> | null;
                     } | null;
@@ -44304,6 +44595,8 @@ export interface operations {
                 where_unit?: string;
                 /** @description A Filter, by ID, over the Units to create entities from, with from_backing_units. */
                 filter_unit?: string;
+                /** @description With from_backing_units, patch a View a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the View is returned as it is. */
+                patch_existing?: boolean;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
                 dry_run?: boolean;
             };

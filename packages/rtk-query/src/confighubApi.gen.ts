@@ -152,6 +152,7 @@ const injectedRtkApi = api
             from_backing_units: queryArg.fromBackingUnits,
             where_unit: queryArg.whereUnit,
             filter_unit: queryArg.filterUnit,
+            patch_existing: queryArg.patchExisting,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -262,6 +263,7 @@ const injectedRtkApi = api
             from_backing_units: queryArg.fromBackingUnits,
             where_unit: queryArg.whereUnit,
             filter_unit: queryArg.filterUnit,
+            patch_existing: queryArg.patchExisting,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -632,6 +634,7 @@ const injectedRtkApi = api
             from_backing_units: queryArg.fromBackingUnits,
             where_unit: queryArg.whereUnit,
             filter_unit: queryArg.filterUnit,
+            patch_existing: queryArg.patchExisting,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -869,6 +872,7 @@ const injectedRtkApi = api
             from_backing_units: queryArg.fromBackingUnits,
             where_unit: queryArg.whereUnit,
             filter_unit: queryArg.filterUnit,
+            patch_existing: queryArg.patchExisting,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -939,26 +943,47 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Function"],
       }),
-      listExtendedGroups: build.query<
-        ListExtendedGroupsApiResponse,
-        ListExtendedGroupsApiArg
-      >({
+      listGroups: build.query<ListGroupsApiResponse, ListGroupsApiArg>({
         query: (queryArg) => ({
           url: `/group`,
           params: {
             where: queryArg.where,
+            filter: queryArg.filter,
             contains: queryArg.contains,
+            select: queryArg.select,
             include_hidden: queryArg.includeHidden,
           },
         }),
         providesTags: ["Group"],
       }),
-      getExtendedGroup: build.query<
-        GetExtendedGroupApiResponse,
-        GetExtendedGroupApiArg
-      >({
-        query: (queryArg) => ({ url: `/group/${queryArg.groupId}` }),
+      getGroup: build.query<GetGroupApiResponse, GetGroupApiArg>({
+        query: (queryArg) => ({
+          url: `/group/${queryArg.groupId}`,
+          params: {
+            select: queryArg.select,
+          },
+        }),
         providesTags: ["Group"],
+      }),
+      removeGroupBotUser: build.mutation<
+        RemoveGroupBotUserApiResponse,
+        RemoveGroupBotUserApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/group/${queryArg.groupId}/user/${queryArg.userId}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: ["Group"],
+      }),
+      addGroupBotUser: build.mutation<
+        AddGroupBotUserApiResponse,
+        AddGroupBotUserApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/group/${queryArg.groupId}/user/${queryArg.userId}`,
+          method: "POST",
+        }),
+        invalidatesTags: ["Group"],
       }),
       apiInfo: build.query<ApiInfoApiResponse, ApiInfoApiArg>({
         query: () => ({ url: `/info` }),
@@ -1043,6 +1068,7 @@ const injectedRtkApi = api
             from_backing_units: queryArg.fromBackingUnits,
             where_unit: queryArg.whereUnit,
             filter_unit: queryArg.filterUnit,
+            patch_existing: queryArg.patchExisting,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -1143,6 +1169,7 @@ const injectedRtkApi = api
             from_backing_units: queryArg.fromBackingUnits,
             where_unit: queryArg.whereUnit,
             filter_unit: queryArg.filterUnit,
+            patch_existing: queryArg.patchExisting,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -3459,6 +3486,7 @@ const injectedRtkApi = api
             from_backing_units: queryArg.fromBackingUnits,
             where_unit: queryArg.whereUnit,
             filter_unit: queryArg.filterUnit,
+            patch_existing: queryArg.patchExisting,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -3886,6 +3914,7 @@ const injectedRtkApi = api
             from_backing_units: queryArg.fromBackingUnits,
             where_unit: queryArg.whereUnit,
             filter_unit: queryArg.filterUnit,
+            patch_existing: queryArg.patchExisting,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -4486,6 +4515,8 @@ export type BulkCreateSpacesApiArg = {
   whereUnit?: string;
   /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
   filterUnit?: string;
+  /** With from_backing_units, patch a Space a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Space is returned as it is. */
+  patchExisting?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
@@ -5116,6 +5147,8 @@ export type BulkCreateAttributesApiArg = {
   whereUnit?: string;
   /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
   filterUnit?: string;
+  /** With from_backing_units, patch a Attribute a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Attribute is returned as it is. */
+  patchExisting?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
@@ -5518,7 +5551,6 @@ export type BulkPatchBridgeWorkersApiArg = {
     Annotations?: {
       [key: string]: string | null;
     } | null;
-    Condition?: string | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
       [key: string]: boolean | null;
@@ -5666,7 +5698,7 @@ export type BulkDeleteChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5754,7 +5786,7 @@ export type ListAllChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5850,7 +5882,7 @@ export type BulkPatchChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -5978,7 +6010,7 @@ export type BulkCreateChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -7190,6 +7222,8 @@ export type BulkCreateChangeWorkflowsApiArg = {
   whereUnit?: string;
   /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
   filterUnit?: string;
+  /** With from_backing_units, patch a ChangeWorkflow a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the ChangeWorkflow is returned as it is. */
+  patchExisting?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
@@ -8032,6 +8066,8 @@ export type BulkCreateFiltersApiArg = {
   whereUnit?: string;
   /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
   filterUnit?: string;
+  /** With from_backing_units, patch a Filter a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Filter is returned as it is. */
+  patchExisting?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
@@ -8303,9 +8339,8 @@ export type InvokeFunctionsOnOrgApiArg = {
   view?: string;
   functionInvocationsRequest: FunctionInvocationsRequest;
 };
-export type ListExtendedGroupsApiResponse =
-  /** status 200 OK */ ExtendedGroupRead[];
-export type ListExtendedGroupsApiArg = {
+export type ListGroupsApiResponse = /** status 200 OK */ ExtendedGroupRead[];
+export type ListGroupsApiArg = {
   /** The specified string is an expression for the purpose of filtering
     the list of Groups returned. The expression syntax was inspired by SQL.
     It supports conjunctions using `AND` of relational expressions of the form *attribute*
@@ -8344,6 +8379,18 @@ export type ListExtendedGroupsApiArg = {
     
     The whole string must be query-encoded. */
   where?: string;
+  /** UUID of a Filter entity to apply to the Group list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Group).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
   /** Free text search that approximately matches the specified string against string fields and map keys/values.
     
     The search is case-insensitive and uses pattern matching to find entities containing the text.
@@ -8360,6 +8407,15 @@ export type ListExtendedGroupsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Select clause for specifying which fields to include in the response for Group.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, GroupID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
   /** Hidden Group entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -8369,11 +8425,36 @@ export type ListExtendedGroupsApiArg = {
     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
   includeHidden?: string;
 };
-export type GetExtendedGroupApiResponse =
+export type GetGroupApiResponse =
   /** status 200 Group with additional related entities expanded based on the request's include parameter. */ ExtendedGroupRead;
-export type GetExtendedGroupApiArg = {
+export type GetGroupApiArg = {
+  /** Select clause for specifying which fields to include in the response for Group.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, GroupID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
   /** Unique identifier for a group_id */
   groupId: string;
+};
+export type RemoveGroupBotUserApiResponse =
+  /** status 200 a User in Confighub. */ UserRead;
+export type RemoveGroupBotUserApiArg = {
+  /** Unique identifier for a group_id */
+  groupId: string;
+  /** Unique identifier for a user_id */
+  userId: string;
+};
+export type AddGroupBotUserApiResponse =
+  /** status 200 a User in Confighub. */ UserRead;
+export type AddGroupBotUserApiArg = {
+  /** Unique identifier for a group_id */
+  groupId: string;
+  /** Unique identifier for a user_id */
+  userId: string;
 };
 export type ApiInfoApiResponse =
   /** status 200 Information provided to clients by the server. */ ApiInfoRead;
@@ -8882,6 +8963,8 @@ export type BulkCreateInvocationsApiArg = {
   whereUnit?: string;
   /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
   filterUnit?: string;
+  /** With from_backing_units, patch a Invocation a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Invocation is returned as it is. */
+  patchExisting?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
@@ -9527,6 +9610,8 @@ export type BulkCreateLinksApiArg = {
   whereUnit?: string;
   /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
   filterUnit?: string;
+  /** With from_backing_units, patch a Link a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Link is returned as it is. */
+  patchExisting?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
@@ -9886,7 +9971,7 @@ export type ListAllReleasesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt.
+    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -11147,7 +11232,6 @@ export type PatchBridgeWorkerApiArg = {
     Annotations?: {
       [key: string]: string | null;
     } | null;
-    Condition?: string | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
       [key: string]: boolean | null;
@@ -11257,7 +11341,7 @@ export type ListChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -12708,7 +12792,7 @@ export type ListExtendedReleasesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt.
+    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -13450,8 +13534,6 @@ export type PatchTriggerApiArg = {
       [key: string]: string | null;
     } | null;
     OtherDataSource?: string | null;
-    /** Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
-    Params?: object | null;
     Permissions?: {
       [key: string]: object | null;
     } | null;
@@ -16178,8 +16260,6 @@ export type BulkPatchTriggersApiArg = {
       [key: string]: string | null;
     } | null;
     OtherDataSource?: string | null;
-    /** Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
-    Params?: object | null;
     Permissions?: {
       [key: string]: object | null;
     } | null;
@@ -16386,6 +16466,8 @@ export type BulkCreateTriggersApiArg = {
   whereUnit?: string;
   /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
   filterUnit?: string;
+  /** With from_backing_units, patch a Trigger a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Trigger is returned as it is. */
+  patchExisting?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
@@ -16421,8 +16503,6 @@ export type BulkCreateTriggersApiArg = {
       [key: string]: string | null;
     } | null;
     OtherDataSource?: string | null;
-    /** Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
-    Params?: object | null;
     Permissions?: {
       [key: string]: object | null;
     } | null;
@@ -18569,6 +18649,8 @@ export type BulkCreateViewsApiArg = {
   whereUnit?: string;
   /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
   filterUnit?: string;
+  /** With from_backing_units, patch a View a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the View is returned as it is. */
+  patchExisting?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
@@ -19547,9 +19629,9 @@ export type FunctionWorkerInfo = {
 };
 export type WorkerInfo = {
   FunctionWorkerInfo?: FunctionWorkerInfo;
-  /** If true, this is a server-hosted worker. */
+  /** If true, this is a server-hosted worker. It cannot be changed after the worker is created. */
   IsServerWorker?: boolean;
-  /** If true, the server worker operates using the requesting user's identity rather than the worker's bot identity. Requires IsServerWorker to be true. */
+  /** If true, the server worker operates using the requesting user's identity rather than the worker's bot identity. Requires IsServerWorker to be true. It cannot be changed after the worker is created. */
   UseUserIdentity?: boolean;
 };
 export type BridgeWorker = {
@@ -19559,8 +19641,6 @@ export type BridgeWorker = {
   };
   /** Unique identifier for a Bridge Worker. */
   BridgeWorkerID?: string;
-  /** Condition represents the worker's readiness state (Ready, NotReady, Unresponsive, Disconnected). */
-  Condition?: string;
   /** An optional set of gates that, if any is present, will block deletion. */
   DeleteGates?: {
     [key: string]: boolean;
@@ -19766,59 +19846,6 @@ export type ActionResult = {
   /** UUID of the Unit on which the action is performed */
   UnitID?: string;
 };
-export type ChangeWorkflowAttestationPrerequisite = {
-  /** Count an attester who wrote a Revision of the change. By default one does not count. */
-  AllowAuthors?: boolean;
-  /** How many distinct attesters must record a Pass on each Revision. 1 when zero. */
-  Count?: number;
-  /** What the requirement is for, in the author's words. */
-  Description?: string;
-  /** Reserved: each counted attester must be from a different group of FromGroupIDs. Refused until Groups are recorded on Attestations. */
-  DistinctGroups?: boolean;
-  /** Reserved: Groups whose members' Attestations count. Refused until Groups are recorded on Attestations. */
-  FromGroupIDs?: Uuid[];
-  /** The Users whose Attestations count. Empty is anyone who may record an Attestation in the Space. */
-  FromUserIDs?: Uuid[];
-  /** Count only passes. By default an unrevoked Fail from an eligible attester fails the requirement, however many passes there are. */
-  IgnoreFail?: boolean;
-  /** How old an Attestation may be and still count, as a duration such as 72h. No limit when empty. */
-  MaxAge?: string;
-  /** What a stage, its ReleasePrerequisites, or Final gates on. Unique among the workflow's prerequisites, and refused if it shadows a built-in name. */
-  Name: string;
-  /** The Attestation Type that counts. Approval when empty. */
-  Type?: string;
-};
-export type ChangeWorkflowPrerequisite = {
-  /** What the gate checks, in the author's words. A promotion this gate holds up reports the prerequisite by Name, so this is where the reason lives. Read by nobody: it is not part of what the gate evaluates. */
-  Description?: string;
-  /** The check itself, carrying the "cel:" prefix. Evaluated against the Space under consideration, the change order being promoted, and that Space's Release. Compiled when the workflow is written. */
-  Expression: string;
-  /** What a stage or Final gates on. Unique within a workflow, and refused if it shadows a built-in name. */
-  Name: string;
-};
-export type ChangeWorkflowFinalStage = {
-  /** Evaluated over the last stage's Spaces, and named the same way a stage's entry gates are. */
-  Prerequisites?: string[];
-};
-export type ChangeWorkflowStage = {
-  /** Identifies the stage within the workflow, and is what a promotion reports the change as having entered. Unique within a workflow. */
-  Name: string;
-  /** The stage's entry gates, each naming a built-in check or one declared in CustomPrerequisites. Evaluated over every Space of the stage ahead of this one, so the first stage's are never evaluated. */
-  Prerequisites?: string[];
-  /** Gates on publishing a Release for a change order in one of the stage's Spaces, each naming one declared in AttestationPrerequisites. Evaluated over the Revisions the Release bundles. */
-  ReleasePrerequisites?: string[];
-  /** Selects the stage's Spaces: a where expression over Spaces. Intersected with the change order's component and its in-scope Space list. It must not name Labels.Component. Empty selects every Space of the change order's component. */
-  WhereSpace?: string;
-};
-export type ChangeWorkflowSpec = {
-  /** The Attestations a stage, its releases, or Final may require. Declared once and named wherever they apply. */
-  AttestationPrerequisites?: ChangeWorkflowAttestationPrerequisite[];
-  /** The checks a stage or Final may gate on beyond the built-in ones. Declared once and named wherever they apply. */
-  CustomPrerequisites?: ChangeWorkflowPrerequisite[];
-  Final?: ChangeWorkflowFinalStage;
-  /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. At least one is required. */
-  Stages: ChangeWorkflowStage[];
-};
 export type ChangeOrder = {
   /** AbortedReason says why the ChangeOrder was given up on. Setting it is what aborts one: a ChangeOrder with a reason is Aborted whatever its Links say. */
   AbortedReason?: string;
@@ -19828,7 +19855,6 @@ export type ChangeOrder = {
   };
   /** ChangeOrderID uniquely identifies a change order within the system. */
   ChangeOrderID?: string;
-  ChangeWorkflow?: ChangeWorkflowSpec;
   /** ChangeWorkflowID is the ChangeWorkflow this ChangeOrder is promoted under. It says which workflow the stored copy was taken from, and keeps saying so after that workflow has been edited or deleted, which is why it is not a foreign key. */
   ChangeWorkflowID?: string;
   /** An optional set of gates that, if any is present, will block deletion. */
@@ -19908,8 +19934,66 @@ export type ChangeOrder = {
     
     The whole string must be query-encoded. */
   WhereSpace?: string;
-  /** WhereUnit narrows which Units of each Space in scope an Invoke ChangeOrder covers, and is refused on the other UpdateTypes. Empty covers every Unit. Unlike InScopeSpaceIDs it is asked again on every read, so a Unit added to a Space afterwards counts against that Space. Immutable. */
+  /** WhereUnit narrows which Units of each Space in scope an Invoke ChangeOrder covers, and is refused on the other UpdateTypes. It takes what the where parameter of the Unit list does, attributes of what a Unit refers to included, as in `Space.Labels.Environment = 'prod'`. Empty covers every Unit. Unlike InScopeSpaceIDs it is asked again on every read, so a Unit added to a Space afterwards counts against that Space. Immutable. */
   WhereUnit?: string;
+};
+export type ChangeWorkflowAttestationPrerequisite = {
+  /** Count an attester who wrote a Revision of the change. By default one does not count. */
+  AllowAuthors?: boolean;
+  /** How many distinct attesters must record a Pass on each Revision. 1 when zero. */
+  Count?: number;
+  /** What the requirement is for, in the author's words. */
+  Description?: string;
+  /** Reserved: each counted attester must be from a different group of FromGroupIDs. Refused until Groups are recorded on Attestations. */
+  DistinctGroups?: boolean;
+  /** Reserved: Groups whose members' Attestations count. Refused until Groups are recorded on Attestations. */
+  FromGroupIDs?: Uuid[];
+  /** The Users whose Attestations count. Empty is anyone who may record an Attestation in the Space. */
+  FromUserIDs?: Uuid[];
+  /** Count only passes. By default an unrevoked Fail from an eligible attester fails the requirement, however many passes there are. */
+  IgnoreFail?: boolean;
+  /** How old an Attestation may be and still count, as a duration such as 72h. No limit when empty. */
+  MaxAge?: string;
+  /** What a stage, its ReleasePrerequisites, or Final gates on. Unique among the workflow's prerequisites, and refused if it shadows a built-in name. */
+  Name: string;
+  /** The Attestation Type that counts. Approval when empty. */
+  Type?: string;
+};
+export type ChangeWorkflowPrerequisite = {
+  /** What the gate checks, in the author's words. A promotion this gate holds up reports the prerequisite by Name, so this is where the reason lives. Read by nobody: it is not part of what the gate evaluates. */
+  Description?: string;
+  /** The check itself, carrying the "cel:" prefix. Evaluated against the Space under consideration, the change order being promoted, and that Space's Release. Compiled when the workflow is written. */
+  Expression: string;
+  /** What a stage or Final gates on. Unique within a workflow, and refused if it shadows a built-in name. */
+  Name: string;
+};
+export type ChangeWorkflowFinalStage = {
+  /** Evaluated over the last stage's Spaces, and named the same way a stage's entry gates are. */
+  Prerequisites?: string[];
+};
+export type ChangeWorkflowStage = {
+  /** Identifies the stage within the workflow, and is what a promotion reports the change as having entered. Unique within a workflow. */
+  Name: string;
+  /** The stage's entry gates, each naming a built-in check or one declared in CustomPrerequisites. Evaluated over every Space of the stage ahead of this one, so the first stage's are never evaluated. */
+  Prerequisites?: string[];
+  /** Gates on publishing a Release for a change order in one of the stage's Spaces, each naming one declared in AttestationPrerequisites. Evaluated over the Revisions the Release bundles. */
+  ReleasePrerequisites?: string[];
+  /** Selects the stage's Spaces: a where expression over Spaces. Intersected with the change order's component and its in-scope Space list. It must not name Labels.Component. Empty selects every Space of the change order's component. */
+  WhereSpace?: string;
+};
+export type ChangeWorkflowSpec = {
+  /** The Attestations a stage, its releases, or Final may require. Declared once and named wherever they apply. */
+  AttestationPrerequisites?: ChangeWorkflowAttestationPrerequisite[];
+  /** The checks a stage or Final may gate on beyond the built-in ones. Declared once and named wherever they apply. */
+  CustomPrerequisites?: ChangeWorkflowPrerequisite[];
+  Final?: ChangeWorkflowFinalStage;
+  /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. At least one is required. */
+  Stages: ChangeWorkflowStage[];
+};
+export type ChangeOrderPromotionFailureLink = {
+  Error?: string;
+  LinkID?: string;
+  Slug?: string;
 };
 export type ChangeOrderPromotionFailureUnit = {
   Error?: string;
@@ -19919,6 +20003,7 @@ export type ChangeOrderPromotionFailureUnit = {
 export type ChangeOrderPromotionFailureSpace = {
   Action?: string;
   Error?: string;
+  Links?: ChangeOrderPromotionFailureLink[];
   Reason?: string;
   SpaceID?: string;
   SpaceSlug?: string;
@@ -19928,13 +20013,20 @@ export type ChangeOrderPromotionFailureSpace = {
 export type ChangeOrderPromotionFailure = {
   FailedAt?: string;
   Spaces?: ChangeOrderPromotionFailureSpace[];
-  TargetStage?: string;
+  Stage?: string;
   UserID?: string;
 };
 export type ChangeOrderPromotionOverride = {
   FailedGates?: string[];
   OverriddenAt?: string;
   Reason?: string;
+  SpaceIDs?: Uuid[];
+  Stage?: string;
+  UserID?: string;
+};
+export type ChangeOrderPromotion = {
+  PromotedAt?: string;
+  SpaceIDs?: Uuid[];
   Stage?: string;
   UserID?: string;
 };
@@ -19949,6 +20041,7 @@ export type ChangeOrderRead = {
   };
   /** ChangeOrderID uniquely identifies a change order within the system. */
   ChangeOrderID?: string;
+  /** ChangeWorkflow governs how this ChangeOrder is promoted: the ordered stages it moves through and the gates that have to pass before it enters one. It is a copy taken when the workflow was associated, not a reference, so editing the ChangeWorkflow afterwards cannot change the rules a rollout already started under. Empty is a ChangeOrder no workflow governs, which is promoted ungated. */
   ChangeWorkflow?: ChangeWorkflowSpec;
   /** ChangeWorkflowID is the ChangeWorkflow this ChangeOrder is promoted under. It says which workflow the stored copy was taken from, and keeps saying so after that workflow has been edited or deleted, which is why it is not a foreign key. */
   ChangeWorkflowID?: string;
@@ -19983,8 +20076,12 @@ export type ChangeOrderRead = {
     [key: string]: any;
   };
   Permissions?: Permissions;
+  /** PromotionFailures records each promotion that did not complete: who ran it, when, into which Stage, and each Space it failed or was blocked in, with the Space's error or reason and the error of each Unit and Link whose write failed. The most recent entries are kept. Set by the server. (readonly) */
   PromotionFailures?: ChangeOrderPromotionFailure[];
+  /** PromotionOverrides records each promotion forced into a Stage whose gates did not hold: who forced it, when, into which Stage and Spaces, why, and which gates failed. The most recent entries are kept. Set by the server. (readonly) */
   PromotionOverrides?: ChangeOrderPromotionOverride[];
+  /** Promotions records each promotion that wrote the change into Spaces: who ran it, when, into which Stage, and which Spaces. A promotion entering several Stages records one entry per Stage. The most recent entries are kept. Set by the server. (readonly) */
+  Promotions?: ChangeOrderPromotion[];
   /** ReleasedRestoredSpaceIDs is where the undoing has been released: the Spaces in RestoredSpaceIDs whose Units are released at or past the Revision the restore Tag marks. Covering ReleasedSpaceIDs is what State reports as RestoreReleased. Derived when the ChangeOrder is read. */
   ReleasedRestoredSpaceIDs?: Uuid[];
   /** ReleasedSpaceIDs is where the ChangeOrder has been released: the Spaces in scope whose Units in the Space's release are applied at or past the Revision the end Tag marks. Derived when the ChangeOrder is read. */
@@ -20059,7 +20156,7 @@ export type ChangeOrderRead = {
     
     The whole string must be query-encoded. */
   WhereSpace?: string;
-  /** WhereUnit narrows which Units of each Space in scope an Invoke ChangeOrder covers, and is refused on the other UpdateTypes. Empty covers every Unit. Unlike InScopeSpaceIDs it is asked again on every read, so a Unit added to a Space afterwards counts against that Space. Immutable. */
+  /** WhereUnit narrows which Units of each Space in scope an Invoke ChangeOrder covers, and is refused on the other UpdateTypes. It takes what the where parameter of the Unit list does, attributes of what a Unit refers to included, as in `Space.Labels.Environment = 'prod'`. Empty covers every Unit. Unlike InScopeSpaceIDs it is asked again on every read, so a Unit added to a Space afterwards counts against that Space. Immutable. */
   WhereUnit?: string;
 };
 export type Tag = {
@@ -20947,6 +21044,52 @@ export type ExtendedGroupRead = {
   Error?: ResponseError;
   Group?: GroupRead;
 };
+export type User = {
+  /** Friendly name for the entity. */
+  DisplayName?: string;
+  /** Unique identifier for the External Identity Provider record matching this User. */
+  ExternalID?: string;
+  /** The Groups the User belongs to, from the identity provider's claims at their last login. A bot User's Groups are the ones it was added to through the Group API instead. (readonly) */
+  GroupIDs?: Uuid[];
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** The URL to get the profile avatar picture of the User. */
+  ProfilePictureURL?: string;
+  /** Unique URL-safe identifier for the entity. */
+  Slug: string;
+  /** Unique identifier for a User. */
+  UserID?: string;
+  /** Unique username for a User. Must be unique for all of Confighub. */
+  Username?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type UserRead = {
+  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
+  CreatedAt?: string;
+  /** Friendly name for the entity. */
+  DisplayName?: string;
+  /** The type of entity. */
+  EntityType?: string;
+  /** Unique identifier for the External Identity Provider record matching this User. */
+  ExternalID?: string;
+  /** The Groups the User belongs to, from the identity provider's claims at their last login. A bot User's Groups are the ones it was added to through the Group API instead. (readonly) */
+  GroupIDs?: Uuid[];
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** The URL to get the profile avatar picture of the User. */
+  ProfilePictureURL?: string;
+  /** Unique URL-safe identifier for the entity. */
+  Slug: string;
+  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
+  UpdatedAt?: string;
+  /** Unique identifier for a User. */
+  UserID?: string;
+  /** Unique username for a User. Must be unique for all of Confighub. */
+  Username?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
 export type ApiInfo = {};
 export type ApiInfoRead = {
   AuthIssuer?: string;
@@ -20991,28 +21134,6 @@ export type InvocationCreateOrUpdateResponseRead = {
   Error?: ResponseError;
   Invocation?: InvocationRead;
 };
-export type PathAnnotations = {
-  [key: string]: {
-    [key: string]: string;
-  };
-};
-export type ResourcePathAnnotations = {
-  /** Names (with scopes, if any) used in current and prior revisions of this resource */
-  Aliases?: {
-    [key: string]: object;
-  };
-  /** Names without scopes used in current and prior revisions of this resource */
-  AliasesWithoutScopes?: {
-    [key: string]: object;
-  };
-  /** Annotations by path. Paths are canonical: an associative segment names its element by merge key, with no positional fallback */
-  PathAnnotationMap?: {
-    [key: string]: PathAnnotations;
-  };
-  Resource?: ResourceInfo;
-  ResourceAnnotations?: PathAnnotations;
-};
-export type PathAnnotationList = ResourcePathAnnotations[];
 export type Unit = {
   /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
   Annotations?: {
@@ -21020,7 +21141,6 @@ export type Unit = {
   };
   /** Unique identifier for the ChangeSet to which the current Revision belongs. Optional. Units are not required to belong to ChangeSets. */
   ChangeSetID?: string;
-  Conflicts?: MutationConflictList;
   /** An optional set of gates that, if any is present, will block deletion. */
   DeleteGates?: {
     [key: string]: boolean;
@@ -21041,7 +21161,6 @@ export type Unit = {
   LastChangeDescription?: string;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
-  PathAnnotations?: PathAnnotationList;
   Permissions?: Permissions;
   /** ProviderType says whether and how the Unit is delivered. None keeps it off every Target and out of Releases, ConfigHub marks configuration ConfigHub applies to itself, and OCI or empty means it is published in its Space's Releases. */
   ProviderType?: string;
@@ -21095,6 +21214,28 @@ export type AttributeValue = {
   /** Value of the attribute at the specified Path */
   Value?: any;
 };
+export type PathAnnotations = {
+  [key: string]: {
+    [key: string]: string;
+  };
+};
+export type ResourcePathAnnotations = {
+  /** Names (with scopes, if any) used in current and prior revisions of this resource */
+  Aliases?: {
+    [key: string]: object;
+  };
+  /** Names without scopes used in current and prior revisions of this resource */
+  AliasesWithoutScopes?: {
+    [key: string]: object;
+  };
+  /** Annotations by path. Paths are canonical: an associative segment names its element by merge key, with no positional fallback */
+  PathAnnotationMap?: {
+    [key: string]: PathAnnotations;
+  };
+  Resource?: ResourceInfo;
+  ResourceAnnotations?: PathAnnotations;
+};
+export type PathAnnotationList = ResourcePathAnnotations[];
 export type AttributeInfo = {
   /** Name of the registered attribute */
   AttributeName?: string;
@@ -21191,6 +21332,7 @@ export type UnitRead = {
   NeededPaths?: AttributeValue[];
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Annotations on locations within the Unit's configuration data, by resource and path. */
   PathAnnotations?: PathAnnotationList;
   Permissions?: Permissions;
   /** Attribute paths that this Unit provides to downstream Units via NeedsProvides Links. Computed from get-provided and stored on data updates. */
@@ -21244,21 +21386,6 @@ export type UnitRead = {
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
-export type Binding = {
-  /** Shared attribute name that matched the need to the provide */
-  AttributeName?: string;
-  /** DataType of the bound value */
-  DataType?: string;
-  /** Identifies a binding within its Link's ManualBindings, so that a merge of two versions of the Link matches bindings by Key rather than by position. Optional, and unique within the list when present. Letters, digits, '-' and '_', starting with a letter or digit; at most 128 characters. */
-  Key?: string;
-  /** Resolved path within the needed resource */
-  NeededPath?: string;
-  NeededResource?: ResourceInfo;
-  /** Resolved path within the provided resource */
-  ProvidedPath?: string;
-  ProvidedResource?: ResourceInfo;
-};
-export type BindingList = Binding[];
 export type PathExpression = {
   /** Data type of the resulting AttributeValue: string, int, or bool. The Expression result (a string) is coerced to this type. */
   DataType?: string;
@@ -21281,6 +21408,21 @@ export type ParameterizedFunction = {
   /** Names of upstream values whose values are exposed to string-argument template expansion. Each entry must match a Name in UpstreamPaths or UpstreamGetters. */
   Parameters?: string[];
 };
+export type Binding = {
+  /** Shared attribute name that matched the need to the provide */
+  AttributeName?: string;
+  /** DataType of the bound value */
+  DataType?: string;
+  /** Identifies a binding within its Link's ManualBindings, so that a merge of two versions of the Link matches bindings by Key rather than by position. Optional, and unique within the list when present. Letters, digits, '-' and '_', starting with a letter or digit; at most 128 characters. */
+  Key?: string;
+  /** Resolved path within the needed resource */
+  NeededPath?: string;
+  NeededResource?: ResourceInfo;
+  /** Resolved path within the provided resource */
+  ProvidedPath?: string;
+  ProvidedResource?: ResourceInfo;
+};
+export type BindingList = Binding[];
 export type NamedFunctionResult = {
   FunctionInvocation?: FunctionInvocation;
   /** Identifier used to reference the value; must be a legal Go and CEL identifier and unique across UpstreamPaths and UpstreamGetters */
@@ -21300,7 +21442,6 @@ export type Link = {
   };
   /** Automatically update the downstream Unit when the upstream Unit changes. A Link created without an UpdateType is a NeedsProvides Link with AutoUpdate set, which is what such a Link has always done. */
   AutoUpdate?: boolean;
-  Bindings?: BindingList;
   Clearance?: Clearance;
   /** An optional set of gates that, if any is present, will block deletion. */
   DeleteGates?: {
@@ -21368,6 +21509,7 @@ export type LinkRead = {
   /** Automatically update the downstream Unit when the upstream Unit changes. A Link created without an UpdateType is a NeedsProvides Link with AutoUpdate set, which is what such a Link has always done. */
   AutoUpdate?: boolean;
   BackingUnitID?: string;
+  /** The needs/provides attribute bindings resolution found for this Link and keeps up to date: one for each needed attribute of the downstream Unit it matched with an attribute the upstream Unit provides. Set by the server, and rebuilt by each resolve. A needed attribute that a binding in ManualBindings names is not matched again. */
   Bindings?: BindingList;
   Clearance?: Clearance;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
@@ -21701,6 +21843,8 @@ export type ReleaseRead = {
   UnitCount?: number;
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  /** The User who published the Release. Absent for Releases published before it was recorded. (readonly) */
+  UserID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
@@ -21947,10 +22091,15 @@ export type ColumnSource = {
 };
 export type Column = {
   ColumnSource?: ColumnSource;
+  /** The kind of value: MetadataAttribute, MetadataExpression, DataPath or DataExpression. */
   ColumnType?: string;
+  /** The expected data type of the column value: string, int, bool, uuid or time. */
   DataType?: string;
+  /** Group by this column. Priority is in column list order, after the View's GroupBy. */
   GroupBy?: boolean;
+  /** The display name for the column. */
   Name: string;
+  /** Sort by this column, ASC or DESC. Priority is in column list order, after the View's OrderBy. */
   OrderByDirection?: string;
 };
 export type View = {
@@ -22240,52 +22389,6 @@ export type RevisionRead = {
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
-export type User = {
-  /** Friendly name for the entity. */
-  DisplayName?: string;
-  /** Unique identifier for the External Identity Provider record matching this User. */
-  ExternalID?: string;
-  /** The Groups the User belongs to, from the identity provider's claims at their last login. (readonly) */
-  GroupIDs?: Uuid[];
-  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-  HiddenReason?: string;
-  /** The URL to get the profile avatar picture of the User. */
-  ProfilePictureURL?: string;
-  /** Unique URL-safe identifier for the entity. */
-  Slug: string;
-  /** Unique identifier for a User. */
-  UserID?: string;
-  /** Unique username for a User. Must be unique for all of Confighub. */
-  Username?: string;
-  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
-  Version?: number;
-};
-export type UserRead = {
-  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
-  CreatedAt?: string;
-  /** Friendly name for the entity. */
-  DisplayName?: string;
-  /** The type of entity. */
-  EntityType?: string;
-  /** Unique identifier for the External Identity Provider record matching this User. */
-  ExternalID?: string;
-  /** The Groups the User belongs to, from the identity provider's claims at their last login. (readonly) */
-  GroupIDs?: Uuid[];
-  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-  HiddenReason?: string;
-  /** The URL to get the profile avatar picture of the User. */
-  ProfilePictureURL?: string;
-  /** Unique URL-safe identifier for the entity. */
-  Slug: string;
-  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
-  UpdatedAt?: string;
-  /** Unique identifier for a User. */
-  UserID?: string;
-  /** Unique username for a User. Must be unique for all of Confighub. */
-  Username?: string;
-  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
-  Version?: number;
-};
 export type ExtendedRevision = {
   Attestations?: Attestation[];
   ChangeOrders?: ChangeOrder[];
@@ -22377,10 +22480,6 @@ export type Trigger = {
   OrganizationID?: string;
   /** Specifies the source of additional configuration data to pass to functions that need it (e.g., vet-immutable needs a baseline revision to compare against). Uses revision specifier format such as LastReleasedRevisionNum or Before:HeadRevisionNum. */
   OtherDataSource?: string;
-  /** Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
-  Params?: {
-    [key: string]: any;
-  };
   Permissions?: Permissions;
   /** Protect indicates whether the paths this trigger's function writes are recorded as protected local overrides, so a later merge from upstream does not overwrite them. A change claims nothing by default and so does a trigger; set this for a trigger that decides a value on the Unit's behalf and will not be back to decide it again, such as a PostClone trigger customizing a variant. Only meaningful for a mutating trigger. */
   Protect?: boolean;
@@ -22401,7 +22500,7 @@ export type Trigger = {
   Warn?: boolean;
   /** Restricts which resources within a Unit's configuration data the Trigger's function operates on, using ConfigHub metadata path expressions. */
   WhereResource?: string;
-  /** A filter expression to restrict which Units this Trigger applies to. */
+  /** A filter expression to restrict which Units this Trigger applies to. It takes what the where parameter of the Unit list does, attributes of what a Unit refers to included, as in `Space.Labels.Environment = 'prod'` and `UpstreamUnit.Slug = 'base'`. */
   WhereUnit?: string;
 };
 export type TriggerRead = {
@@ -22451,10 +22550,6 @@ export type TriggerRead = {
   OrganizationID?: string;
   /** Specifies the source of additional configuration data to pass to functions that need it (e.g., vet-immutable needs a baseline revision to compare against). Uses revision specifier format such as LastReleasedRevisionNum or Before:HeadRevisionNum. */
   OtherDataSource?: string;
-  /** Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
-  Params?: {
-    [key: string]: any;
-  };
   Permissions?: Permissions;
   /** Protect indicates whether the paths this trigger's function writes are recorded as protected local overrides, so a later merge from upstream does not overwrite them. A change claims nothing by default and so does a trigger; set this for a trigger that decides a value on the Unit's behalf and will not be back to decide it again, such as a PostClone trigger customizing a variant. Only meaningful for a mutating trigger. */
   Protect?: boolean;
@@ -22485,7 +22580,7 @@ export type TriggerRead = {
   Warn?: boolean;
   /** Restricts which resources within a Unit's configuration data the Trigger's function operates on, using ConfigHub metadata path expressions. */
   WhereResource?: string;
-  /** A filter expression to restrict which Units this Trigger applies to. */
+  /** A filter expression to restrict which Units this Trigger applies to. It takes what the where parameter of the Unit list does, attributes of what a Unit refers to included, as in `Space.Labels.Environment = 'prod'` and `UpstreamUnit.Slug = 'base'`. */
   WhereUnit?: string;
 };
 export type ExtendedSpace = {
@@ -23426,10 +23521,12 @@ export const {
   useListOrgFunctionsQuery,
   useLazyListOrgFunctionsQuery,
   useInvokeFunctionsOnOrgMutation,
-  useListExtendedGroupsQuery,
-  useLazyListExtendedGroupsQuery,
-  useGetExtendedGroupQuery,
-  useLazyGetExtendedGroupQuery,
+  useListGroupsQuery,
+  useLazyListGroupsQuery,
+  useGetGroupQuery,
+  useLazyGetGroupQuery,
+  useRemoveGroupBotUserMutation,
+  useAddGroupBotUserMutation,
   useApiInfoQuery,
   useLazyApiInfoQuery,
   useBulkDeleteInvocationsMutation,

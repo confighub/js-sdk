@@ -7,6 +7,61 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.1 — 2026-10-02
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: bulk create of the entities that can have backing Units
+  takes `patch_existing`, with `from_backing_units`: a selected Unit that already backs an entity
+  patches it with what the Unit holds that the entity has not taken yet, rather than failing.
+- `@confighub/api`, `@confighub/rtk-query` (breaking): `Trigger` loses `Params`, as do the
+  Trigger patch bodies. It was never part of a Trigger: the field belongs to a function
+  invocation made directly, and a Trigger neither stored nor returned it.
+- `@confighub/api`, `@confighub/rtk-query` (breaking): five fields only the server sets are now
+  marked read-only, which the spec had failed to say: `BridgeWorker.Condition`, `Link.Bindings`,
+  `ChangeOrder.ChangeWorkflow`, `Unit.Conflicts` and `Unit.PathAnnotations`. In
+  `@confighub/rtk-query` they are on `BridgeWorkerRead`, `LinkRead`, `ChangeOrderRead` and
+  `UnitRead` and no longer on the types written; in `@confighub/api` they are `readonly`.
+  `Condition` also leaves the BridgeWorker patch bodies.
+- `@confighub/api`, `@confighub/rtk-query` (breaking): the records of a ChangeOrder's promotions
+  share a shape. `ChangeOrderPromotionFailure.TargetStage` is renamed `Stage`, and is the Stage
+  the promotion entered rather than the one the request named; a promotion entering several
+  Stages records one entry per Stage. `ChangeOrder` gains `Promotions`, a read-only list of
+  `ChangeOrderPromotion` (`UserID`, `PromotedAt`, `Stage`, `SpaceIDs`), one for each promotion
+  that wrote the change into Spaces. `ChangeOrderPromotionOverride` gains `SpaceIDs`, and
+  `ChangeOrderPromotionFailureSpace` gains `Links`, the Links whose write failed.
+
+### API
+
+Compared with ConfigHub `v0.8.0`:
+
+#### Removed (2), breaking for code typed against them
+
+- field `ChangeOrderPromotionFailure.TargetStage`
+- field `Trigger.Params`
+
+#### Added (19)
+
+- path `/group/{group_id}/user/{user_id}`
+- parameter `patch_existing` on `POST /_space`
+- parameter `patch_existing` on `POST /attribute`
+- parameter `patch_existing` on `POST /change_workflow`
+- parameter `patch_existing` on `POST /filter`
+- parameter `filter` on `GET /group`
+- parameter `select` on `GET /group`
+- parameter `select` on `GET /group/{group_id}`
+- parameter `patch_existing` on `POST /invocation`
+- parameter `patch_existing` on `POST /link`
+- parameter `patch_existing` on `POST /trigger`
+- parameter `patch_existing` on `POST /view`
+- field `ChangeOrder.Promotions`
+- field `ChangeOrderPromotionFailure.Stage`
+- field `ChangeOrderPromotionFailureSpace.Links`
+- field `ChangeOrderPromotionOverride.SpaceIDs`
+- field `Release.UserID`
+- schema `ChangeOrderPromotion`
+- schema `ChangeOrderPromotionFailureLink`
+
 ## 0.8.0 — 2026-10-01
 
 ### Changes
