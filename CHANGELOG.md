@@ -7,6 +7,113 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.2 — 2026-10-03
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: `Release` has a `LiveStatus` (`ReleaseLiveStatus`), what
+  the tool deploying the Release reports about it running: `Reporter`, `DataSource`, normalized
+  `Sync`, `Health` and `Operation`, the tool's own words in `ReporterSync`, `ReporterHealth` and
+  `ReporterOperation`, `Message`, and `ObservedAt`. It replaces the `confighub.com/live-status`
+  Space annotation, which nothing writes or reads any more. EditChildren on a Release's Target
+  grants Edit on the Release, which is what writing its `LiveStatus` needs.
+- `@confighub/api`, `@confighub/rtk-query`: two requests that used to be accepted are refused
+  with 400. `protect` on a merge it would protect against: `upgrade`, `merge_source` other than
+  `Self`, `merge_external_source`, a `resolve` of an `UpgradeUnit` or `MergeUnits` Link, and a
+  `Promote` without a ChangeOrder or of an `UpgradeUnit` or `MergeUnits` one. And guards that the
+  accompanying clearance does not cover, on a Unit update, a function invocation, `Promote`, a
+  Trigger, a Link, or a function of a stored Invocation: a write is withheld by guards it is not
+  cleared for, its own included.
+- `@confighub/api`, `@confighub/rtk-query`: `PromoteRequest` takes the options of a Unit update,
+  applied to every Unit write of the promotion: `Protect`, `Clearance`, `Guards` and `Subgroup`,
+  and `TagID`, which marks the Revision each written Unit is left at and cannot be used with
+  `ChangeOrderID`. It also takes `DryRun`. The `dry_run` query parameter of `Promote` is
+  deprecated in favor of it, and is still honored.
+- `@confighub/api`, `@confighub/rtk-query`: `ApiInfo` gains an optional `UIURL`, where the
+  instance's web UI is served when the instance is configured with it. Absent means the UI,
+  if there is one, is on the same host as the API.
+- `@confighub/api`, `@confighub/rtk-query`: Targets have a bulk create, `BulkCreateTargets`
+  (`POST /target`), which clones the Targets it selects into other Spaces and/or under prefixed
+  names, as the other entities' bulk creates do. Each clone lists the Triggers its `WhereTrigger`
+  and `TriggerFilterID` select.
+- `@confighub/api`, `@confighub/rtk-query`: bulk patch, create and delete take `limit` and
+  `continue`. A request that names either acts on at most `limit` entities, in ID order, stops
+  early when it runs short of time, and returns `ConfigHub-Continue` when there may be more; send
+  the next request with that token until a response has none. A request that names neither acts on
+  every entity it selects, as before.
+- `@confighub/api`, `@confighub/rtk-query`: every List and Search takes `limit`, `order_by` and
+  `continue`, and returns the token for the next page in the `ConfigHub-Continue` response header,
+  which the server now exposes to cross-origin pages. Read until a response has no such header: a
+  page can hold fewer entities than `limit`, or none, and still be followed by more. Results are
+  ordered by the entity's ID after the `order_by` fields. `offset`, on the Revision, UnitEvent and
+  Resource lists, is deprecated. The Get operations of those three no longer declare `limit`,
+  `offset` and `order_by`, which they never read. `LastActionAt`, which no Unit has, is no longer
+  among the Unit attributes `where` accepts.
+- `@confighub/api`, `@confighub/rtk-query` (breaking): `WorkerInfo` loses `UseUserIdentity`. The
+  server had stopped acting on it, so a worker that set it behaved like one that did not. A
+  request that still sends it is accepted and the field is ignored.
+
+### API
+
+Compared with ConfigHub `v0.8.1`:
+
+#### Removed (10), breaking for code typed against them
+
+- parameter `limit` on `GET /space/{space_id}/unit/{unit_id}/resource/{resource_id}`
+- parameter `offset` on `GET /space/{space_id}/unit/{unit_id}/resource/{resource_id}`
+- parameter `order_by` on `GET /space/{space_id}/unit/{unit_id}/resource/{resource_id}`
+- parameter `limit` on `GET /space/{space_id}/unit/{unit_id}/revision/{revision_id}`
+- parameter `offset` on `GET /space/{space_id}/unit/{unit_id}/revision/{revision_id}`
+- parameter `order_by` on `GET /space/{space_id}/unit/{unit_id}/revision/{revision_id}`
+- parameter `limit` on `GET /space/{space_id}/unit/{unit_id}/unit_event/{unit_event_id}`
+- parameter `offset` on `GET /space/{space_id}/unit/{unit_id}/unit_event/{unit_event_id}`
+- parameter `order_by` on `GET /space/{space_id}/unit/{unit_id}/unit_event/{unit_event_id}`
+- field `WorkerInfo.UseUserIdentity`
+
+#### Added (225)
+
+- parameter `limit` on `DELETE /_component`
+- parameter `continue` on `DELETE /_component`
+- parameter `limit` on `PATCH /_component`
+- parameter `continue` on `PATCH /_component`
+- parameter `limit` on `DELETE /_space`
+- parameter `continue` on `DELETE /_space`
+- parameter `limit` on `PATCH /_space`
+- parameter `continue` on `PATCH /_space`
+- parameter `limit` on `POST /_space`
+- parameter `continue` on `POST /_space`
+- parameter `limit` on `GET /attestation`
+- parameter `order_by` on `GET /attestation`
+- parameter `continue` on `GET /attestation`
+- parameter `limit` on `DELETE /attribute`
+- parameter `continue` on `DELETE /attribute`
+- parameter `limit` on `GET /attribute`
+- parameter `order_by` on `GET /attribute`
+- parameter `continue` on `GET /attribute`
+- parameter `limit` on `PATCH /attribute`
+- parameter `continue` on `PATCH /attribute`
+- parameter `limit` on `POST /attribute`
+- parameter `continue` on `POST /attribute`
+- parameter `limit` on `DELETE /bridge_worker`
+- parameter `continue` on `DELETE /bridge_worker`
+- parameter `limit` on `GET /bridge_worker`
+- parameter `order_by` on `GET /bridge_worker`
+- parameter `continue` on `GET /bridge_worker`
+- parameter `limit` on `PATCH /bridge_worker`
+- parameter `continue` on `PATCH /bridge_worker`
+- parameter `limit` on `GET /bridge_worker/{bridge_worker_id}/queued_operation`
+- parameter `order_by` on `GET /bridge_worker/{bridge_worker_id}/queued_operation`
+- parameter `continue` on `GET /bridge_worker/{bridge_worker_id}/queued_operation`
+- parameter `limit` on `DELETE /change_order`
+- parameter `continue` on `DELETE /change_order`
+- parameter `limit` on `GET /change_order`
+- parameter `order_by` on `GET /change_order`
+- parameter `continue` on `GET /change_order`
+- parameter `limit` on `PATCH /change_order`
+- parameter `continue` on `PATCH /change_order`
+- parameter `limit` on `POST /change_order`
+- …and 185 more
+
 ## 0.8.1 — 2026-10-02
 
 ### Changes
