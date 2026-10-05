@@ -7,6 +7,47 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.4 — 2026-10-05
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: `publishRelease` of a Space unchanged since its latest
+  Release succeeds instead of failing with 400, creating no Release. Its response is now
+  `ReleasePublishResponse`, which carries the published `Release`, or, when nothing was
+  published, the latest `Release` and a `Message` saying so.
+
+### API
+
+Compared with ConfigHub `v0.8.3`:
+
+#### Removed (4), breaking for code typed against them
+
+- field `ActionResult.ResourceStatuses`
+- schema `ResourceStatus`
+- schema `ResourceStatusMap`
+- field `UnitEvent.ResourceStatuses`
+
+#### Added (18)
+
+- path `/review_comment`
+- path `/space/{space_id}/target/{target_id}/document`
+- path `/space/{space_id}/unit/{unit_id}/review_comment`
+- path `/space/{space_id}/unit/{unit_id}/review_comment/{review_comment_id}`
+- parameter `with_backing_units` on `POST /space/{space_id}/target`
+- parameter `with_backing_units` on `PATCH /target`
+- parameter `from_backing_units` on `PATCH /target`
+- parameter `with_backing_units` on `POST /target`
+- parameter `from_backing_units` on `POST /target`
+- parameter `where_unit` on `POST /target`
+- parameter `filter_unit` on `POST /target`
+- parameter `patch_existing` on `POST /target`
+- field `Target.BackingUnitID`
+- field `Target.UpstreamTargetID`
+- schema `ExtendedReviewComment`
+- schema `ReleasePublishResponse`
+- schema `ReviewComment`
+- schema `ReviewCommentCreateOrUpdateResponse`
+
 ## 0.8.3 — 2026-10-03
 
 ### API

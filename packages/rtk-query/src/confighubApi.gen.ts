@@ -29,6 +29,7 @@ export const addTagTypes = [
   "Promote",
   "Release",
   "Resource",
+  "ReviewComment",
   "Revision",
   "BridgeWorkerStatus",
   "Tag",
@@ -1478,6 +1479,66 @@ const injectedRtkApi = api
         }),
         providesTags: ["Resource"],
       }),
+      bulkDeleteReviewComments: build.mutation<
+        BulkDeleteReviewCommentsApiResponse,
+        BulkDeleteReviewCommentsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/review_comment`,
+          method: "DELETE",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+          },
+        }),
+        invalidatesTags: ["ReviewComment"],
+      }),
+      listAllReviewComments: build.query<
+        ListAllReviewCommentsApiResponse,
+        ListAllReviewCommentsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/review_comment`,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include: queryArg.include,
+            select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
+            limit: queryArg.limit,
+            order_by: queryArg.orderBy,
+            continue: queryArg["continue"],
+          },
+        }),
+        providesTags: ["ReviewComment"],
+      }),
+      bulkPatchReviewComments: build.mutation<
+        BulkPatchReviewCommentsApiResponse,
+        BulkPatchReviewCommentsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/review_comment`,
+          method: "PATCH",
+          body: queryArg.body,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["ReviewComment"],
+      }),
       listAllRevisions: build.query<
         ListAllRevisionsApiResponse,
         ListAllRevisionsApiArg
@@ -2748,6 +2809,7 @@ const injectedRtkApi = api
             method: "POST",
             body: queryArg.target,
             params: {
+              with_backing_units: queryArg.withBackingUnits,
               allow_exists: queryArg.allowExists,
               dry_run: queryArg.dryRun,
             },
@@ -2803,6 +2865,29 @@ const injectedRtkApi = api
           invalidatesTags: ["Target"],
         },
       ),
+      getTargetDocument: build.query<
+        GetTargetDocumentApiResponse,
+        GetTargetDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/target/${queryArg.targetId}/document`,
+        }),
+        providesTags: ["Target"],
+      }),
+      updateTargetDocument: build.mutation<
+        UpdateTargetDocumentApiResponse,
+        UpdateTargetDocumentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/target/${queryArg.targetId}/document`,
+          method: "POST",
+          body: queryArg.entityDocumentEdit,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Target"],
+      }),
       listTriggers: build.query<ListTriggersApiResponse, ListTriggersApiArg>({
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/trigger`,
@@ -3190,6 +3275,91 @@ const injectedRtkApi = api
         }),
         providesTags: ["Resource"],
       }),
+      listReviewComments: build.query<
+        ListReviewCommentsApiResponse,
+        ListReviewCommentsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/review_comment`,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include: queryArg.include,
+            select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
+            limit: queryArg.limit,
+            order_by: queryArg.orderBy,
+            continue: queryArg["continue"],
+          },
+        }),
+        providesTags: ["ReviewComment"],
+      }),
+      createReviewComment: build.mutation<
+        CreateReviewCommentApiResponse,
+        CreateReviewCommentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/review_comment`,
+          method: "POST",
+          body: queryArg.reviewComment,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["ReviewComment"],
+      }),
+      deleteReviewComment: build.mutation<
+        DeleteReviewCommentApiResponse,
+        DeleteReviewCommentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/review_comment/${queryArg.reviewCommentId}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: ["ReviewComment"],
+      }),
+      getReviewComment: build.query<
+        GetReviewCommentApiResponse,
+        GetReviewCommentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/review_comment/${queryArg.reviewCommentId}`,
+          params: {
+            include: queryArg.include,
+            select: queryArg.select,
+          },
+        }),
+        providesTags: ["ReviewComment"],
+      }),
+      patchReviewComment: build.mutation<
+        PatchReviewCommentApiResponse,
+        PatchReviewCommentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/review_comment/${queryArg.reviewCommentId}`,
+          method: "PATCH",
+          body: queryArg.body,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["ReviewComment"],
+      }),
+      updateReviewComment: build.mutation<
+        UpdateReviewCommentApiResponse,
+        UpdateReviewCommentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/review_comment/${queryArg.reviewCommentId}`,
+          method: "PUT",
+          body: queryArg.reviewComment,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["ReviewComment"],
+      }),
       listExtendedRevisions: build.query<
         ListExtendedRevisionsApiResponse,
         ListExtendedRevisionsApiArg
@@ -3544,6 +3714,8 @@ const injectedRtkApi = api
             limit: queryArg.limit,
             continue: queryArg["continue"],
             refresh_triggers: queryArg.refreshTriggers,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -3571,6 +3743,11 @@ const injectedRtkApi = api
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
+            with_backing_units: queryArg.withBackingUnits,
+            from_backing_units: queryArg.fromBackingUnits,
+            where_unit: queryArg.whereUnit,
+            filter_unit: queryArg.filterUnit,
+            patch_existing: queryArg.patchExisting,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -10749,6 +10926,319 @@ export type ListAllResourcesApiArg = {
   /** Return each resource's configuration in its original toolchain-native form, as RawData on the response envelope. Off by default: the bodies are bulk, and a table view needs only the queryable Data projection. */
   rawData?: boolean;
 };
+export type BulkDeleteReviewCommentsApiResponse =
+  | /** status 200 OK */ DeleteResponse[]
+  | /** status 207 Multi-Status: Mixed success and failure results */ DeleteResponse[];
+export type BulkDeleteReviewCommentsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of ReviewComments returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the ReviewComment list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (ReviewComment).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for ReviewComment include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden ReviewComment entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for ReviewComment.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of ReviewComment entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the ReviewComment entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
+export type ListAllReviewCommentsApiResponse =
+  /** status 200 OK */ ExtendedReviewCommentRead[];
+export type ListAllReviewCommentsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of ReviewComments returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the ReviewComment list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (ReviewComment).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for ReviewComment include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Include clause for expanding related entities in the response for ReviewComment.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Select clause for specifying which fields to include in the response for ReviewComment.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, ReviewCommentID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
+  /** Hidden ReviewComment entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Maximum number of ReviewComment entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
+  limit?: number;
+  /** Comma-separated list of fields to sort ReviewComment results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
+    
+    Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
+    
+    Supported attributes for ordering ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    
+    Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
+    
+    Results are ordered by the ReviewComment's ID after the fields named, and by the ID alone if none are.
+    
+    The whole string must be query-encoded. */
+  orderBy?: string;
+  /** The token from the ConfigHub-Continue header of the previous page, to return the ReviewComment entities after it.
+    
+    The request's other parameters, except limit, must be the same as those of the request that returned the token.
+    
+    Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more. */
+  continue?: string;
+};
+export type BulkPatchReviewCommentsApiResponse =
+  | /** status 200 OK */ ReviewCommentCreateOrUpdateResponseRead[]
+  | /** status 207 Multi-Status: Mixed success and failure results */ ReviewCommentCreateOrUpdateResponseRead[];
+export type BulkPatchReviewCommentsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of ReviewComments returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the ReviewComment list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (ReviewComment).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for ReviewComment include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden ReviewComment entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for ReviewComment.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of ReviewComment entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the ReviewComment entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  body: {
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
+    /** Path to which the remark is attached; optional */
+    Path?: string | null;
+    ReplyToID?: string | null;
+    /** Resource to which the remark is attached; optional */
+    Resource?: object | null;
+    RevisionID?: string | null;
+    RevisionNum?: number | null;
+    Text?: string | null;
+    /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+    Version?: number | null;
+  };
+};
 export type ListAllRevisionsApiResponse =
   /** status 200 OK */ ExtendedRevisionRead[];
 export type ListAllRevisionsApiArg = {
@@ -13692,7 +14182,7 @@ export type ListExtendedReleasesApiArg = {
   continue?: string;
 };
 export type PublishReleaseApiResponse =
-  /** status 200 Release is a published bundle of the configuration of the Units in a Space that are assigned to a Target. It is created by publishing, taken out of service by withdrawing, and removed by deleting; its bundled content is never updated, though its Labels, Annotations, DeleteGates, and LiveStatus can be. The bundle is stored as an OCI image (a tar.gz layer plus manifest) so it can be served to and consumed by the Target. */ ReleaseRead;
+  /** status 200 OK */ ReleasePublishResponseRead;
 export type PublishReleaseApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
@@ -14036,7 +14526,7 @@ export type ListTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -14099,7 +14589,7 @@ export type ListTargetsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Target: CreatedAt, DisplayName, HiddenReason, OrganizationID, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, UpdatedAt.
+    Supported attributes for ordering Target: BackingUnitID, CreatedAt, DisplayName, HiddenReason, OrganizationID, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, UpdatedAt, UpstreamTargetID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -14119,6 +14609,8 @@ export type CreateTargetApiResponse =
 export type CreateTargetApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
+  /** Give each Target written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Target's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
@@ -14213,6 +14705,24 @@ export type UpdateTargetApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   target: Target;
+};
+export type GetTargetDocumentApiResponse = /** status 200 OK */ EntityDocument;
+export type GetTargetDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a target_id */
+  targetId: string;
+};
+export type UpdateTargetDocumentApiResponse =
+  /** status 200 Target represents a deployment target in ConfigHub: where configuration is destined. A Space's Releases are published for its release Target and pulled from ConfigHub's OCI registry by a GitOps tool such as Argo CD or Flux. Access to a Target, including a worker's, is granted through its Permissions. */ TargetRead;
+export type UpdateTargetDocumentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a target_id */
+  targetId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  entityDocumentEdit: EntityDocumentEdit;
 };
 export type ListTriggersApiResponse =
   /** status 200 OK */ ExtendedTriggerRead[];
@@ -15320,6 +15830,212 @@ export type GetExtendedResourceApiArg = {
   rawData?: boolean;
   /** Unique identifier for a resource_id */
   resourceId: string;
+};
+export type ListReviewCommentsApiResponse =
+  /** status 200 OK */ ExtendedReviewCommentRead[];
+export type ListReviewCommentsApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a unit_id */
+  unitId: string;
+  /** The specified string is an expression for the purpose of filtering
+    the list of ReviewComments returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the ReviewComment list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (ReviewComment).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for ReviewComment include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Include clause for expanding related entities in the response for ReviewComment.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Select clause for specifying which fields to include in the response for ReviewComment.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, ReviewCommentID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
+  /** Hidden ReviewComment entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Maximum number of ReviewComment entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
+  limit?: number;
+  /** Comma-separated list of fields to sort ReviewComment results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
+    
+    Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
+    
+    Supported attributes for ordering ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    
+    Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
+    
+    Results are ordered by the ReviewComment's ID after the fields named, and by the ID alone if none are.
+    
+    The whole string must be query-encoded. */
+  orderBy?: string;
+  /** The token from the ConfigHub-Continue header of the previous page, to return the ReviewComment entities after it.
+    
+    The request's other parameters, except limit, must be the same as those of the request that returned the token.
+    
+    Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more. */
+  continue?: string;
+};
+export type CreateReviewCommentApiResponse =
+  /** status 200 ReviewComment is a remark made in review of a Revision of a Unit, optionally about one resource or path in it. */ ReviewCommentRead;
+export type CreateReviewCommentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a unit_id */
+  unitId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  reviewComment: ReviewComment;
+};
+export type DeleteReviewCommentApiResponse =
+  /** status 200 Response for successful delete operation */ DeleteResponse;
+export type DeleteReviewCommentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a unit_id */
+  unitId: string;
+  /** Unique identifier for a review_comment_id */
+  reviewCommentId: string;
+};
+export type GetReviewCommentApiResponse =
+  /** status 200 OK */ ExtendedReviewCommentRead;
+export type GetReviewCommentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a unit_id */
+  unitId: string;
+  /** Include clause for expanding related entities in the response for ReviewComment.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Select clause for specifying which fields to include in the response for ReviewComment.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, ReviewCommentID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
+  /** Unique identifier for a review_comment_id */
+  reviewCommentId: string;
+};
+export type PatchReviewCommentApiResponse =
+  /** status 200 ReviewComment is a remark made in review of a Revision of a Unit, optionally about one resource or path in it. */ ReviewCommentRead;
+export type PatchReviewCommentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a unit_id */
+  unitId: string;
+  /** Unique identifier for a review_comment_id */
+  reviewCommentId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  body: {
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
+    /** Path to which the remark is attached; optional */
+    Path?: string | null;
+    ReplyToID?: string | null;
+    /** Resource to which the remark is attached; optional */
+    Resource?: object | null;
+    RevisionID?: string | null;
+    RevisionNum?: number | null;
+    Text?: string | null;
+    /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+    Version?: number | null;
+  };
+};
+export type UpdateReviewCommentApiResponse =
+  /** status 200 ReviewComment is a remark made in review of a Revision of a Unit, optionally about one resource or path in it. */ ReviewCommentRead;
+export type UpdateReviewCommentApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a unit_id */
+  unitId: string;
+  /** Unique identifier for a review_comment_id */
+  reviewCommentId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  reviewComment: ReviewComment;
 };
 export type ListExtendedRevisionsApiResponse =
   /** status 200 OK */ ExtendedRevisionRead[];
@@ -16574,7 +17290,7 @@ export type BulkDeleteTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -16666,7 +17382,7 @@ export type ListAllTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -16729,7 +17445,7 @@ export type ListAllTargetsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Target: CreatedAt, DisplayName, HiddenReason, OrganizationID, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, UpdatedAt.
+    Supported attributes for ordering Target: BackingUnitID, CreatedAt, DisplayName, HiddenReason, OrganizationID, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, UpdatedAt, UpstreamTargetID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -16782,7 +17498,7 @@ export type BulkPatchTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -16836,6 +17552,10 @@ export type BulkPatchTargetsApiArg = {
   continue?: string;
   /** Re-list the Triggers matching WhereTrigger and/or TriggerFilterID even if these fields have not changed */
   refreshTriggers?: boolean;
+  /** Give each Target written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Target's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Patch each selected Target with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
+  fromBackingUnits?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
@@ -16907,7 +17627,7 @@ export type BulkCreateTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -17019,6 +17739,54 @@ export type BulkCreateTargetsApiArg = {
   filterSpace?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
+  /** Give each Target written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Target's configuration, which is then kept in step with it. */
+  withBackingUnits?: boolean;
+  /** Create Targets from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
+  fromBackingUnits?: boolean;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    The Units to create entities from, with from_backing_units.
+    
+    The whole string must be query-encoded. */
+  whereUnit?: string;
+  /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+  filterUnit?: string;
+  /** With from_backing_units, patch a Target a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Target is returned as it is. */
+  patchExisting?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
@@ -17090,7 +17858,7 @@ export type BulkMoveTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -21197,19 +21965,6 @@ export type QueuedOperation = {
     The value read must be sent in calls to Update. */
   Version?: number;
 };
-export type ResourceStatus = {
-  /** Human-readable status details or error message */
-  Message?: string;
-  /** Health state from kstatus (Ready, InProgress, Failed, Unknown) */
-  Readiness?: string;
-  /** Whether config was pushed to the target (Synced or NotSynced) */
-  SyncStatus?: string;
-  /** Timestamp when this resource status was last updated */
-  UpdatedAt?: string;
-};
-export type ResourceStatusMap = {
-  [key: string]: ResourceStatus;
-};
 export type ActionResultType =
   "None" | "FunctionInvocationCompleted" | "FunctionInvocationFailed";
 export type ActionStatusType =
@@ -21230,7 +21985,6 @@ export type ActionResult = {
   Message?: string;
   /** UUID of the operation corresponding to the action request */
   QueuedOperationID?: string;
-  ResourceStatuses?: ResourceStatusMap;
   Result?: ActionResultType;
   RevisionNum?: number;
   /** UUID of the Space of the Unit on which the action is performed */
@@ -21287,7 +22041,7 @@ export type ChangeOrder = {
   SpaceID?: string;
   /** UnitFilterID references a Filter (with From=Unit) narrowing the same selection as WhereUnit, conjoined with it. Refused on the other UpdateTypes. Immutable. */
   UnitFilterID?: string;
-  /** UpdateType is how this ChangeOrder propagates. UpgradeUnit, the clone lineage, is the default, and MergeUnits is the other Link type it follows; both take the change from Revisions the source Unit already has. Invoke is the third: the change is one Invocation run in each Space in scope, and the ChangeOrder is created before any of it has happened. Insert, Upsert, and TransformPaths carry a change to Units outside the ChangeOrder's component into it: every Space in scope resolves its Links of that type to those Units at the Revision each was at when the ChangeOrder was created. Those Links must not be AutoUpdate, and InScopeSpaceIDs, or a selection that fills it in, is required. */
+  /** UpdateType is how this ChangeOrder propagates. UpgradeUnit, the clone lineage, is the default, and MergeUnits is the other Link type it follows; both take the change from Revisions the source Unit already has. Invoke is the third: the change is one Invocation run in each Space in scope, and the ChangeOrder is created before any of it has happened. Insert, Upsert, and TransformPaths carry a change to Units outside the ChangeOrder's scope into the Spaces in scope: every Space in scope resolves its Links of that type to those Units at the Revision each was at when the ChangeOrder was created. Those Links must not be AutoUpdate, and InScopeSpaceIDs, or a selection that fills it in, is required. */
   UpdateType?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
@@ -21373,7 +22127,7 @@ export type ChangeWorkflowStage = {
   Prerequisites?: string[];
   /** Gates on publishing a Release for a change order in one of the stage's Spaces, each naming one declared in AttestationPrerequisites. Evaluated over the Revisions the Release bundles. */
   ReleasePrerequisites?: string[];
-  /** Selects the stage's Spaces: a where expression over Spaces. Intersected with the change order's component and its in-scope Space list. It must not name Labels.Component. Empty selects every Space of the change order's component. */
+  /** Selects the stage's Spaces: a where expression over Spaces, intersected with the change order's InScopeSpaceIDs. Nothing else is implied, so a workflow can be shared across components. Empty selects every Space in the change order's scope. */
   WhereSpace?: string;
 };
 export type ChangeWorkflowSpec = {
@@ -21487,7 +22241,7 @@ export type ChangeOrderRead = {
   Promotions?: ChangeOrderPromotion[];
   /** ReleasedRestoredSpaceIDs is where the undoing has been released: the Spaces in RestoredSpaceIDs whose Units are released at or past the Revision the restore Tag marks. Covering ReleasedSpaceIDs is what State reports as RestoreReleased. Derived when the ChangeOrder is read. */
   ReleasedRestoredSpaceIDs?: Uuid[];
-  /** ReleasedSpaceIDs is where the ChangeOrder has been released: the Spaces in scope whose Units in the Space's release are applied at or past the Revision the end Tag marks. Derived when the ChangeOrder is read. */
+  /** ReleasedSpaceIDs is where the ChangeOrder has been released: the Spaces in scope whose Units in the Space's release are applied at or past the Revision the end Tag marks. A Space with no ReleaseTargetID is never here, since nothing releases it. Derived when the ChangeOrder is read. */
   ReleasedSpaceIDs?: Uuid[];
   /** Releases names, for each Space in ReleasedSpaceIDs, the earliest published Release of the Space that carries the change, which is the Release the gates read. A Space whose Releases no longer carry the change, such as one whose Release was withdrawn, has no entry. Derived when the ChangeOrder is read. */
   Releases?: ChangeOrderRelease[];
@@ -21513,11 +22267,11 @@ export type ChangeOrderRead = {
   Stage?: string;
   /** StartTagID is the identifier of the set of Revisions immediately before the ChangeOrder, making it the half-open interval (start, end]. */
   StartTagID?: string;
-  /** State is how far the ChangeOrder has got: New until a Space other than its own has taken it, InProgress while some have and some have not, Resolved once every Space in scope has, Released once every Space in scope has released what it took, Aborted whenever AbortedReason is set, Restored once every Space that had taken it has been restored to the Revisions before it, and RestoreReleased once every Space that had released it has released the restored Revisions. Derived when the ChangeOrder is read. */
+  /** State is how far the ChangeOrder has got: New until a Space other than its own has taken it, InProgress while some have and some have not, Resolved once every Space in scope has, Released once every Space in scope that has a ReleaseTargetID has released what it took (a Space with none has nothing to release), Aborted whenever AbortedReason is set, Restored once every Space that had taken it has been restored to the Revisions before it, and RestoreReleased once every Space that had released it has released the restored Revisions. Derived when the ChangeOrder is read. */
   State?: string;
   /** UnitFilterID references a Filter (with From=Unit) narrowing the same selection as WhereUnit, conjoined with it. Refused on the other UpdateTypes. Immutable. */
   UnitFilterID?: string;
-  /** UpdateType is how this ChangeOrder propagates. UpgradeUnit, the clone lineage, is the default, and MergeUnits is the other Link type it follows; both take the change from Revisions the source Unit already has. Invoke is the third: the change is one Invocation run in each Space in scope, and the ChangeOrder is created before any of it has happened. Insert, Upsert, and TransformPaths carry a change to Units outside the ChangeOrder's component into it: every Space in scope resolves its Links of that type to those Units at the Revision each was at when the ChangeOrder was created. Those Links must not be AutoUpdate, and InScopeSpaceIDs, or a selection that fills it in, is required. */
+  /** UpdateType is how this ChangeOrder propagates. UpgradeUnit, the clone lineage, is the default, and MergeUnits is the other Link type it follows; both take the change from Revisions the source Unit already has. Invoke is the third: the change is one Invocation run in each Space in scope, and the ChangeOrder is created before any of it has happened. Insert, Upsert, and TransformPaths carry a change to Units outside the ChangeOrder's scope into the Spaces in scope: every Space in scope resolves its Links of that type to those Units at the Revision each was at when the ChangeOrder was created. Those Links must not be AutoUpdate, and InScopeSpaceIDs, or a selection that fills it in, is required. */
   UpdateType?: string;
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
@@ -23446,6 +24200,7 @@ export type TargetRead = {
   Annotations?: {
     [key: string]: string;
   };
+  BackingUnitID?: string;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
   CreatedAt?: string;
   /** An optional set of gates that, if any is present, will block deletion. */
@@ -23484,6 +24239,7 @@ export type TargetRead = {
   TriggerIDs?: Uuid[];
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  UpstreamTargetID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
   /** Filter expression to identify Triggers that should be invoked on Units this Target is attached to. The specified string is an expression for the purpose of filtering
@@ -23668,6 +24424,80 @@ export type ExtendedResourceRead = {
   View?: ViewRead;
   ViewColumns?: ViewColumn[];
 };
+export type ResourceInfoType2 = {
+  /** Category of configuration element represented in the configuration data; Kubernetes resources are of category Resource, and application configuration files are of category AppConfig */
+  ResourceCategory?: string;
+  /** Name of a resource in the system under management represented in the configuration data; Kubernetes resources are represented in the form <metadata.namespace>/<metadata.name>; not all ToolchainTypes necessarily use '/' as a separator between any scope(s) and name or other client-chosen ID */
+  ResourceName?: string;
+  /** Name of a resource in the system under management represented in the configuration data with generated prefixes and suffixes stripped; empty if nothing to strip */
+  ResourceNameStableCore?: string;
+  /** Type of a resource in the system under management represented in the configuration data; Kubernetes resources are represented in the form <apiVersion>/<kind> (aka group-version-kind) */
+  ResourceType?: string;
+};
+export type ReviewComment = {
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** Unique identifier for an Organization. */
+  OrganizationID?: string;
+  /** Path to which the remark is attached; optional */
+  Path?: string;
+  /** Unique identifier of the ReviewComment, on the same Unit, this one replies to. Unset for a comment that starts a thread. Immutable. */
+  ReplyToID?: string;
+  Resource?: ResourceInfoType2;
+  /** Unique identifier for a ReviewComment. */
+  ReviewCommentID?: string;
+  /** Unique identifier of the Revision the comment is about. Set by the server from RevisionNum. */
+  RevisionID?: string;
+  /** Sequence number of the Revision the comment is about. Required on create, and immutable. */
+  RevisionNum: number;
+  /** Unique identifier for a space. */
+  SpaceID?: string;
+  /** The text of the remark. */
+  Text: string;
+  /** Unique identifier for a Unit. */
+  UnitID?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type ReviewCommentRead = {
+  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
+  CreatedAt?: string;
+  /** The type of entity. */
+  EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** Unique identifier for an Organization. */
+  OrganizationID?: string;
+  /** Path to which the remark is attached; optional */
+  Path?: string;
+  /** Unique identifier of the ReviewComment, on the same Unit, this one replies to. Unset for a comment that starts a thread. Immutable. */
+  ReplyToID?: string;
+  Resource?: ResourceInfoType2;
+  /** Unique identifier for a ReviewComment. */
+  ReviewCommentID?: string;
+  /** Unique identifier of the Revision the comment is about. Set by the server from RevisionNum. */
+  RevisionID?: string;
+  /** Sequence number of the Revision the comment is about. Required on create, and immutable. */
+  RevisionNum: number;
+  /** Unique identifier for a space. */
+  SpaceID?: string;
+  /** Slug of the Space this entity belongs to. (readonly) */
+  SpaceSlug?: string;
+  /** The text of the remark. */
+  Text: string;
+  /** Unique identifier for a Unit. */
+  UnitID?: string;
+  /** Slug of the Unit this entity belongs to. (readonly) */
+  UnitSlug?: string;
+  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
+  UpdatedAt?: string;
+  /** User-Agent string of the API call that created the comment. */
+  UserAgent?: string;
+  /** Unique identifier of the user who made the comment. */
+  UserID?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
 export type Revision = {
   /** Unique identifier for the ChangeSet to which this Revision belongs. Optional. Revisions are not required to belong to ChangeSets. */
   ChangeSetID?: string;
@@ -23834,6 +24664,30 @@ export type RevisionRead = {
   };
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
+};
+export type ExtendedReviewComment = {
+  Error?: ResponseError;
+  Organization?: Organization;
+  ReviewComment?: ReviewComment;
+  Revision?: Revision;
+  Space?: Space;
+  Unit?: Unit;
+};
+export type ExtendedReviewCommentRead = {
+  Error?: ResponseError;
+  Organization?: OrganizationRead;
+  ReviewComment?: ReviewCommentRead;
+  Revision?: RevisionRead;
+  Space?: SpaceRead;
+  Unit?: UnitRead;
+};
+export type ReviewCommentCreateOrUpdateResponse = {
+  Error?: ResponseError;
+  ReviewComment?: ReviewComment;
+};
+export type ReviewCommentCreateOrUpdateResponseRead = {
+  Error?: ResponseError;
+  ReviewComment?: ReviewCommentRead;
 };
 export type ExtendedRevision = {
   Attestations?: Attestation[];
@@ -24137,6 +24991,16 @@ export type BridgeWorkerStatus = {
   /** Status indicates the current status of the bridge worker. Possible values include Connected, Disconnected, ActionSent, ActionResultReceived. */
   Status?: string;
 };
+export type ReleasePublishResponse = {
+  /** Set when nothing changed since the latest published Release, so no Release was created. */
+  Message?: string;
+  Release?: Release;
+};
+export type ReleasePublishResponseRead = {
+  /** Set when nothing changed since the latest published Release, so no Release was created. */
+  Message?: string;
+  Release?: ReleaseRead;
+};
 export type ReleasePublishRequest = {
   /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
   Annotations?: {
@@ -24205,16 +25069,6 @@ export type ExtendedTriggerRead = {
   Space?: SpaceRead;
   Trigger?: TriggerRead;
   UnitFilter?: FilterRead;
-};
-export type ResourceInfoType2 = {
-  /** Category of configuration element represented in the configuration data; Kubernetes resources are of category Resource, and application configuration files are of category AppConfig */
-  ResourceCategory?: string;
-  /** Name of a resource in the system under management represented in the configuration data; Kubernetes resources are represented in the form <metadata.namespace>/<metadata.name>; not all ToolchainTypes necessarily use '/' as a separator between any scope(s) and name or other client-chosen ID */
-  ResourceName?: string;
-  /** Name of a resource in the system under management represented in the configuration data with generated prefixes and suffixes stripped; empty if nothing to strip */
-  ResourceNameStableCore?: string;
-  /** Type of a resource in the system under management represented in the configuration data; Kubernetes resources are represented in the form <apiVersion>/<kind> (aka group-version-kind) */
-  ResourceType?: string;
 };
 export type Mutation = {
   BridgeWorkerID?: string;
@@ -24333,7 +25187,6 @@ export type UnitEvent = {
   OrganizationID?: string;
   /** QueuedOperationID is the unique identifier for the corresponding queued operation. */
   QueuedOperationID?: string;
-  ResourceStatuses?: ResourceStatusMap;
   Result?: ActionResultType;
   RevisionNum?: number;
   /** Unique identifier for a space. */
@@ -24364,7 +25217,6 @@ export type UnitEventRead = {
   OrganizationID?: string;
   /** QueuedOperationID is the unique identifier for the corresponding queued operation. */
   QueuedOperationID?: string;
-  ResourceStatuses?: ResourceStatusMap;
   Result?: ActionResultType;
   RevisionNum?: number;
   /** Unique identifier for a space. */
@@ -25013,6 +25865,10 @@ export const {
   useLazyListAllReleasesQuery,
   useListAllResourcesQuery,
   useLazyListAllResourcesQuery,
+  useBulkDeleteReviewCommentsMutation,
+  useListAllReviewCommentsQuery,
+  useLazyListAllReviewCommentsQuery,
+  useBulkPatchReviewCommentsMutation,
   useListAllRevisionsQuery,
   useLazyListAllRevisionsQuery,
   useSearchRevisionDataQuery,
@@ -25150,6 +26006,9 @@ export const {
   useLazyGetTargetQuery,
   usePatchTargetMutation,
   useUpdateTargetMutation,
+  useGetTargetDocumentQuery,
+  useLazyGetTargetDocumentQuery,
+  useUpdateTargetDocumentMutation,
   useListTriggersQuery,
   useLazyListTriggersQuery,
   useCreateTriggerMutation,
@@ -25187,6 +26046,14 @@ export const {
   useLazyListExtendedResourcesQuery,
   useGetExtendedResourceQuery,
   useLazyGetExtendedResourceQuery,
+  useListReviewCommentsQuery,
+  useLazyListReviewCommentsQuery,
+  useCreateReviewCommentMutation,
+  useDeleteReviewCommentMutation,
+  useGetReviewCommentQuery,
+  useLazyGetReviewCommentQuery,
+  usePatchReviewCommentMutation,
+  useUpdateReviewCommentMutation,
   useListExtendedRevisionsQuery,
   useLazyListExtendedRevisionsQuery,
   useGetExtendedRevisionQuery,
