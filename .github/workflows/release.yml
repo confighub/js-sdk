@@ -17,14 +17,18 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write # the GitHub release
-      id-token: write # npm provenance
+      id-token: write # npm trusted publishing and provenance
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           registry-url: https://registry.npmjs.org
+      # npm publishes with an OIDC token from this job, no secret involved: each package
+      # names this repository and this workflow file as its trusted publisher on
+      # npmjs.com. That needs npm 11.5.1 or newer, which Node 22 does not bundle.
+      - run: npm install -g npm@latest
       - run: npm ci
 
       - name: Check the tag names the packages' version
@@ -43,11 +47,9 @@ jobs:
 
       - run: npm run build
 
-      # Publishes every non-private workspace: the three packages.
+      # Publishes every non-private workspace: the three packages. Provenance comes
+      # with trusted publishing.
       - run: npm publish --workspaces --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: 'true'
 
       # The notes are this version's section of CHANGELOG.md: from its heading to the
       # next version's.
