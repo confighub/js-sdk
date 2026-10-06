@@ -7,6 +7,30 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.5 — 2026-10-06
+
+### API
+
+Compared with ConfigHub `v0.8.4`:
+
+#### Added (15)
+
+- parameter `from_backing_units` on `DELETE /_component`
+- parameter `from_backing_units` on `DELETE /_space`
+- parameter `from_backing_units` on `DELETE /attribute`
+- parameter `from_backing_units` on `DELETE /change_workflow`
+- parameter `from_backing_units` on `DELETE /filter`
+- parameter `from_backing_units` on `DELETE /invocation`
+- parameter `from_backing_units` on `DELETE /link`
+- parameter `from_backing_units` on `DELETE /target`
+- parameter `from_backing_units` on `DELETE /trigger`
+- parameter `from_backing_units` on `DELETE /view`
+- field `UploadComponentRequest.Adopt`
+- field `UploadComponentRequest.BackingUnitSpace`
+- field `UploadRequest.Partial`
+- field `UploadUnitResult.Entity`
+- schema `UploadEntityResult`
+
 ## 0.8.4 — 2026-10-05
 
 ### Changes

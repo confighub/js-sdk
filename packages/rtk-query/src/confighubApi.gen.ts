@@ -63,6 +63,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            from_backing_units: queryArg.fromBackingUnits,
           },
         }),
         invalidatesTags: ["Component"],
@@ -109,6 +110,7 @@ const injectedRtkApi = api
             recursive: queryArg.recursive,
             recursive_force: queryArg.recursiveForce,
             detach: queryArg.detach,
+            from_backing_units: queryArg.fromBackingUnits,
           },
         }),
         invalidatesTags: ["Space"],
@@ -215,6 +217,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            from_backing_units: queryArg.fromBackingUnits,
           },
         }),
         invalidatesTags: ["Attribute"],
@@ -621,6 +624,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            from_backing_units: queryArg.fromBackingUnits,
           },
         }),
         invalidatesTags: ["ChangeWorkflow"],
@@ -869,6 +873,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            from_backing_units: queryArg.fromBackingUnits,
           },
         }),
         invalidatesTags: ["Filter"],
@@ -1079,6 +1084,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            from_backing_units: queryArg.fromBackingUnits,
           },
         }),
         invalidatesTags: ["Invocation"],
@@ -1192,6 +1198,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            from_backing_units: queryArg.fromBackingUnits,
           },
         }),
         invalidatesTags: ["Link"],
@@ -3673,6 +3680,7 @@ const injectedRtkApi = api
             limit: queryArg.limit,
             continue: queryArg["continue"],
             detach: queryArg.detach,
+            from_backing_units: queryArg.fromBackingUnits,
           },
         }),
         invalidatesTags: ["Target"],
@@ -3787,6 +3795,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            from_backing_units: queryArg.fromBackingUnits,
           },
         }),
         invalidatesTags: ["Trigger"],
@@ -4250,6 +4259,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            from_backing_units: queryArg.fromBackingUnits,
           },
         }),
         invalidatesTags: ["View"],
@@ -4439,6 +4449,8 @@ export type BulkDeleteComponentsApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Component entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** Prune: of the Components selected, delete those whose backing Unit is empty, which says the Component should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Component's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+  fromBackingUnits?: boolean;
 };
 export type BulkPatchComponentsApiResponse =
   | /** status 200 OK */ ComponentCreateOrUpdateResponseRead[]
@@ -4662,6 +4674,8 @@ export type BulkDeleteSpacesApiArg = {
   recursiveForce?: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** Prune: of the Spaces selected, delete those whose backing Unit is empty, which says the Space should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Space's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+  fromBackingUnits?: boolean;
 };
 export type BulkPatchSpacesApiResponse =
   | /** status 200 OK */ SpaceCreateOrUpdateResponseRead[]
@@ -5190,6 +5204,8 @@ export type BulkDeleteAttributesApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Attribute entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** Prune: of the Attributes selected, delete those whose backing Unit is empty, which says the Attribute should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Attribute's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+  fromBackingUnits?: boolean;
 };
 export type ListAllAttributesApiResponse =
   /** status 200 OK */ ExtendedAttributeRead[];
@@ -7402,6 +7418,8 @@ export type BulkDeleteChangeWorkflowsApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the ChangeWorkflow entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** Prune: of the ChangeWorkflows selected, delete those whose backing Unit is empty, which says the ChangeWorkflow should not exist, and keep the Unit, empty and backing nothing, so that it keeps the ChangeWorkflow's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+  fromBackingUnits?: boolean;
 };
 export type ListAllChangeWorkflowsApiResponse =
   /** status 200 OK */ ExtendedChangeWorkflowRead[];
@@ -8296,6 +8314,8 @@ export type BulkDeleteFiltersApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Filter entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** Prune: of the Filters selected, delete those whose backing Unit is empty, which says the Filter should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Filter's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+  fromBackingUnits?: boolean;
 };
 export type ListAllFiltersApiResponse =
   /** status 200 OK */ ExtendedFilterRead[];
@@ -9245,6 +9265,8 @@ export type BulkDeleteInvocationsApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Invocation entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** Prune: of the Invocations selected, delete those whose backing Unit is empty, which says the Invocation should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Invocation's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+  fromBackingUnits?: boolean;
 };
 export type ListAllInvocationsApiResponse =
   /** status 200 OK */ ExtendedInvocationRead[];
@@ -9905,6 +9927,8 @@ export type BulkDeleteLinksApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Link entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** Prune: of the Links selected, delete those whose backing Unit is empty, which says the Link should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Link's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+  fromBackingUnits?: boolean;
 };
 export type SearchListLinksApiResponse =
   /** status 200 OK */ ExtendedLinkRead[];
@@ -17344,6 +17368,8 @@ export type BulkDeleteTargetsApiArg = {
   continue?: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** Prune: of the Targets selected, delete those whose backing Unit is empty, which says the Target should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Target's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+  fromBackingUnits?: boolean;
 };
 export type ListAllTargetsApiResponse =
   /** status 200 OK */ ExtendedTargetRead[];
@@ -18002,6 +18028,8 @@ export type BulkDeleteTriggersApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Trigger entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** Prune: of the Triggers selected, delete those whose backing Unit is empty, which says the Trigger should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Trigger's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+  fromBackingUnits?: boolean;
 };
 export type ListAllTriggersApiResponse =
   /** status 200 OK */ ExtendedTriggerRead[];
@@ -20375,6 +20403,8 @@ export type BulkDeleteViewsApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the View entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** Prune: of the Views selected, delete those whose backing Unit is empty, which says the View should not exist, and keep the Unit, empty and backing nothing, so that it keeps the View's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+  fromBackingUnits?: boolean;
 };
 export type ListAllViewsApiResponse = /** status 200 OK */ ExtendedViewRead[];
 export type ListAllViewsApiArg = {
@@ -25585,16 +25615,26 @@ export type UploadLinkResult = {
   Reason?: string;
   ToUnit?: string;
 };
+export type UploadEntityResult = {
+  /** Create, Update, Unchanged, Pending (its backing Unit's Triggers had not reached a verdict in time), Skipped (an entity it names failed or is pending), or Prune (its backing Unit is empty, and a bulk delete with from_backing_units deletes it). */
+  Action?: string;
+  /** Absent for an entity a dry run would create, or one not written. */
+  EntityID?: string;
+  EntityType?: string;
+  Error?: ResponseError;
+  Slug?: string;
+};
 export type UploadUnitResult = {
   /** Create, Update, Unchanged, Empty, Revive, or Adopt. */
   Action?: string;
   Conflicts?: MutationConflictList;
   Diff?: ConfigDiff;
+  Entity?: UploadEntityResult;
   Error?: ResponseError;
   Mutations?: ResourceMutationList;
   /** The resource identity this Unit is keyed by. */
   Resource?: string;
-  /** Resource, AppConfig, or AppConfigRendered. */
+  /** Resource, AppConfig, AppConfigRendered, or BackingUnit. */
   Role?: string;
   Slug?: string;
   /** Absent for a Unit a dry run would create. */
@@ -25641,11 +25681,15 @@ export type UploadResult = {
   SourceDigest?: string;
 };
 export type UploadComponentRequest = {
+  /** Take over the backing Unit of an entity a document describes when another source owns it. Without it, that document is refused. */
+  Adopt?: boolean;
+  /** The Space, by slug, for the backing Units of the bundle's Space and Component documents; it may be the component's own Space. Required when the bundle has either. */
+  BackingUnitSpace?: string;
   /** Synthesize the release Namespace if the bundle lacks it. Off by default. */
   CreateNamespace?: boolean;
   /** Names of the components this one depends on, recorded by ComponentID in the Space's DependsOn annotation. Each Component must already exist. Requires a Variant Space label. */
   DependsOn?: string[];
-  /** The component name. */
+  /** The component name. Without one, Space must name an existing Space, which is written into as it is, with no Component and no labels set, and SourceName is required. */
   Name?: string;
   /** The release namespace. Required when the bundle has namespaced resources that name no namespace. */
   Namespace?: string;
@@ -25718,6 +25762,8 @@ export type UploadRequest = {
   Components?: UploadComponentRequest[];
   /** The bundle's files. Paths must be relative and may not contain "..". Exactly one of Files and Source.Pull is given. */
   Files?: UploadRequestFile[];
+  /** The bundle is part of what its source owns: Units the source owns that it leaves out are left alone rather than emptied. */
+  Partial?: boolean;
   Source?: UploadSourceInfo;
   /** Labels applied to every Space, merge-patch: keys given are set, keys omitted are left alone. */
   SpaceLabels?: {

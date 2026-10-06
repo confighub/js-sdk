@@ -7919,11 +7919,15 @@ export interface components {
             To?: string;
         };
         UploadComponentRequest: {
+            /** @description Take over the backing Unit of an entity a document describes when another source owns it. Without it, that document is refused. */
+            Adopt?: boolean;
+            /** @description The Space, by slug, for the backing Units of the bundle's Space and Component documents; it may be the component's own Space. Required when the bundle has either. */
+            BackingUnitSpace?: string;
             /** @description Synthesize the release Namespace if the bundle lacks it. Off by default. */
             CreateNamespace?: boolean;
             /** @description Names of the components this one depends on, recorded by ComponentID in the Space's DependsOn annotation. Each Component must already exist. Requires a Variant Space label. */
             DependsOn?: string[];
-            /** @description The component name. */
+            /** @description The component name. Without one, Space must name an existing Space, which is written into as it is, with no Component and no labels set, and SourceName is required. */
             Name?: string;
             /** @description The release namespace. Required when the bundle has namespaced resources that name no namespace. */
             Namespace?: string;
@@ -7986,6 +7990,19 @@ export interface components {
             /** @description The slug of this upload's Unit for the resource. */
             Slug?: string;
         };
+        UploadEntityResult: {
+            /** @description Create, Update, Unchanged, Pending (its backing Unit's Triggers had not reached a verdict in time), Skipped (an entity it names failed or is pending), or Prune (its backing Unit is empty, and a bulk delete with from_backing_units deletes it). */
+            Action?: string;
+            /**
+             * Format: uuid
+             * @description Absent for an entity a dry run would create, or one not written.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            EntityID?: string;
+            EntityType?: string;
+            Error?: components["schemas"]["ResponseError"];
+            Slug?: string;
+        };
         UploadLinkResult: {
             /** @description Create or Unchanged. */
             Action?: string;
@@ -8025,6 +8042,8 @@ export interface components {
             Components?: components["schemas"]["UploadComponentRequest"][];
             /** @description The bundle's files. Paths must be relative and may not contain "..". Exactly one of Files and Source.Pull is given. */
             Files?: components["schemas"]["UploadRequestFile"][];
+            /** @description The bundle is part of what its source owns: Units the source owns that it leaves out are left alone rather than emptied. */
+            Partial?: boolean;
             Source?: components["schemas"]["UploadSourceInfo"];
             /** @description Labels applied to every Space, merge-patch: keys given are set, keys omitted are left alone. */
             SpaceLabels?: {
@@ -8101,11 +8120,12 @@ export interface components {
             Action?: string;
             Conflicts?: components["schemas"]["MutationConflictList"];
             Diff?: components["schemas"]["ConfigDiff"];
+            Entity?: components["schemas"]["UploadEntityResult"];
             Error?: components["schemas"]["ResponseError"];
             Mutations?: components["schemas"]["ResourceMutationList"];
             /** @description The resource identity this Unit is keyed by. */
             Resource?: string;
-            /** @description Resource, AppConfig, or AppConfigRendered. */
+            /** @description Resource, AppConfig, AppConfigRendered, or BackingUnit. */
             Role?: string;
             Slug?: string;
             /**
@@ -8424,6 +8444,8 @@ export interface operations {
                 limit?: number;
                 /** @description The token from the ConfigHub-Continue header of the previous request, to act on the Component entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
                 continue?: string;
+                /** @description Prune: of the Components selected, delete those whose backing Unit is empty, which says the Component should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Component's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+                from_backing_units?: boolean;
             };
             header?: never;
             path?: never;
@@ -9168,6 +9190,8 @@ export interface operations {
                 recursive_force?: string;
                 /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
                 detach?: boolean;
+                /** @description Prune: of the Spaces selected, delete those whose backing Unit is empty, which says the Space should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Space's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+                from_backing_units?: boolean;
             };
             header?: never;
             path?: never;
@@ -10468,6 +10492,8 @@ export interface operations {
                 limit?: number;
                 /** @description The token from the ConfigHub-Continue header of the previous request, to act on the Attribute entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
                 continue?: string;
+                /** @description Prune: of the Attributes selected, delete those whose backing Unit is empty, which says the Attribute should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Attribute's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+                from_backing_units?: boolean;
             };
             header?: never;
             path?: never;
@@ -14629,6 +14655,8 @@ export interface operations {
                 limit?: number;
                 /** @description The token from the ConfigHub-Continue header of the previous request, to act on the ChangeWorkflow entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
                 continue?: string;
+                /** @description Prune: of the ChangeWorkflows selected, delete those whose backing Unit is empty, which says the ChangeWorkflow should not exist, and keep the Unit, empty and backing nothing, so that it keeps the ChangeWorkflow's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+                from_backing_units?: boolean;
             };
             header?: never;
             path?: never;
@@ -16899,6 +16927,8 @@ export interface operations {
                 limit?: number;
                 /** @description The token from the ConfigHub-Continue header of the previous request, to act on the Filter entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
                 continue?: string;
+                /** @description Prune: of the Filters selected, delete those whose backing Unit is empty, which says the Filter should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Filter's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+                from_backing_units?: boolean;
             };
             header?: never;
             path?: never;
@@ -18932,6 +18962,8 @@ export interface operations {
                 limit?: number;
                 /** @description The token from the ConfigHub-Continue header of the previous request, to act on the Invocation entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
                 continue?: string;
+                /** @description Prune: of the Invocations selected, delete those whose backing Unit is empty, which says the Invocation should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Invocation's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+                from_backing_units?: boolean;
             };
             header?: never;
             path?: never;
@@ -20133,6 +20165,8 @@ export interface operations {
                 limit?: number;
                 /** @description The token from the ConfigHub-Continue header of the previous request, to act on the Link entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
                 continue?: string;
+                /** @description Prune: of the Links selected, delete those whose backing Unit is empty, which says the Link should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Link's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+                from_backing_units?: boolean;
             };
             header?: never;
             path?: never;
@@ -42508,6 +42542,8 @@ export interface operations {
                 continue?: string;
                 /** @description If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
                 detach?: boolean;
+                /** @description Prune: of the Targets selected, delete those whose backing Unit is empty, which says the Target should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Target's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+                from_backing_units?: boolean;
             };
             header?: never;
             path?: never;
@@ -43717,6 +43753,8 @@ export interface operations {
                 limit?: number;
                 /** @description The token from the ConfigHub-Continue header of the previous request, to act on the Trigger entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
                 continue?: string;
+                /** @description Prune: of the Triggers selected, delete those whose backing Unit is empty, which says the Trigger should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Trigger's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+                from_backing_units?: boolean;
             };
             header?: never;
             path?: never;
@@ -48327,6 +48365,8 @@ export interface operations {
                 limit?: number;
                 /** @description The token from the ConfigHub-Continue header of the previous request, to act on the View entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
                 continue?: string;
+                /** @description Prune: of the Views selected, delete those whose backing Unit is empty, which says the View should not exist, and keep the Unit, empty and backing nothing, so that it keeps the View's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+                from_backing_units?: boolean;
             };
             header?: never;
             path?: never;
