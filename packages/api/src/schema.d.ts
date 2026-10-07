@@ -114,7 +114,7 @@ export interface paths {
         put?: never;
         /**
          * Bulk create (clone) multiple attributes
-         * @description Clone multiple attributes selected by query parameters with optional name prefixes and destination spaces
+         * @description Clone multiple attributes selected by query parameters to destination spaces. A clone keeps the name of the Attribute it clones
          */
         post: operations["BulkCreateAttributes"];
         /**
@@ -159,8 +159,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List all BridgeWorker across spaces
-         * @description List all BridgeWorker across spaces
+         * List of BridgeWorkers across spaces
+         * @description Retrieves a list of BridgeWorkers across spaces in the Organization
          */
         get: operations["ListAllBridgeWorkers"];
         put?: never;
@@ -253,20 +253,20 @@ export interface paths {
         get: operations["ListAllChangeOrders"];
         put?: never;
         /**
-         * Bulk create (clone) multiple changeorders
-         * @description Clone multiple changeorders selected by query parameters with optional name prefixes and destination spaces
+         * Bulk create (clone) multiple change orders
+         * @description Clone multiple change orders selected by query parameters with optional name prefixes and destination spaces
          */
         post: operations["BulkCreateChangeOrders"];
         /**
-         * Bulk delete multiple changeorders
-         * @description Delete multiple changeorders selected by query parameters
+         * Bulk delete multiple change orders
+         * @description Delete multiple change orders selected by query parameters
          */
         delete: operations["BulkDeleteChangeOrders"];
         options?: never;
         head?: never;
         /**
-         * Bulk patch multiple changeorders
-         * @description Apply JSON merge patch to multiple changeorders selected by query parameters
+         * Bulk patch multiple change orders
+         * @description Apply JSON merge patch to multiple change orders selected by query parameters
          */
         patch: operations["BulkPatchChangeOrders"];
         trace?: never;
@@ -285,20 +285,20 @@ export interface paths {
         get: operations["ListAllChangeSets"];
         put?: never;
         /**
-         * Bulk create (clone) multiple changesets
-         * @description Clone multiple changesets selected by query parameters with optional name prefixes and destination spaces
+         * Bulk create (clone) multiple change sets
+         * @description Clone multiple change sets selected by query parameters with optional name prefixes and destination spaces
          */
         post: operations["BulkCreateChangeSets"];
         /**
-         * Bulk delete multiple changesets
-         * @description Delete multiple changesets selected by query parameters
+         * Bulk delete multiple change sets
+         * @description Delete multiple change sets selected by query parameters
          */
         delete: operations["BulkDeleteChangeSets"];
         options?: never;
         head?: never;
         /**
-         * Bulk patch multiple changesets
-         * @description Apply JSON merge patch to multiple changesets selected by query parameters
+         * Bulk patch multiple change sets
+         * @description Apply JSON merge patch to multiple change sets selected by query parameters
          */
         patch: operations["BulkPatchChangeSets"];
         trace?: never;
@@ -742,15 +742,15 @@ export interface paths {
          */
         post: operations["BulkCreateLinks"];
         /**
-         * Delete multiple Links
-         * @description Deletes multiple Links based on search criteria
+         * Bulk delete multiple links
+         * @description Delete multiple links selected by query parameters
          */
         delete: operations["BulkDeleteLinks"];
         options?: never;
         head?: never;
         /**
-         * Update multiple Links
-         * @description Updates multiple Links based on search criteria
+         * Bulk patch multiple links
+         * @description Apply JSON merge patch to multiple links selected by query parameters
          */
         patch: operations["BulkPatchLinks"];
         trace?: never;
@@ -3437,6 +3437,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this attestation. */
             Permissions?: components["schemas"]["Permissions"];
             /**
              * Format: uuid
@@ -3600,6 +3601,7 @@ export interface components {
             OrganizationID?: string;
             /** @description Parameters specifies the function parameters for the getter and setter functions. */
             Parameters?: components["schemas"]["FunctionParameter"][] | null;
+            /** @description Permissions to access this attribute. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description ResourceTypePaths maps resource types to their path-to-visitor-info mappings. */
             ResourceTypePaths?: components["schemas"]["ResourceTypePathsEntry"][] | null;
@@ -3676,6 +3678,7 @@ export interface components {
             AttributeName?: string;
             /** @description Data type if the attribute value. */
             DataType?: string;
+            /** @description Additional attribute details */
             Details?: components["schemas"]["AttributeDetails"];
             /** @description Path of the attribute */
             Path?: string;
@@ -3701,6 +3704,7 @@ export interface components {
             Comment?: string;
             /** @description Data type if the attribute value. */
             DataType?: string;
+            /** @description Additional attribute details */
             Details?: components["schemas"]["AttributeDetails"];
             /** @description Name of the function invocation corresponding to the output */
             FunctionName?: string;
@@ -3735,9 +3739,11 @@ export interface components {
             Key?: string;
             /** @description Resolved path within the needed resource */
             NeededPath?: string;
+            /** @description Resource in the downstream unit that needs the value */
             NeededResource?: components["schemas"]["ResourceInfo"];
             /** @description Resolved path within the provided resource */
             ProvidedPath?: string;
+            /** @description Resource in the upstream unit that provides the value */
             ProvidedResource?: components["schemas"]["ResourceInfo"];
         };
         BindingList: components["schemas"]["Binding"][];
@@ -3808,7 +3814,15 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this bridge worker. */
             Permissions?: components["schemas"]["Permissions"];
+            /**
+             * @description ProvidedInfo contains information about the bridge worker in JSON format.
+             *     It is sent by the bridge worker program to the ConfigHub server when it first connects.
+             *     It can also be set before the bridge worker connects, but it is not recommended to change
+             *     it while a worker is connected.
+             *     This can include details about the capabilities, and targets supported by the bridge worker.
+             */
             ProvidedInfo?: components["schemas"]["WorkerInfo"];
             /**
              * @description Secret is a unique secret token for the bridge worker.
@@ -3924,6 +3938,8 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             ChangeWorkflowID?: string;
+            /** @description ContainerImages lists, for each Space the ChangeOrder has landed in, the container images it changed there: in each Unit the end Tag marks, the images get-container-image finds that differ from those at the Revision the start Tag marks. Derived only when a single ChangeOrder is read with container_images=true, never in a list. Spaces and Units the reader cannot view are left out. */
+            readonly ContainerImages?: components["schemas"]["ChangeOrderSpaceContainerImages"][];
             /**
              * Format: date-time
              * @description The timestamp when the entity was created in "2023-01-01T12:00:00Z" format.
@@ -3970,6 +3986,7 @@ export interface components {
             Parameters?: {
                 [key: string]: unknown;
             };
+            /** @description Permissions to access this change order. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description PromotionFailures records each promotion that did not complete: who ran it, when, into which Stage, and each Space it failed or was blocked in, with the Space's error or reason and the error of each Unit and Link whose write failed. The most recent entries are kept. Set by the server. (readonly) */
             readonly PromotionFailures?: components["schemas"]["ChangeOrderPromotionFailure"][];
@@ -4085,6 +4102,36 @@ export interface components {
             /** @description WhereUnit narrows which Units of each Space in scope an Invoke ChangeOrder covers, and is refused on the other UpdateTypes. It takes what the where parameter of the Unit list does, attributes of what a Unit refers to included, as in `Space.Labels.Environment = 'prod'`. Empty covers every Unit. Unlike InScopeSpaceIDs it is asked again on every read, so a Unit added to a Space afterwards counts against that Space. Immutable. */
             WhereUnit?: string;
         };
+        ChangeOrderContainerImageChange: {
+            /** @description The image before the change; absent for a container the change added. */
+            FromImage?: string;
+            /**
+             * Format: int64
+             * @description The Revision the start Tag marks; absent for a Unit the change added.
+             */
+            FromRevisionNum?: number;
+            /** @description The path of the image within the resource. */
+            Path?: string;
+            /** @description The name of the resource the container is in, as it is at the end Tag's Revision. */
+            ResourceName?: string;
+            /** @description The type of the resource the container is in. */
+            ResourceType?: string;
+            /** @description The image after the change; absent for a container the change removed. */
+            ToImage?: string;
+            /**
+             * Format: int64
+             * @description The Revision the end Tag marks.
+             */
+            ToRevisionNum?: number;
+            /**
+             * Format: uuid
+             * @description The Unit the image is in.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UnitID?: string;
+            /** @description The Unit's slug. */
+            UnitSlug?: string;
+        };
         ChangeOrderCreateOrUpdateResponse: {
             ChangeOrder?: components["schemas"]["ChangeOrder"];
             Error?: components["schemas"]["ResponseError"];
@@ -4184,6 +4231,18 @@ export interface components {
              */
             SpaceID?: string;
         };
+        ChangeOrderSpaceContainerImages: {
+            /** @description The images that changed, by Unit, resource, and path. */
+            Images?: components["schemas"]["ChangeOrderContainerImageChange"][] | null;
+            /**
+             * Format: uuid
+             * @description The Space the images changed in.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            SpaceID?: string;
+            /** @description The Space's slug. */
+            SpaceSlug?: string;
+        };
         /** @description Defines an entity changeset. */
         ChangeSet: {
             /** @description An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -4230,6 +4289,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this change set. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description Unique URL-safe identifier for the entity. */
             Slug: string;
@@ -4302,6 +4362,7 @@ export interface components {
             DisplayName?: string;
             /** @description The type of entity. */
             readonly EntityType?: string;
+            /** @description Final is what the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
             Final?: components["schemas"]["ChangeWorkflowFinalStage"];
             /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
             HiddenReason?: string;
@@ -4315,6 +4376,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this change workflow. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description Unique URL-safe identifier for the entity. */
             Slug: string;
@@ -4388,6 +4450,7 @@ export interface components {
             AttestationPrerequisites?: components["schemas"]["ChangeWorkflowAttestationPrerequisite"][];
             /** @description The checks a stage or Final may gate on beyond the built-in ones. Declared once and named wherever they apply. */
             CustomPrerequisites?: components["schemas"]["ChangeWorkflowPrerequisite"][];
+            /** @description What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
             Final?: components["schemas"]["ChangeWorkflowFinalStage"];
             /** @description The stages a change is promoted through, in order. Ordered between stages and unordered within one. At least one is required. */
             Stages: components["schemas"]["ChangeWorkflowStage"][];
@@ -4412,6 +4475,7 @@ export interface components {
             Values?: string[];
         };
         Column: {
+            /** @description Where the column value comes from. Exactly one field should be set, matching ColumnType. */
             ColumnSource?: components["schemas"]["ColumnSource"];
             /** @description The kind of value: MetadataAttribute, MetadataExpression, DataPath or DataExpression. */
             ColumnType?: string;
@@ -4477,6 +4541,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this component. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description Unique URL-safe identifier for the entity. */
             Slug: string;
@@ -4511,6 +4576,7 @@ export interface components {
         };
         /** @description Response for successful delete operation */
         DeleteResponse: {
+            /** @description Error information if the delete operation failed. */
             Error?: components["schemas"]["ResponseError"];
             /** @description Response message. */
             Message?: string;
@@ -4575,6 +4641,7 @@ export interface components {
         DemoteUnitResult: {
             /** @description Restore, Mark, or Unchanged. */
             Action?: string;
+            /** @description The same change path by path, with the values on both sides. Returned when include names Diff. */
             Diff?: components["schemas"]["ConfigDiff"];
             /**
              * Format: int64
@@ -4592,6 +4659,7 @@ export interface components {
              */
             EndRevisionNum?: number;
             Error?: components["schemas"]["ResponseError"];
+            /** @description What the restore changed, or on a dry run would change. Returned when include names Mutations. */
             Mutations?: components["schemas"]["ResourceMutationList"];
             /** Format: int64 */
             PreviousHeadMutationNum?: number;
@@ -4612,12 +4680,17 @@ export interface components {
             UnitID?: string;
         };
         DiffRequest: {
+            /** @description The configuration the diff runs from */
             From?: components["schemas"]["DiffSide"];
+            /** @description The configuration the diff runs to */
             To?: components["schemas"]["DiffSide"];
         };
         DiffResult: {
+            /** @description What changed from the From configuration to the To configuration */
             Diff?: components["schemas"]["ConfigDiff"];
+            /** @description What the From side resolved to */
             From?: components["schemas"]["DiffSideResult"];
+            /** @description What the To side resolved to */
             To?: components["schemas"]["DiffSideResult"];
         };
         DiffSide: {
@@ -4691,8 +4764,10 @@ export interface components {
         };
         /** @description Attestation with additional related entities expanded based on the request's include parameter. */
         ExtendedAttestation: {
+            /** @description The Attestation. */
             Attestation?: components["schemas"]["Attestation"];
             Organization?: components["schemas"]["Organization"];
+            /** @description The Space the Attestation belongs to. */
             Space?: components["schemas"]["Space"];
         };
         ExtendedAttribute: {
@@ -4748,6 +4823,7 @@ export interface components {
         /** @description Group with additional related entities expanded based on the request's include parameter. */
         ExtendedGroup: {
             Error?: components["schemas"]["ResponseError"];
+            /** @description The Group. */
             Group?: components["schemas"]["Group"];
         };
         ExtendedInvocation: {
@@ -4790,8 +4866,11 @@ export interface components {
         /** @description Release with additional related entities expanded based on the request's include parameter. */
         ExtendedRelease: {
             Organization?: components["schemas"]["Organization"];
+            /** @description The Release. */
             Release?: components["schemas"]["Release"];
+            /** @description The Space the Release belongs to. */
             Space?: components["schemas"]["Space"];
+            /** @description The Tag the bundled Units were pinned to, if any. Expanded when requested via the include parameter. */
             Tag?: components["schemas"]["Tag"];
         };
         ExtendedResource: {
@@ -4909,15 +4988,25 @@ export interface components {
             ChangeSet?: components["schemas"]["ChangeSet"];
             Error?: components["schemas"]["ResponseError"];
             FromLink?: components["schemas"]["Link"][];
+            /** @description The Unit's current HeadMutation */
             HeadMutation?: components["schemas"]["Mutation"];
+            /** @description The Unit's current HeadRevision */
             HeadRevision?: components["schemas"]["Revision"];
+            /** @description The Unit's current LastReleasedRevision */
             LastReleasedRevision?: components["schemas"]["Revision"];
+            /** @description The latest event that took place on the Unit. */
             LatestUnitEvent?: components["schemas"]["UnitEvent"];
+            /** @description The Organization the Unit belongs to. */
             Organization?: components["schemas"]["Organization"];
+            /** @description The Space the Unit belongs to. */
             Space?: components["schemas"]["Space"];
+            /** @description The Target the Unit has been configured to operate with. */
             Target?: components["schemas"]["Target"];
+            /** @description The requested Unit of the operation. */
             Unit?: components["schemas"]["Unit"];
+            /** @description If this Unit is a clone, the Upstream Space the UpstreamUnit belongs to. Optional. */
             UpstreamSpace?: components["schemas"]["Space"];
+            /** @description If this Unit is a clone, the Upstream Unit it was cloned from. Optional. */
             UpstreamUnit?: components["schemas"]["Unit"];
             View?: components["schemas"]["View"];
             ViewColumns?: components["schemas"]["ViewColumn"][];
@@ -4987,6 +5076,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this filter. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description Resource type to match for the desired ToolchainType, for example apps/v1/Deployment. Valid only for Units. (optional) */
             ResourceType?: string;
@@ -5033,9 +5123,11 @@ export interface components {
         FunctionInvocation: {
             /** @description Function arguments */
             Arguments?: components["schemas"]["FunctionArgument"][] | null;
+            /** @description Classes of guarded reason this invocation is cleared for; combined by union with the clearance of whatever drove the execution */
             Clearance?: components["schemas"]["Clearance"];
             /** @description Function name */
             FunctionName?: string;
+            /** @description Guards to record on the paths this invocation writes, so a later operation must be cleared for them; combined with the guards of whatever drove the execution, later winning per key */
             Guards?: components["schemas"]["GuardStamp"];
             /** @description Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
             Params?: {
@@ -5082,13 +5174,17 @@ export interface components {
         FunctionInvocationsResponse: {
             /** @description The resulting configuration data; present only when the invocation changed it */
             ConfigData?: string;
+            /** @description Mutation conflicts produced by writing the invocation's result, such as a path a guard withheld. Empty when nothing was withheld. */
             Conflicts?: components["schemas"]["MutationConflictList"];
             /** @description SHA256 of the resulting configuration data, whether or not ConfigData is present */
             DataHash?: string;
+            /** @description What the invocation changed, or on a dry run would change, path by path with the values on both sides; returned when include names Diff. */
             Diff?: components["schemas"]["ConfigDiff"];
+            /** @description Error information if the function invocation failed */
             Error?: components["schemas"]["ResponseError"];
             /** @description Functions produced new mutations (of type other than None) */
             HasNewMutations?: boolean;
+            /** @description List of mutations in the same order as the resources in ConfigData */
             Mutations?: components["schemas"]["ResourceMutationList"];
             /** @description List of function invocation indices that resulted in mutations */
             Mutators?: number[] | null;
@@ -5140,6 +5236,7 @@ export interface components {
             OutputType?: string;
             /** @description Name of the result in kabob-case */
             ResultName?: string;
+            /** @description JSON schema of the output type */
             Schema?: components["schemas"]["Schema"];
         };
         FunctionParameter: {
@@ -5161,6 +5258,7 @@ export interface components {
             Regexp?: string;
             /** @description Whether the parameter is required */
             Required?: boolean;
+            /** @description JSON schema (for embedded JSON values) */
             Schema?: components["schemas"]["Schema"];
         };
         FunctionSignature: {
@@ -5182,6 +5280,7 @@ export interface components {
             Mutating?: boolean;
             /** @description If non-empty, specification of what source(s) are expected in OtherData; if empty, OtherData is not used */
             OtherDataExpected?: string[];
+            /** @description Output description */
             OutputInfo?: components["schemas"]["FunctionOutput"];
             /** @description Function parameters, in order */
             Parameters?: components["schemas"]["FunctionParameter"][] | null;
@@ -5308,6 +5407,7 @@ export interface components {
              */
             OrganizationID?: string;
             Parameters?: components["schemas"]["FunctionParameter"][];
+            /** @description Permissions to access this invocation. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description Unique URL-safe identifier for the entity. */
             Slug: string;
@@ -5402,6 +5502,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             FromUnitID: string;
+            /** @description Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
             Guards?: components["schemas"]["GuardStamp"];
             /** @description SHA256 hash of the resolution-relevant Link fields, used to detect changes that require re-resolution. */
             readonly Hash?: string;
@@ -5417,6 +5518,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             LinkID?: string;
+            /** @description The needs/provides attribute bindings stated for this Link, which resolution uses as they are. Each Binding maps one needed attribute in the downstream Unit to one provided attribute in the upstream Unit. An Insert Link has exactly one, which identifies only the needed attribute (NeededResource and NeededPath) and whose DataType selects how the upstream Unit is inserted: string, the default, inserts it verbatim as text; the downstream Unit's own configuration format inserts it as configuration data. */
             ManualBindings?: components["schemas"]["BindingList"];
             /** @description Enables the subtraction (override-preservation) step of the merge performed when resolving this Link. When false (the default), the source patch is applied without subtraction and the downstream Unit's local differences are preserved by the stored Mutation Protected values alone, widened by WhereMutation if it is set. When true, the merge additionally subtracts the downstream Unit's local differences from the source patch and the stored values are not consulted. Only meaningful for UpgradeUnit and MergeUnits Links. */
             MergeEnableSubtraction?: boolean;
@@ -5426,6 +5528,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this link. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description Records the paths this Link's resolve writes as protected local overrides, so a later merge from upstream does not overwrite them. Without it the resolve claims nothing, as any other change does. Refused on UpgradeUnit and MergeUnits Links, where the upstream keeps updating what it delivered and protecting that content would freeze the downstream one merge in. */
             Protect?: boolean;
@@ -5542,6 +5645,7 @@ export interface components {
             readonly CreatedAt?: string;
             /** @description The type of entity. */
             readonly EntityType?: string;
+            /** @description The function invoked if the change was made by a function. */
             FunctionInvocation?: components["schemas"]["FunctionInvocation"];
             /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
             HiddenReason?: string;
@@ -5595,6 +5699,7 @@ export interface components {
             OrganizationID?: string;
             /** @description ProvidedPath is the path of the provided value used to satisfy a needed value if the change was made due to resolving a link. */
             ProvidedPath?: string;
+            /** @description ProvidedResource contains the type and name of the resource which provided a value used to satisfy a needed value if the change was made due to resolving a link. */
             ProvidedResource?: components["schemas"]["ResourceInfoType2"];
             ReplayOutcome?: string;
             ReplayReason?: string;
@@ -5658,14 +5763,19 @@ export interface components {
         MutationConflict: {
             /** @description Explanation the Reason alone cannot carry, such as the error text of a failed replay */
             Details?: string;
+            /** @description For Guarded: the guard the operation's clearance did not cover */
             Guard?: components["schemas"]["WithheldGuard"];
+            /** @description For GuardWithheld: the guard change that did not propagate */
             GuardChange?: components["schemas"]["GuardDelta"];
             /** @description Path of the mutation; empty for resource-level conflicts */
             Path?: string;
             /** @description Why the mutation was dropped */
             Reason?: string;
+            /** @description Resource the mutation applied to */
             Resource?: components["schemas"]["ResourceInfo"];
+            /** @description The dropped source-side mutation */
             Source?: components["schemas"]["MutationInfo"];
+            /** @description The target-side mutation that caused the drop, when applicable (Subtracted, DeleteShadowed) */
             Target?: components["schemas"]["MutationInfo"];
             /**
              * Format: uuid
@@ -5681,6 +5791,7 @@ export interface components {
              * @description Function index or sequence number corresponding to the change
              */
             Index?: number;
+            /** @description Type of mutation performed on the associated configuration element: Add, Update, Replace, Delete, or None, if no change */
             MutationType?: components["schemas"]["MutationType"];
             /** @description Line-level patch for multi-line string updates, in unified diff format. When present on an Update, PatchMutations applies this to the target value instead of replacing with Value. Falls back to Value if the patch cannot be applied cleanly. */
             Patch?: string;
@@ -5693,11 +5804,13 @@ export interface components {
             [key: string]: components["schemas"]["MutationInfo"];
         };
         MutationSourcesResponse: {
+            /** @description Sources of mutations affecting the configuration data, by resource and path. */
             MutationSources?: components["schemas"]["ResourceMutationList"];
         };
         /** @enum {string} */
         MutationType: MutationType;
         NamedFunctionResult: {
+            /** @description Non-mutating function invocation that produces OutputTypeAttributeValueList. The Value of the first returned AttributeValue is bound to Name. Worker functions are not supported. */
             FunctionInvocation?: components["schemas"]["FunctionInvocation"];
             /** @description Identifier used to reference the value; must be a legal Go and CEL identifier and unique across UpstreamPaths and UpstreamGetters */
             Name?: string;
@@ -5707,6 +5820,7 @@ export interface components {
             Name?: string;
             /** @description Resolved path within Resource to read via get-paths */
             Path?: string;
+            /** @description Resource in the upstream Unit that contains Path */
             Resource?: components["schemas"]["ResourceInfo"];
         };
         /** @description A per-app OAuth public client used by a browser app to authenticate against the ConfigHub API. */
@@ -5800,6 +5914,7 @@ export interface components {
             Username?: string;
         };
         ParameterizedFunction: {
+            /** @description Mutating function invocation to run on the downstream Unit. Worker functions are not supported. */
             FunctionInvocation?: components["schemas"]["FunctionInvocation"];
             /** @description Identifies the entry within DownstreamSetters, so that a merge of two versions of the Link matches entries by Key rather than by position. Optional, and unique within the list when present. Letters, digits, '-' and '_', starting with a letter or digit; at most 128 characters. */
             Key?: string;
@@ -5823,6 +5938,7 @@ export interface components {
             };
         };
         PathChange: {
+            /** @description The To side's MutationSources entry for this path, which says what set the new value; returned when include names Attribution */
             Attribution?: components["schemas"]["MutationInfo"];
             /** @description Add, Delete, Update, Replace, Reorder, or Rename */
             ChangeType?: string;
@@ -5852,6 +5968,7 @@ export interface components {
             Parameters?: string[];
             /** @description Unresolved path within Resource to write via set-attributes */
             Path?: string;
+            /** @description Resource in the downstream Unit that contains Path. Reserved as a pointer for a future optional/WhereResource form; required for now. */
             Resource?: components["schemas"]["ResourceInfo"];
         };
         PathSegment: {
@@ -5872,6 +5989,7 @@ export interface components {
             AttributeName?: string;
             /** @description DataType of the attribute at the path */
             DataType?: string;
+            /** @description Additional attribute details */
             Details?: components["schemas"]["AttributeDetails"];
             /** @description Configuration of the embedded accessor, if any */
             EmbeddedAccessorConfig?: string;
@@ -5938,6 +6056,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             ChangeSetID?: string;
+            /** @description The guarded reasons the writes are cleared for. A path whose guards this does not cover is not written, and the withheld change is reported in the Unit's Conflicts. */
             Clearance?: components["schemas"]["Clearance"];
             /** @description Plan the promotion, evaluate its gates, and return the same response without writing anything. */
             DryRun?: boolean;
@@ -5947,6 +6066,7 @@ export interface components {
             Force?: boolean;
             /** @description Why the gates were overridden. Required with Force. */
             ForceReason?: string;
+            /** @description Reasons to record on the paths each Unit write changes. A later operation must be cleared for them before overwriting those paths. Clearance must cover them, since a write is withheld by guards it is not cleared for, its own included. */
             Guards?: components["schemas"]["GuardStamp"];
             /**
              * @description With a ChangeOrder, what to do for a Unit whose last merged upstream Revision is before the ChangeOrder's start there -- typically because a Link in the upstream Space, such as a TransformPaths Link, wrote Revisions after the Unit last merged. Include (the default) merges those Revisions first, as Revisions of their own that do not carry the ChangeOrder, and then the ChangeOrder's range; Skip merges only the ChangeOrder's range, as though the Unit had already merged as far as its start; Error refuses, naming the Revisions. A Unit that has merged past the ChangeOrder's start is an error whatever this says. Refused with an Insert, Upsert, or TransformPaths ChangeOrder, whose Links read their sources as they are at its end rather than merging a range.
@@ -6030,13 +6150,16 @@ export interface components {
         PromoteUnitResult: {
             /** @description Upgrade, Resolve, Mark, Empty, Revive, Clone, Invoke, Unchanged, or Skip. */
             Action?: string;
+            /** @description Paths withheld because they were overridden locally or guarded. */
             Conflicts?: components["schemas"]["MutationConflictList"];
+            /** @description The same change path by path, with the values on both sides. Returned when include names Diff. */
             Diff?: components["schemas"]["ConfigDiff"];
             Error?: components["schemas"]["ResponseError"];
             /** Format: int64 */
             HeadRevisionNum?: number;
             /** @description For a Resolve, and a Mark made by one, the Links resolved. */
             LinkIDs?: components["schemas"]["UUID"][];
+            /** @description What the write changed, or on a dry run would change: the entries of the Unit's MutationSources it produced. Returned when include names Mutations. */
             Mutations?: components["schemas"]["ResourceMutationList"];
             /** Format: int64 */
             PreviousHeadMutationNum?: number;
@@ -6060,6 +6183,7 @@ export interface components {
         };
         /** @description UnitAction is a record of an operation queued for a Worker, such as a function invocation on a unit. Operations are delivered to the worker in creation order; if the worker is disconnected, pending operations are delivered when it reconnects. One or more UnitEvents will correspond to each UnitAction. */
         QueuedOperation: {
+            /** @description Action is the type of action to be performed by the bridge worker. */
             Action?: components["schemas"]["ActionType"];
             /**
              * Format: uuid
@@ -6186,6 +6310,7 @@ export interface components {
             Labels?: {
                 [key: string]: string;
             };
+            /** @description What the tool deploying the Release, such as argobot for Argo CD, reports about it running. Absent until a tool reports. Written by that tool: EditChildren on the Release's Target grants Edit on the Release. */
             LiveStatus?: components["schemas"]["ReleaseLiveStatus"];
             /** @description OCI digest (sha256:...) of the Release's OCI image manifest. */
             readonly ManifestDigest?: string;
@@ -6194,6 +6319,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this release. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description Whether the Release is currently served to its consuming Target. Set when the Release is published and cleared when it is withdrawn; a withdrawn Release is retained until deleted. */
             readonly Published?: boolean;
@@ -6305,6 +6431,7 @@ export interface components {
             Labels?: {
                 [key: string]: string;
             };
+            /** @description Optional Permissions to access the Release. Its publisher is granted Manage in addition. */
             Permissions?: components["schemas"]["Permissions"];
             /**
              * Format: uuid
@@ -6316,6 +6443,7 @@ export interface components {
         ReleasePublishResponse: {
             /** @description Set when nothing changed since the latest published Release, so no Release was created. */
             Message?: string;
+            /** @description The published Release, or the latest published Release when no Release was created. */
             Release?: components["schemas"]["Release"];
         };
         /** @description Resource is a configuration element extracted from a Unit's configuration data. Resources are maintained automatically as Units change and are read-only. */
@@ -6390,13 +6518,17 @@ export interface components {
             Version?: number;
         };
         ResourceDiff: {
+            /** @description For an Add, the To side's MutationSources entry for the resource, which says what added it; returned when include names Attribution */
             Attribution?: components["schemas"]["MutationInfo"];
+            /** @description Add, Delete, Update, or None when the resource is unchanged */
             ChangeType?: components["schemas"]["MutationType"];
             /** @description Changes within the resource, for an Update, in document order */
             Changes?: components["schemas"]["PathChange"][];
             /** @description The whole resource, for a Delete */
             FromValue?: string;
+            /** @description The resource on the From side, when it was matched across a rename */
             PreviousResource?: components["schemas"]["ResourceInfo"];
+            /** @description Identifies the resource on the To side, or on the From side if it was deleted */
             Resource?: components["schemas"]["ResourceInfo"];
             /** @description The whole resource, for an Add */
             ToValue?: string;
@@ -6406,6 +6538,7 @@ export interface components {
             Remove?: {
                 [key: string]: string[];
             };
+            /** @description Identifies the resource within the Unit whose guards are being edited */
             Resource?: components["schemas"]["ResourceInfo"];
             /** @description Guard key/value pairs to add or overwrite, by path. The empty path addresses the resource as a whole */
             Set?: {
@@ -6445,10 +6578,15 @@ export interface components {
             AliasesWithoutScopes?: {
                 [key: string]: Record<string, never>;
             };
+            /** @description For merge-keyed arrays in which an element was renamed (its merge-key value changed): the array parent path mapped to a previous-merge-key -> new-merge-key map. PatchMutations rewrites the matched element's merge-key field accordingly so child paths and ArrayOrders entries resolve under the new key. */
             ArrayElementAliases?: components["schemas"]["ArrayElementAliasMap"];
+            /** @description For merge-keyed arrays whose element set or order changed in this mutation: the desired sequence of merge-key values in source order, keyed by the array's parent path. PatchMutations applies this as a reorder pass after path mutations so positional associative arrays (e.g., Kubernetes initContainers, env, ports) preserve source-side ordering rather than landing append-on-clash. */
             ArrayOrders?: components["schemas"]["ArrayOrderMap"];
+            /** @description Path-level mutation information; more deeply nested paths override values represented at higher levels */
             PathMutationMap?: components["schemas"]["MutationMap"];
+            /** @description Identifiers of the resource to which the mutations correspond */
             Resource?: components["schemas"]["ResourceInfo"];
+            /** @description Resource-level mutation information, such as for Add, Delete, or Replace */
             ResourceMutationInfo?: components["schemas"]["MutationInfo"];
         };
         ResourceMutationList: components["schemas"]["ResourceMutation"][];
@@ -6465,7 +6603,9 @@ export interface components {
             PathAnnotationMap?: {
                 [key: string]: components["schemas"]["PathAnnotations"];
             };
+            /** @description Identifiers of the resource whose paths are annotated */
             Resource?: components["schemas"]["ResourceInfo"];
+            /** @description Annotations on the resource as a whole, inherited by paths with no more specific entry */
             ResourceAnnotations?: components["schemas"]["PathAnnotations"];
         };
         ResourceProtection: {
@@ -6473,6 +6613,7 @@ export interface components {
             Protected?: {
                 [key: string]: boolean;
             } | null;
+            /** @description Identifies the resource within the unit whose path protection is being set */
             Resource?: components["schemas"]["ResourceInfo"];
         };
         ResourceTypePathsEntry: {
@@ -6510,6 +6651,7 @@ export interface components {
             Details?: string[];
             /** @description The type of error (e.g., validation, not-found) */
             ErrorCategory?: string;
+            /** @description Structured error details like field violations */
             ErrorMetadata?: components["schemas"]["ErrorMetadata"];
             /** @description The primary error message */
             Message?: string;
@@ -6544,6 +6686,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             ReplyToID?: string;
+            /** @description Resource to which the remark is attached; optional */
             Resource?: components["schemas"]["ResourceInfoType2"];
             /**
              * Format: uuid
@@ -6661,6 +6804,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Annotations on locations within the Unit's configuration data as of this Revision. */
             PathAnnotations?: components["schemas"]["PathAnnotationList"];
             /** @description Attribute paths this Revision's configuration provides to downstream Units via NeedsProvides Links. */
             ProvidedPaths?: components["schemas"]["AttributeInfo"][];
@@ -6784,6 +6928,7 @@ export interface components {
             UnitID?: string;
         };
         RevisionMutationSources: {
+            /** @description Sources of mutations affecting the configuration data, by resource and path. */
             MutationSources?: components["schemas"]["ResourceMutationList"];
             /**
              * Format: uuid
@@ -6869,6 +7014,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this space. */
             Permissions?: components["schemas"]["Permissions"];
             /**
              * Format: uuid
@@ -7053,6 +7199,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this tag. */
             Permissions?: components["schemas"]["Permissions"];
             /**
              * Format: uuid
@@ -7133,6 +7280,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this target. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description Unique URL-safe identifier for the entity. */
             Slug: string;
@@ -7278,6 +7426,7 @@ export interface components {
             FailOpenAfter?: number | null;
             /** @description Function name */
             FunctionName?: string;
+            /** @description Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Only meaningful for a mutating trigger, and part of the trigger's Hash, unlike Protect. */
             Guards?: components["schemas"]["GuardStamp"];
             /** @description SHA256 hash of the trigger's specification fields, used to detect changes. */
             readonly Hash?: string;
@@ -7301,6 +7450,7 @@ export interface components {
             OrganizationID?: string;
             /** @description Specifies the source of additional configuration data to pass to functions that need it (e.g., vet-immutable needs a baseline revision to compare against). Uses revision specifier format such as LastReleasedRevisionNum or Before:HeadRevisionNum. When empty, the function is passed the sources its signature lists in OtherDataExpected. */
             OtherDataSource?: string;
+            /** @description Permissions to access this trigger. */
             Permissions?: components["schemas"]["Permissions"];
             /**
              * @description Protect indicates whether the paths this trigger's function writes are recorded as protected local overrides, so a later merge from upstream does not overwrite them. A change claims nothing by default and so does a trigger; set this for a trigger that decides a value on the Unit's behalf and will not be back to decide it again, such as a PostClone trigger customizing a variant. Only meaningful for a mutating trigger.
@@ -7481,6 +7631,7 @@ export interface components {
             OrganizationID?: string;
             /** @description Annotations on locations within the Unit's configuration data, by resource and path. */
             readonly PathAnnotations?: components["schemas"]["PathAnnotationList"];
+            /** @description Permissions to access this unit. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description Attribute paths that this Unit provides to downstream Units via NeedsProvides Links. Computed from get-provided and stored on data updates. */
             readonly ProvidedPaths?: components["schemas"]["AttributeInfo"][];
@@ -7565,6 +7716,7 @@ export interface components {
         };
         /** @description UnitAction is a record of an operation queued for a Worker, such as a function invocation on a unit. Operations are delivered to the worker in creation order; if the worker is disconnected, pending operations are delivered when it reconnects. One or more UnitEvents will correspond to each UnitAction. */
         UnitAction: {
+            /** @description Action is the type of action to be performed by the bridge worker. */
             Action?: components["schemas"]["ActionType"];
             /**
              * Format: uuid
@@ -7678,20 +7830,25 @@ export interface components {
         UnitConflictsResponse: {
             /** @description Number of conflicts whose withheld change was applied */
             Applied?: number;
+            /** @description The Unit's outstanding conflicts after the request */
             Conflicts?: components["schemas"]["MutationConflictList"];
+            /** @description What applying the withheld changes changed in the configuration, or would change for a dry run, path by path with the values on both sides */
             Diff?: components["schemas"]["ConfigDiff"];
             /** @description Number of conflicts dropped without changing the configuration data */
             Dismissed?: number;
             Error?: components["schemas"]["ResponseError"];
+            /** @description The Unit as the request left it, or would have left it for a dry run */
             Unit?: components["schemas"]["Unit"];
         };
         UnitCreateOrUpdateResponse: {
             /** @description The configuration the operation produced; returned when include names ConfigData. */
             ConfigData?: string;
             Conflicts?: components["schemas"]["MutationConflictList"];
+            /** @description What the operation changed, or on a dry run would change, path by path with the values on both sides; returned when include names Diff. */
             Diff?: components["schemas"]["ConfigDiff"];
             Error?: components["schemas"]["ResponseError"];
             Links?: components["schemas"]["LinkCreateOrUpdateResponse"][];
+            /** @description What set each value in the configuration the operation produced; returned when include names MutationSources. */
             MutationSources?: components["schemas"]["ResourceMutationList"];
             Unit?: components["schemas"]["Unit"];
         };
@@ -7723,6 +7880,7 @@ export interface components {
             UnitID?: string;
         };
         UnitDiff: {
+            /** @description What changed from the From Revision to the To Revision */
             Diff?: components["schemas"]["ConfigDiff"];
             Error?: components["schemas"]["ResponseError"];
             /**
@@ -7838,11 +7996,13 @@ export interface components {
             Version?: number;
         };
         UnitGuardRequest: {
+            /** @description The classes of reason this edit is cleared for; required to edit a path that already carries guards */
             Clearance?: components["schemas"]["Clearance"];
             /** @description Per-resource guard edits to apply to the Unit's PathAnnotations */
             ResourceGuards?: components["schemas"]["ResourceGuards"][] | null;
         };
         UnitGuardResponse: {
+            /** @description The Unit's PathAnnotations after applying the guard edits */
             PathAnnotations?: components["schemas"]["PathAnnotationList"];
         };
         UnitMoveRequest: {
@@ -7872,6 +8032,7 @@ export interface components {
         UnitMutationSources: {
             /** @description SHA256 of the configuration data the MutationSources describe. */
             DataHash?: string;
+            /** @description Sources of mutations affecting the configuration data, by resource and path. */
             MutationSources?: components["schemas"]["ResourceMutationList"];
             /** @description Slug of the Unit. */
             Slug?: string;
@@ -7896,6 +8057,7 @@ export interface components {
         };
         UnitProtectionResponse: {
             Error?: components["schemas"]["ResponseError"];
+            /** @description The Unit's MutationSources after applying the protection edits */
             MutationSources?: components["schemas"]["ResourceMutationList"];
         };
         UnitTagRequest: {
@@ -7974,6 +8136,7 @@ export interface components {
             /** @description Inferred links dropped to keep the link graph acyclic. */
             BrokenLinks?: components["schemas"]["UploadBrokenEdge"][];
             Name?: string;
+            /** @description Set when CreateNamespace was asked for but the bundle already carried the release Namespace. */
             NamespaceCollision?: components["schemas"]["UploadNamespaceCollision"];
             /** @description Secret resources dropped from the bundle, as Kind/namespace/name. Secrets are never uploaded. */
             SkippedSecrets?: string[];
@@ -8071,6 +8234,7 @@ export interface components {
             /** @description The client that uploaded: cub, installer, ui. */
             Client?: string;
             ClientVersion?: string;
+            /** @description Registry credentials for the pull. Used for this request only; never stored, logged, or returned. */
             Credentials?: components["schemas"]["UploadRegistryCredentials"];
             /** @description The resolved digest, when the transport has one. */
             Digest?: string;
@@ -8118,10 +8282,14 @@ export interface components {
         UploadUnitResult: {
             /** @description Create, Update, Unchanged, Empty, Revive, or Adopt. */
             Action?: string;
+            /** @description Paths withheld because they were overridden locally or guarded. */
             Conflicts?: components["schemas"]["MutationConflictList"];
+            /** @description The same change path by path, with the values on both sides. Returned when include names Diff. */
             Diff?: components["schemas"]["ConfigDiff"];
+            /** @description For a BackingUnit, what became of the entity its document describes. */
             Entity?: components["schemas"]["UploadEntityResult"];
             Error?: components["schemas"]["ResponseError"];
+            /** @description What the write changed, or on a dry run would change: the entries of the Unit's MutationSources it produced. Returned when include names Mutations. */
             Mutations?: components["schemas"]["ResourceMutationList"];
             /** @description The resource identity this Unit is keyed by. */
             Resource?: string;
@@ -8215,6 +8383,7 @@ export interface components {
         ValidationResult: {
             /** @description Deprecated. Use Issues or FailedAttributes instead. Optional list of failure details when not associated with specific attributes/paths. */
             Details?: string[];
+            /** @description optional list of failed attributes/paths and issues found for them. Preferred over Issues and Details. */
             FailedAttributes?: components["schemas"]["AttributeValueList"];
             /** @description Name of the function invocation corresponding to the result */
             FunctionName?: string;
@@ -8281,6 +8450,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this view. */
             Permissions?: components["schemas"]["Permissions"];
             /** @description Unique URL-safe identifier for the entity. */
             Slug: string;
@@ -8332,6 +8502,7 @@ export interface components {
             Value?: string;
         };
         WorkerInfo: {
+            /** @description FunctionWorker capabilities */
             FunctionWorkerInfo?: components["schemas"]["FunctionWorkerInfo"];
             /** @description If true, this is a server-hosted worker: an identity that no worker process connects as, and that runs no functions. It cannot be changed after the worker is created. */
             IsServerWorker?: boolean;
@@ -9002,7 +9173,7 @@ export interface operations {
                     "application/json": components["schemas"]["SpaceCreateOrUpdateResponse"][];
                 };
             };
-            /** @description Multi-Status: Mixed success and failure results */
+            /** @description Multi-Status (partial success) */
             207: {
                 headers: {
                     [name: string]: unknown;
@@ -10147,8 +10318,6 @@ export interface operations {
                 limit?: number;
                 /** @description The token from the ConfigHub-Continue header of the previous request, to act on the Attribute entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
                 continue?: string;
-                /** @description Comma-separated list of prefixes to apply to cloned Attribute names */
-                name_prefixes?: string;
                 /**
                  * @description The specified string is an expression for the purpose of filtering
                  *     the list of Spaces returned. The expression syntax was inspired by SQL.
@@ -11175,6 +11344,60 @@ export interface operations {
                     "application/json": components["schemas"]["ExtendedBridgeWorker"][];
                 };
             };
+            /** @description BridgeWorker request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description BridgeWorker not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing BridgeWorker. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
         };
     };
     BulkDeleteBridgeWorkers: {
@@ -11350,7 +11573,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description BridgeWorker could not be deleted. */
+            /** @description Unable to delete entity */
             422: {
                 headers: {
                     [name: string]: unknown;
@@ -12293,7 +12516,7 @@ export interface operations {
                  *
                  *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
-                 *     Where expression to select destination spaces for cloning changeorders
+                 *     Where expression to select destination spaces for cloning change orders
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -13241,7 +13464,7 @@ export interface operations {
                  *
                  *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
-                 *     Where expression to select destination spaces for cloning changesets
+                 *     Where expression to select destination spaces for cloning change sets
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -16580,7 +16803,7 @@ export interface operations {
                 name_prefixes?: string;
                 /** @description Comma-separated list of labels with multiple values for cloned Filter labels, in the format of key1=value1|value2,key2=value1|value2|value3 */
                 variant_labels?: string;
-                /** @description A Go-template string for clone name, use .SourceEntity to access the original entity and .Labels to access variant labels */
+                /** @description A string for clone names, use the prefix 'template:' for a Go-template with .SourceEntitySlug to access the original entity's slug and .Labels to access variant labels, example: 'template:{{.SourceEntitySlug}}-{{.Labels.env}}' */
                 name_pattern?: string;
                 /**
                  * @description The specified string is an expression for the purpose of filtering
@@ -20104,8 +20327,6 @@ export interface operations {
                  *
                  *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
                  *
-                 *     filter
-                 *
                  *     The whole string must be query-encoded.
                  */
                 where?: string;
@@ -20307,8 +20528,6 @@ export interface operations {
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
                  *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
-                 *
-                 *     filter
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -27111,6 +27330,8 @@ export interface operations {
                  *     The whole string must be query-encoded.
                  */
                 select?: string;
+                /** @description If true, fill in ContainerImages: for each Space the ChangeOrder has landed in, the container images get-container-image finds at the Revisions its end Tag marks that differ from those at the Revisions its start Tag marks. */
+                container_images?: boolean;
             };
             header?: never;
             path: {
@@ -43387,6 +43608,10 @@ export interface operations {
                 continue?: string;
                 /** @description Comma-separated list of prefixes to apply to cloned Trigger names */
                 name_prefixes?: string;
+                /** @description Comma-separated list of labels with multiple values for cloned Trigger labels, in the format of key1=value1|value2,key2=value1|value2|value3 */
+                variant_labels?: string;
+                /** @description A string for clone names, use the prefix 'template:' for a Go-template with .SourceEntitySlug to access the original entity's slug and .Labels to access variant labels, example: 'template:{{.SourceEntitySlug}}-{{.Labels.env}}' */
+                name_pattern?: string;
                 /**
                  * @description The specified string is an expression for the purpose of filtering
                  *     the list of Spaces returned. The expression syntax was inspired by SQL.
@@ -45065,7 +45290,7 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Unable to delete entities */
+            /** @description Unable to delete entity */
             422: {
                 headers: {
                     [name: string]: unknown;
@@ -48016,7 +48241,7 @@ export interface operations {
                 continue?: string;
                 /** @description Comma-separated list of prefixes to apply to cloned View names */
                 name_prefixes?: string;
-                /** @description Comma-separated list of labels with multiple values fro cloned View labels, in the format of key1=value1|value2,key2=value1|value2|value3 */
+                /** @description Comma-separated list of labels with multiple values for cloned View labels, in the format of key1=value1|value2,key2=value1|value2|value3 */
                 variant_labels?: string;
                 /** @description A string for clone names, use the prefix 'template:' for a Go-template with .SourceEntitySlug to access the original entity's slug and .Labels to access variant labels, example: 'template:{{.SourceEntitySlug}}-{{.Labels.env}}' */
                 name_pattern?: string;

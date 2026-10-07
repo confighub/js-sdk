@@ -281,7 +281,6 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
-            name_prefixes: queryArg.namePrefixes,
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
@@ -2018,6 +2017,7 @@ const injectedRtkApi = api
           params: {
             include: queryArg.include,
             select: queryArg.select,
+            container_images: queryArg.containerImages,
           },
         }),
         providesTags: ["ChangeOrder"],
@@ -3860,6 +3860,8 @@ const injectedRtkApi = api
             limit: queryArg.limit,
             continue: queryArg["continue"],
             name_prefixes: queryArg.namePrefixes,
+            variant_labels: queryArg.variantLabels,
+            name_pattern: queryArg.namePattern,
             where_space: queryArg.whereSpace,
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
@@ -4811,7 +4813,7 @@ export type BulkPatchSpacesApiArg = {
 };
 export type BulkCreateSpacesApiResponse =
   | /** status 200 OK */ SpaceCreateOrUpdateResponseRead[]
-  | /** status 207 Multi-Status: Mixed success and failure results */ SpaceCreateOrUpdateResponseRead[];
+  | /** status 207 Multi-Status (partial success) */ SpaceCreateOrUpdateResponseRead[];
 export type BulkCreateSpacesApiArg = {
   /** The specified string is an expression for the purpose of filtering
     the list of Spaces returned. The expression syntax was inspired by SQL.
@@ -5539,8 +5541,6 @@ export type BulkCreateAttributesApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Attribute entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
-  /** Comma-separated list of prefixes to apply to cloned Attribute names */
-  namePrefixes?: string;
   /** The specified string is an expression for the purpose of filtering
     the list of Spaces returned. The expression syntax was inspired by SQL.
     It supports conjunctions using `AND` of relational expressions of the form *attribute*
@@ -6674,7 +6674,7 @@ export type BulkCreateChangeOrdersApiArg = {
     
     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
-    Where expression to select destination spaces for cloning changeorders
+    Where expression to select destination spaces for cloning change orders
     
     The whole string must be query-encoded. */
   whereSpace?: string;
@@ -7191,7 +7191,7 @@ export type BulkCreateChangeSetsApiArg = {
     
     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
     
-    Where expression to select destination spaces for cloning changesets
+    Where expression to select destination spaces for cloning change sets
     
     The whole string must be query-encoded. */
   whereSpace?: string;
@@ -8658,7 +8658,7 @@ export type BulkCreateFiltersApiArg = {
   namePrefixes?: string;
   /** Comma-separated list of labels with multiple values for cloned Filter labels, in the format of key1=value1|value2,key2=value1|value2|value3 */
   variantLabels?: string;
-  /** A Go-template string for clone name, use .SourceEntity to access the original entity and .Labels to access variant labels */
+  /** A string for clone names, use the prefix 'template:' for a Go-template with .SourceEntitySlug to access the original entity's slug and .Labels to access variant labels, example: 'template:{{.SourceEntitySlug}}-{{.Labels.env}}' */
   namePattern?: string;
   /** The specified string is an expression for the purpose of filtering
     the list of Spaces returned. The expression syntax was inspired by SQL.
@@ -9875,8 +9875,6 @@ export type BulkDeleteLinksApiArg = {
     
     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
     
-    filter
-    
     The whole string must be query-encoded. */
   where?: string;
   /** UUID of a Filter entity to apply to the Link list.
@@ -10084,8 +10082,6 @@ export type BulkPatchLinksApiArg = {
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
-    
-    filter
     
     The whole string must be query-encoded. */
   where?: string;
@@ -12679,6 +12675,8 @@ export type GetChangeOrderApiArg = {
   select?: string;
   /** Unique identifier for a change_order_id */
   changeOrderId: string;
+  /** If true, fill in ContainerImages: for each Space the ChangeOrder has landed in, the container images get-container-image finds at the Revisions its end Tag marks that differ from those at the Revisions its start Tag marks. */
+  containerImages?: boolean;
 };
 export type PatchChangeOrderApiResponse =
   /** status 200 Defines a change's identity as it moves between Spaces. */ ChangeOrderRead;
@@ -18389,6 +18387,10 @@ export type BulkCreateTriggersApiArg = {
   continue?: string;
   /** Comma-separated list of prefixes to apply to cloned Trigger names */
   namePrefixes?: string;
+  /** Comma-separated list of labels with multiple values for cloned Trigger labels, in the format of key1=value1|value2,key2=value1|value2|value3 */
+  variantLabels?: string;
+  /** A string for clone names, use the prefix 'template:' for a Go-template with .SourceEntitySlug to access the original entity's slug and .Labels to access variant labels, example: 'template:{{.SourceEntitySlug}}-{{.Labels.env}}' */
+  namePattern?: string;
   /** The specified string is an expression for the purpose of filtering
     the list of Spaces returned. The expression syntax was inspired by SQL.
     It supports conjunctions using `AND` of relational expressions of the form *attribute*
@@ -20740,7 +20742,7 @@ export type BulkCreateViewsApiArg = {
   continue?: string;
   /** Comma-separated list of prefixes to apply to cloned View names */
   namePrefixes?: string;
-  /** Comma-separated list of labels with multiple values fro cloned View labels, in the format of key1=value1|value2,key2=value1|value2|value3 */
+  /** Comma-separated list of labels with multiple values for cloned View labels, in the format of key1=value1|value2,key2=value1|value2|value3 */
   variantLabels?: string;
   /** A string for clone names, use the prefix 'template:' for a Go-template with .SourceEntitySlug to access the original entity's slug and .Labels to access variant labels, example: 'template:{{.SourceEntitySlug}}-{{.Labels.env}}' */
   namePattern?: string;
@@ -20991,6 +20993,7 @@ export type ResponseError = {
   Details?: string[];
   /** The type of error (e.g., validation, not-found) */
   ErrorCategory?: string;
+  /** Structured error details like field violations */
   ErrorMetadata?: ErrorMetadata;
   /** The primary error message */
   Message?: string;
@@ -21000,6 +21003,7 @@ export type ResponseError = {
   Type?: string;
 };
 export type DeleteResponse = {
+  /** Error information if the delete operation failed. */
   Error?: ResponseError;
   /** Response message. */
   Message?: string;
@@ -21047,6 +21051,7 @@ export type Component = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this component. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -21083,6 +21088,7 @@ export type ComponentRead = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this component. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -21123,6 +21129,7 @@ export type Space = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this space. */
   Permissions?: Permissions;
   /** Reference to a Target used as the default Target for all Units in this Space. */
   ReleaseTargetID?: string;
@@ -21243,6 +21250,7 @@ export type SpaceRead = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this space. */
   Permissions?: Permissions;
   /** Reference to a Target used as the default Target for all Units in this Space. */
   ReleaseTargetID?: string;
@@ -21364,6 +21372,7 @@ export type Attestation = {
   Note?: string;
   /** The Organization the Attestation belongs to. */
   OrganizationID?: string;
+  /** Permissions to access this attestation. */
   Permissions?: Permissions;
   /** A published Release the claim is about. */
   ReleaseID?: string;
@@ -21401,6 +21410,7 @@ export type AttestationRead = {
   Note?: string;
   /** The Organization the Attestation belongs to. */
   OrganizationID?: string;
+  /** Permissions to access this attestation. */
   Permissions?: Permissions;
   /** A published Release the claim is about. */
   ReleaseID?: string;
@@ -21534,13 +21544,17 @@ export type OrganizationRead = {
   Version?: number;
 };
 export type ExtendedAttestation = {
+  /** The Attestation. */
   Attestation?: Attestation;
   Organization?: Organization;
+  /** The Space the Attestation belongs to. */
   Space?: Space;
 };
 export type ExtendedAttestationRead = {
+  /** The Attestation. */
   Attestation?: AttestationRead;
   Organization?: OrganizationRead;
+  /** The Space the Attestation belongs to. */
   Space?: SpaceRead;
 };
 export type Schema = any;
@@ -21563,6 +21577,7 @@ export type FunctionParameter = {
   Regexp?: string;
   /** Whether the parameter is required */
   Required?: boolean;
+  /** JSON schema (for embedded JSON values) */
   Schema?: Schema;
 };
 export type AttributeDetails = {
@@ -21598,6 +21613,7 @@ export type PathVisitorInfo = {
   AttributeName?: string;
   /** DataType of the attribute at the path */
   DataType?: string;
+  /** Additional attribute details */
   Details?: AttributeDetails;
   /** Configuration of the embedded accessor, if any */
   EmbeddedAccessorConfig?: string;
@@ -21668,6 +21684,7 @@ export type Attribute = {
   OrganizationID?: string;
   /** Parameters specifies the function parameters for the getter and setter functions. */
   Parameters?: FunctionParameter[] | null;
+  /** Permissions to access this attribute. */
   Permissions?: Permissions;
   /** ResourceTypePaths maps resource types to their path-to-visitor-info mappings. */
   ResourceTypePaths?: ResourceTypePathsEntry[] | null;
@@ -21714,6 +21731,7 @@ export type AttributeRead = {
   OrganizationID?: string;
   /** Parameters specifies the function parameters for the getter and setter functions. */
   Parameters?: FunctionParameter[] | null;
+  /** Permissions to access this attribute. */
   Permissions?: Permissions;
   /** ResourceTypePaths maps resource types to their path-to-visitor-info mappings. */
   ResourceTypePaths?: ResourceTypePathsEntry[] | null;
@@ -21777,6 +21795,7 @@ export type FunctionOutput = {
   OutputType?: string;
   /** Name of the result in kabob-case */
   ResultName?: string;
+  /** JSON schema of the output type */
   Schema?: Schema;
 };
 export type FunctionSignature = {
@@ -21798,6 +21817,7 @@ export type FunctionSignature = {
   Mutating?: boolean;
   /** If non-empty, specification of what source(s) are expected in OtherData; if empty, OtherData is not used */
   OtherDataExpected?: string[];
+  /** Output description */
   OutputInfo?: FunctionOutput;
   /** Function parameters, in order */
   Parameters?: FunctionParameter[] | null;
@@ -21823,6 +21843,7 @@ export type FunctionWorkerInfo = {
   ToolchainTypes?: string[] | null;
 };
 export type WorkerInfo = {
+  /** FunctionWorker capabilities */
   FunctionWorkerInfo?: FunctionWorkerInfo;
   /** If true, this is a server-hosted worker: an identity that no worker process connects as, and that runs no functions. It cannot be changed after the worker is created. */
   IsServerWorker?: boolean;
@@ -21850,7 +21871,13 @@ export type BridgeWorker = {
   OrgRole?: string;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this bridge worker. */
   Permissions?: Permissions;
+  /** ProvidedInfo contains information about the bridge worker in JSON format.
+    It is sent by the bridge worker program to the ConfigHub server when it first connects.
+    It can also be set before the bridge worker connects, but it is not recommended to change
+    it while a worker is connected.
+    This can include details about the capabilities, and targets supported by the bridge worker. */
   ProvidedInfo?: WorkerInfo;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -21896,7 +21923,13 @@ export type BridgeWorkerRead = {
   OrgRole?: string;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this bridge worker. */
   Permissions?: Permissions;
+  /** ProvidedInfo contains information about the bridge worker in JSON format.
+    It is sent by the bridge worker program to the ConfigHub server when it first connects.
+    It can also be set before the bridge worker connects, but it is not recommended to change
+    it while a worker is connected.
+    This can include details about the capabilities, and targets supported by the bridge worker. */
   ProvidedInfo?: WorkerInfo;
   /** Secret is a unique secret token for the bridge worker.
     It's auto-generated when the BridgeWorker entity is created and cannot be modified.
@@ -21942,6 +21975,7 @@ export type BridgeWorkerCreateOrUpdateResponseRead = {
 export type ActionType =
   "N/A" | "Cancel" | "InvokeFunctions" | "ListFunctions" | "Apply";
 export type QueuedOperation = {
+  /** Action is the type of action to be performed by the bridge worker. */
   Action?: ActionType;
   /** BridgeWorkerID is the unique identifier of the bridge worker that will process this operation. */
   BridgeWorkerID?: string;
@@ -22062,6 +22096,7 @@ export type ChangeOrder = {
   Parameters?: {
     [key: string]: any;
   };
+  /** Permissions to access this change order. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -22165,9 +22200,38 @@ export type ChangeWorkflowSpec = {
   AttestationPrerequisites?: ChangeWorkflowAttestationPrerequisite[];
   /** The checks a stage or Final may gate on beyond the built-in ones. Declared once and named wherever they apply. */
   CustomPrerequisites?: ChangeWorkflowPrerequisite[];
+  /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
   Final?: ChangeWorkflowFinalStage;
   /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. At least one is required. */
   Stages: ChangeWorkflowStage[];
+};
+export type ChangeOrderContainerImageChange = {
+  /** The image before the change; absent for a container the change added. */
+  FromImage?: string;
+  /** The Revision the start Tag marks; absent for a Unit the change added. */
+  FromRevisionNum?: number;
+  /** The path of the image within the resource. */
+  Path?: string;
+  /** The name of the resource the container is in, as it is at the end Tag's Revision. */
+  ResourceName?: string;
+  /** The type of the resource the container is in. */
+  ResourceType?: string;
+  /** The image after the change; absent for a container the change removed. */
+  ToImage?: string;
+  /** The Revision the end Tag marks. */
+  ToRevisionNum?: number;
+  /** The Unit the image is in. */
+  UnitID?: string;
+  /** The Unit's slug. */
+  UnitSlug?: string;
+};
+export type ChangeOrderSpaceContainerImages = {
+  /** The images that changed, by Unit, resource, and path. */
+  Images?: ChangeOrderContainerImageChange[] | null;
+  /** The Space the images changed in. */
+  SpaceID?: string;
+  /** The Space's slug. */
+  SpaceSlug?: string;
 };
 export type ChangeOrderPromotionFailureLink = {
   Error?: string;
@@ -22232,6 +22296,8 @@ export type ChangeOrderRead = {
   ChangeWorkflow?: ChangeWorkflowSpec;
   /** ChangeWorkflowID is the ChangeWorkflow this ChangeOrder is promoted under. It says which workflow the stored copy was taken from, and keeps saying so after that workflow has been edited or deleted, which is why it is not a foreign key. */
   ChangeWorkflowID?: string;
+  /** ContainerImages lists, for each Space the ChangeOrder has landed in, the container images it changed there: in each Unit the end Tag marks, the images get-container-image finds that differ from those at the Revision the start Tag marks. Derived only when a single ChangeOrder is read with container_images=true, never in a list. Spaces and Units the reader cannot view are left out. */
+  ContainerImages?: ChangeOrderSpaceContainerImages[];
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
   CreatedAt?: string;
   /** An optional set of gates that, if any is present, will block deletion. */
@@ -22262,6 +22328,7 @@ export type ChangeOrderRead = {
   Parameters?: {
     [key: string]: any;
   };
+  /** Permissions to access this change order. */
   Permissions?: Permissions;
   /** PromotionFailures records each promotion that did not complete: who ran it, when, into which Stage, and each Space it failed or was blocked in, with the Space's error or reason and the error of each Unit and Link whose write failed. The most recent entries are kept. Set by the server. (readonly) */
   PromotionFailures?: ChangeOrderPromotionFailure[];
@@ -22367,6 +22434,7 @@ export type Tag = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this tag. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -22404,6 +22472,7 @@ export type TagRead = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this tag. */
   Permissions?: Permissions;
   /** ReleaseID is the optional ID of the Release that made this Tag. */
   ReleaseID?: string;
@@ -22440,9 +22509,11 @@ export type GuardStamp = {
 export type FunctionInvocation = {
   /** Function arguments */
   Arguments?: FunctionArgument[] | null;
+  /** Classes of guarded reason this invocation is cleared for; combined by union with the clearance of whatever drove the execution */
   Clearance?: Clearance;
   /** Function name */
   FunctionName?: string;
+  /** Guards to record on the paths this invocation writes, so a later operation must be cleared for them; combined with the guards of whatever drove the execution, later winning per key */
   Guards?: GuardStamp;
   /** Caller-supplied parameter values for expanding templated argument Values; transient, not persisted */
   Params?: {
@@ -22477,6 +22548,7 @@ export type Invocation = {
   /** Unique identifier for an organization. */
   OrganizationID?: string;
   Parameters?: FunctionParameter[];
+  /** Permissions to access this invocation. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -22520,6 +22592,7 @@ export type InvocationRead = {
   /** Unique identifier for an organization. */
   OrganizationID?: string;
   Parameters?: FunctionParameter[];
+  /** Permissions to access this invocation. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -22562,6 +22635,7 @@ export type Filter = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this filter. */
   Permissions?: Permissions;
   /** Resource type to match for the desired ToolchainType, for example apps/v1/Deployment. Valid only for Units. (optional) */
   ResourceType?: string;
@@ -22609,6 +22683,7 @@ export type FilterRead = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this filter. */
   Permissions?: Permissions;
   /** Resource type to match for the desired ToolchainType, for example apps/v1/Deployment. Valid only for Units. (optional) */
   ResourceType?: string;
@@ -22683,6 +22758,7 @@ export type ChangeSet = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this change set. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -22720,6 +22796,7 @@ export type ChangeSetRead = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this change set. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -22779,6 +22856,7 @@ export type ChangeWorkflow = {
   };
   /** Friendly name for the entity. */
   DisplayName?: string;
+  /** Final is what the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
   Final?: ChangeWorkflowFinalStage;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
@@ -22788,6 +22866,7 @@ export type ChangeWorkflow = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this change workflow. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -22820,6 +22899,7 @@ export type ChangeWorkflowRead = {
   DisplayName?: string;
   /** The type of entity. */
   EntityType?: string;
+  /** Final is what the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
   Final?: ChangeWorkflowFinalStage;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
@@ -22829,6 +22909,7 @@ export type ChangeWorkflowRead = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this change workflow. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -22892,6 +22973,7 @@ export type MutationType = "Add" | "Delete" | "Update" | "Replace" | "None";
 export type MutationInfo = {
   /** Function index or sequence number corresponding to the change */
   Index?: number;
+  /** Type of mutation performed on the associated configuration element: Add, Update, Replace, Delete, or None, if no change */
   MutationType?: MutationType;
   /** Line-level patch for multi-line string updates, in unified diff format. When present on an Update, PatchMutations applies this to the target value instead of replacing with Value. Falls back to Value if the patch cannot be applied cleanly. */
   Patch?: string;
@@ -22915,6 +22997,7 @@ export type PathSegment = {
   ToIndex?: number;
 };
 export type PathChange = {
+  /** The To side's MutationSources entry for this path, which says what set the new value; returned when include names Attribution */
   Attribution?: MutationInfo;
   /** Add, Delete, Update, Replace, Reorder, or Rename */
   ChangeType?: string;
@@ -22944,13 +23027,17 @@ export type ResourceInfo = {
   ResourceType?: string;
 };
 export type ResourceDiff = {
+  /** For an Add, the To side's MutationSources entry for the resource, which says what added it; returned when include names Attribution */
   Attribution?: MutationInfo;
+  /** Add, Delete, Update, or None when the resource is unchanged */
   ChangeType?: MutationType;
   /** Changes within the resource, for an Update, in document order */
   Changes?: PathChange[];
   /** The whole resource, for a Delete */
   FromValue?: string;
+  /** The resource on the From side, when it was matched across a rename */
   PreviousResource?: ResourceInfo;
+  /** Identifies the resource on the To side, or on the From side if it was deleted */
   Resource?: ResourceInfo;
   /** The whole resource, for an Add */
   ToValue?: string;
@@ -22979,16 +23066,22 @@ export type ResourceMutation = {
   AliasesWithoutScopes?: {
     [key: string]: object;
   };
+  /** For merge-keyed arrays in which an element was renamed (its merge-key value changed): the array parent path mapped to a previous-merge-key -> new-merge-key map. PatchMutations rewrites the matched element's merge-key field accordingly so child paths and ArrayOrders entries resolve under the new key. */
   ArrayElementAliases?: ArrayElementAliasMap;
+  /** For merge-keyed arrays whose element set or order changed in this mutation: the desired sequence of merge-key values in source order, keyed by the array's parent path. PatchMutations applies this as a reorder pass after path mutations so positional associative arrays (e.g., Kubernetes initContainers, env, ports) preserve source-side ordering rather than landing append-on-clash. */
   ArrayOrders?: ArrayOrderMap;
+  /** Path-level mutation information; more deeply nested paths override values represented at higher levels */
   PathMutationMap?: MutationMap;
+  /** Identifiers of the resource to which the mutations correspond */
   Resource?: ResourceInfo;
+  /** Resource-level mutation information, such as for Add, Delete, or Replace */
   ResourceMutationInfo?: MutationInfo;
 };
 export type ResourceMutationList = ResourceMutation[];
 export type DemoteUnitResult = {
   /** Restore, Mark, or Unchanged. */
   Action?: string;
+  /** The same change path by path, with the values on both sides. Returned when include names Diff. */
   Diff?: ConfigDiff;
   /** The first Revision after the change that restoring drops, when the head had moved past where the change arrived. */
   DropsFromRevisionNum?: number;
@@ -22997,6 +23090,7 @@ export type DemoteUnitResult = {
   /** The Revision the change arrived at. */
   EndRevisionNum?: number;
   Error?: ResponseError;
+  /** What the restore changed, or on a dry run would change. Returned when include names Mutations. */
   Mutations?: ResourceMutationList;
   PreviousHeadMutationNum?: number;
   PreviousHeadRevisionNum?: number;
@@ -23053,8 +23147,11 @@ export type DiffSideResult = {
   UnitID?: string;
 };
 export type DiffResult = {
+  /** What changed from the From configuration to the To configuration */
   Diff?: ConfigDiff;
+  /** What the From side resolved to */
   From?: DiffSideResult;
+  /** What the To side resolved to */
   To?: DiffSideResult;
 };
 export type DiffSide = {
@@ -23068,7 +23165,9 @@ export type DiffSide = {
   UnitID?: string;
 };
 export type DiffRequest = {
+  /** The configuration the diff runs from */
   From?: DiffSide;
+  /** The configuration the diff runs to */
   To?: DiffSide;
 };
 export type ExtendedFilter = {
@@ -23114,14 +23213,19 @@ export type GuardDelta = {
 export type MutationConflict = {
   /** Explanation the Reason alone cannot carry, such as the error text of a failed replay */
   Details?: string;
+  /** For Guarded: the guard the operation's clearance did not cover */
   Guard?: WithheldGuard;
+  /** For GuardWithheld: the guard change that did not propagate */
   GuardChange?: GuardDelta;
   /** Path of the mutation; empty for resource-level conflicts */
   Path?: string;
   /** Why the mutation was dropped */
   Reason?: string;
+  /** Resource the mutation applied to */
   Resource?: ResourceInfo;
+  /** The dropped source-side mutation */
   Source?: MutationInfo;
+  /** The target-side mutation that caused the drop, when applicable (Subtracted, DeleteShadowed) */
   Target?: MutationInfo;
   /** ID of the other unit involved in the conflict (upstream for upgrade/merge, link target for resolve) */
   UnitID?: string;
@@ -23130,13 +23234,17 @@ export type MutationConflictList = MutationConflict[];
 export type FunctionInvocationsResponse = {
   /** The resulting configuration data; present only when the invocation changed it */
   ConfigData?: string;
+  /** Mutation conflicts produced by writing the invocation's result, such as a path a guard withheld. Empty when nothing was withheld. */
   Conflicts?: MutationConflictList;
   /** SHA256 of the resulting configuration data, whether or not ConfigData is present */
   DataHash?: string;
+  /** What the invocation changed, or on a dry run would change, path by path with the values on both sides; returned when include names Diff. */
   Diff?: ConfigDiff;
+  /** Error information if the function invocation failed */
   Error?: ResponseError;
   /** Functions produced new mutations (of type other than None) */
   HasNewMutations?: boolean;
+  /** List of mutations in the same order as the resources in ConfigData */
   Mutations?: ResourceMutationList;
   /** List of function invocation indices that resulted in mutations */
   Mutators?: number[] | null;
@@ -23227,10 +23335,12 @@ export type GroupRead = {
 };
 export type ExtendedGroup = {
   Error?: ResponseError;
+  /** The Group. */
   Group?: Group;
 };
 export type ExtendedGroupRead = {
   Error?: ResponseError;
+  /** The Group. */
   Group?: GroupRead;
 };
 export type User = {
@@ -23351,6 +23461,7 @@ export type Unit = {
   LastChangeDescription?: string;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this unit. */
   Permissions?: Permissions;
   /** ProviderType says whether and how the Unit is delivered. None keeps it off every Target and out of Releases, ConfigHub marks configuration ConfigHub applies to itself, and OCI or empty means it is published in its Space's Releases. */
   ProviderType?: string;
@@ -23380,6 +23491,7 @@ export type AttributeValue = {
   Comment?: string;
   /** Data type if the attribute value. */
   DataType?: string;
+  /** Additional attribute details */
   Details?: AttributeDetails;
   /** Name of the function invocation corresponding to the output */
   FunctionName?: string;
@@ -23422,7 +23534,9 @@ export type ResourcePathAnnotations = {
   PathAnnotationMap?: {
     [key: string]: PathAnnotations;
   };
+  /** Identifiers of the resource whose paths are annotated */
   Resource?: ResourceInfo;
+  /** Annotations on the resource as a whole, inherited by paths with no more specific entry */
   ResourceAnnotations?: PathAnnotations;
 };
 export type PathAnnotationList = ResourcePathAnnotations[];
@@ -23431,6 +23545,7 @@ export type AttributeInfo = {
   AttributeName?: string;
   /** Data type if the attribute value. */
   DataType?: string;
+  /** Additional attribute details */
   Details?: AttributeDetails;
   /** Path of the attribute */
   Path?: string;
@@ -23449,6 +23564,7 @@ export type AttributeValueList = AttributeValue[];
 export type ValidationResult = {
   /** Deprecated. Use Issues or FailedAttributes instead. Optional list of failure details when not associated with specific attributes/paths. */
   Details?: string[];
+  /** optional list of failed attributes/paths and issues found for them. Preferred over Issues and Details. */
   FailedAttributes?: AttributeValueList;
   /** Name of the function invocation corresponding to the result */
   FunctionName?: string;
@@ -23524,6 +23640,7 @@ export type UnitRead = {
   OrganizationID?: string;
   /** Annotations on locations within the Unit's configuration data, by resource and path. */
   PathAnnotations?: PathAnnotationList;
+  /** Permissions to access this unit. */
   Permissions?: Permissions;
   /** Attribute paths that this Unit provides to downstream Units via NeedsProvides Links. Computed from get-provided and stored on data updates. */
   ProvidedPaths?: AttributeInfo[];
@@ -23589,9 +23706,11 @@ export type PathExpression = {
   Parameters?: string[];
   /** Unresolved path within Resource to write via set-attributes */
   Path?: string;
+  /** Resource in the downstream Unit that contains Path. Reserved as a pointer for a future optional/WhereResource form; required for now. */
   Resource?: ResourceInfo;
 };
 export type ParameterizedFunction = {
+  /** Mutating function invocation to run on the downstream Unit. Worker functions are not supported. */
   FunctionInvocation?: FunctionInvocation;
   /** Identifies the entry within DownstreamSetters, so that a merge of two versions of the Link matches entries by Key rather than by position. Optional, and unique within the list when present. Letters, digits, '-' and '_', starting with a letter or digit; at most 128 characters. */
   Key?: string;
@@ -23607,13 +23726,16 @@ export type Binding = {
   Key?: string;
   /** Resolved path within the needed resource */
   NeededPath?: string;
+  /** Resource in the downstream unit that needs the value */
   NeededResource?: ResourceInfo;
   /** Resolved path within the provided resource */
   ProvidedPath?: string;
+  /** Resource in the upstream unit that provides the value */
   ProvidedResource?: ResourceInfo;
 };
 export type BindingList = Binding[];
 export type NamedFunctionResult = {
+  /** Non-mutating function invocation that produces OutputTypeAttributeValueList. The Value of the first returned AttributeValue is bound to Name. Worker functions are not supported. */
   FunctionInvocation?: FunctionInvocation;
   /** Identifier used to reference the value; must be a legal Go and CEL identifier and unique across UpstreamPaths and UpstreamGetters */
   Name?: string;
@@ -23623,6 +23745,7 @@ export type NamedPath = {
   Name?: string;
   /** Resolved path within Resource to read via get-paths */
   Path?: string;
+  /** Resource in the upstream Unit that contains Path */
   Resource?: ResourceInfo;
 };
 export type Link = {
@@ -23647,6 +23770,7 @@ export type Link = {
   DownstreamSetters?: ParameterizedFunction[];
   /** Unique identifier of the downstream (consumer) Unit. Links must be in the same space as the source unit. */
   FromUnitID: string;
+  /** Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
   Guards?: GuardStamp;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
@@ -23656,11 +23780,13 @@ export type Link = {
   };
   /** Unique identifier for a Link. */
   LinkID?: string;
+  /** The needs/provides attribute bindings stated for this Link, which resolution uses as they are. Each Binding maps one needed attribute in the downstream Unit to one provided attribute in the upstream Unit. An Insert Link has exactly one, which identifies only the needed attribute (NeededResource and NeededPath) and whose DataType selects how the upstream Unit is inserted: string, the default, inserts it verbatim as text; the downstream Unit's own configuration format inserts it as configuration data. */
   ManualBindings?: BindingList;
   /** Enables the subtraction (override-preservation) step of the merge performed when resolving this Link. When false (the default), the source patch is applied without subtraction and the downstream Unit's local differences are preserved by the stored Mutation Protected values alone, widened by WhereMutation if it is set. When true, the merge additionally subtracts the downstream Unit's local differences from the source patch and the stored values are not consulted. Only meaningful for UpgradeUnit and MergeUnits Links. */
   MergeEnableSubtraction?: boolean;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this link. */
   Permissions?: Permissions;
   /** Records the paths this Link's resolve writes as protected local overrides, so a later merge from upstream does not overwrite them. Without it the resolve claims nothing, as any other change does. Refused on UpgradeUnit and MergeUnits Links, where the upstream keeps updating what it delivered and protecting that content would freeze the downstream one merge in. */
   Protect?: boolean;
@@ -23720,6 +23846,7 @@ export type LinkRead = {
   EntityType?: string;
   /** Unique identifier of the downstream (consumer) Unit. Links must be in the same space as the source unit. */
   FromUnitID: string;
+  /** Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
   Guards?: GuardStamp;
   /** SHA256 hash of the resolution-relevant Link fields, used to detect changes that require re-resolution. */
   Hash?: string;
@@ -23731,11 +23858,13 @@ export type LinkRead = {
   };
   /** Unique identifier for a Link. */
   LinkID?: string;
+  /** The needs/provides attribute bindings stated for this Link, which resolution uses as they are. Each Binding maps one needed attribute in the downstream Unit to one provided attribute in the upstream Unit. An Insert Link has exactly one, which identifies only the needed attribute (NeededResource and NeededPath) and whose DataType selects how the upstream Unit is inserted: string, the default, inserts it verbatim as text; the downstream Unit's own configuration format inserts it as configuration data. */
   ManualBindings?: BindingList;
   /** Enables the subtraction (override-preservation) step of the merge performed when resolving this Link. When false (the default), the source patch is applied without subtraction and the downstream Unit's local differences are preserved by the stored Mutation Protected values alone, widened by WhereMutation if it is set. When true, the merge additionally subtracts the downstream Unit's local differences from the source patch and the stored values are not consulted. Only meaningful for UpgradeUnit and MergeUnits Links. */
   MergeEnableSubtraction?: boolean;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this link. */
   Permissions?: Permissions;
   /** Records the paths this Link's resolve writes as protected local overrides, so a later merge from upstream does not overwrite them. Without it the resolve claims nothing, as any other change does. Refused on UpgradeUnit and MergeUnits Links, where the upstream keeps updating what it delivered and protecting that content would freeze the downstream one merge in. */
   Protect?: boolean;
@@ -23875,12 +24004,15 @@ export type PromoteLinkResult = {
 export type PromoteUnitResult = {
   /** Upgrade, Resolve, Mark, Empty, Revive, Clone, Invoke, Unchanged, or Skip. */
   Action?: string;
+  /** Paths withheld because they were overridden locally or guarded. */
   Conflicts?: MutationConflictList;
+  /** The same change path by path, with the values on both sides. Returned when include names Diff. */
   Diff?: ConfigDiff;
   Error?: ResponseError;
   HeadRevisionNum?: number;
   /** For a Resolve, and a Mark made by one, the Links resolved. */
   LinkIDs?: Uuid[];
+  /** What the write changed, or on a dry run would change: the entries of the Unit's MutationSources it produced. Returned when include names Mutations. */
   Mutations?: ResourceMutationList;
   PreviousHeadMutationNum?: number;
   PreviousHeadRevisionNum?: number;
@@ -23947,6 +24079,7 @@ export type PromoteRequest = {
   ChangeOrderID?: string;
   /** An existing open ChangeSet to record every write in. */
   ChangeSetID?: string;
+  /** The guarded reasons the writes are cleared for. A path whose guards this does not cover is not written, and the withheld change is reported in the Unit's Conflicts. */
   Clearance?: Clearance;
   /** Plan the promotion, evaluate its gates, and return the same response without writing anything. */
   DryRun?: boolean;
@@ -23956,6 +24089,7 @@ export type PromoteRequest = {
   Force?: boolean;
   /** Why the gates were overridden. Required with Force. */
   ForceReason?: string;
+  /** Reasons to record on the paths each Unit write changes. A later operation must be cleared for them before overwriting those paths. Clearance must cover them, since a write is withheld by guards it is not cleared for, its own included. */
   Guards?: GuardStamp;
   /** With a ChangeOrder, what to do for a Unit whose last merged upstream Revision is before the ChangeOrder's start there -- typically because a Link in the upstream Space, such as a TransformPaths Link, wrote Revisions after the Unit last merged. Include (the default) merges those Revisions first, as Revisions of their own that do not carry the ChangeOrder, and then the ChangeOrder's range; Skip merges only the ChangeOrder's range, as though the Unit had already merged as far as its start; Error refuses, naming the Revisions. A Unit that has merged past the ChangeOrder's start is an error whatever this says. Refused with an Insert, Upsert, or TransformPaths ChangeOrder, whose Links read their sources as they are at its end rather than merging a range. */
   PriorRevisions?: "Include" | "Skip" | "Error";
@@ -24017,8 +24151,10 @@ export type Release = {
   Labels?: {
     [key: string]: string;
   };
+  /** What the tool deploying the Release, such as argobot for Argo CD, reports about it running. Absent until a tool reports. Written by that tool: EditChildren on the Release's Target grants Edit on the Release. */
   LiveStatus?: ReleaseLiveStatus;
   OrganizationID?: string;
+  /** Permissions to access this release. */
   Permissions?: Permissions;
   /** Unique identifier for a Release. */
   ReleaseID?: string;
@@ -24052,10 +24188,12 @@ export type ReleaseRead = {
   Labels?: {
     [key: string]: string;
   };
+  /** What the tool deploying the Release, such as argobot for Argo CD, reports about it running. Absent until a tool reports. Written by that tool: EditChildren on the Release's Target grants Edit on the Release. */
   LiveStatus?: ReleaseLiveStatus;
   /** OCI digest (sha256:...) of the Release's OCI image manifest. */
   ManifestDigest?: string;
   OrganizationID?: string;
+  /** Permissions to access this release. */
   Permissions?: Permissions;
   /** Whether the Release is currently served to its consuming Target. Set when the Release is published and cleared when it is withdrawn; a withdrawn Release is retained until deleted. */
   Published?: boolean;
@@ -24080,14 +24218,20 @@ export type ReleaseRead = {
 };
 export type ExtendedRelease = {
   Organization?: Organization;
+  /** The Release. */
   Release?: Release;
+  /** The Space the Release belongs to. */
   Space?: Space;
+  /** The Tag the bundled Units were pinned to, if any. Expanded when requested via the include parameter. */
   Tag?: Tag;
 };
 export type ExtendedReleaseRead = {
   Organization?: OrganizationRead;
+  /** The Release. */
   Release?: ReleaseRead;
+  /** The Space the Release belongs to. */
   Space?: SpaceRead;
+  /** The Tag the bundled Units were pinned to, if any. Expanded when requested via the include parameter. */
   Tag?: TagRead;
 };
 export type Resource = {
@@ -24175,6 +24319,7 @@ export type Target = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this target. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -24253,6 +24398,7 @@ export type TargetRead = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this target. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -24322,6 +24468,7 @@ export type ColumnSource = {
   MetadataExpression?: string;
 };
 export type Column = {
+  /** Where the column value comes from. Exactly one field should be set, matching ColumnType. */
   ColumnSource?: ColumnSource;
   /** The kind of value: MetadataAttribute, MetadataExpression, DataPath or DataExpression. */
   ColumnType?: string;
@@ -24365,6 +24512,7 @@ export type View = {
   OrderByDirection?: string;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this view. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -24411,6 +24559,7 @@ export type ViewRead = {
   OrderByDirection?: string;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this view. */
   Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
@@ -24473,6 +24622,7 @@ export type ReviewComment = {
   Path?: string;
   /** Unique identifier of the ReviewComment, on the same Unit, this one replies to. Unset for a comment that starts a thread. Immutable. */
   ReplyToID?: string;
+  /** Resource to which the remark is attached; optional */
   Resource?: ResourceInfoType2;
   /** Unique identifier for a ReviewComment. */
   ReviewCommentID?: string;
@@ -24502,6 +24652,7 @@ export type ReviewCommentRead = {
   Path?: string;
   /** Unique identifier of the ReviewComment, on the same Unit, this one replies to. Unset for a comment that starts a thread. Immutable. */
   ReplyToID?: string;
+  /** Resource to which the remark is attached; optional */
   Resource?: ResourceInfoType2;
   /** Unique identifier for a ReviewComment. */
   ReviewCommentID?: string;
@@ -24542,6 +24693,7 @@ export type Revision = {
   NeededPaths?: AttributeValue[];
   /** Unique identifier for an Organization. */
   OrganizationID?: string;
+  /** Annotations on locations within the Unit's configuration data as of this Revision. */
   PathAnnotations?: PathAnnotationList;
   /** Attribute paths this Revision's configuration provides to downstream Units via NeedsProvides Links. */
   ProvidedPaths?: AttributeInfo[];
@@ -24633,6 +24785,7 @@ export type RevisionRead = {
   NeededPaths?: AttributeValue[];
   /** Unique identifier for an Organization. */
   OrganizationID?: string;
+  /** Annotations on locations within the Unit's configuration data as of this Revision. */
   PathAnnotations?: PathAnnotationList;
   /** Attribute paths this Revision's configuration provides to downstream Units via NeedsProvides Links. */
   ProvidedPaths?: AttributeInfo[];
@@ -24762,6 +24915,7 @@ export type RevisionData = {
   UnitID?: string;
 };
 export type RevisionMutationSources = {
+  /** Sources of mutations affecting the configuration data, by resource and path. */
   MutationSources?: ResourceMutationList;
   /** Unique identifier of the Revision. */
   RevisionID?: string;
@@ -24797,6 +24951,7 @@ export type Trigger = {
   FailOpenAfter?: number | null;
   /** Function name */
   FunctionName?: string;
+  /** Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Only meaningful for a mutating trigger, and part of the trigger's Hash, unlike Protect. */
   Guards?: GuardStamp;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
@@ -24810,6 +24965,7 @@ export type Trigger = {
   OrganizationID?: string;
   /** Specifies the source of additional configuration data to pass to functions that need it (e.g., vet-immutable needs a baseline revision to compare against). Uses revision specifier format such as LastReleasedRevisionNum or Before:HeadRevisionNum. When empty, the function is passed the sources its signature lists in OtherDataExpected. */
   OtherDataSource?: string;
+  /** Permissions to access this trigger. */
   Permissions?: Permissions;
   /** Protect indicates whether the paths this trigger's function writes are recorded as protected local overrides, so a later merge from upstream does not overwrite them. A change claims nothing by default and so does a trigger; set this for a trigger that decides a value on the Unit's behalf and will not be back to decide it again, such as a PostClone trigger customizing a variant. Only meaningful for a mutating trigger. */
   Protect?: boolean;
@@ -24865,6 +25021,7 @@ export type TriggerRead = {
   FailOpenAfter?: number | null;
   /** Function name */
   FunctionName?: string;
+  /** Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Only meaningful for a mutating trigger, and part of the trigger's Hash, unlike Protect. */
   Guards?: GuardStamp;
   /** SHA256 hash of the trigger's specification fields, used to detect changes. */
   Hash?: string;
@@ -24880,6 +25037,7 @@ export type TriggerRead = {
   OrganizationID?: string;
   /** Specifies the source of additional configuration data to pass to functions that need it (e.g., vet-immutable needs a baseline revision to compare against). Uses revision specifier format such as LastReleasedRevisionNum or Before:HeadRevisionNum. When empty, the function is passed the sources its signature lists in OtherDataExpected. */
   OtherDataSource?: string;
+  /** Permissions to access this trigger. */
   Permissions?: Permissions;
   /** Protect indicates whether the paths this trigger's function writes are recorded as protected local overrides, so a later merge from upstream does not overwrite them. A change claims nothing by default and so does a trigger; set this for a trigger that decides a value on the Unit's behalf and will not be back to decide it again, such as a PostClone trigger customizing a variant. Only meaningful for a mutating trigger. */
   Protect?: boolean;
@@ -25024,11 +25182,13 @@ export type BridgeWorkerStatus = {
 export type ReleasePublishResponse = {
   /** Set when nothing changed since the latest published Release, so no Release was created. */
   Message?: string;
+  /** The published Release, or the latest published Release when no Release was created. */
   Release?: Release;
 };
 export type ReleasePublishResponseRead = {
   /** Set when nothing changed since the latest published Release, so no Release was created. */
   Message?: string;
+  /** The published Release, or the latest published Release when no Release was created. */
   Release?: ReleaseRead;
 };
 export type ReleasePublishRequest = {
@@ -25048,6 +25208,7 @@ export type ReleasePublishRequest = {
   Labels?: {
     [key: string]: string;
   };
+  /** Optional Permissions to access the Release. Its publisher is granted Manage in addition. */
   Permissions?: Permissions;
   /** Optional Tag ID identifying the tagged Revision to bundle. For each Unit assigned to the Space's ReleaseTarget, the highest-numbered Revision carrying this Tag is bundled at that Revision instead of the Unit's head Revision. A Unit with no matching tagged Revision falls back to its head Revision. When omitted, each Unit is bundled at its head Revision and publishing creates a Tag named release-<ReleaseNum>, applies it to each bundled Revision, and sets it as the Release's TagID. */
   TagID?: string;
@@ -25102,6 +25263,7 @@ export type ExtendedTriggerRead = {
 };
 export type Mutation = {
   BridgeWorkerID?: string;
+  /** The function invoked if the change was made by a function. */
   FunctionInvocation?: FunctionInvocation;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
@@ -25126,6 +25288,7 @@ export type Mutation = {
   OrganizationID?: string;
   /** ProvidedPath is the path of the provided value used to satisfy a needed value if the change was made due to resolving a link. */
   ProvidedPath?: string;
+  /** ProvidedResource contains the type and name of the resource which provided a value used to satisfy a needed value if the change was made due to resolving a link. */
   ProvidedResource?: ResourceInfoType2;
   ReplayOutcome?: string;
   ReplayReason?: string;
@@ -25154,6 +25317,7 @@ export type MutationRead = {
   CreatedAt?: string;
   /** The type of entity. */
   EntityType?: string;
+  /** The function invoked if the change was made by a function. */
   FunctionInvocation?: FunctionInvocation;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
@@ -25178,6 +25342,7 @@ export type MutationRead = {
   OrganizationID?: string;
   /** ProvidedPath is the path of the provided value used to satisfy a needed value if the change was made due to resolving a link. */
   ProvidedPath?: string;
+  /** ProvidedResource contains the type and name of the resource which provided a value used to satisfy a needed value if the change was made due to resolving a link. */
   ProvidedResource?: ResourceInfoType2;
   ReplayOutcome?: string;
   ReplayReason?: string;
@@ -25272,15 +25437,25 @@ export type ExtendedUnit = {
   ChangeSet?: ChangeSet;
   Error?: ResponseError;
   FromLink?: Link[];
+  /** The Unit's current HeadMutation */
   HeadMutation?: Mutation;
+  /** The Unit's current HeadRevision */
   HeadRevision?: Revision;
+  /** The Unit's current LastReleasedRevision */
   LastReleasedRevision?: Revision;
+  /** The latest event that took place on the Unit. */
   LatestUnitEvent?: UnitEvent;
+  /** The Organization the Unit belongs to. */
   Organization?: Organization;
+  /** The Space the Unit belongs to. */
   Space?: Space;
+  /** The Target the Unit has been configured to operate with. */
   Target?: Target;
+  /** The requested Unit of the operation. */
   Unit?: Unit;
+  /** If this Unit is a clone, the Upstream Space the UpstreamUnit belongs to. Optional. */
   UpstreamSpace?: Space;
+  /** If this Unit is a clone, the Upstream Unit it was cloned from. Optional. */
   UpstreamUnit?: Unit;
   View?: View;
   ViewColumns?: ViewColumn[];
@@ -25289,15 +25464,25 @@ export type ExtendedUnitRead = {
   ChangeSet?: ChangeSetRead;
   Error?: ResponseError;
   FromLink?: LinkRead[];
+  /** The Unit's current HeadMutation */
   HeadMutation?: MutationRead;
+  /** The Unit's current HeadRevision */
   HeadRevision?: RevisionRead;
+  /** The Unit's current LastReleasedRevision */
   LastReleasedRevision?: RevisionRead;
+  /** The latest event that took place on the Unit. */
   LatestUnitEvent?: UnitEventRead;
+  /** The Organization the Unit belongs to. */
   Organization?: OrganizationRead;
+  /** The Space the Unit belongs to. */
   Space?: SpaceRead;
+  /** The Target the Unit has been configured to operate with. */
   Target?: TargetRead;
+  /** The requested Unit of the operation. */
   Unit?: UnitRead;
+  /** If this Unit is a clone, the Upstream Space the UpstreamUnit belongs to. Optional. */
   UpstreamSpace?: SpaceRead;
+  /** If this Unit is a clone, the Upstream Unit it was cloned from. Optional. */
   UpstreamUnit?: UnitRead;
   View?: ViewRead;
   ViewColumns?: ViewColumn[];
@@ -25306,9 +25491,11 @@ export type UnitCreateOrUpdateResponse = {
   /** The configuration the operation produced; returned when include names ConfigData. */
   ConfigData?: string;
   Conflicts?: MutationConflictList;
+  /** What the operation changed, or on a dry run would change, path by path with the values on both sides; returned when include names Diff. */
   Diff?: ConfigDiff;
   Error?: ResponseError;
   Links?: LinkCreateOrUpdateResponse[];
+  /** What set each value in the configuration the operation produced; returned when include names MutationSources. */
   MutationSources?: ResourceMutationList;
   Unit?: Unit;
 };
@@ -25316,30 +25503,38 @@ export type UnitCreateOrUpdateResponseRead = {
   /** The configuration the operation produced; returned when include names ConfigData. */
   ConfigData?: string;
   Conflicts?: MutationConflictList;
+  /** What the operation changed, or on a dry run would change, path by path with the values on both sides; returned when include names Diff. */
   Diff?: ConfigDiff;
   Error?: ResponseError;
   Links?: LinkCreateOrUpdateResponseRead[];
+  /** What set each value in the configuration the operation produced; returned when include names MutationSources. */
   MutationSources?: ResourceMutationList;
   Unit?: UnitRead;
 };
 export type UnitConflictsResponse = {
   /** Number of conflicts whose withheld change was applied */
   Applied?: number;
+  /** The Unit's outstanding conflicts after the request */
   Conflicts?: MutationConflictList;
+  /** What applying the withheld changes changed in the configuration, or would change for a dry run, path by path with the values on both sides */
   Diff?: ConfigDiff;
   /** Number of conflicts dropped without changing the configuration data */
   Dismissed?: number;
   Error?: ResponseError;
+  /** The Unit as the request left it, or would have left it for a dry run */
   Unit?: Unit;
 };
 export type UnitConflictsResponseRead = {
   /** Number of conflicts whose withheld change was applied */
   Applied?: number;
+  /** The Unit's outstanding conflicts after the request */
   Conflicts?: MutationConflictList;
+  /** What applying the withheld changes changed in the configuration, or would change for a dry run, path by path with the values on both sides */
   Diff?: ConfigDiff;
   /** Number of conflicts dropped without changing the configuration data */
   Dismissed?: number;
   Error?: ResponseError;
+  /** The Unit as the request left it, or would have left it for a dry run */
   Unit?: UnitRead;
 };
 export type UnitConflictSelector = {
@@ -25359,6 +25554,7 @@ export type UnitConflictsRequest = {
   Select?: UnitConflictSelector[];
 };
 export type UnitDiff = {
+  /** What changed from the From Revision to the To Revision */
   Diff?: ConfigDiff;
   Error?: ResponseError;
   /** The Revision on the From side; 0 when the Unit has none there and the diff is against nothing */
@@ -25371,6 +25567,7 @@ export type UnitDiff = {
   UnitID?: string;
 };
 export type UnitGuardResponse = {
+  /** The Unit's PathAnnotations after applying the guard edits */
   PathAnnotations?: PathAnnotationList;
 };
 export type ResourceGuards = {
@@ -25378,6 +25575,7 @@ export type ResourceGuards = {
   Remove?: {
     [key: string]: string[];
   };
+  /** Identifies the resource within the Unit whose guards are being edited */
   Resource?: ResourceInfo;
   /** Guard key/value pairs to add or overwrite, by path. The empty path addresses the resource as a whole */
   Set?: {
@@ -25387,6 +25585,7 @@ export type ResourceGuards = {
   };
 };
 export type UnitGuardRequest = {
+  /** The classes of reason this edit is cleared for; required to edit a path that already carries guards */
   Clearance?: Clearance;
   /** Per-resource guard edits to apply to the Unit's PathAnnotations */
   ResourceGuards?: ResourceGuards[] | null;
@@ -25416,10 +25615,12 @@ export type ExtendedMutationRead = {
   Unit?: UnitRead;
 };
 export type MutationSourcesResponse = {
+  /** Sources of mutations affecting the configuration data, by resource and path. */
   MutationSources?: ResourceMutationList;
 };
 export type UnitProtectionResponse = {
   Error?: ResponseError;
+  /** The Unit's MutationSources after applying the protection edits */
   MutationSources?: ResourceMutationList;
 };
 export type ResourceProtection = {
@@ -25427,6 +25628,7 @@ export type ResourceProtection = {
   Protected?: {
     [key: string]: boolean;
   } | null;
+  /** Identifies the resource within the unit whose path protection is being set */
   Resource?: ResourceInfo;
 };
 export type UnitProtectionRequest = {
@@ -25434,6 +25636,7 @@ export type UnitProtectionRequest = {
   ResourceProtection?: ResourceProtection[] | null;
 };
 export type UnitAction = {
+  /** Action is the type of action to be performed by the bridge worker. */
   Action?: ActionType;
   /** BridgeWorkerID is the unique identifier of the bridge worker that will process this operation. */
   BridgeWorkerID?: string;
@@ -25569,6 +25772,7 @@ export type UnitData = {
 export type UnitMutationSources = {
   /** SHA256 of the configuration data the MutationSources describe. */
   DataHash?: string;
+  /** Sources of mutations affecting the configuration data, by resource and path. */
   MutationSources?: ResourceMutationList;
   /** Slug of the Unit. */
   Slug?: string;
@@ -25627,10 +25831,14 @@ export type UploadEntityResult = {
 export type UploadUnitResult = {
   /** Create, Update, Unchanged, Empty, Revive, or Adopt. */
   Action?: string;
+  /** Paths withheld because they were overridden locally or guarded. */
   Conflicts?: MutationConflictList;
+  /** The same change path by path, with the values on both sides. Returned when include names Diff. */
   Diff?: ConfigDiff;
+  /** For a BackingUnit, what became of the entity its document describes. */
   Entity?: UploadEntityResult;
   Error?: ResponseError;
+  /** What the write changed, or on a dry run would change: the entries of the Unit's MutationSources it produced. Returned when include names Mutations. */
   Mutations?: ResourceMutationList;
   /** The resource identity this Unit is keyed by. */
   Resource?: string;
@@ -25663,6 +25871,7 @@ export type UploadComponentResult = {
   /** Inferred links dropped to keep the link graph acyclic. */
   BrokenLinks?: UploadBrokenEdge[];
   Name?: string;
+  /** Set when CreateNamespace was asked for but the bundle already carried the release Namespace. */
   NamespaceCollision?: UploadNamespaceCollision;
   /** Secret resources dropped from the bundle, as Kind/namespace/name. Secrets are never uploaded. */
   SkippedSecrets?: string[];
@@ -25744,6 +25953,7 @@ export type UploadSourceInfo = {
   /** The client that uploaded: cub, installer, ui. */
   Client?: string;
   ClientVersion?: string;
+  /** Registry credentials for the pull. Used for this request only; never stored, logged, or returned. */
   Credentials?: UploadRegistryCredentials;
   /** The resolved digest, when the transport has one. */
   Digest?: string;

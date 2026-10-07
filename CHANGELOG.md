@@ -7,6 +7,25 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.8 — 2026-10-07
+
+### API
+
+Compared with ConfigHub `v0.8.7`:
+
+#### Removed (1), breaking for code typed against them
+
+- parameter `name_prefixes` on `POST /attribute`
+
+#### Added (6)
+
+- parameter `container_images` on `GET /space/{space_id}/change_order/{change_order_id}`
+- parameter `variant_labels` on `POST /trigger`
+- parameter `name_pattern` on `POST /trigger`
+- field `ChangeOrder.ContainerImages`
+- schema `ChangeOrderContainerImageChange`
+- schema `ChangeOrderSpaceContainerImages`
+
 ## 0.8.7 — 2026-10-06
 
 ### API
