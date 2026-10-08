@@ -10704,7 +10704,7 @@ export type PromoteApiResponse =
 export type PromoteApiArg = {
   /** Deprecated: use DryRun in the request body. Plan the promotion, evaluate its gates, and return the same response without writing anything. Either one asks for a dry run. */
   dryRun?: boolean;
-  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. On a dry run either one runs the merges a plan otherwise skips, so they are returned only when named. */
+  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides, and ConfigData for the configuration each Unit write produced, or on a dry run would produce. On a dry run any of them runs the merges a plan otherwise skips, so they are returned only when named. */
   include?: string;
   promoteRequest: PromoteRequest;
 };
@@ -20168,7 +20168,7 @@ export type UploadApiResponse =
   | /** status 200 OK */ UploadResult
   | /** status 207 Multi-Status: some Unit or Link writes failed, each carrying its own error */ UploadResult;
 export type UploadApiArg = {
-  /** Plan the upload and return the same response without writing anything. */
+  /** Deprecated: use DryRun in the request body. Plan the upload and return the same response without writing anything. Either one asks for a dry run. */
   dryRun?: boolean;
   /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. They cost something to return, and on a dry run either one runs the merges a plan otherwise skips, so they are returned only when named. */
   include?: string;
@@ -24004,6 +24004,8 @@ export type PromoteLinkResult = {
 export type PromoteUnitResult = {
   /** Upgrade, Resolve, Mark, Empty, Revive, Clone, Invoke, Unchanged, or Skip. */
   Action?: string;
+  /** The configuration the write produced, or on a dry run would produce. Returned when include names ConfigData, for a Unit the promotion writes. */
+  ConfigData?: string;
   /** Paths withheld because they were overridden locally or guarded. */
   Conflicts?: MutationConflictList;
   /** The same change path by path, with the values on both sides. Returned when include names Diff. */
@@ -25968,8 +25970,12 @@ export type UploadRequest = {
   ChangeSetDescription?: string;
   /** An existing ChangeSet to record the writes in. Default: one new ChangeSet per Space. */
   ChangeSetID?: string;
+  /** The guarded reasons the Unit writes are cleared for. A path whose guards this does not cover is not written, and the withheld change is reported in the Unit's Conflicts. */
+  Clearance?: Clearance;
   /** Placement of each component. Exactly one is supported. */
   Components?: UploadComponentRequest[];
+  /** Plan the upload and return the same response without writing anything. */
+  DryRun?: boolean;
   /** The bundle's files. Paths must be relative and may not contain "..". Exactly one of Files and Source.Pull is given. */
   Files?: UploadRequestFile[];
   /** The bundle is part of what its source owns: Units the source owns that it leaves out are left alone rather than emptied. */
@@ -25981,6 +25987,10 @@ export type UploadRequest = {
   };
   /** Slug pattern for created Spaces, over the Space's Component and labels. Default {{.Component.Slug}}-{{.Labels.Variant}}. */
   SpacePattern?: string;
+  /** A category recorded on the Mutations of each Unit write. Alphanumeric, at most 64 characters, and not starting with ConfigHub. */
+  Subgroup?: string;
+  /** A Tag to put on the Revision each Unit the upload writes is left at, created Units included. Units the upload leaves Unchanged are not tagged. Requires Use permission on the Tag; a ChangeSet's or ChangeOrder's own Tag is refused. An upload with a Unit to write that the Tag already marks fails, and nothing is written. */
+  TagID?: string;
 };
 export type ExtendedUser = {
   Error?: ResponseError;
