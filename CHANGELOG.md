@@ -7,6 +7,32 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.10 — 2026-10-08
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: `ServiceAccount`, an organization-level identity backed by
+  a User, with operations to create, get, list, update, patch and delete service accounts, bulk
+  patch and delete them, and register, list and delete their keys (`CreateServiceAccountKey`,
+  `ListServiceAccountKeys`, `DeleteServiceAccountKey`). Permissions take a new action category,
+  `Impersonate`, which applies only to a ServiceAccount and is required to register or delete its
+  keys.
+
+### API
+
+Compared with ConfigHub `v0.8.9`:
+
+#### Added (8)
+
+- path `/_service_account`
+- path `/service_account`
+- path `/service_account/{service_account_id}`
+- path `/service_account/{service_account_id}/key`
+- path `/service_account/{service_account_id}/key/{kid}`
+- schema `ExtendedServiceAccount`
+- schema `ServiceAccount`
+- schema `ServiceAccountCreateOrUpdateResponse`
+
 ## 0.8.9 — 2026-10-08
 
 ### API
