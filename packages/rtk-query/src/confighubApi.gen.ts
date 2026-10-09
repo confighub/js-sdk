@@ -6610,7 +6610,7 @@ export type BulkDeleteChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6654,7 +6654,7 @@ export type BulkDeleteChangeOrdersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -6702,7 +6702,7 @@ export type ListAllChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6738,7 +6738,7 @@ export type ListAllChangeOrdersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -6765,7 +6765,7 @@ export type ListAllChangeOrdersApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering ChangeOrder: AbortedReason, AdoptedEndTagID, ChangeOrderID, ChangeWorkflowID, CreatedAt, Description, DisplayName, EndTagID, HiddenReason, InvocationID, OrganizationID, RestoreTagID, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for ordering ChangeOrder: AbortedReason, AdoptedEndTagID, ChangeOrderID, ChangeWorkflowID, CreatedAt, Description, DisplayName, EndTagID, HiddenReason, InvocationID, OrganizationID, PriorRevisions, ReleasePriorRevisions, ReleaseTagID, RestoreTagID, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -6818,7 +6818,7 @@ export type BulkPatchChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6862,7 +6862,7 @@ export type BulkPatchChangeOrdersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -6901,6 +6901,8 @@ export type BulkPatchChangeOrdersApiArg = {
     Permissions?: {
       [key: string]: object | null;
     } | null;
+    PriorRevisions?: string | null;
+    ReleasePriorRevisions?: string | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     SpaceFilterID?: string | null;
@@ -6950,7 +6952,7 @@ export type BulkCreateChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -6994,7 +6996,7 @@ export type BulkCreateChangeOrdersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -7091,6 +7093,8 @@ export type BulkCreateChangeOrdersApiArg = {
     Permissions?: {
       [key: string]: object | null;
     } | null;
+    PriorRevisions?: string | null;
+    ReleasePriorRevisions?: string | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     SpaceFilterID?: string | null;
@@ -13139,7 +13143,7 @@ export type ListChangeOrdersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PromotionFailures, PromotionOverrides, Promotions, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -13175,7 +13179,7 @@ export type ListChangeOrdersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -13202,7 +13206,7 @@ export type ListChangeOrdersApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering ChangeOrder: AbortedReason, AdoptedEndTagID, ChangeOrderID, ChangeWorkflowID, CreatedAt, Description, DisplayName, EndTagID, HiddenReason, InvocationID, OrganizationID, RestoreTagID, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, UnitFilterID, UpdateType, UpdatedAt, WhereSpace, WhereUnit.
+    Supported attributes for ordering ChangeOrder: AbortedReason, AdoptedEndTagID, ChangeOrderID, ChangeWorkflowID, CreatedAt, Description, DisplayName, EndTagID, HiddenReason, InvocationID, OrganizationID, PriorRevisions, ReleasePriorRevisions, ReleaseTagID, RestoreTagID, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -13247,7 +13251,7 @@ export type GetChangeOrderApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -13303,6 +13307,8 @@ export type PatchChangeOrderApiArg = {
     Permissions?: {
       [key: string]: object | null;
     } | null;
+    PriorRevisions?: string | null;
+    ReleasePriorRevisions?: string | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     SpaceFilterID?: string | null;
@@ -15899,7 +15905,7 @@ export type PatchUnitApiArg = {
   changeSetId?: string;
   /** ChangeOrder to promote, with upgrade or resolve, or to undo, with restore. The change order fixed the range when it was created -- the interval on each source Unit, marked with its Tags -- so it supplies both ends of the merge and merge_end is refused alongside it. A Unit whose source the change order does not cover is passed over rather than failed, which is what lets a bulk upgrade name a whole Space and take only the Units the change is in. A Unit whose last merged revision is past where the change order starts is an error, since merging anyway would replay what it already has; one that is short of it is handled as prior_revisions says. With resolve a selected Link whose UpdateType the change order does not follow is an error too. The revisions the promotion creates carry the ChangeOrder, and its start Tag is placed on the revision before them and its end Tag on the one it arrives at, so 'restore Before:ChangeOrder:uuid' undoes it whether it landed as one revision or as one per source revision. With restore the change order is being undone rather than promoted: the restore must be 'Before:ChangeOrder:' the same change order, the change order must have an AbortedReason -- undoing a change nobody has said is not coming is a race with whoever is still promoting it -- and a Unit the change order never marked is an error rather than passed over, since naming it says the Unit is part of the undoing. The first restore mints the change order's restore Tag and records it as RestoreTagID; every restore after that marks with the same Tag, which is what RestoredSpaceIDs is read off. A Unit the change order carried nothing for takes the restore Tag on the revision its start and end Tags are already on, and no revision is made. A Unit already carrying the restore Tag has had the change order taken back out of it and is passed over, since undoing one in a Unit happens once as promoting it into one does -- so the revisions a Unit has taken since it was undone are its own work rather than this undoing's to drop. Restoring also advances the merge pointers of the Links of the change order's UpdateType that follow the restored Unit onto the revision the restore made, so a later upgrade does not replay the change that was just taken out; the downstream Units are not restored with it, since each has to be restored and released on its own account. */
   changeOrder?: string;
-  /** With change_order, when promoting it by upgrade or resolve: what to do for a Unit whose last merged revision of its source is before the revision the change order starts at there -- typically because a Link in the source's Space, such as a TransformPaths Link, wrote revisions after the Unit last merged, and those revisions are not the change order's. Include (the default) merges them first, walking them one source revision at a time even with squash, as revisions that do not carry the change order, and places the change order's start Tag on the revision they leave, so 'restore Before:ChangeOrder:uuid' keeps them. Skip merges only the change order's range, as though the Unit's merge pointer had already been advanced to the change order's start, so what those revisions changed does not reach the Unit. Error refuses, naming the Unit, the Link, and each of those revisions with the operation and Link that made it. A Unit that has already merged past the change order's start is an error whatever this says. */
+  /** With change_order, when promoting it by upgrade or resolve: what to do for a Unit whose last merged revision of its source is before the revision the change order starts at there -- typically because a Link in the source's Space, such as a TransformPaths Link, wrote revisions after the Unit last merged, and those revisions are not the change order's. Include (the default) merges them first, walking them one source revision at a time even with squash, as revisions that do not carry the change order, and places the change order's start Tag on the revision they leave, so 'restore Before:ChangeOrder:uuid' keeps them. Skip merges only the change order's range, as though the Unit's merge pointer had already been advanced to the change order's start, so what those revisions changed does not reach the Unit. Error refuses, naming the Unit, the Link, and each of those revisions with the operation and Link that made it. All merges them as Include does. A Unit that has already merged past the change order's start is an error whatever this says. Defaults to the change order's PriorRevisions. */
   priorRevisions?: string;
   /** User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
   subgroup?: string;
@@ -16037,7 +16043,7 @@ export type UpdateUnitApiArg = {
   changeSetId?: string;
   /** ChangeOrder to promote, with upgrade or resolve, or to undo, with restore. The change order fixed the range when it was created -- the interval on each source Unit, marked with its Tags -- so it supplies both ends of the merge and merge_end is refused alongside it. A Unit whose source the change order does not cover is passed over rather than failed, which is what lets a bulk upgrade name a whole Space and take only the Units the change is in. A Unit whose last merged revision is past where the change order starts is an error, since merging anyway would replay what it already has; one that is short of it is handled as prior_revisions says. With resolve a selected Link whose UpdateType the change order does not follow is an error too. The revisions the promotion creates carry the ChangeOrder, and its start Tag is placed on the revision before them and its end Tag on the one it arrives at, so 'restore Before:ChangeOrder:uuid' undoes it whether it landed as one revision or as one per source revision. With restore the change order is being undone rather than promoted: the restore must be 'Before:ChangeOrder:' the same change order, the change order must have an AbortedReason -- undoing a change nobody has said is not coming is a race with whoever is still promoting it -- and a Unit the change order never marked is an error rather than passed over, since naming it says the Unit is part of the undoing. The first restore mints the change order's restore Tag and records it as RestoreTagID; every restore after that marks with the same Tag, which is what RestoredSpaceIDs is read off. A Unit the change order carried nothing for takes the restore Tag on the revision its start and end Tags are already on, and no revision is made. A Unit already carrying the restore Tag has had the change order taken back out of it and is passed over, since undoing one in a Unit happens once as promoting it into one does -- so the revisions a Unit has taken since it was undone are its own work rather than this undoing's to drop. Restoring also advances the merge pointers of the Links of the change order's UpdateType that follow the restored Unit onto the revision the restore made, so a later upgrade does not replay the change that was just taken out; the downstream Units are not restored with it, since each has to be restored and released on its own account. */
   changeOrder?: string;
-  /** With change_order, when promoting it by upgrade or resolve: what to do for a Unit whose last merged revision of its source is before the revision the change order starts at there -- typically because a Link in the source's Space, such as a TransformPaths Link, wrote revisions after the Unit last merged, and those revisions are not the change order's. Include (the default) merges them first, walking them one source revision at a time even with squash, as revisions that do not carry the change order, and places the change order's start Tag on the revision they leave, so 'restore Before:ChangeOrder:uuid' keeps them. Skip merges only the change order's range, as though the Unit's merge pointer had already been advanced to the change order's start, so what those revisions changed does not reach the Unit. Error refuses, naming the Unit, the Link, and each of those revisions with the operation and Link that made it. A Unit that has already merged past the change order's start is an error whatever this says. */
+  /** With change_order, when promoting it by upgrade or resolve: what to do for a Unit whose last merged revision of its source is before the revision the change order starts at there -- typically because a Link in the source's Space, such as a TransformPaths Link, wrote revisions after the Unit last merged, and those revisions are not the change order's. Include (the default) merges them first, walking them one source revision at a time even with squash, as revisions that do not carry the change order, and places the change order's start Tag on the revision they leave, so 'restore Before:ChangeOrder:uuid' keeps them. Skip merges only the change order's range, as though the Unit's merge pointer had already been advanced to the change order's start, so what those revisions changed does not reach the Unit. Error refuses, naming the Unit, the Link, and each of those revisions with the operation and Link that made it. All merges them as Include does. A Unit that has already merged past the change order's start is an error whatever this says. Defaults to the change order's PriorRevisions. */
   priorRevisions?: string;
   /** User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
   subgroup?: string;
@@ -19622,7 +19628,7 @@ export type BulkPatchUnitsApiArg = {
   changeSetId?: string;
   /** ChangeOrder to promote, with upgrade or resolve, or to undo, with restore. The change order fixed the range when it was created -- the interval on each source Unit, marked with its Tags -- so it supplies both ends of the merge and merge_end is refused alongside it. A Unit whose source the change order does not cover is passed over rather than failed, which is what lets a bulk upgrade name a whole Space and take only the Units the change is in. A Unit whose last merged revision is past where the change order starts is an error, since merging anyway would replay what it already has; one that is short of it is handled as prior_revisions says. With resolve a selected Link whose UpdateType the change order does not follow is an error too. The revisions the promotion creates carry the ChangeOrder, and its start Tag is placed on the revision before them and its end Tag on the one it arrives at, so 'restore Before:ChangeOrder:uuid' undoes it whether it landed as one revision or as one per source revision. With restore the change order is being undone rather than promoted: the restore must be 'Before:ChangeOrder:' the same change order, the change order must have an AbortedReason -- undoing a change nobody has said is not coming is a race with whoever is still promoting it -- and a Unit the change order never marked is an error rather than passed over, since naming it says the Unit is part of the undoing. The first restore mints the change order's restore Tag and records it as RestoreTagID; every restore after that marks with the same Tag, which is what RestoredSpaceIDs is read off. A Unit the change order carried nothing for takes the restore Tag on the revision its start and end Tags are already on, and no revision is made. A Unit already carrying the restore Tag has had the change order taken back out of it and is passed over, since undoing one in a Unit happens once as promoting it into one does -- so the revisions a Unit has taken since it was undone are its own work rather than this undoing's to drop. Restoring also advances the merge pointers of the Links of the change order's UpdateType that follow the restored Unit onto the revision the restore made, so a later upgrade does not replay the change that was just taken out; the downstream Units are not restored with it, since each has to be restored and released on its own account. */
   changeOrder?: string;
-  /** With change_order, when promoting it by upgrade or resolve: what to do for a Unit whose last merged revision of its source is before the revision the change order starts at there -- typically because a Link in the source's Space, such as a TransformPaths Link, wrote revisions after the Unit last merged, and those revisions are not the change order's. Include (the default) merges them first, walking them one source revision at a time even with squash, as revisions that do not carry the change order, and places the change order's start Tag on the revision they leave, so 'restore Before:ChangeOrder:uuid' keeps them. Skip merges only the change order's range, as though the Unit's merge pointer had already been advanced to the change order's start, so what those revisions changed does not reach the Unit. Error refuses, naming the Unit, the Link, and each of those revisions with the operation and Link that made it. A Unit that has already merged past the change order's start is an error whatever this says. */
+  /** With change_order, when promoting it by upgrade or resolve: what to do for a Unit whose last merged revision of its source is before the revision the change order starts at there -- typically because a Link in the source's Space, such as a TransformPaths Link, wrote revisions after the Unit last merged, and those revisions are not the change order's. Include (the default) merges them first, walking them one source revision at a time even with squash, as revisions that do not carry the change order, and places the change order's start Tag on the revision they leave, so 'restore Before:ChangeOrder:uuid' keeps them. Skip merges only the change order's range, as though the Unit's merge pointer had already been advanced to the change order's start, so what those revisions changed does not reach the Unit. Error refuses, naming the Unit, the Link, and each of those revisions with the operation and Link that made it. All merges them as Include does. A Unit that has already merged past the change order's start is an error whatever this says. Defaults to the change order's PriorRevisions. */
   priorRevisions?: string;
   /** User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
   subgroup?: string;
@@ -22761,6 +22767,10 @@ export type ChangeOrder = {
   };
   /** Permissions to access this change order. */
   Permissions?: Permissions;
+  /** How the ChangeOrder marks the Units its change does not change, and the default PriorRevisions for its promotions. Include (the default), Skip and Error mark such a Unit at the Revision its followers have taken, or at its LastReleasedRevisionNum when that is later, or at its head if it has neither, so promoting the change does not move it; a promotion then merges a changed Unit's Revisions from before the change (Include), passes over them for good (Skip), or refuses (Error). All marks every such Unit at its head, so promoting the change brings every Unit up to the Space it takes from. Immutable: the ChangeOrder's own Space is marked when it is created. */
+  PriorRevisions?: "Include" | "Skip" | "Error" | "All";
+  /** What a Release of the ChangeOrder does with a bundled Unit's Revisions from before the change: those after its LastReleasedRevisionNum, up to the one the start Tag marks. Include (the default) releases them; Error refuses the publish, naming them and the ChangeOrders they belong to. A publish's PriorRevisions overrides it. */
+  ReleasePriorRevisions?: "Include" | "Error";
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** SpaceFilterID references a Filter (with From=Space) selecting where the ChangeOrder is headed, ANDed with WhereSpace when both are set. While either is set, the server evaluates the selection into InScopeSpaceIDs. */
@@ -22851,7 +22861,7 @@ export type ChangeWorkflowFinalStage = {
 export type ChangeWorkflowStage = {
   /** Identifies the stage within the workflow, and is what a promotion reports the change as having entered. Unique within a workflow. */
   Name: string;
-  /** The stage's entry gates, each naming a built-in check or one declared in CustomPrerequisites. Evaluated over every Space of the stage ahead of this one, so the first stage's are never evaluated. */
+  /** The stage's entry gates, each naming a built-in check or one declared in CustomPrerequisites. Evaluated over every Space of the stage before this one; the first stage's are evaluated over the Space the ChangeOrder resides in, and refused for Invoke and fan-out ChangeOrders, whose change is in no Space before it is promoted. */
   Prerequisites?: string[];
   /** Gates on publishing a Release for a change order in one of the stage's Spaces, each naming one declared in AttestationPrerequisites. Evaluated over the Revisions the Release bundles. */
   ReleasePrerequisites?: string[];
@@ -22993,12 +23003,18 @@ export type ChangeOrderRead = {
   };
   /** Permissions to access this change order. */
   Permissions?: Permissions;
+  /** How the ChangeOrder marks the Units its change does not change, and the default PriorRevisions for its promotions. Include (the default), Skip and Error mark such a Unit at the Revision its followers have taken, or at its LastReleasedRevisionNum when that is later, or at its head if it has neither, so promoting the change does not move it; a promotion then merges a changed Unit's Revisions from before the change (Include), passes over them for good (Skip), or refuses (Error). All marks every such Unit at its head, so promoting the change brings every Unit up to the Space it takes from. Immutable: the ChangeOrder's own Space is marked when it is created. */
+  PriorRevisions?: "Include" | "Skip" | "Error" | "All";
   /** PromotionFailures records each promotion that did not complete: who ran it, when, into which Stage, and each Space it failed or was blocked in, with the Space's error or reason and the error of each Unit and Link whose write failed. The most recent entries are kept. Set by the server. (readonly) */
   PromotionFailures?: ChangeOrderPromotionFailure[];
   /** PromotionOverrides records each promotion forced into a Stage whose gates did not hold: who forced it, when, into which Stage and Spaces, why, and which gates failed. The most recent entries are kept. Set by the server. (readonly) */
   PromotionOverrides?: ChangeOrderPromotionOverride[];
   /** Promotions records each promotion that wrote the change into Spaces: who ran it, when, into which Stage, and which Spaces. A promotion entering several Stages records one entry per Stage. The most recent entries are kept. Set by the server. (readonly) */
   Promotions?: ChangeOrderPromotion[];
+  /** What a Release of the ChangeOrder does with a bundled Unit's Revisions from before the change: those after its LastReleasedRevisionNum, up to the one the start Tag marks. Include (the default) releases them; Error refuses the publish, naming them and the ChangeOrders they belong to. A publish's PriorRevisions overrides it. */
+  ReleasePriorRevisions?: "Include" | "Error";
+  /** ReleaseTagID is the Tag a Release of the ChangeOrder is published at. It marks one Revision of each releasable Unit (ProviderType empty or OCI) in every Space the change is in: the Revision the end Tag marks, or the head where the Unit does not carry it. It follows Revisions the resolve processor makes after the promotion, and can be moved with a tag move, until a Release in the Space has been published at it. Empty on ChangeOrders created before it existed. */
+  ReleaseTagID?: string;
   /** ReleasedRestoredSpaceIDs is where the undoing has been released: the Spaces in RestoredSpaceIDs whose Units are released at or past the Revision the restore Tag marks. Covering ReleasedSpaceIDs is what State reports as RestoreReleased. Derived when the ChangeOrder is read. */
   ReleasedRestoredSpaceIDs?: Uuid[];
   /** ReleasedSpaceIDs is where the ChangeOrder has been released: the Spaces in scope whose Units in the Space's release are applied at or past the Revision the end Tag marks. A Space with no ReleaseTargetID is never here, since nothing releases it. Derived when the ChangeOrder is read. */
@@ -23035,6 +23051,8 @@ export type ChangeOrderRead = {
   UpdateType?: string;
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  /** The User who created the ChangeOrder. Absent for ChangeOrders created before it was recorded. (readonly) */
+  UserID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
   /** Filter expression selecting where the ChangeOrder is headed, ANDed with SpaceFilterID when both are set. While either is set, the server evaluates the selection into InScopeSpaceIDs when the ChangeOrder is created, when either field changes, and on an update or patch with refresh_spaces. The specified string is an expression for the purpose of filtering
@@ -23372,6 +23390,7 @@ export type ExtendedChangeOrder = {
   Error?: ResponseError;
   Invocation?: Invocation;
   Organization?: Organization;
+  ReleaseTag?: Tag;
   RestoreTag?: Tag;
   Space?: Space;
   SpaceFilter?: Filter;
@@ -23384,6 +23403,7 @@ export type ExtendedChangeOrderRead = {
   Error?: ResponseError;
   Invocation?: InvocationRead;
   Organization?: OrganizationRead;
+  ReleaseTag?: TagRead;
   RestoreTag?: TagRead;
   Space?: SpaceRead;
   SpaceFilter?: FilterRead;
@@ -24681,7 +24701,7 @@ export type PromoteUnitResult = {
   Mutations?: ResourceMutationList;
   PreviousHeadMutationNum?: number;
   PreviousHeadRevisionNum?: number;
-  /** For Skip and Unchanged: NotCovered, CreatedAfterChangeOrder, AlreadyTaken, or, for a Unit created in this Space, why the ChangeOrder does not cover it. For Mark: CreatedInSpace, when the Unit was created in this Space and the ChangeOrder is scoped over it. For an applied Upgrade or Resolve: NoChange, when the Unit already held the change, so no Revision was made and the ChangeOrder's Tags mark its head. */
+  /** For Skip and Unchanged: NotCovered, CreatedAfterChangeOrder, AlreadyTaken, NotChanged when the change does not change the Unit, or CreatedInSpace when the Unit was created in this Space rather than cloned into it. A Unit in the Space that the change does not change is marked once the Space's writes are done, with both Tags on the Revision the ChangeOrder's PriorRevisions names. For an applied Upgrade or Resolve: NoChange, when the Unit already held the change, so no Revision was made and the ChangeOrder's Tags mark its head. */
   Reason?: string;
   Slug?: string;
   /** Absent for a clone a dry run would create. */
@@ -24756,8 +24776,8 @@ export type PromoteRequest = {
   ForceReason?: string;
   /** Reasons to record on the paths each Unit write changes. A later operation must be cleared for them before overwriting those paths. Clearance must cover them, since a write is withheld by guards it is not cleared for, its own included. */
   Guards?: GuardStamp;
-  /** With a ChangeOrder, what to do for a Unit whose last merged upstream Revision is before the ChangeOrder's start there -- typically because a Link in the upstream Space, such as a TransformPaths Link, wrote Revisions after the Unit last merged. Include (the default) merges those Revisions first, as Revisions of their own that do not carry the ChangeOrder, and then the ChangeOrder's range; Skip merges only the ChangeOrder's range, as though the Unit had already merged as far as its start; Error refuses, naming the Revisions. A Unit that has merged past the ChangeOrder's start is an error whatever this says. Refused with an Insert, Upsert, or TransformPaths ChangeOrder, whose Links read their sources as they are at its end rather than merging a range. */
-  PriorRevisions?: "Include" | "Skip" | "Error";
+  /** With a ChangeOrder, what to do for a Unit whose last merged upstream Revision is before the ChangeOrder's start there -- typically because a Link in the upstream Space, such as a TransformPaths Link, wrote Revisions after the Unit last merged. Include merges those Revisions first, as Revisions of their own that do not carry the ChangeOrder, and then the ChangeOrder's range; Skip merges only the ChangeOrder's range, as though the Unit had already merged as far as its start, and those Revisions do not arrive later; Error refuses, naming the Revisions; All merges them as Include does, and also marks every Unit in the Space the change does not change at its head, so the next promotion brings it up to this Space. Defaults to the ChangeOrder's PriorRevisions, or Include. A Unit that has merged past the ChangeOrder's start is an error whatever this says. Refused with an Insert, Upsert, or TransformPaths ChangeOrder, whose Links read their sources as they are at its end rather than merging a range. */
+  PriorRevisions?: "Include" | "Skip" | "Error" | "All";
   /** Record the paths each Unit write changes as protected local overrides, so a later merge from upstream does not overwrite them. By default a write claims nothing and each path keeps the protection it already had. Accepted only for an Invoke ChangeOrder and for one that follows Insert, Upsert, or TransformPaths Links: refused for a promotion that merges, which protection holds paths against. */
   Protect?: boolean;
   /** A Filter over Spaces selecting the Spaces to promote. Intersected with the other selectors. */
@@ -25891,18 +25911,22 @@ export type ReleasePublishRequest = {
   };
   /** Optional override of the name of the Release's tar.gz bundle. */
   BundleBaseName?: string;
-  /** Optional ID of the ChangeOrder the Release is published for. It is recorded as the Release's ChangeOrderID, and the ChangeOrder's Stage is advanced in the same transaction. */
+  /** Optional ID of the ChangeOrder the Release is published for. It is recorded as the Release's ChangeOrderID, and the ChangeOrder's Stage is advanced in the same transaction. The Release is bundled at the ChangeOrder's release Tag (ReleaseTagID): TagID may be omitted, or name that Tag or the ChangeOrder's end Tag, which is taken to mean it; any other TagID is refused. Naming a ChangeOrder's release Tag as TagID without ChangeOrderID publishes for that ChangeOrder. */
   ChangeOrderID?: string;
   /** An optional set of gates that, if any is present, will block deletion */
   DeleteGates?: {
     [key: string]: boolean;
   };
+  /** Publish in a transaction that is rolled back, returning the Release that would be published, or the error publishing would return: the same ChangeSet, validation and ReleasePrerequisites checks run against the Revisions it would bundle. No event is emitted and no Stage is advanced. */
+  DryRun?: boolean;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
   };
   /** Optional Permissions to access the Release. Its publisher is granted Manage in addition. */
   Permissions?: Permissions;
+  /** For a Release of a ChangeOrder, what to do with a bundled Unit's Revisions from before the change: those after its LastReleasedRevisionNum up to the one the ChangeOrder's start Tag marks. Include releases them; Error refuses the publish, naming them and the ChangeOrders they belong to. Defaults to the ChangeOrder's ReleasePriorRevisions, or Include. */
+  PriorRevisions?: "Include" | "Error";
   /** Optional Tag ID identifying the tagged Revision to bundle. For each Unit assigned to the Space's ReleaseTarget, the highest-numbered Revision carrying this Tag is bundled at that Revision instead of the Unit's head Revision. A Unit with no matching tagged Revision is left out of the bundle and listed in the Release's SkippedUnits when it has never been released, and refuses the publish when it has. When omitted, each Unit is bundled at its head Revision and publishing creates a Tag named release-<ReleaseNum>, applies it to each bundled Revision, and sets it as the Release's TagID. */
   TagID?: string;
 };
@@ -26442,6 +26466,8 @@ export type UnitTagResponse = {
   Message?: string;
 };
 export type UnitTagRequest = {
+  /** Move the Tag from the Revision it marks on each Unit to the one Revision names, refusing a Unit it marks no Revision of. Tags owned by a ChangeSet, ChangeOrder or Release cannot be added or removed; a ChangeOrder's release Tag can be moved, to a Revision at or after the one its end Tag marks and the Unit's LastReleasedRevisionNum, with no ValidationErrors, while no Release in the Space has been published at it. */
+  Move?: boolean;
   /** Which Unit revision to tag: a named revision ('HeadRevisionNum', 'LastReleasedRevisionNum'), a revision number, an entity reference ('Tag:uuid', 'ChangeSet:uuid', 'Revision:uuid'), any of those prefixed with 'Before:', or 'Remove' to remove the tag from the unit */
   Revision?: string;
   TagID?: string;
