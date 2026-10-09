@@ -11115,7 +11115,7 @@ export type ListAllReleasesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, LiveStatus, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, ReleaseNum, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
+    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, LiveStatus, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, ReleaseNum, SkippedUnits, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -14712,7 +14712,7 @@ export type ListExtendedReleasesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, LiveStatus, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, ReleaseNum, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
+    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, LiveStatus, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, ReleaseNum, SkippedUnits, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -24866,6 +24866,10 @@ export type ReleaseRead = {
   ReleaseID?: string;
   /** Monotonically increasing sequence number of the Release within its Target, assigned at publish time. The highest ReleaseNum is the latest Release for the Target. */
   ReleaseNum?: number;
+  /** SkippedUnits names the Units assigned to the Release's Target that the Release does not bundle, mapped to the reason. Publishing with a TagID leaves out a Unit that has never been released and that the Tag marks no Revision of; a Unit that has been released must be marked. (readonly) */
+  SkippedUnits?: {
+    [key: string]: string;
+  };
   SpaceID?: string;
   /** Slug of the Space this entity belongs to. */
   SpaceSlug?: string;
@@ -25899,7 +25903,7 @@ export type ReleasePublishRequest = {
   };
   /** Optional Permissions to access the Release. Its publisher is granted Manage in addition. */
   Permissions?: Permissions;
-  /** Optional Tag ID identifying the tagged Revision to bundle. For each Unit assigned to the Space's ReleaseTarget, the highest-numbered Revision carrying this Tag is bundled at that Revision instead of the Unit's head Revision. A Unit with no matching tagged Revision falls back to its head Revision. When omitted, each Unit is bundled at its head Revision and publishing creates a Tag named release-<ReleaseNum>, applies it to each bundled Revision, and sets it as the Release's TagID. */
+  /** Optional Tag ID identifying the tagged Revision to bundle. For each Unit assigned to the Space's ReleaseTarget, the highest-numbered Revision carrying this Tag is bundled at that Revision instead of the Unit's head Revision. A Unit with no matching tagged Revision is left out of the bundle and listed in the Release's SkippedUnits when it has never been released, and refuses the publish when it has. When omitted, each Unit is bundled at its head Revision and publishing creates a Tag named release-<ReleaseNum>, applies it to each bundled Revision, and sets it as the Release's TagID. */
   TagID?: string;
 };
 export type ExtendedTag = {
