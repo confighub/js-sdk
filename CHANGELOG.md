@@ -7,6 +7,28 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.13 — 2026-10-12
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: `createServiceAccountToken`, `listServiceAccountTokens`
+  and `revokeServiceAccountToken` manage a service account's long-lived tokens
+  (`/service_account/{id}/token`): a ConfigHub token with no expiry, returned once as
+  `IssuedUserToken`, revocable by its `jti`, for consumers that can hold only a static
+  credential. Issuing and revoking take `Impersonate` on the service account, listing takes `View`.
+
+### API
+
+Compared with ConfigHub `v0.8.12`:
+
+#### Added (5)
+
+- path `/service_account/{service_account_id}/token`
+- path `/service_account/{service_account_id}/token/{jti}`
+- schema `CreateUserTokenRequest`
+- schema `IssuedUserToken`
+- schema `UserToken`
+
 ## 0.8.12 — 2026-10-09
 
 ### API

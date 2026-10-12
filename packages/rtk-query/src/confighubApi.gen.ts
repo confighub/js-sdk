@@ -1771,6 +1771,39 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["ServiceAccount"],
       }),
+      listServiceAccountTokens: build.query<
+        ListServiceAccountTokensApiResponse,
+        ListServiceAccountTokensApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/service_account/${queryArg.serviceAccountId}/token`,
+        }),
+        providesTags: ["ServiceAccount"],
+      }),
+      createServiceAccountToken: build.mutation<
+        CreateServiceAccountTokenApiResponse,
+        CreateServiceAccountTokenApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/service_account/${queryArg.serviceAccountId}/token`,
+          method: "POST",
+          body: queryArg.createUserTokenRequest,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["ServiceAccount"],
+      }),
+      revokeServiceAccountToken: build.mutation<
+        RevokeServiceAccountTokenApiResponse,
+        RevokeServiceAccountTokenApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/service_account/${queryArg.serviceAccountId}/token/${queryArg.jti}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: ["ServiceAccount"],
+      }),
       listSpaces: build.query<ListSpacesApiResponse, ListSpacesApiArg>({
         query: (queryArg) => ({
           url: `/space`,
@@ -12229,6 +12262,29 @@ export type DeleteServiceAccountKeyApiArg = {
   serviceAccountId: string;
   /** RFC 7638 thumbprint of the key to remove. The key names itself, so a holder can address it without asking what it was called. */
   kid: string;
+};
+export type ListServiceAccountTokensApiResponse =
+  /** status 200 OK */ UserToken[];
+export type ListServiceAccountTokensApiArg = {
+  /** UUID of the service account whose tokens are being managed. */
+  serviceAccountId: string;
+};
+export type CreateServiceAccountTokenApiResponse =
+  /** status 200 OK */ IssuedUserToken;
+export type CreateServiceAccountTokenApiArg = {
+  /** UUID of the service account whose tokens are being managed. */
+  serviceAccountId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  createUserTokenRequest: CreateUserTokenRequest;
+};
+export type RevokeServiceAccountTokenApiResponse =
+  /** status 200 Response for successful delete operation */ DeleteResponse;
+export type RevokeServiceAccountTokenApiArg = {
+  /** UUID of the service account whose tokens are being managed. */
+  serviceAccountId: string;
+  /** The jti of the token to revoke, as listed and as carried in the token's own claims. */
+  jti: string;
 };
 export type ListSpacesApiResponse = /** status 200 OK */ ExtendedSpaceRead[];
 export type ListSpacesApiArg = {
@@ -25637,6 +25693,25 @@ export type CreateUserKeyRequest = {
   Description?: string;
   PublicJWK?: any;
 };
+export type UserToken = {
+  CreatedAt?: string;
+  CreatedByUserID?: string;
+  Description?: string;
+  ExpiresAt?: string;
+  Jti?: string;
+  LastUsedAt?: string;
+  RevokedAt?: string;
+  UserID?: string;
+  UserTokenID?: string;
+};
+export type IssuedUserToken = {
+  Token?: string;
+  UserToken?: UserToken;
+};
+export type CreateUserTokenRequest = {
+  Description?: string;
+  ExpiresAt?: string;
+};
 export type Trigger = {
   /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
   Annotations?: {
@@ -26858,6 +26933,10 @@ export const {
   useLazyListServiceAccountKeysQuery,
   useCreateServiceAccountKeyMutation,
   useDeleteServiceAccountKeyMutation,
+  useListServiceAccountTokensQuery,
+  useLazyListServiceAccountTokensQuery,
+  useCreateServiceAccountTokenMutation,
+  useRevokeServiceAccountTokenMutation,
   useListSpacesQuery,
   useLazyListSpacesQuery,
   useCreateSpaceMutation,

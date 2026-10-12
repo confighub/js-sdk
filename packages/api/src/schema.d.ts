@@ -1215,6 +1215,50 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/service_account/{service_account_id}/token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List a service account's long-lived tokens
+         * @description List the long-lived tokens issued to a service account, revoked ones included. The tokens themselves are not returned; each entry carries the jti, who issued it, when it was last used, and whether it has been revoked. Requires View permission on the service account.
+         */
+        get: operations["ListServiceAccountTokens"];
+        put?: never;
+        /**
+         * Issue a long-lived token for a service account
+         * @description Issue a token with no expiry (or the given ExpiresAt) that authenticates as the service account, for consumers that can hold only a static credential, such as a registry Secret. The token is returned once and never stored; it can be revoked by its jti. Requires Impersonate permission on the service account, which Manage does not include; a service account cannot issue a token for itself.
+         */
+        post: operations["CreateServiceAccountToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/service_account/{service_account_id}/token/{jti}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Revoke a service account's long-lived token
+         * @description Revoke one token by its jti. The token stops working within a minute on every server; the record stays, marked revoked. Requires Impersonate permission on the service account.
+         */
+        delete: operations["RevokeServiceAccountToken"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/space": {
         parameters: {
             query?: never;
@@ -4720,6 +4764,14 @@ export interface components {
             Description?: string;
             PublicJWK?: unknown;
         };
+        CreateUserTokenRequest: {
+            Description?: string;
+            /**
+             * Format: date-time
+             * @example 2006-01-02T15:04:05Z07:00
+             */
+            ExpiresAt?: string;
+        };
         /** @description Response for successful delete operation */
         DeleteResponse: {
             /** @description Error information if the delete operation failed. */
@@ -5603,6 +5655,10 @@ export interface components {
             Identifier?: string;
             /** @description A more detailed and specific explanation of the issue found */
             Message?: string;
+        };
+        IssuedUserToken: {
+            Token?: string;
+            UserToken?: components["schemas"]["UserToken"];
         };
         /**
          * @description Link connects two config Units in a dependency / producer-consumer relationship.
@@ -8624,6 +8680,45 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             UserKeyID?: string;
+        };
+        UserToken: {
+            /**
+             * Format: date-time
+             * @example 2006-01-02T15:04:05Z07:00
+             */
+            CreatedAt?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            CreatedByUserID?: string;
+            Description?: string;
+            /**
+             * Format: date-time
+             * @example 2006-01-02T15:04:05Z07:00
+             */
+            ExpiresAt?: string;
+            Jti?: string;
+            /**
+             * Format: date-time
+             * @example 2006-01-02T15:04:05Z07:00
+             */
+            LastUsedAt?: string;
+            /**
+             * Format: date-time
+             * @example 2006-01-02T15:04:05Z07:00
+             */
+            RevokedAt?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UserID?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UserTokenID?: string;
         };
         ValidationResult: {
             /** @description Deprecated. Use Issues or FailedAttributes instead. Optional list of failure details when not associated with specific attributes/paths. */
@@ -25575,6 +25670,273 @@ export interface operations {
                 service_account_id: string;
                 /** @description RFC 7638 thumbprint of the key to remove. The key names itself, so a holder can address it without asking what it was called. */
                 kid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for successful delete operation */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteResponse"];
+                };
+            };
+            /** @description ServiceAccount request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description ServiceAccount not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description ServiceAccount is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description ServiceAccount could not be deleted. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing ServiceAccount. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    ListServiceAccountTokens: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description UUID of the service account whose tokens are being managed. */
+                service_account_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserToken"][];
+                };
+            };
+            /** @description ServiceAccount request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description ServiceAccount not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing ServiceAccount. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    CreateServiceAccountToken: {
+        parameters: {
+            query?: {
+                /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+                dry_run?: boolean;
+            };
+            header?: never;
+            path: {
+                /** @description UUID of the service account whose tokens are being managed. */
+                service_account_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CreateUserTokenRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IssuedUserToken"];
+                };
+            };
+            /** @description ServiceAccount request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description ServiceAccount not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description ServiceAccount data conflict. Data has changed since last read. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing ServiceAccount. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    RevokeServiceAccountToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description UUID of the service account whose tokens are being managed. */
+                service_account_id: string;
+                /** @description The jti of the token to revoke, as listed and as carried in the token's own claims. */
+                jti: string;
             };
             cookie?: never;
         };
