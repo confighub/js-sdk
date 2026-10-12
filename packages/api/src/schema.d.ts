@@ -2453,7 +2453,7 @@ export interface paths {
         get: operations["DownloadUnitData"];
         /**
          * Upload config data
-         * @description Replace the config data of a unit. The request body is the configuration itself. This is the only way configuration reaches a Unit other than a clone, which copies it server-side: Data is not part of the Unit entity, so no metadata write can carry one or destroy one. Send If-Match with the DataHash a read served to make the write conditional on nobody having written first. Requires Edit permission.
+         * @description Replace the config data of a unit. The request body is the configuration itself. This is the only way configuration reaches a Unit other than a clone, which copies it server-side: Data is not part of the Unit entity, so no metadata write can carry one or destroy one. Send If-Match with the DataHash a read served to make the write conditional on the configuration still being that one. Requires Edit permission.
          */
         put: operations["UploadUnitData"];
         post?: never;
@@ -39293,7 +39293,10 @@ export interface operations {
                 /** @description User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
                 subgroup?: string;
             };
-            header?: never;
+            header?: {
+                /** @description The DataHash of the configuration this write replaces, as the ETag a read of the Unit's data served it (quoted) or bare. The write is refused with 409 Conflict when the Unit's configuration is not that one, so an edit made from one Unit's configuration, or before somebody else's write, cannot land over another. Omitted, the write is unconditional. */
+                "If-Match"?: string;
+            };
             path: {
                 /** @description Unique identifier for a space_id */
                 space_id: string;

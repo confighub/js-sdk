@@ -3345,6 +3345,9 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/data`,
           method: "PUT",
           body: queryArg.body,
+          headers: {
+            "If-Match": queryArg["If-Match"],
+          },
           params: {
             last_change_description: queryArg.lastChangeDescription,
             include: queryArg.include,
@@ -16134,6 +16137,8 @@ export type UploadUnitDataApiArg = {
   lastChangeDescription?: string;
   /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
   include?: string;
+  /** The DataHash of the configuration this write replaces, as the ETag a read of the Unit's data served it (quoted) or bare. The write is refused with 409 Conflict when the Unit's configuration is not that one, so an edit made from one Unit's configuration, or before somebody else's write, cannot land over another. Omitted, the write is unconditional. */
+  "If-Match"?: string;
   /** Dry run mode: return changed unit(s) but don't update configuration data */
   dryRun?: boolean;
   /** Record the paths this operation writes as protected local overrides, so a later merge from upstream does not overwrite them. Without it the operation claims nothing: each written path keeps whatever the Unit already has for it, and a path with no history is left unprotected. It only ever adds protection -- re-opening a path is the /protection API (cub unit set-protection --unprotect). Has no effect with restore, which rewinds MutationSources to the restored Revision's stored values wholesale. */
