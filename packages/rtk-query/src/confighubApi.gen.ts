@@ -14,6 +14,9 @@ export const addTagTypes = [
   "ChangeOrder",
   "ChangeSet",
   "ChangeWorkflow",
+  "Channel",
+  "DeclaredCommand",
+  "CommandRun",
   "Demote",
   "Unit",
   "Filter",
@@ -762,6 +765,97 @@ const injectedRtkApi = api
           },
         }),
         invalidatesTags: ["ChangeWorkflow"],
+      }),
+      bulkDeleteChannels: build.mutation<
+        BulkDeleteChannelsApiResponse,
+        BulkDeleteChannelsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/channel`,
+          method: "DELETE",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+          },
+        }),
+        invalidatesTags: ["Channel"],
+      }),
+      listAllChannels: build.query<
+        ListAllChannelsApiResponse,
+        ListAllChannelsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/channel`,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include: queryArg.include,
+            select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
+            limit: queryArg.limit,
+            order_by: queryArg.orderBy,
+            continue: queryArg["continue"],
+          },
+        }),
+        providesTags: ["Channel"],
+      }),
+      bulkPatchChannels: build.mutation<
+        BulkPatchChannelsApiResponse,
+        BulkPatchChannelsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/channel`,
+          method: "PATCH",
+          body: queryArg.body,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Channel"],
+      }),
+      listAllCommands: build.query<
+        ListAllCommandsApiResponse,
+        ListAllCommandsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/command`,
+          params: {
+            command: queryArg.command,
+          },
+        }),
+        providesTags: ["DeclaredCommand"],
+      }),
+      listAllCommandRuns: build.query<
+        ListAllCommandRunsApiResponse,
+        ListAllCommandRunsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/command_run`,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include: queryArg.include,
+            select: queryArg.select,
+            limit: queryArg.limit,
+            order_by: queryArg.orderBy,
+            continue: queryArg["continue"],
+          },
+        }),
+        providesTags: ["CommandRun"],
       }),
       listComponents: build.query<
         ListComponentsApiResponse,
@@ -2440,6 +2534,191 @@ const injectedRtkApi = api
           },
         }),
         invalidatesTags: ["ChangeWorkflow"],
+      }),
+      listChannels: build.query<ListChannelsApiResponse, ListChannelsApiArg>({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/channel`,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include: queryArg.include,
+            select: queryArg.select,
+            include_hidden: queryArg.includeHidden,
+            limit: queryArg.limit,
+            order_by: queryArg.orderBy,
+            continue: queryArg["continue"],
+          },
+        }),
+        providesTags: ["Channel"],
+      }),
+      createChannel: build.mutation<
+        CreateChannelApiResponse,
+        CreateChannelApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/channel`,
+          method: "POST",
+          body: queryArg.channel,
+          params: {
+            allow_exists: queryArg.allowExists,
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Channel"],
+      }),
+      deleteChannel: build.mutation<
+        DeleteChannelApiResponse,
+        DeleteChannelApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/channel/${queryArg.channelId}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: ["Channel"],
+      }),
+      getChannel: build.query<GetChannelApiResponse, GetChannelApiArg>({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/channel/${queryArg.channelId}`,
+          params: {
+            include: queryArg.include,
+            select: queryArg.select,
+          },
+        }),
+        providesTags: ["Channel"],
+      }),
+      patchChannel: build.mutation<PatchChannelApiResponse, PatchChannelApiArg>(
+        {
+          query: (queryArg) => ({
+            url: `/space/${queryArg.spaceId}/channel/${queryArg.channelId}`,
+            method: "PATCH",
+            body: queryArg.body,
+            params: {
+              dry_run: queryArg.dryRun,
+            },
+          }),
+          invalidatesTags: ["Channel"],
+        },
+      ),
+      updateChannel: build.mutation<
+        UpdateChannelApiResponse,
+        UpdateChannelApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/channel/${queryArg.channelId}`,
+          method: "PUT",
+          body: queryArg.channel,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Channel"],
+      }),
+      reportCommandRunResult: build.mutation<
+        ReportCommandRunResultApiResponse,
+        ReportCommandRunResultApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/channel/${queryArg.channelId}/command_run/${queryArg.commandRunId}/result`,
+          method: "POST",
+          body: queryArg.commandRunResult,
+        }),
+        invalidatesTags: ["CommandRun"],
+      }),
+      releaseChannelLease: build.mutation<
+        ReleaseChannelLeaseApiResponse,
+        ReleaseChannelLeaseApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/channel/${queryArg.channelId}/lease`,
+          method: "DELETE",
+          params: {
+            claim_token: queryArg.claimToken,
+          },
+        }),
+        invalidatesTags: ["Channel"],
+      }),
+      acquireChannelLease: build.mutation<
+        AcquireChannelLeaseApiResponse,
+        AcquireChannelLeaseApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/channel/${queryArg.channelId}/lease`,
+          method: "POST",
+        }),
+        invalidatesTags: ["Channel"],
+      }),
+      pollChannel: build.mutation<PollChannelApiResponse, PollChannelApiArg>({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/channel/${queryArg.channelId}/poll`,
+          method: "POST",
+          body: queryArg.channelPollRequest,
+        }),
+        invalidatesTags: ["Channel"],
+      }),
+      listCommands: build.query<ListCommandsApiResponse, ListCommandsApiArg>({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/command`,
+          params: {
+            command: queryArg.command,
+          },
+        }),
+        providesTags: ["DeclaredCommand"],
+      }),
+      listCommandRuns: build.query<
+        ListCommandRunsApiResponse,
+        ListCommandRunsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/command_run`,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include: queryArg.include,
+            select: queryArg.select,
+            limit: queryArg.limit,
+            order_by: queryArg.orderBy,
+            continue: queryArg["continue"],
+          },
+        }),
+        providesTags: ["CommandRun"],
+      }),
+      createCommandRun: build.mutation<
+        CreateCommandRunApiResponse,
+        CreateCommandRunApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/command_run`,
+          method: "POST",
+          body: queryArg.commandRun,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["CommandRun"],
+      }),
+      getCommandRun: build.query<GetCommandRunApiResponse, GetCommandRunApiArg>(
+        {
+          query: (queryArg) => ({
+            url: `/space/${queryArg.spaceId}/command_run/${queryArg.commandRunId}`,
+            params: {
+              wait: queryArg.wait,
+              select: queryArg.select,
+            },
+          }),
+          providesTags: ["CommandRun"],
+        },
+      ),
+      cancelCommandRun: build.mutation<
+        CancelCommandRunApiResponse,
+        CancelCommandRunApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/command_run/${queryArg.commandRunId}/cancel`,
+          method: "POST",
+        }),
+        invalidatesTags: ["CommandRun"],
       }),
       getSpaceDocument: build.query<
         GetSpaceDocumentApiResponse,
@@ -5355,7 +5634,7 @@ export type BulkCreateSpacesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -6039,7 +6318,7 @@ export type BulkCreateAttributesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -8264,7 +8543,7 @@ export type BulkCreateChangeWorkflowsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -8399,6 +8678,445 @@ export type BulkMoveChangeWorkflowsApiArg = {
   /** Report what the move would do, and what would stop it, without moving anything */
   dryRun?: boolean;
   moveRequest: MoveRequest;
+};
+export type BulkDeleteChannelsApiResponse =
+  | /** status 200 OK */ DeleteResponse[]
+  | /** status 207 Multi-Status: Mixed success and failure results */ DeleteResponse[];
+export type BulkDeleteChannelsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Channels returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Channel list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Channel).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Channel include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Channel entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Channel.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Channel are OrganizationID, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Channel entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Channel entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
+export type ListAllChannelsApiResponse =
+  /** status 200 OK */ ExtendedChannelRead[];
+export type ListAllChannelsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Channels returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Channel list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Channel).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Channel include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Include clause for expanding related entities in the response for Channel.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Channel are OrganizationID, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Select clause for specifying which fields to include in the response for Channel.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, ChannelID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
+  /** Hidden Channel entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Maximum number of Channel entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
+  limit?: number;
+  /** Comma-separated list of fields to sort Channel results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
+    
+    Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
+    
+    Supported attributes for ordering Channel: ChannelID, Condition, CreatedAt, DisplayName, EventPosition, HiddenReason, IPAddress, LastMessage, LastSeenAt, OrganizationID, Slug, SpaceID, UpdatedAt.
+    
+    Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
+    
+    Results are ordered by the Channel's ID after the fields named, and by the ID alone if none are.
+    
+    The whole string must be query-encoded. */
+  orderBy?: string;
+  /** The token from the ConfigHub-Continue header of the previous page, to return the Channel entities after it.
+    
+    The request's other parameters, except limit, must be the same as those of the request that returned the token.
+    
+    Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more. */
+  continue?: string;
+};
+export type BulkPatchChannelsApiResponse =
+  | /** status 200 OK */ ChannelCreateOrUpdateResponseRead[]
+  | /** status 207 Multi-Status: Mixed success and failure results */ ChannelCreateOrUpdateResponseRead[];
+export type BulkPatchChannelsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Channels returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Channel list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Channel).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Channel include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Channel entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Channel.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Channel are OrganizationID, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Channel entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Channel entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  body: {
+    /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
+    Annotations?: {
+      [key: string]: string | null;
+    } | null;
+    Declarations?: object | null;
+    /** An optional set of gates that, if any is present, will block deletion */
+    DeleteGates?: {
+      [key: string]: boolean | null;
+    } | null;
+    /** Friendly name for the entity. */
+    DisplayName?: string | null;
+    EventPosition?: number | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
+    /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
+    Labels?: {
+      [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
+    /** Unique URL-safe identifier for the entity. */
+    Slug?: string | null;
+    Subscriptions?: (object | null)[] | null;
+    /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+    Version?: number | null;
+  };
+};
+export type ListAllCommandsApiResponse = /** status 200 OK */ DeclaredCommand[];
+export type ListAllCommandsApiArg = {
+  /** List only the Channels declaring this command. */
+  command?: string;
+};
+export type ListAllCommandRunsApiResponse =
+  /** status 200 OK */ CommandRunRead[];
+export type ListAllCommandRunsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of CommandRuns returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, SpaceID, Status, TargetID, TimeoutAt, UnitID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the CommandRun list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (CommandRun).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for CommandRun include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Include clause for expanding related entities in the response for CommandRun.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for CommandRun are .
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Select clause for specifying which fields to include in the response for CommandRun.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, CommandRunID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
+  /** Maximum number of CommandRun entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
+  limit?: number;
+  /** Comma-separated list of fields to sort CommandRun results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
+    
+    Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
+    
+    Supported attributes for ordering CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, SpaceID, Status, TargetID, TimeoutAt, UnitID.
+    
+    Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
+    
+    Results are ordered by the CommandRun's ID after the fields named, and by the ID alone if none are.
+    
+    The whole string must be query-encoded. */
+  orderBy?: string;
+  /** The token from the ConfigHub-Continue header of the previous page, to return the CommandRun entities after it.
+    
+    The request's other parameters, except limit, must be the same as those of the request that returned the token.
+    
+    Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more. */
+  continue?: string;
 };
 export type ListComponentsApiResponse =
   /** status 200 OK */ ExtendedComponentRead[];
@@ -9162,7 +9880,7 @@ export type BulkCreateFiltersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -9399,7 +10117,7 @@ export type InvokeFunctionsOnOrgApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -10113,7 +10831,7 @@ export type BulkCreateInvocationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -10786,7 +11504,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -11706,7 +12424,7 @@ export type ListAllRevisionsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list tagged Revisions use `Tags ? '<tag-id>'`.
     
@@ -11832,7 +12550,7 @@ export type SearchRevisionDataApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list tagged Revisions use `Tags ? '<tag-id>'`.
     
@@ -11959,7 +12677,7 @@ export type SearchRevisionMutationSourcesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list tagged Revisions use `Tags ? '<tag-id>'`.
     
@@ -13838,6 +14556,404 @@ export type UpdateChangeWorkflowDocumentApiArg = {
   dryRun?: boolean;
   entityDocumentEdit: EntityDocumentEdit;
 };
+export type ListChannelsApiResponse =
+  /** status 200 OK */ ExtendedChannelRead[];
+export type ListChannelsApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Channels returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Channel list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Channel).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Channel include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Include clause for expanding related entities in the response for Channel.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Channel are OrganizationID, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Select clause for specifying which fields to include in the response for Channel.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, ChannelID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
+  /** Hidden Channel entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Maximum number of Channel entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
+  limit?: number;
+  /** Comma-separated list of fields to sort Channel results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
+    
+    Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
+    
+    Supported attributes for ordering Channel: ChannelID, Condition, CreatedAt, DisplayName, EventPosition, HiddenReason, IPAddress, LastMessage, LastSeenAt, OrganizationID, Slug, SpaceID, UpdatedAt.
+    
+    Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
+    
+    Results are ordered by the Channel's ID after the fields named, and by the ID alone if none are.
+    
+    The whole string must be query-encoded. */
+  orderBy?: string;
+  /** The token from the ConfigHub-Continue header of the previous page, to return the Channel entities after it.
+    
+    The request's other parameters, except limit, must be the same as those of the request that returned the token.
+    
+    Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more. */
+  continue?: string;
+};
+export type CreateChannelApiResponse =
+  /** status 200 A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Declarations and Subscriptions are set by whoever manages it, not by the client. */ ChannelRead;
+export type CreateChannelApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
+  allowExists?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  channel: Channel;
+};
+export type DeleteChannelApiResponse =
+  /** status 200 Response for successful delete operation */ DeleteResponse;
+export type DeleteChannelApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a channel_id */
+  channelId: string;
+};
+export type GetChannelApiResponse = /** status 200 OK */ ExtendedChannelRead;
+export type GetChannelApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Include clause for expanding related entities in the response for Channel.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Channel are OrganizationID, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Select clause for specifying which fields to include in the response for Channel.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, ChannelID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
+  /** Unique identifier for a channel_id */
+  channelId: string;
+};
+export type PatchChannelApiResponse =
+  /** status 200 A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Declarations and Subscriptions are set by whoever manages it, not by the client. */ ChannelRead;
+export type PatchChannelApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a channel_id */
+  channelId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  body: {
+    /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
+    Annotations?: {
+      [key: string]: string | null;
+    } | null;
+    Declarations?: object | null;
+    /** An optional set of gates that, if any is present, will block deletion */
+    DeleteGates?: {
+      [key: string]: boolean | null;
+    } | null;
+    /** Friendly name for the entity. */
+    DisplayName?: string | null;
+    EventPosition?: number | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
+    /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
+    Labels?: {
+      [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
+    /** Unique URL-safe identifier for the entity. */
+    Slug?: string | null;
+    Subscriptions?: (object | null)[] | null;
+    /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+    Version?: number | null;
+  };
+};
+export type UpdateChannelApiResponse =
+  /** status 200 A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Declarations and Subscriptions are set by whoever manages it, not by the client. */ ChannelRead;
+export type UpdateChannelApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a channel_id */
+  channelId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  channel: Channel;
+};
+export type ReportCommandRunResultApiResponse =
+  /** status 200 CommandRun is one execution of a command on a Channel: the request, from the caller, and the outcome, from the channel's client. Create one at the Space, naming the command and optionally the Channel; without a Channel, the command is resolved to the one Channel in the Space that declares it. A Pending run waits for the client until its Deadline; a Delivered run has a fixed time to its outcome. */ CommandRunRead;
+export type ReportCommandRunResultApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a channel_id */
+  channelId: string;
+  /** Unique identifier for a command_run_id */
+  commandRunId: string;
+  commandRunResult: CommandRunResult;
+};
+export type ReleaseChannelLeaseApiResponse = unknown;
+export type ReleaseChannelLeaseApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a channel_id */
+  channelId: string;
+  /** The ClaimToken of the lease to release. */
+  claimToken: string;
+};
+export type AcquireChannelLeaseApiResponse =
+  /** status 200 ChannelLease is the lease a client holds on a Channel: its ClaimToken, carried by every poll and release, and the TTL in seconds a poll renews it for. */ ChannelLease;
+export type AcquireChannelLeaseApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a channel_id */
+  channelId: string;
+};
+export type PollChannelApiResponse =
+  | /** status 200 OK */ ChannelMessageRead[]
+  | /** status 204 Nothing to deliver within the timeout. */ string;
+export type PollChannelApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a channel_id */
+  channelId: string;
+  channelPollRequest: ChannelPollRequest;
+};
+export type ListCommandsApiResponse = /** status 200 OK */ DeclaredCommand[];
+export type ListCommandsApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** List only the Channels declaring this command. */
+  command?: string;
+};
+export type ListCommandRunsApiResponse = /** status 200 OK */ CommandRunRead[];
+export type ListCommandRunsApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** The specified string is an expression for the purpose of filtering
+    the list of CommandRuns returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, SpaceID, Status, TargetID, TimeoutAt, UnitID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the CommandRun list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (CommandRun).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for CommandRun include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Include clause for expanding related entities in the response for CommandRun.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for CommandRun are .
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Select clause for specifying which fields to include in the response for CommandRun.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, CommandRunID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
+  /** Maximum number of CommandRun entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
+  limit?: number;
+  /** Comma-separated list of fields to sort CommandRun results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
+    
+    Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
+    
+    Supported attributes for ordering CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, SpaceID, Status, TargetID, TimeoutAt, UnitID.
+    
+    Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
+    
+    Results are ordered by the CommandRun's ID after the fields named, and by the ID alone if none are.
+    
+    The whole string must be query-encoded. */
+  orderBy?: string;
+  /** The token from the ConfigHub-Continue header of the previous page, to return the CommandRun entities after it.
+    
+    The request's other parameters, except limit, must be the same as those of the request that returned the token.
+    
+    Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more. */
+  continue?: string;
+};
+export type CreateCommandRunApiResponse =
+  /** status 200 CommandRun is one execution of a command on a Channel: the request, from the caller, and the outcome, from the channel's client. Create one at the Space, naming the command and optionally the Channel; without a Channel, the command is resolved to the one Channel in the Space that declares it. A Pending run waits for the client until its Deadline; a Delivered run has a fixed time to its outcome. */ CommandRunRead;
+export type CreateCommandRunApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  commandRun: CommandRun;
+};
+export type GetCommandRunApiResponse =
+  /** status 200 CommandRun is one execution of a command on a Channel: the request, from the caller, and the outcome, from the channel's client. Create one at the Space, naming the command and optionally the Channel; without a Channel, the command is resolved to the one Channel in the Space that declares it. A Pending run waits for the client until its Deadline; a Delivered run has a fixed time to its outcome. */ CommandRunRead;
+export type GetCommandRunApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a command_run_id */
+  commandRunId: string;
+  /** Seconds to hold for a terminal status; at most 25. */
+  wait?: number;
+  /** Select clause for specifying which fields to include in the response for CommandRun.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, CommandRunID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
+};
+export type CancelCommandRunApiResponse =
+  /** status 200 CommandRun is one execution of a command on a Channel: the request, from the caller, and the outcome, from the channel's client. Create one at the Space, naming the command and optionally the Channel; without a Channel, the command is resolved to the one Channel in the Space that declares it. A Pending run waits for the client until its Deadline; a Delivered run has a fixed time to its outcome. */ CommandRunRead;
+export type CancelCommandRunApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a command_run_id */
+  commandRunId: string;
+};
 export type GetSpaceDocumentApiResponse = /** status 200 OK */ EntityDocument;
 export type GetSpaceDocumentApiArg = {
   /** Unique identifier for a space_id */
@@ -14198,7 +15314,7 @@ export type InvokeFunctionsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -15719,7 +16835,7 @@ export type ListUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -16754,7 +17870,7 @@ export type ListExtendedRevisionsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list a tagged Revision use `Tags ? '<tag-id>'`.
     
@@ -18455,7 +19571,7 @@ export type BulkCreateTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -19137,7 +20253,7 @@ export type BulkCreateTriggersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -19326,7 +20442,7 @@ export type BulkDeleteUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -19419,7 +20535,7 @@ export type ListAllUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -19551,7 +20667,7 @@ export type BulkPatchUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -19770,7 +20886,7 @@ export type BulkCreateUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -20007,7 +21123,7 @@ export type BulkCancelUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -20096,7 +21212,7 @@ export type BulkMoveUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -20188,7 +21304,7 @@ export type BulkTagUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -20365,7 +21481,7 @@ export type SearchUnitDataApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -20495,7 +21611,7 @@ export type SearchUnitDiffApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -20724,7 +21840,7 @@ export type SearchUnitMutationSourcesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Unapplied units can be found using `LastReleasedRevisionNum = 0`. Units with unapplied changes can be found with `HeadRevisionNum > LastReleasedRevisionNum`.
     
@@ -21492,7 +22608,7 @@ export type BulkCreateViewsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -23689,6 +24805,213 @@ export type ChangeWorkflowCreateOrUpdateResponseRead = {
   ChangeWorkflow?: ChangeWorkflowRead;
   Error?: ResponseError;
 };
+export type CommandOption = {
+  Choices?: string[];
+  DataType?: string;
+  Description?: string;
+  Example?: string;
+  Name?: string;
+  Required?: boolean;
+  Schema?: Schema;
+};
+export type CommandSignature = {
+  Attributes?: {
+    [key: string]: any;
+  };
+  Description?: string;
+  Options?: CommandOption[];
+  Returns?: Schema;
+};
+export type ChannelDeclarations = {
+  Commands?: {
+    [key: string]: CommandSignature;
+  };
+};
+export type EventSubscription = {
+  EventTypes?: string[];
+  SpaceID?: string;
+  TargetID?: string;
+};
+export type Channel = {
+  /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
+  Annotations?: {
+    [key: string]: string;
+  };
+  /** ChannelID uniquely identifies a channel. */
+  ChannelID?: string;
+  /** The commands the channel handles, by name, each with its signature. Set here, out of band; a connecting client verifies its handlers against them. */
+  Declarations?: ChannelDeclarations;
+  /** An optional set of gates that, if any is present, will block deletion. */
+  DeleteGates?: {
+    [key: string]: boolean;
+  };
+  /** Friendly name for the entity. */
+  DisplayName?: string;
+  /** The channel's bookmark into the event log. Set to the log's tail at creation; change it to replay or skip. */
+  EventPosition: number;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
+  Labels?: {
+    [key: string]: string;
+  };
+  /** Unique identifier for an organization. */
+  OrganizationID?: string;
+  /** Permissions to access this Channel. Claim: acquire its lease and poll it. Use: run a command on it. */
+  Permissions?: Permissions;
+  /** Unique URL-safe identifier for the entity. */
+  Slug: string;
+  /** Unique identifier for a space. */
+  SpaceID?: string;
+  /** Filters over the event log. An event after EventPosition that matches any of them is delivered to the client. */
+  Subscriptions?: EventSubscription[];
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type ChannelRead = {
+  /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
+  Annotations?: {
+    [key: string]: string;
+  };
+  /** ChannelID uniquely identifies a channel. */
+  ChannelID?: string;
+  /** How long a lease stays held without a poll renewing it. */
+  ClaimTTLSeconds?: number;
+  /** The token of the lease currently held. */
+  ClaimToken?: string;
+  /** Claimed while a client holds the lease, Unclaimed otherwise. */
+  Condition?: "Claimed" | "Unclaimed";
+  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
+  CreatedAt?: string;
+  /** The commands the channel handles, by name, each with its signature. Set here, out of band; a connecting client verifies its handlers against them. */
+  Declarations?: ChannelDeclarations;
+  /** An optional set of gates that, if any is present, will block deletion. */
+  DeleteGates?: {
+    [key: string]: boolean;
+  };
+  /** Friendly name for the entity. */
+  DisplayName?: string;
+  /** The type of entity. */
+  EntityType?: string;
+  /** The channel's bookmark into the event log. Set to the log's tail at creation; change it to replay or skip. */
+  EventPosition: number;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** The address the client last polled from. */
+  IPAddress?: string;
+  /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
+  Labels?: {
+    [key: string]: string;
+  };
+  /** The last status message the client reported. */
+  LastMessage?: string;
+  /** The last time the client holding the lease polled. */
+  LastSeenAt?: string;
+  /** Unique identifier for an organization. */
+  OrganizationID?: string;
+  /** Permissions to access this Channel. Claim: acquire its lease and poll it. Use: run a command on it. */
+  Permissions?: Permissions;
+  /** Unique URL-safe identifier for the entity. */
+  Slug: string;
+  /** Unique identifier for a space. */
+  SpaceID?: string;
+  /** Slug of the Space this entity belongs to. (readonly) */
+  SpaceSlug?: string;
+  /** Filters over the event log. An event after EventPosition that matches any of them is delivered to the client. */
+  Subscriptions?: EventSubscription[];
+  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
+  UpdatedAt?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type ExtendedChannel = {
+  Channel?: Channel;
+  Error?: ResponseError;
+  Organization?: Organization;
+  Space?: Space;
+};
+export type ExtendedChannelRead = {
+  Channel?: ChannelRead;
+  Error?: ResponseError;
+  Organization?: OrganizationRead;
+  Space?: SpaceRead;
+};
+export type ChannelCreateOrUpdateResponse = {
+  Channel?: Channel;
+  Error?: ResponseError;
+};
+export type ChannelCreateOrUpdateResponseRead = {
+  Channel?: ChannelRead;
+  Error?: ResponseError;
+};
+export type DeclaredCommand = {
+  ChannelID?: string;
+  ChannelSlug?: string;
+  Command?: string;
+  Signature?: CommandSignature;
+  SpaceID?: string;
+  SpaceSlug?: string;
+};
+export type CommandRun = {
+  /** ChannelID is the Channel the run is delivered on. Optional on create: absent, the command is resolved within the Space. */
+  ChannelID?: string;
+  /** Command is the name of the command to run, as the Channel declares it. */
+  Command: string;
+  /** CommandRunID uniquely identifies the run. */
+  CommandRunID?: string;
+  /** Deadline is when a Pending run expires. Defaults to five minutes after creation; at most one hour. */
+  Deadline?: string;
+  /** OrganizationID of the Space the run is in. */
+  OrganizationID?: string;
+  /** Params is the JSON object of inputs, keyed by the option names the Channel declares for the command. */
+  Params?: object;
+  /** SpaceID of the Space the run is in: the Channel's Space. */
+  SpaceID?: string;
+  /** TargetID is the Target the run is about, if any. For the record; not a foreign key. */
+  TargetID?: string;
+  /** UnitID is the Unit the run is about, if any. For the record; not a foreign key. */
+  UnitID?: string;
+};
+export type CommandRunRead = {
+  /** ChannelID is the Channel the run is delivered on. Optional on create: absent, the command is resolved within the Space. */
+  ChannelID?: string;
+  /** Command is the name of the command to run, as the Channel declares it. */
+  Command: string;
+  /** CommandRunID uniquely identifies the run. */
+  CommandRunID?: string;
+  /** CompletedAt is when the run reached a terminal status. */
+  CompletedAt?: string;
+  /** When the run was created, in "2023-01-01T12:00:00Z" format. */
+  CreatedAt?: string;
+  /** CreatedBy is the user that asked for the run. */
+  CreatedBy?: string;
+  /** Deadline is when a Pending run expires. Defaults to five minutes after creation; at most one hour. */
+  Deadline?: string;
+  /** DeliveredAt is when the run was handed to the client. */
+  DeliveredAt?: string;
+  /** ErrorMessage explains a Failed or Rejected run. */
+  ErrorMessage?: string;
+  /** OrganizationID of the Space the run is in. */
+  OrganizationID?: string;
+  /** Params is the JSON object of inputs, keyed by the option names the Channel declares for the command. */
+  Params?: object;
+  /** Result is the JSON the client reported for a Completed run. */
+  Result?: object;
+  /** SpaceID of the Space the run is in: the Channel's Space. */
+  SpaceID?: string;
+  /** Slug of the Space the run is in. */
+  SpaceSlug?: string;
+  /** Status is where the run is: Pending, Delivered, Completed, Failed, Rejected, Canceled, Expired or TimedOut. */
+  Status?: string;
+  /** TargetID is the Target the run is about, if any. For the record; not a foreign key. */
+  TargetID?: string;
+  /** TimeoutAt is when a Delivered run times out if the client has reported nothing. */
+  TimeoutAt?: string;
+  /** UnitID is the Unit the run is about, if any. For the record; not a foreign key. */
+  UnitID?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. */
+  Version?: number;
+};
 export type ExtendedComponent = {
   Component?: Component;
   Error?: ResponseError;
@@ -24027,6 +25350,8 @@ export type FunctionInvocationsRequest = {
   FunctionInvocations?: FunctionInvocationList;
   /** Put the Unit's outstanding merge conflicts in the FunctionContext, for functions that reason about them */
   IncludeConflicts?: boolean;
+  /** Put what the resolves of the Unit's Links could not do in the FunctionContext, for functions that reason about it */
+  IncludeLinkFindings?: boolean;
   /** Invocations is a list of Invocation IDs to execute. The invocations must be within the same Organization. Invocations will be executed after the FunctionInvocations list. Functions are grouped by executor (built-in vs bridge worker) and executed in phases: general mutating functions first, then final mutating functions (like ensure-context), then validating functions. Functions that don't match the unit's toolchain type are ignored. */
   Invocations?: Uuid[];
   /** NumFilters is the number of validating functions from the FunctionInvocations to treat as filters for the remaining functions in the list. In the case that the validation function does not pass, stop and don't execute the remaining functions, but don't report an error. */
@@ -24222,6 +25547,25 @@ export type Unit = {
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
+export type LinkFinding = {
+  /** Explanation the Reason alone cannot carry, such as the error a failed resolve reported */
+  Details?: string;
+  /** The Link's entry the finding is about, as its list and position, such as ManualBindings[0] */
+  Entry?: string;
+  /** The Key of the Link's entry the finding is about, when the entry has one */
+  Key?: string;
+  /** The Link whose resolve recorded the finding */
+  LinkID?: string;
+  /** The path the finding is about; empty for a resource-level finding */
+  Path?: string;
+  /** What the resolve could not do: NeededNotFound, ProvidedNotFound, or ResolveFailed */
+  Reason?: string;
+  /** The resource the finding is about, in the Unit Reason names; empty for a finding about the resolve as a whole */
+  Resource?: ResourceInfo;
+  /** The other Unit involved: the Link's upstream Unit */
+  UnitID?: string;
+};
+export type LinkFindingList = LinkFinding[];
 export type Issue = {
   /** Identifier for the kind of issue found, such as a number, alphanumeric code, or policy/rule name. Use especially with validation functions that check multiple policies/rules. */
   Identifier?: string;
@@ -24378,6 +25722,7 @@ export type UnitRead = {
   LastChangeDescription?: string;
   /** Sequence number of the last Revision published in a Release, or for a backing Unit the last Revision its entity took. 0 if there is none. */
   LastReleasedRevisionNum?: number;
+  LinkFindings?: LinkFindingList;
   /** Attribute paths that this Unit needs from upstream Units via NeedsProvides Links. Computed from get-needed and stored on data updates. */
   NeededPaths?: AttributeValue[];
   /** Unique identifier for an organization. */
@@ -25439,6 +26784,7 @@ export type Revision = {
   Description?: string;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
+  LinkFindings?: LinkFindingList;
   /** Attribute paths this Revision's configuration needs from upstream Units via NeedsProvides Links. */
   NeededPaths?: AttributeValue[];
   /** Unique identifier for an Organization. */
@@ -25531,6 +26877,7 @@ export type RevisionRead = {
   EntityType?: string;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
+  LinkFindings?: LinkFindingList;
   /** Attribute paths this Revision's configuration needs from upstream Units via NeedsProvides Links. */
   NeededPaths?: AttributeValue[];
   /** Unique identifier for an Organization. */
@@ -25971,6 +27318,69 @@ export type BridgeWorkerStatus = {
   SpaceID?: string;
   /** Status indicates the current status of the bridge worker. Possible values include Connected, Disconnected, ActionSent, ActionResultReceived. */
   Status?: string;
+};
+export type CommandRunResult = {
+  ErrorMessage?: string;
+  Result?: object;
+  /** Completed, Failed or Rejected. */
+  Status: string;
+};
+export type ChannelLease = {
+  ClaimToken: string;
+  TTLSeconds: number;
+};
+export type EventLog = {
+  CursorID?: number;
+  EventLogID?: string;
+  EventType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  OrganizationID?: string;
+  Payload?: any;
+  SpaceID?: string;
+  SubjectEntityID?: string;
+  SubjectEntityType?: string;
+  TargetID?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type EventLogRead = {
+  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
+  CreatedAt?: string;
+  CursorID?: number;
+  /** The type of entity. */
+  EntityType?: string;
+  EventLogID?: string;
+  EventType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  OrganizationID?: string;
+  Payload?: any;
+  SpaceID?: string;
+  SubjectEntityID?: string;
+  SubjectEntityType?: string;
+  TargetID?: string;
+  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
+  UpdatedAt?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type ChannelMessage = {
+  CommandRun?: CommandRun;
+  Event?: EventLog;
+  /** CommandRun or EventLog: which of the two is set. */
+  Kind: string;
+};
+export type ChannelMessageRead = {
+  CommandRun?: CommandRunRead;
+  Event?: EventLogRead;
+  /** CommandRun or EventLog: which of the two is set. */
+  Kind: string;
+};
+export type ChannelPollRequest = {
+  ClaimToken: string;
+  MaxRuns?: number;
+  TimeoutSeconds?: number;
 };
 export type ReleasePublishResponse = {
   /** Set when nothing changed since the latest published Release, so no Release was created. */
@@ -26848,6 +28258,14 @@ export const {
   useBulkPatchChangeWorkflowsMutation,
   useBulkCreateChangeWorkflowsMutation,
   useBulkMoveChangeWorkflowsMutation,
+  useBulkDeleteChannelsMutation,
+  useListAllChannelsQuery,
+  useLazyListAllChannelsQuery,
+  useBulkPatchChannelsMutation,
+  useListAllCommandsQuery,
+  useLazyListAllCommandsQuery,
+  useListAllCommandRunsQuery,
+  useLazyListAllCommandRunsQuery,
   useListComponentsQuery,
   useLazyListComponentsQuery,
   useCreateComponentMutation,
@@ -27007,6 +28425,26 @@ export const {
   useGetChangeWorkflowDocumentQuery,
   useLazyGetChangeWorkflowDocumentQuery,
   useUpdateChangeWorkflowDocumentMutation,
+  useListChannelsQuery,
+  useLazyListChannelsQuery,
+  useCreateChannelMutation,
+  useDeleteChannelMutation,
+  useGetChannelQuery,
+  useLazyGetChannelQuery,
+  usePatchChannelMutation,
+  useUpdateChannelMutation,
+  useReportCommandRunResultMutation,
+  useReleaseChannelLeaseMutation,
+  useAcquireChannelLeaseMutation,
+  usePollChannelMutation,
+  useListCommandsQuery,
+  useLazyListCommandsQuery,
+  useListCommandRunsQuery,
+  useLazyListCommandRunsQuery,
+  useCreateCommandRunMutation,
+  useGetCommandRunQuery,
+  useLazyGetCommandRunQuery,
+  useCancelCommandRunMutation,
   useGetSpaceDocumentQuery,
   useLazyGetSpaceDocumentQuery,
   useUpdateSpaceDocumentMutation,

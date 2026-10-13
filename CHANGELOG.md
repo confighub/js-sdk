@@ -7,6 +7,46 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.15 — 2026-10-12
+
+### API
+
+Compared with ConfigHub `v0.8.14`:
+
+#### Added (31)
+
+- path `/channel`
+- path `/command`
+- path `/command_run`
+- path `/space/{space_id}/channel`
+- path `/space/{space_id}/channel/{channel_id}`
+- path `/space/{space_id}/channel/{channel_id}/command_run/{command_run_id}/result`
+- path `/space/{space_id}/channel/{channel_id}/lease`
+- path `/space/{space_id}/channel/{channel_id}/poll`
+- path `/space/{space_id}/command`
+- path `/space/{space_id}/command_run`
+- path `/space/{space_id}/command_run/{command_run_id}`
+- path `/space/{space_id}/command_run/{command_run_id}/cancel`
+- field `FunctionInvocationsRequest.IncludeLinkFindings`
+- field `Revision.LinkFindings`
+- field `Unit.LinkFindings`
+- schema `Channel`
+- schema `ChannelCreateOrUpdateResponse`
+- schema `ChannelDeclarations`
+- schema `ChannelLease`
+- schema `ChannelMessage`
+- schema `ChannelPollRequest`
+- schema `CommandOption`
+- schema `CommandRun`
+- schema `CommandRunResult`
+- schema `CommandSignature`
+- schema `DeclaredCommand`
+- schema `EventLog`
+- schema `EventSubscription`
+- schema `ExtendedChannel`
+- schema `LinkFinding`
+- schema `LinkFindingList`
+
 ## 0.8.14 — 2026-10-12
 
 ### API
