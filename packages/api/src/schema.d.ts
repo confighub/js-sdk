@@ -3952,7 +3952,84 @@ export interface components {
             SkippedUnits?: components["schemas"]["AttestationSkippedUnit"][];
             Subjects?: components["schemas"]["AttestationSubject"][];
         };
+        AttestationGateCaller: {
+            /** @description How many of the Revisions evaluated the caller wrote part of. */
+            AuthoredRevisions?: number;
+            /** @description A Pass the caller records would count on every Revision evaluated. */
+            Counts?: boolean;
+            /** @description Why it would not: NotEligible, when the prerequisite names neither the caller nor a Group of theirs, or Author, when the caller wrote part of the change on some Revision. */
+            Reason?: string;
+        };
+        AttestationGateEntry: {
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            AttestationID?: string;
+            /** @description How many of the Revisions evaluated it counts on. A Fail that counts rejects them. */
+            CountedOn?: number;
+            /**
+             * Format: date-time
+             * @example 2006-01-02T15:04:05Z07:00
+             */
+            CreatedAt?: string;
+            /** @description Why it counts on none of the Revisions it covers: Revoked, Expired, TooOld (older than MaxAge), NotEligible, Author, or FailIgnored (a Fail, under IgnoreFail). */
+            Reason?: string;
+            /** @description Pass or Fail. */
+            Result?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UserID?: string;
+            /**
+             * Format: date-time
+             * @description When it stops counting: the earlier of its ExpiresAt and its CreatedAt plus the prerequisite's MaxAge. Absent when neither is set.
+             */
+            ValidUntil?: string | null;
+        };
+        AttestationGateResult: {
+            /** @description Every Attestation of Type covering a Revision evaluated, directly or carried forward from an earlier Revision of the same Unit with the same DataHash, and what became of it. */
+            Attestations?: components["schemas"]["AttestationGateEntry"][];
+            /** @description Users excluded from counting on some Revision because they wrote part of the change there. Empty with AllowAuthors. */
+            AuthorUserIDs?: components["schemas"]["UUID"][];
+            /** @description Whether a Pass recorded by the caller would count here. */
+            Caller?: components["schemas"]["AttestationGateCaller"];
+            /** @description The fewest attesters counted on any Revision evaluated: the gate's progress toward Required. */
+            Counted?: number;
+            /** @description How many distinct attesters each Revision needs: Count, or the number of FromGroupIDs with DistinctGroups. */
+            Required?: number;
+            /** @description How many Revisions were evaluated: one of each Unit the change changed in the Space, or each Revision a Release bundles. */
+            Revisions?: number;
+            /** @description How many of them have what the prerequisite asks for. */
+            SatisfiedRevisions?: number;
+            /** @description More Revisions fall short than Unsatisfied lists. */
+            Truncated?: boolean;
+            /** @description The Attestation Type the prerequisite counts. */
+            Type?: string;
+            /** @description The Revisions that fall short, at most 100. */
+            Unsatisfied?: components["schemas"]["AttestationGateRevision"][];
+        };
+        AttestationGateRevision: {
+            /** @description Users excluded from counting on this Revision because they wrote part of the change on this Unit. Empty with AllowAuthors. */
+            AuthorUserIDs?: components["schemas"]["UUID"][];
+            /** @description Distinct attesters counted on this Revision. */
+            Counted?: number;
+            /** @description AttestationsMissing or AttestationRejected. */
+            Reason?: string;
+            /** Format: int64 */
+            RevisionNum?: number;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UnitID?: string;
+            UnitSlug?: string;
+        };
         AttestationSkippedUnit: {
+            /** @description Why the Unit is not covered, in words. */
+            Message?: string;
+            /** @description Why the Unit is not covered, as a code: NoTarget or NoRevision. */
             Reason?: string;
             /**
              * Format: uuid
@@ -3962,6 +4039,8 @@ export interface components {
             UnitSlug?: string;
         };
         AttestationSubject: {
+            /** @description With a ChangeOrder, the caller wrote one of the Revisions of the change on this Unit in this Space, so the Attestation does not count here for a prerequisite that excludes authors. */
+            Authored?: boolean;
             /**
              * Format: uuid
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
@@ -4457,7 +4536,9 @@ export interface components {
             readonly RestoreTagID?: string;
             /** @description RestoredSpaceIDs is where the ChangeOrder has been undone: the Spaces whose Units all carry the restore Tag. Derived when the ChangeOrder is read. */
             readonly RestoredSpaceIDs?: components["schemas"]["UUID"][];
-            /** @description SkippedUnits names the Units of the ChangeOrder's Space that it carries no Revisions of, mapped to the reason. Written when the scope is derived. A skipped Unit may still be marked by the ChangeOrder's Tags, when the Spaces in scope had already taken it. */
+            /** @description ReviewRequests records whose review the change is waiting for: for each, the stage whose Spaces are to be reviewed (empty for the change order's own Space), the User, and when and by whom the review was requested. A request is not cleared when the review is given; whether a reviewer has reviewed is read from their Attestations. A merge patch replaces the list whole. At most 256. */
+            ReviewRequests?: components["schemas"]["ChangeOrderReviewRequest"][];
+            /** @description SkippedUnits names the Units of the ChangeOrder's Space that it carries no Revisions of, mapped to the reason as a code: NotFollowed (nothing follows the Unit by Links of the change order's UpdateType, and it was never cloned), FollowedByOtherLinks (it is followed downstream, but not by Links of that UpdateType), NotMarked (the end Tag marks no Revision of it), NoStartRevision (a Link to it has never merged or resolved, and it predates empty start Revisions), AlreadyTaken (the Spaces in scope have already taken it as far as the end, so it is marked, carrying no Revisions), or TakenPastEnd (the Spaces in scope have taken it past the end, so it is not marked). Written when the scope is derived. */
             readonly SkippedUnits?: {
                 [key: string]: string;
             };
@@ -4630,6 +4711,7 @@ export interface components {
             Action?: string;
             Error?: string;
             Links?: components["schemas"]["ChangeOrderPromotionFailureLink"][];
+            Message?: string;
             Reason?: string;
             /**
              * Format: uuid
@@ -4683,6 +4765,28 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             SpaceID?: string;
+        };
+        ChangeOrderReviewRequest: {
+            /**
+             * Format: date-time
+             * @description When the review was requested, by the server's clock. A new request is stamped with the current time, and an existing one keeps its time; sending a later time than the one recorded re-requests the review, and stamps it with the current time.
+             * @example 2006-01-02T15:04:05Z07:00
+             */
+            RequestedAt?: string;
+            /**
+             * Format: uuid
+             * @description Who requested the review, or last re-requested it. Set by the server.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly RequestedByUserID?: string;
+            /** @description The stage whose Spaces are to be reviewed, which is where an Attestation recorded with that TargetStage goes. Empty is the change order's own Space. */
+            Stage?: string;
+            /**
+             * Format: uuid
+             * @description The User asked to review.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UserID: string;
         };
         ChangeOrderSpaceContainerImages: {
             /** @description The images that changed, by Unit, resource, and path. */
@@ -5349,7 +5453,7 @@ export interface components {
             /** @description Demote, Unchanged, Skipped, or Failed. */
             Action?: string;
             Error?: components["schemas"]["ResponseError"];
-            /** @description Why the Space was Skipped. */
+            /** @description For Skipped: NotMarked, when the change order marks no Unit of the Space. */
             Reason?: string;
             /**
              * Format: uuid
@@ -6837,10 +6941,14 @@ export interface components {
             [key: string]: components["schemas"]["Subjects"];
         };
         PromoteGateResult: {
+            /** @description For an attestation prerequisite, what was counted, whether or not the gate holds. */
+            Attestation?: components["schemas"]["AttestationGateResult"];
             /** @description Why the gate does not hold. */
             Message?: string;
-            /** @description Promoted, Validated, Released, Healthy, or a custom prerequisite's name. */
+            /** @description Promoted, Validated, Released, Healthy, or the name of a custom or attestation prerequisite. */
             Prerequisite?: string;
+            /** @description Why the gate does not hold, as a code: NotPromoted, PreviousStageEmpty, NotReleased, ValidationErrors, NotMarked, NoReleaseTarget, NoRelease, NoLiveStatus, NotSynced, Deploying, DeployFailed, Unhealthy, AttestationsMissing, AttestationRejected, ExpressionFalse, EvaluationFailed, or UnknownPrerequisite. A client that does not know a code shows Message. */
+            Reason?: string;
             Satisfied?: boolean;
             /**
              * Format: uuid
@@ -6860,6 +6968,9 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             LinkID?: string;
+            /** @description Why the Link was skipped or orphaned, in words. */
+            Message?: string;
+            /** @description Adopted for an Unchanged Link, TargetUnitMissing for a Skip, or UpstreamLinkDeleted for an Orphaned one. */
             Reason?: string;
             Slug?: string;
             ToSpaceSlug?: string;
@@ -6935,6 +7046,10 @@ export interface components {
             Complete?: boolean;
             /** @description True when nothing was written. */
             DryRun?: boolean;
+            /** @description Set when the gates refused the promotion: why, with each failed gate's message among its Details. */
+            Error?: components["schemas"]["ResponseError"];
+            /** @description When Complete, the gates of the ChangeWorkflow's Final, evaluated over each Space of the last Stage. The ChangeOrder's Stage becomes Completed once they all hold. */
+            Final?: components["schemas"]["PromoteGateResult"][];
             /** @description Digest of the planned actions. Send it as ExpectedPlan to apply exactly this plan. */
             Plan?: string;
             /** @description In the order they were, or would be, promoted: a Space after any selected Space it takes from. */
@@ -6947,9 +7062,11 @@ export interface components {
             Action?: string;
             Error?: components["schemas"]["ResponseError"];
             Links?: components["schemas"]["PromoteLinkResult"][];
+            /** @description Why the Space was Skipped or Blocked, in words. */
+            Message?: string;
             /** @description A dry run previewed this Space against its upstream as it is now, although the same request promotes that upstream first. */
             PreviewedAgainstCurrentUpstream?: boolean;
-            /** @description Why the Space was Skipped or Blocked. */
+            /** @description Why the Space was Skipped or Blocked, as a code: ChangeOrderSpace, NotInScope, UpstreamPromotedFirst, or UpstreamFailed. */
             Reason?: string;
             /**
              * Format: uuid
@@ -6973,7 +7090,7 @@ export interface components {
             Forced?: boolean;
             Gates?: components["schemas"]["PromoteGateResult"][];
             Name?: string;
-            /** @description The Stage whose Spaces the gates are evaluated over. Empty for the first Stage, which has no gates. */
+            /** @description The Stage whose Spaces the gates are evaluated over. Empty for the first Stage, whose gates are evaluated over the change order's own Space. */
             PreviousStage?: string;
         };
         PromoteUnitResult: {
@@ -7165,7 +7282,7 @@ export interface components {
              * @description Monotonically increasing sequence number of the Release within its Target, assigned at publish time. The highest ReleaseNum is the latest Release for the Target.
              */
             readonly ReleaseNum?: number;
-            /** @description SkippedUnits names the Units assigned to the Release's Target that the Release does not bundle, mapped to the reason. Publishing with a TagID leaves out a Unit that has never been released and that the Tag marks no Revision of; a Unit that has been released must be marked. (readonly) */
+            /** @description SkippedUnits names the Units assigned to the Release's Target that the Release does not bundle, mapped to the reason as a code. NotMarked: publishing with a TagID leaves out a Unit that has never been released and that the Tag marks no Revision of; a Unit that has been released must be marked. (readonly) */
             readonly SkippedUnits?: {
                 [key: string]: string;
             };
@@ -7283,7 +7400,11 @@ export interface components {
             TagID?: string;
         };
         ReleasePublishResponse: {
-            /** @description Set when nothing changed since the latest published Release, so no Release was created. */
+            /** @description Why the Release was not published. */
+            Error?: components["schemas"]["ResponseError"];
+            /** @description For a change order, each ReleasePrerequisite of the stage the Space belongs to, evaluated over the Revisions the Release bundles, whether or not it holds. */
+            Gates?: components["schemas"]["PromoteGateResult"][];
+            /** @description Why no Release was created: nothing changed since the latest published Release, or, on a refusal, the error as one string. */
             Message?: string;
             /** @description The published Release, or the latest published Release when no Release was created. */
             Release?: components["schemas"]["Release"];
@@ -7491,15 +7612,13 @@ export interface components {
         ResponseError: {
             /** @description Additional context messages */
             Details?: string[];
-            /** @description The type of error (e.g., validation, not-found) */
-            ErrorCategory?: string;
             /** @description Structured error details like field violations */
             ErrorMetadata?: components["schemas"]["ErrorMetadata"];
             /** @description The primary error message */
             Message?: string;
             /** @description HTTP status code */
             Status?: number;
-            /** @description The type of error (e.g., validation, not-found) */
+            /** @description The category of the error, as a code: UserInput, Validation, Data, Authentication, Permission, NotFound, Conflict, AlreadyExists, Unprocessable, Locked, PreconditionFailed, TooManyRequests, Unexpected, GatewayTimeout, or ServiceUnavailable */
             Type?: string;
         };
         /** @description ReviewComment is a remark made in review of a Revision of a Unit, optionally about one resource or path in it. */
@@ -8049,12 +8168,12 @@ export interface components {
             Error?: components["schemas"]["ResponseError"];
             Space?: components["schemas"]["Space"];
         };
-        /** @description Error response details. */
+        /** @description The body of an error response: the error as data (Error), and as one string (message) for clients written before Error. */
         StandardErrorResponse: {
-            /** @description HTTP status code of the response. */
-            Code?: string;
-            /** @description Message returned with the response. */
-            Message?: string;
+            /** @description The error: its message, category (Type), HTTP status, details, and structured items. */
+            Error?: components["schemas"]["ResponseError"];
+            /** @description The error as one string: its message, with any details, items, and individual errors appended. Kept for clients written before Error; new clients read Error. */
+            message?: string;
         };
         Subjects: {
             GroupIDs?: {
@@ -13593,7 +13712,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, ReviewRequests, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -13797,7 +13916,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, ReviewRequests, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -13963,6 +14082,7 @@ export interface operations {
                     } | null;
                     PriorRevisions?: string | null;
                     ReleasePriorRevisions?: string | null;
+                    ReviewRequests?: (Record<string, never> | null)[] | null;
                     /** @description Unique URL-safe identifier for the entity. */
                     Slug?: string | null;
                     /** Format: uuid */
@@ -14101,7 +14221,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, ReviewRequests, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -14303,7 +14423,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, ReviewRequests, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -14407,6 +14527,7 @@ export interface operations {
                     } | null;
                     PriorRevisions?: string | null;
                     ReleasePriorRevisions?: string | null;
+                    ReviewRequests?: (Record<string, never> | null)[] | null;
                     /** @description Unique URL-safe identifier for the entity. */
                     Slug?: string | null;
                     /** Format: uuid */
@@ -30565,7 +30686,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
+                 *     Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, ReviewRequests, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -31180,6 +31301,7 @@ export interface operations {
                     } | null;
                     PriorRevisions?: string | null;
                     ReleasePriorRevisions?: string | null;
+                    ReviewRequests?: (Record<string, never> | null)[] | null;
                     /** @description Unique URL-safe identifier for the entity. */
                     Slug?: string | null;
                     /** Format: uuid */
@@ -38075,13 +38197,13 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description A Unit to be bundled has outstanding validation errors, or, for a change order, the bundled Revisions do not satisfy the ReleasePrerequisites of the stage the Space belongs to */
+            /** @description A Unit to be bundled has outstanding validation errors, or, for a change order, the bundled Revisions do not satisfy the ReleasePrerequisites of the stage the Space belongs to. Error says why, Message repeats its message, and Gates lists each ReleasePrerequisite evaluated. */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
+                    "application/json": components["schemas"]["ReleasePublishResponse"];
                 };
             };
             /** @description Something went wrong while processing Release. */
