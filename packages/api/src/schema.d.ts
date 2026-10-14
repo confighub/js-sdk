@@ -6500,12 +6500,12 @@ export interface components {
             LinkID?: string;
             /**
              * Format: int64
-             * @description MergeBaseRevisionNum is the sequence number of the revision preceding merged changes, if the change was due to a merge operation.
+             * @description MergeBaseRevisionNum is the sequence number of the upstream revision preceding the changes this change took, if it was made by a merge -- including a clone or upgrade -- or by resolving a Link: the revision the merge or the Link last took before.
              */
             MergeBaseRevisionNum?: number;
             /**
              * Format: int64
-             * @description MergeEndRevisionNum is the sequence number of the revision ending merged changes, if the change was due to a merge operation.
+             * @description MergeEndRevisionNum is the sequence number of the upstream revision this change took, if it was made by a merge -- including a clone or upgrade -- or by resolving a Link. A Link's resolve reads its upstream Unit (the Link's ToUnitID) at this revision. A merge also records MergeSourceID; a resolve that is not a merge does not.
              */
             MergeEndRevisionNum?: number;
             /**
@@ -6583,11 +6583,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly UpdatedAt?: string;
-            /**
-             * Format: int64
-             * @description Sequence number of the upstream revision the unit was upgraded from, if the change was due to an upgrade operation.
-             */
-            UpgradedFromUpstreamRevisionNum?: number;
             /**
              * Format: int64
              * @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update.
@@ -41781,7 +41776,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
+                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
                  *
                  *     Selects Mutations of this Unit whose paths the merge must not overwrite, unioned with the Protected values stored on the Unit's MutationSources.
                  *
@@ -42088,7 +42083,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
+                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
                  *
                  *     Selects Mutations of this Unit whose paths the merge must not overwrite, unioned with the Protected values stored on the Unit's MutationSources.
                  *
@@ -42772,7 +42767,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
+                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
                  *
                  *     The function invoked is returned as a FunctionInvocation object, and `where` names its fields the same way: `FunctionInvocation.FunctionName`, `FunctionInvocation.Guards.<reason>`, and `FunctionInvocation.Arguments`, which is a list addressed with dot notation. `FunctionInvocation.Arguments.?ParameterName=container-image.Value LIKE 'nginx%'` reads the argument bound to a named parameter, `FunctionInvocation.Arguments.*.Value` matches any argument's value, and `FunctionInvocation.Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
                  *
@@ -42849,7 +42844,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Mutation: BridgeWorkerID, CreatedAt, FunctionName, HiddenReason, InvocationID, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
+                 *     Supported attributes for ordering Mutation: BridgeWorkerID, CreatedAt, FunctionName, HiddenReason, InvocationID, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, Subgroup, TriggerID, UnitID, UpdatedAt.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -50665,7 +50660,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt, UpgradedFromUpstreamRevisionNum.
+                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
                  *
                  *     Selects Mutations of this Unit whose paths the merge must not overwrite, unioned with the Protected values stored on the Unit's MutationSources.
                  *
