@@ -8719,7 +8719,7 @@ export type BulkDeleteChannelsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+    Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -8809,7 +8809,7 @@ export type ListAllChannelsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+    Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -8925,7 +8925,7 @@ export type BulkPatchChannelsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+    Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -8984,7 +8984,9 @@ export type BulkPatchChannelsApiArg = {
     Annotations?: {
       [key: string]: string | null;
     } | null;
-    Declarations?: object | null;
+    Commands?: {
+      [key: string]: object | null;
+    } | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
       [key: string]: boolean | null;
@@ -14598,7 +14600,7 @@ export type ListChannelsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+    Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -14677,7 +14679,7 @@ export type ListChannelsApiArg = {
   continue?: string;
 };
 export type CreateChannelApiResponse =
-  /** status 200 A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Declarations and Subscriptions are set by whoever manages it, not by the client. */ ChannelRead;
+  /** status 200 A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Commands and Subscriptions are set by whoever manages it, not by the client. */ ChannelRead;
 export type CreateChannelApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
@@ -14720,7 +14722,7 @@ export type GetChannelApiArg = {
   channelId: string;
 };
 export type PatchChannelApiResponse =
-  /** status 200 A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Declarations and Subscriptions are set by whoever manages it, not by the client. */ ChannelRead;
+  /** status 200 A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Commands and Subscriptions are set by whoever manages it, not by the client. */ ChannelRead;
 export type PatchChannelApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
@@ -14733,7 +14735,9 @@ export type PatchChannelApiArg = {
     Annotations?: {
       [key: string]: string | null;
     } | null;
-    Declarations?: object | null;
+    Commands?: {
+      [key: string]: object | null;
+    } | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
       [key: string]: boolean | null;
@@ -14758,7 +14762,7 @@ export type PatchChannelApiArg = {
   };
 };
 export type UpdateChannelApiResponse =
-  /** status 200 A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Declarations and Subscriptions are set by whoever manages it, not by the client. */ ChannelRead;
+  /** status 200 A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Commands and Subscriptions are set by whoever manages it, not by the client. */ ChannelRead;
 export type UpdateChannelApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
@@ -24851,11 +24855,6 @@ export type CommandSignature = {
   Options?: CommandOption[];
   Returns?: Schema;
 };
-export type ChannelDeclarations = {
-  Commands?: {
-    [key: string]: CommandSignature;
-  };
-};
 export type EventSubscription = {
   EventTypes?: string[];
   SpaceID?: string;
@@ -24869,7 +24868,9 @@ export type Channel = {
   /** ChannelID uniquely identifies a channel. */
   ChannelID?: string;
   /** The commands the channel handles, by name, each with its signature. Set here, out of band; a connecting client verifies its handlers against them. */
-  Declarations?: ChannelDeclarations;
+  Commands?: {
+    [key: string]: CommandSignature;
+  };
   /** An optional set of gates that, if any is present, will block deletion. */
   DeleteGates?: {
     [key: string]: boolean;
@@ -24908,12 +24909,14 @@ export type ChannelRead = {
   ClaimTTLSeconds?: number;
   /** The token of the lease currently held. */
   ClaimToken?: string;
+  /** The commands the channel handles, by name, each with its signature. Set here, out of band; a connecting client verifies its handlers against them. */
+  Commands?: {
+    [key: string]: CommandSignature;
+  };
   /** Claimed while a client holds the lease, Unclaimed otherwise. */
   Condition?: "Claimed" | "Unclaimed";
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
   CreatedAt?: string;
-  /** The commands the channel handles, by name, each with its signature. Set here, out of band; a connecting client verifies its handlers against them. */
-  Declarations?: ChannelDeclarations;
   /** An optional set of gates that, if any is present, will block deletion. */
   DeleteGates?: {
     [key: string]: boolean;

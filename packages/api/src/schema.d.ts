@@ -5022,7 +5022,7 @@ export interface components {
             /** @description Selects the stage's Spaces: a where expression over Spaces, intersected with the change order's InScopeSpaceIDs. Nothing else is implied, so a workflow can be shared across components. Empty selects every Space in the change order's scope. */
             WhereSpace?: string;
         };
-        /** @description A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Declarations and Subscriptions are set by whoever manages it, not by the client. */
+        /** @description A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Commands and Subscriptions are set by whoever manages it, not by the client. */
         Channel: {
             /** @description An optional map of Annotation key/value pairs for tools to attach information to entities. */
             Annotations?: {
@@ -5042,6 +5042,10 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             readonly ClaimToken?: string;
+            /** @description The commands the channel handles, by name, each with its signature. Set here, out of band; a connecting client verifies its handlers against them. */
+            Commands?: {
+                [key: string]: components["schemas"]["CommandSignature"];
+            };
             /**
              * @description Claimed while a client holds the lease, Unclaimed otherwise.
              * @enum {string}
@@ -5053,8 +5057,6 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
-            /** @description The commands the channel handles, by name, each with its signature. Set here, out of band; a connecting client verifies its handlers against them. */
-            Declarations?: components["schemas"]["ChannelDeclarations"];
             /** @description An optional set of gates that, if any is present, will block deletion. */
             DeleteGates?: {
                 [key: string]: boolean;
@@ -5119,11 +5121,6 @@ export interface components {
         ChannelCreateOrUpdateResponse: {
             Channel?: components["schemas"]["Channel"];
             Error?: components["schemas"]["ResponseError"];
-        };
-        ChannelDeclarations: {
-            Commands?: {
-                [key: string]: components["schemas"]["CommandSignature"];
-            };
         };
         /** @description ChannelLease is the lease a client holds on a Channel: its ClaimToken, carried by every poll and release, and the TTL in seconds a poll renews it for. */
         ChannelLease: {
@@ -16962,7 +16959,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17166,7 +17163,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17366,7 +17363,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17441,7 +17438,9 @@ export interface operations {
                     Annotations?: {
                         [key: string]: string | null;
                     } | null;
-                    Declarations?: Record<string, never> | null;
+                    Commands?: {
+                        [key: string]: Record<string, never> | null;
+                    } | null;
                     /** @description An optional set of gates that, if any is present, will block deletion */
                     DeleteGates?: {
                         [key: string]: boolean | null;
@@ -33045,7 +33044,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Condition, CreatedAt, Declarations, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -33235,7 +33234,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Declarations and Subscriptions are set by whoever manages it, not by the client. */
+            /** @description A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Commands and Subscriptions are set by whoever manages it, not by the client. */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -33431,7 +33430,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Declarations and Subscriptions are set by whoever manages it, not by the client. */
+            /** @description A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Commands and Subscriptions are set by whoever manages it, not by the client. */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -33624,7 +33623,9 @@ export interface operations {
                     Annotations?: {
                         [key: string]: string | null;
                     } | null;
-                    Declarations?: Record<string, never> | null;
+                    Commands?: {
+                        [key: string]: Record<string, never> | null;
+                    } | null;
                     /** @description An optional set of gates that, if any is present, will block deletion */
                     DeleteGates?: {
                         [key: string]: boolean | null;
@@ -33650,7 +33651,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Declarations and Subscriptions are set by whoever manages it, not by the client. */
+            /** @description A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Commands and Subscriptions are set by whoever manages it, not by the client. */
             200: {
                 headers: {
                     [name: string]: unknown;

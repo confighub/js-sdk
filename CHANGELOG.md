@@ -7,6 +7,26 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.20 — 2026-10-14
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: a Channel's commands are its `Commands` field, a map of command name to
+  signature, where they were nested as `Declarations.Commands`; `ChannelDeclarations` is gone.
+
+### API
+
+Compared with ConfigHub `v0.8.19`:
+
+#### Removed (2), breaking for code typed against them
+
+- field `Channel.Declarations`
+- schema `ChannelDeclarations`
+
+#### Added (1)
+
+- field `Channel.Commands`
+
 ## 0.8.19 — 2026-10-14
 
 ### Changes
