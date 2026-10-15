@@ -7,6 +7,18 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.22 — 2026-10-14
+
+### API
+
+Compared with ConfigHub `v0.8.21`:
+
+#### Added (3)
+
+- field `Attestation.Hash`
+- field `ChangeWorkflow.Hash`
+- field `View.Hash`
+
 ## 0.8.21 — 2026-10-14
 
 ### API

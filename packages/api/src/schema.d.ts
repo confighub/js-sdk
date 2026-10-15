@@ -3858,6 +3858,8 @@ export interface components {
              * @example 2006-01-02T15:04:05Z07:00
              */
             ExpiresAt?: string;
+            /** @description SHA256 hash of the claim encoded as hexadecimal: the statement (Type, Result, RevokedAttestationID, ChangeOrderID, ReleaseID, EvidenceAttestationIDs, Note, Claims and ExpiresAt), the User who recorded it, and the Revisions it covers. (readonly) */
+            readonly Hash?: string;
             /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
             HiddenReason?: string;
             /** @description The attester's reason, in their own words. */
@@ -4921,6 +4923,8 @@ export interface components {
             readonly EntityType?: string;
             /** @description Final is what the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
             Final?: components["schemas"]["ChangeWorkflowFinalStage"];
+            /** @description SHA256 hash of the change workflow's Stages, Final, CustomPrerequisites and AttestationPrerequisites encoded as hexadecimal. (readonly) */
+            readonly Hash?: string;
             /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
             HiddenReason?: string;
             /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -9511,6 +9515,8 @@ export interface components {
             FilterID?: string;
             /** @description Column to group by (optional). */
             GroupBy?: string;
+            /** @description SHA256 hash of the view's specification fields encoded as hexadecimal: FilterID, Of, Columns, GroupBy, OrderBy and OrderByDirection. (readonly) */
+            readonly Hash?: string;
             /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
             HiddenReason?: string;
             /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -11350,7 +11356,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Attestation: AttestationID, ChangeOrderID, Claims, CreatedAt, EvidenceAttestationIDs, ExpiresAt, HiddenReason, Note, OrganizationID, Permissions, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
+                 *     Supported attributes for filtering on Attestation: AttestationID, ChangeOrderID, Claims, CreatedAt, EvidenceAttestationIDs, ExpiresAt, Hash, HiddenReason, Note, OrganizationID, Permissions, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -11425,7 +11431,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Attestation: AttestationID, ChangeOrderID, CreatedAt, ExpiresAt, HiddenReason, Note, OrganizationID, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
+                 *     Supported attributes for ordering Attestation: AttestationID, ChangeOrderID, CreatedAt, ExpiresAt, Hash, HiddenReason, Note, OrganizationID, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -15768,7 +15774,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
+                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Hash, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -15843,7 +15849,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering ChangeWorkflow: BackingUnitID, ChangeWorkflowID, CreatedAt, DisplayName, HiddenReason, OrganizationID, Slug, SpaceID, UpdatedAt, UpstreamChangeWorkflowID.
+                 *     Supported attributes for ordering ChangeWorkflow: BackingUnitID, ChangeWorkflowID, CreatedAt, DisplayName, Hash, HiddenReason, OrganizationID, Slug, SpaceID, UpdatedAt, UpstreamChangeWorkflowID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -15972,7 +15978,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
+                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Hash, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -16324,7 +16330,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
+                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Hash, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -16526,7 +16532,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
+                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Hash, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -16768,7 +16774,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
+                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Hash, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -28434,7 +28440,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Attestation: AttestationID, ChangeOrderID, Claims, CreatedAt, EvidenceAttestationIDs, ExpiresAt, HiddenReason, Note, OrganizationID, Permissions, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
+                 *     Supported attributes for filtering on Attestation: AttestationID, ChangeOrderID, Claims, CreatedAt, EvidenceAttestationIDs, ExpiresAt, Hash, HiddenReason, Note, OrganizationID, Permissions, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -28509,7 +28515,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Attestation: AttestationID, ChangeOrderID, CreatedAt, ExpiresAt, HiddenReason, Note, OrganizationID, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
+                 *     Supported attributes for ordering Attestation: AttestationID, ChangeOrderID, CreatedAt, ExpiresAt, Hash, HiddenReason, Note, OrganizationID, ReleaseID, Result, RevokedAttestationID, SpaceID, Type, UserID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -32146,7 +32152,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
+                 *     Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Hash, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -32221,7 +32227,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering ChangeWorkflow: BackingUnitID, ChangeWorkflowID, CreatedAt, DisplayName, HiddenReason, OrganizationID, Slug, SpaceID, UpdatedAt, UpstreamChangeWorkflowID.
+                 *     Supported attributes for ordering ChangeWorkflow: BackingUnitID, ChangeWorkflowID, CreatedAt, DisplayName, Hash, HiddenReason, OrganizationID, Slug, SpaceID, UpdatedAt, UpstreamChangeWorkflowID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -45439,7 +45445,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
+                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Hash, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -45514,7 +45520,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering View: BackingUnitID, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Of, OrderBy, OrderByDirection, OrganizationID, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
+                 *     Supported attributes for ordering View: BackingUnitID, CreatedAt, DisplayName, FilterID, GroupBy, Hash, HiddenReason, Of, OrderBy, OrderByDirection, OrganizationID, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -53279,7 +53285,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
+                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Hash, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -53354,7 +53360,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering View: BackingUnitID, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Of, OrderBy, OrderByDirection, OrganizationID, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
+                 *     Supported attributes for ordering View: BackingUnitID, CreatedAt, DisplayName, FilterID, GroupBy, Hash, HiddenReason, Of, OrderBy, OrderByDirection, OrganizationID, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -53483,7 +53489,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
+                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Hash, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -53834,7 +53840,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
+                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Hash, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -54036,7 +54042,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
+                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Hash, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -54277,7 +54283,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
+                 *     Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Hash, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
                  *
                  *     The whole string must be query-encoded.
                  */
