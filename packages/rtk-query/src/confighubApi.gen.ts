@@ -1593,6 +1593,7 @@ const injectedRtkApi = api
             limit: queryArg.limit,
             order_by: queryArg.orderBy,
             continue: queryArg["continue"],
+            distinct_on: queryArg.distinctOn,
           },
         }),
         providesTags: ["Release"],
@@ -9344,13 +9345,17 @@ export type DemoteApiResponse =
 export type DemoteApiArg = {
   /** Plan the demotion and return the same response without writing anything. */
   dryRun?: boolean;
-  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each restore changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. */
+  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each restore changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides.
+    
+    Supported values: Mutations, Diff. */
   include?: string;
   demoteRequest: DemoteRequest;
 };
 export type DiffConfigurationsApiResponse = /** status 200 OK */ DiffResult;
 export type DiffConfigurationsApiArg = {
-  /** Comma-separated: Attribution to attach to each changed path the To side's MutationSources entry, which says what set the new value, and Unchanged to also list resources with no changes. */
+  /** Comma-separated: Attribution to attach to each changed path the To side's MutationSources entry, which says what set the new value, Unchanged to also list resources with no changes, and Context to also list, within each changed resource, the unchanged paths around the changes: every unchanged child of each map or array that holds a change, up to the resource, as ChangeType None.
+    
+    Supported values: Attribution, Unchanged, Context. */
   include?: string;
   /** Limit the diff to the resources this where expression selects on either side. */
   whereResource?: string;
@@ -10147,7 +10152,9 @@ export type InvokeFunctionsOnOrgApiArg = {
     
     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
   includeHidden?: string;
-  /** Comma-separated parts of the result to return in addition to the default: ConfigData for the configuration the invocation produced, carried whether or not the invocation changed it. Without it, the configuration is present only when the invocation changed it, and an unchanged result is reported by DataHash alone. Diff for what the invocation changed in each Unit, path by path with the values on both sides. */
+  /** Comma-separated parts of the result to return in addition to the default: ConfigData for the configuration the invocation produced, carried whether or not the invocation changed it. Without it, the configuration is present only when the invocation changed it, and an unchanged result is reported by DataHash alone. Diff for what the invocation changed in each Unit, path by path with the values on both sides.
+    
+    Supported values: ConfigData, Diff. */
   include?: string;
   /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
   resourceType?: string;
@@ -11836,7 +11843,9 @@ export type PromoteApiResponse =
 export type PromoteApiArg = {
   /** Deprecated: use DryRun in the request body. Plan the promotion, evaluate its gates, and return the same response without writing anything. Either one asks for a dry run. */
   dryRun?: boolean;
-  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides, and ConfigData for the configuration each Unit write produced, or on a dry run would produce. On a dry run any of them runs the merges a plan otherwise skips, so they are returned only when named. */
+  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides, and ConfigData for the configuration each Unit write produced, or on a dry run would produce. On a dry run any of them runs the merges a plan otherwise skips, so they are returned only when named.
+    
+    Supported values: Mutations, Diff, ConfigData. */
   include?: string;
   promoteRequest: PromoteRequest;
 };
@@ -11954,6 +11963,14 @@ export type ListAllReleasesApiArg = {
     
     Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more. */
   continue?: string;
+  /** Entity to return at most one Release per. The result set applies DISTINCT ON this key, keeping the most recent row for each.
+    
+    Supported values: Space, Off.
+    
+    If not specified, results are restricted to at most one row per Space.
+    
+    Off disables the DISTINCT ON and returns every matching row, so it requires an explicit 'limit' and is rejected with 400 without one. */
+  distinctOn?: "Space" | "Off";
 };
 export type ListAllResourcesApiResponse =
   /** status 200 OK */ ExtendedResourceRead[];
@@ -15347,7 +15364,9 @@ export type InvokeFunctionsApiArg = {
     
     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
   includeHidden?: string;
-  /** Comma-separated parts of the result to return in addition to the default: ConfigData for the configuration the invocation produced, carried whether or not the invocation changed it. Without it, the configuration is present only when the invocation changed it, and an unchanged result is reported by DataHash alone. Diff for what the invocation changed in each Unit, path by path with the values on both sides. */
+  /** Comma-separated parts of the result to return in addition to the default: ConfigData for the configuration the invocation produced, carried whether or not the invocation changed it. Without it, the configuration is present only when the invocation changed it, and an unchanged result is reported by DataHash alone. Diff for what the invocation changed in each Unit, path by path with the values on both sides.
+    
+    Supported values: ConfigData, Diff. */
   include?: string;
   /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
   resourceType?: string;
@@ -16953,7 +16972,9 @@ export type CreateUnitApiArg = {
   mergeExternalSource?: string;
   /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
   allowExists?: string;
-  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
+  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
+    
+    Supported values: ConfigData, MutationSources, Diff. */
   include?: string;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
@@ -17091,7 +17112,9 @@ export type PatchUnitApiArg = {
   priorRevisions?: string;
   /** User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
   subgroup?: string;
-  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
+  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
+    
+    Supported values: ConfigData, MutationSources, Diff. */
   include?: string;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -17229,7 +17252,9 @@ export type UpdateUnitApiArg = {
   priorRevisions?: string;
   /** User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
   subgroup?: string;
-  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
+  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
+    
+    Supported values: ConfigData, MutationSources, Diff. */
   include?: string;
   unit: Unit;
 };
@@ -17258,7 +17283,9 @@ export type UploadUnitDataApiArg = {
   unitId: string;
   /** Human-readable description of this change, copied to the Revision it creates. */
   lastChangeDescription?: string;
-  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced. */
+  /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
+    
+    Supported values: ConfigData, MutationSources, Diff. */
   include?: string;
   /** The DataHash of the configuration this write replaces, as the ETag a read of the Unit's data served it (quoted) or bare. The write is refused with 409 Conflict when the Unit's configuration is not that one, so an edit made from one Unit's configuration, or before somebody else's write, cannot land over another. Omitted, the write is unconditional. */
   "If-Match"?: string;
@@ -17294,7 +17321,9 @@ export type GetUnitDiffApiArg = {
   from?: string;
   /** The Revision on the To side, in the same syntax as from. */
   to?: string;
-  /** Comma-separated: Attribution to attach to each changed path the To side's MutationSources entry, which says what set the new value, and Unchanged to also list resources with no changes. */
+  /** Comma-separated: Attribution to attach to each changed path the To side's MutationSources entry, which says what set the new value, Unchanged to also list resources with no changes, and Context to also list, within each changed resource, the unchanged paths around the changes: every unchanged child of each map or array that holds a change, up to the resource, as ChangeType None.
+    
+    Supported values: Attribution, Unchanged, Context. */
   include?: string;
   /** Limit the diff to the resources this where expression selects on either side. */
   whereResource?: string;
@@ -20722,6 +20751,10 @@ export type BulkPatchUnitsApiArg = {
     
     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
+    A write also accepts the parts of its result: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
+    
+    Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
+    
     The whole string must be query-encoded. */
   include?: string;
   /** Maximum number of Unit entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
@@ -20940,6 +20973,10 @@ export type BulkCreateUnitsApiArg = {
     expected in a comma-separated list format as in the JSON encoding.
     
     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    
+    A write also accepts the parts of its result: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
+    
+    Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21698,7 +21735,9 @@ export type SearchUnitDiffApiArg = {
   from?: string;
   /** The Revision on the To side, in the same syntax as from. */
   to?: string;
-  /** Comma-separated: Attribution to attach to each changed path the To side's MutationSources entry, which says what set the new value, and Unchanged to also list resources with no changes. */
+  /** Comma-separated: Attribution to attach to each changed path the To side's MutationSources entry, which says what set the new value, Unchanged to also list resources with no changes, and Context to also list, within each changed resource, the unchanged paths around the changes: every unchanged child of each map or array that holds a change, up to the resource, as ChangeType None.
+    
+    Supported values: Attribution, Unchanged, Context. */
   include?: string;
   /** Limit the diff to the resources this where expression selects on either side. */
   whereResource?: string;
@@ -21947,7 +21986,9 @@ export type UploadApiResponse =
 export type UploadApiArg = {
   /** Deprecated: use DryRun in the request body. Plan the upload and return the same response without writing anything. Either one asks for a dry run. */
   dryRun?: boolean;
-  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. They cost something to return, and on a dry run either one runs the merges a plan otherwise skips, so they are returned only when named. */
+  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. They cost something to return, and on a dry run either one runs the merges a plan otherwise skips, so they are returned only when named.
+    
+    Supported values: Mutations, Diff. */
   include?: string;
   uploadRequest: UploadRequest;
 };
@@ -25093,19 +25134,23 @@ export type PathSegment = {
   /** The map key, for a map segment */
   Field?: string;
   /** The element's index on the From side; -1 for a map key or an element absent there */
-  FromIndex?: number;
+  FromIndex: number;
   /** The merge keys that identify the element, for an element of a merge-keyed array */
   MergeKeys?: MergeKeyValue[];
   /** The element's index on the To side; -1 for a map key or an element absent there */
-  ToIndex?: number;
+  ToIndex: number;
 };
 export type PathChange = {
   /** The To side's MutationSources entry for this path, which says what set the new value; returned when include names Attribution */
   Attribution?: MutationInfo;
-  /** Add, Delete, Update, Replace, Reorder, or Rename */
+  /** Add, Delete, Update, Replace, Reorder, or Rename; or None for an unchanged path returned as context */
   ChangeType?: string;
+  /** Head, Line, or Foot when the change is to a comment on the node at the path rather than to its value: the comment above the node, at the end of its line, or below it. The path of a comment on a whole resource is empty */
+  Comment?: string;
   /** The path in configuration path syntax, as --path arguments and where filters take it, with each unkeyed array element named by its index */
   DisplayPath?: string;
+  /** How to read FromValue: string, int, or bool for a scalar, YAML for a map or array, and empty for a scalar of another type, such as a float or null, or when the From side has no value */
+  FromDataType?: string;
   /** The value on the From side: a scalar's text, or a YAML block for a map or array */
   FromValue?: string;
   /** A unified line diff, for multi-line string values */
@@ -25114,7 +25159,9 @@ export type PathChange = {
   Path?: string;
   /** The path split into its segments, for rendering without parsing the path syntax */
   Segments?: PathSegment[] | null;
-  /** The value on the To side: a scalar's text, or a YAML block for a map or array */
+  /** How to read ToValue: string, int, or bool for a scalar, YAML for a map or array, and empty for a scalar of another type, such as a float or null, or when the To side has no value */
+  ToDataType?: string;
+  /** The value on the To side: a scalar's text, or a YAML block for a map or array. For an unchanged path, the value on both sides */
   ToValue?: string;
 };
 export type ResourceInfo = {
