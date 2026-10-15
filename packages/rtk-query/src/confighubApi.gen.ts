@@ -11922,7 +11922,7 @@ export type ListAllReleasesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Release are OrganizationID, SpaceID, TagID.
+    Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -15955,7 +15955,7 @@ export type ListExtendedReleasesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Release are OrganizationID, SpaceID, TagID.
+    Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -16023,7 +16023,7 @@ export type GetExtendedReleaseApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Release are OrganizationID, SpaceID, TagID.
+    Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -26461,86 +26461,6 @@ export type ReleaseRead = {
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
-export type ExtendedRelease = {
-  Organization?: Organization;
-  /** The Release. */
-  Release?: Release;
-  /** The Space the Release belongs to. */
-  Space?: Space;
-  /** The Tag the bundled Units were pinned to, if any. Expanded when requested via the include parameter. */
-  Tag?: Tag;
-};
-export type ExtendedReleaseRead = {
-  Organization?: OrganizationRead;
-  /** The Release. */
-  Release?: ReleaseRead;
-  /** The Space the Release belongs to. */
-  Space?: SpaceRead;
-  /** The Tag the bundled Units were pinned to, if any. Expanded when requested via the include parameter. */
-  Tag?: TagRead;
-};
-export type Resource = {
-  /** Configuration data of the resource, represented as JSON. */
-  Data?: object;
-  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-  HiddenReason?: string;
-  /** Unique identifier for an Organization. */
-  OrganizationID?: string;
-  /** Unique identifier for a Resource. */
-  ResourceID?: string;
-  /** Distinguishes resources within a Unit that share a ResourceType and ResourceName, as AppConfig documents that declare no configHub.configName do. 0 when the name is unique within the Unit. */
-  ResourceIndex?: number;
-  /** Name of the resource; Kubernetes resources are represented in the form <metadata.namespace>/<metadata.name>. */
-  ResourceName?: string;
-  /** Type of the resource; Kubernetes resources are represented in the form <apiVersion>/<kind>. */
-  ResourceType?: string;
-  /** Unique identifier for a space. */
-  SpaceID?: string;
-  /** Identifier of the Target the Unit containing this resource is associated with, which defines where the configuration will be applied. Mirrors the Unit's TargetID. (optional) */
-  TargetID?: string;
-  /** ToolchainType of the Unit the resource was extracted from. */
-  ToolchainType?: string;
-  /** Unique identifier for a Unit. */
-  UnitID?: string;
-  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
-  Version?: number;
-};
-export type ResourceRead = {
-  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
-  CreatedAt?: string;
-  /** Configuration data of the resource, represented as JSON. */
-  Data?: object;
-  /** The type of entity. */
-  EntityType?: string;
-  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-  HiddenReason?: string;
-  /** Unique identifier for an Organization. */
-  OrganizationID?: string;
-  /** Unique identifier for a Resource. */
-  ResourceID?: string;
-  /** Distinguishes resources within a Unit that share a ResourceType and ResourceName, as AppConfig documents that declare no configHub.configName do. 0 when the name is unique within the Unit. */
-  ResourceIndex?: number;
-  /** Name of the resource; Kubernetes resources are represented in the form <metadata.namespace>/<metadata.name>. */
-  ResourceName?: string;
-  /** Type of the resource; Kubernetes resources are represented in the form <apiVersion>/<kind>. */
-  ResourceType?: string;
-  /** Unique identifier for a space. */
-  SpaceID?: string;
-  /** Slug of the Space this entity belongs to. (readonly) */
-  SpaceSlug?: string;
-  /** Identifier of the Target the Unit containing this resource is associated with, which defines where the configuration will be applied. Mirrors the Unit's TargetID. (optional) */
-  TargetID?: string;
-  /** ToolchainType of the Unit the resource was extracted from. */
-  ToolchainType?: string;
-  /** Unique identifier for a Unit. */
-  UnitID?: string;
-  /** Slug of the Unit this entity belongs to. (readonly) */
-  UnitSlug?: string;
-  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
-  UpdatedAt?: string;
-  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
-  Version?: number;
-};
 export type Target = {
   /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
   Annotations?: {
@@ -26701,6 +26621,98 @@ export type TargetRead = {
     
     The whole string must be query-encoded. */
   WhereTrigger?: string;
+};
+export type ExtendedRelease = {
+  /** The ChangeOrder the Release was published for, if any. Expanded when requested via the include parameter. */
+  ChangeOrder?: ChangeOrder;
+  Organization?: Organization;
+  /** The Release. */
+  Release?: Release;
+  /** The Space the Release belongs to. */
+  Space?: Space;
+  /** The Tag the bundled Units were pinned to, if any. Expanded when requested via the include parameter. */
+  Tag?: Tag;
+  /** The Target the Release was published for. Expanded when requested via the include parameter. */
+  Target?: Target;
+  /** The User who published the Release. Expanded when requested via the include parameter. */
+  User?: User;
+};
+export type ExtendedReleaseRead = {
+  /** The ChangeOrder the Release was published for, if any. Expanded when requested via the include parameter. */
+  ChangeOrder?: ChangeOrderRead;
+  Organization?: OrganizationRead;
+  /** The Release. */
+  Release?: ReleaseRead;
+  /** The Space the Release belongs to. */
+  Space?: SpaceRead;
+  /** The Tag the bundled Units were pinned to, if any. Expanded when requested via the include parameter. */
+  Tag?: TagRead;
+  /** The Target the Release was published for. Expanded when requested via the include parameter. */
+  Target?: TargetRead;
+  /** The User who published the Release. Expanded when requested via the include parameter. */
+  User?: UserRead;
+};
+export type Resource = {
+  /** Configuration data of the resource, represented as JSON. */
+  Data?: object;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** Unique identifier for an Organization. */
+  OrganizationID?: string;
+  /** Unique identifier for a Resource. */
+  ResourceID?: string;
+  /** Distinguishes resources within a Unit that share a ResourceType and ResourceName, as AppConfig documents that declare no configHub.configName do. 0 when the name is unique within the Unit. */
+  ResourceIndex?: number;
+  /** Name of the resource; Kubernetes resources are represented in the form <metadata.namespace>/<metadata.name>. */
+  ResourceName?: string;
+  /** Type of the resource; Kubernetes resources are represented in the form <apiVersion>/<kind>. */
+  ResourceType?: string;
+  /** Unique identifier for a space. */
+  SpaceID?: string;
+  /** Identifier of the Target the Unit containing this resource is associated with, which defines where the configuration will be applied. Mirrors the Unit's TargetID. (optional) */
+  TargetID?: string;
+  /** ToolchainType of the Unit the resource was extracted from. */
+  ToolchainType?: string;
+  /** Unique identifier for a Unit. */
+  UnitID?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type ResourceRead = {
+  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
+  CreatedAt?: string;
+  /** Configuration data of the resource, represented as JSON. */
+  Data?: object;
+  /** The type of entity. */
+  EntityType?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** Unique identifier for an Organization. */
+  OrganizationID?: string;
+  /** Unique identifier for a Resource. */
+  ResourceID?: string;
+  /** Distinguishes resources within a Unit that share a ResourceType and ResourceName, as AppConfig documents that declare no configHub.configName do. 0 when the name is unique within the Unit. */
+  ResourceIndex?: number;
+  /** Name of the resource; Kubernetes resources are represented in the form <metadata.namespace>/<metadata.name>. */
+  ResourceName?: string;
+  /** Type of the resource; Kubernetes resources are represented in the form <apiVersion>/<kind>. */
+  ResourceType?: string;
+  /** Unique identifier for a space. */
+  SpaceID?: string;
+  /** Slug of the Space this entity belongs to. (readonly) */
+  SpaceSlug?: string;
+  /** Identifier of the Target the Unit containing this resource is associated with, which defines where the configuration will be applied. Mirrors the Unit's TargetID. (optional) */
+  TargetID?: string;
+  /** ToolchainType of the Unit the resource was extracted from. */
+  ToolchainType?: string;
+  /** Unique identifier for a Unit. */
+  UnitID?: string;
+  /** Slug of the Unit this entity belongs to. (readonly) */
+  UnitSlug?: string;
+  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
+  UpdatedAt?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
 };
 export type AttributeSelector = {
   Path?: string;

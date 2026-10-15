@@ -5766,6 +5766,8 @@ export interface components {
         };
         /** @description Release with additional related entities expanded based on the request's include parameter. */
         ExtendedRelease: {
+            /** @description The ChangeOrder the Release was published for, if any. Expanded when requested via the include parameter. */
+            ChangeOrder?: components["schemas"]["ChangeOrder"];
             Organization?: components["schemas"]["Organization"];
             /** @description The Release. */
             Release?: components["schemas"]["Release"];
@@ -5773,6 +5775,10 @@ export interface components {
             Space?: components["schemas"]["Space"];
             /** @description The Tag the bundled Units were pinned to, if any. Expanded when requested via the include parameter. */
             Tag?: components["schemas"]["Tag"];
+            /** @description The Target the Release was published for. Expanded when requested via the include parameter. */
+            Target?: components["schemas"]["Target"];
+            /** @description The User who published the Release. Expanded when requested via the include parameter. */
+            User?: components["schemas"]["User"];
         };
         ExtendedResource: {
             Error?: components["schemas"]["ResponseError"];
@@ -24842,7 +24848,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Release are OrganizationID, SpaceID, TagID.
+                 *     Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -38043,7 +38049,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Release are OrganizationID, SpaceID, TagID.
+                 *     Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -38277,7 +38283,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Release are OrganizationID, SpaceID, TagID.
+                 *     Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
