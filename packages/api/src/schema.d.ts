@@ -412,7 +412,11 @@ export interface paths {
          */
         get: operations["ListAllChannels"];
         put?: never;
-        post?: never;
+        /**
+         * Bulk create (clone) multiple channels
+         * @description Clone multiple channels selected by query parameters with optional name prefixes and destination spaces
+         */
+        post: operations["BulkCreateChannels"];
         /**
          * Bulk delete multiple channels
          * @description Delete multiple channels selected by query parameters
@@ -425,6 +429,26 @@ export interface paths {
          * @description Apply JSON merge patch to multiple channels selected by query parameters
          */
         patch: operations["BulkPatchChannels"];
+        trace?: never;
+    };
+    "/channel/move": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Move channels to another space
+         * @description Move the selected Channels, with their command runs, to another Space. A Channel a client holds the lease of is not moved: its polls name the Space it is in. Requires Manage permission on each one moved and CreateChildren permission on the destination Space. Every check runs over the whole selection before anything is moved.
+         */
+        post: operations["BulkMoveChannels"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/command": {
@@ -1879,6 +1903,30 @@ export interface paths {
          * @description Reported by the Channel's client once it has executed the run: Completed with a Result, or Failed or Rejected with an ErrorMessage. A run already terminal is returned unchanged.
          */
         post: operations["ReportCommandRunResult"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/space/{space_id}/channel/{channel_id}/document": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get the document of a Channel to edit
+         * @description Returns the Channel as the document its backing Unit would hold: the fields a write can set, with the entities it refers to named rather than identified by ID, and its Version.
+         */
+        get: operations["GetChannelDocument"];
+        put?: never;
+        /**
+         * Update a Channel from an edit of its document
+         * @description Applies the change from Base, the document as read, to Document, as edited, as a patch of the Channel: a field the edit leaves alone keeps what the Channel holds, and a field it removes is cleared. A Version other than the Channel's is a conflict.
+         */
+        post: operations["UpdateChannelDocument"];
         delete?: never;
         options?: never;
         head?: never;
@@ -5034,6 +5082,11 @@ export interface components {
             };
             /**
              * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly BackingUnitID?: string;
+            /**
+             * Format: uuid
              * @description ChannelID uniquely identifies a channel.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
@@ -5071,7 +5124,7 @@ export interface components {
             readonly EntityType?: string;
             /**
              * Format: int64
-             * @description The channel's bookmark into the event log. Set to the log's tail at creation; change it to replay or skip.
+             * @description The channel's bookmark into the event log. Set to the log's tail at creation, a clone's too; change it to replay or skip.
              */
             EventPosition: number;
             /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
@@ -5116,6 +5169,12 @@ export interface components {
              * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly UpdatedAt?: string;
+            /**
+             * Format: uuid
+             * @description The Channel this Channel was cloned from, if any.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly UpstreamChannelID?: string;
             /**
              * Format: int64
              * @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update.
@@ -5644,14 +5703,17 @@ export interface components {
             Version?: number;
         };
         EventSubscription: {
+            /** @description The event types to deliver, such as release.published. Empty means all. */
             EventTypes?: string[];
             /**
              * Format: uuid
+             * @description Restricts delivery to events about one Space. It has to name a Space when the Channel is written; a Space deleted later leaves the subscription matching nothing.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             SpaceID?: string;
             /**
              * Format: uuid
+             * @description Restricts delivery to events about one Target. It has to name a Target when the Channel is written; a Target deleted later leaves the subscription matching nothing.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             TargetID?: string;
@@ -5663,18 +5725,24 @@ export interface components {
             Organization?: components["schemas"]["Organization"];
             /** @description The Space the Attestation belongs to. */
             Space?: components["schemas"]["Space"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedAttribute: {
             Attribute?: components["schemas"]["Attribute"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
             Space?: components["schemas"]["Space"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedBridgeWorker: {
             BridgeWorker?: components["schemas"]["BridgeWorker"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
             Space?: components["schemas"]["Space"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedChangeOrder: {
             ChangeOrder?: components["schemas"]["ChangeOrder"];
@@ -5688,6 +5756,8 @@ export interface components {
             SpaceFilter?: components["schemas"]["Filter"];
             StartTag?: components["schemas"]["Tag"];
             UnitFilter?: components["schemas"]["Filter"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedChangeSet: {
             ChangeSet?: components["schemas"]["ChangeSet"];
@@ -5696,23 +5766,31 @@ export interface components {
             Organization?: components["schemas"]["Organization"];
             Space?: components["schemas"]["Space"];
             StartTag?: components["schemas"]["Tag"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedChangeWorkflow: {
             ChangeWorkflow?: components["schemas"]["ChangeWorkflow"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
             Space?: components["schemas"]["Space"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedChannel: {
             Channel?: components["schemas"]["Channel"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
             Space?: components["schemas"]["Space"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedComponent: {
             Component?: components["schemas"]["Component"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedFilter: {
             Error?: components["schemas"]["ResponseError"];
@@ -5720,12 +5798,16 @@ export interface components {
             FromSpace?: components["schemas"]["Space"];
             Organization?: components["schemas"]["Organization"];
             Space?: components["schemas"]["Space"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         /** @description Group with additional related entities expanded based on the request's include parameter. */
         ExtendedGroup: {
             Error?: components["schemas"]["ResponseError"];
             /** @description The Group. */
             Group?: components["schemas"]["Group"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedInvocation: {
             BridgeWorker?: components["schemas"]["BridgeWorker"];
@@ -5733,6 +5815,8 @@ export interface components {
             Invocation?: components["schemas"]["Invocation"];
             Organization?: components["schemas"]["Organization"];
             Space?: components["schemas"]["Space"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedLink: {
             Error?: components["schemas"]["ResponseError"];
@@ -5743,6 +5827,8 @@ export interface components {
             ToSpace?: components["schemas"]["Space"];
             ToUnit?: components["schemas"]["Unit"];
             TransformInvocation?: components["schemas"]["Invocation"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedMutation: {
             Error?: components["schemas"]["ResponseError"];
@@ -5755,14 +5841,20 @@ export interface components {
             Space?: components["schemas"]["Space"];
             Trigger?: components["schemas"]["Trigger"];
             Unit?: components["schemas"]["Unit"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedOrganization: {
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedOrganizationMember: {
             Error?: components["schemas"]["ResponseError"];
             OrganizationMember?: components["schemas"]["OrganizationMember"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         /** @description Release with additional related entities expanded based on the request's include parameter. */
         ExtendedRelease: {
@@ -5779,6 +5871,8 @@ export interface components {
             Target?: components["schemas"]["Target"];
             /** @description The User who published the Release. Expanded when requested via the include parameter. */
             User?: components["schemas"]["User"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedResource: {
             Error?: components["schemas"]["ResponseError"];
@@ -5792,7 +5886,7 @@ export interface components {
             Space?: components["schemas"]["Space"];
             Target?: components["schemas"]["Target"];
             Unit?: components["schemas"]["Unit"];
-            View?: components["schemas"]["View"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedReviewComment: {
@@ -5802,6 +5896,8 @@ export interface components {
             Revision?: components["schemas"]["Revision"];
             Space?: components["schemas"]["Space"];
             Unit?: components["schemas"]["Unit"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedRevision: {
             Attestations?: components["schemas"]["Attestation"][];
@@ -5815,11 +5911,15 @@ export interface components {
             Tags?: components["schemas"]["Tag"][];
             Unit?: components["schemas"]["Unit"];
             User?: components["schemas"]["User"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedServiceAccount: {
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
             ServiceAccount?: components["schemas"]["ServiceAccount"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedSpace: {
             AttributeFilter?: components["schemas"]["Filter"];
@@ -5841,6 +5941,8 @@ export interface components {
             TotalChangeSetCount?: number;
             /** Format: int64 */
             TotalChangeWorkflowCount?: number;
+            /** Format: int64 */
+            TotalChannelCount?: number;
             /** Format: int64 */
             TotalFilterCount?: number;
             /** Format: int64 */
@@ -5868,6 +5970,8 @@ export interface components {
             UnreleasedUnitCount?: number;
             /** Format: int64 */
             UpgradableUnitCount?: number;
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
             /** Format: int64 */
             WarnedUnitCount?: number;
         };
@@ -5877,6 +5981,8 @@ export interface components {
             Organization?: components["schemas"]["Organization"];
             Space?: components["schemas"]["Space"];
             Tag?: components["schemas"]["Tag"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedTarget: {
             Error?: components["schemas"]["ResponseError"];
@@ -5885,6 +5991,8 @@ export interface components {
             Target?: components["schemas"]["Target"];
             TriggerFilter?: components["schemas"]["Filter"];
             Triggers?: components["schemas"]["Trigger"][];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedTrigger: {
             BridgeWorker?: components["schemas"]["BridgeWorker"];
@@ -5894,6 +6002,8 @@ export interface components {
             Space?: components["schemas"]["Space"];
             Trigger?: components["schemas"]["Trigger"];
             UnitFilter?: components["schemas"]["Filter"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         /** @description Unit with capability to extend additional related entities. */
         ExtendedUnit: {
@@ -5920,12 +6030,14 @@ export interface components {
             UpstreamSpace?: components["schemas"]["Space"];
             /** @description If this Unit is a clone, the Upstream Unit it was cloned from. Optional. */
             UpstreamUnit?: components["schemas"]["Unit"];
-            View?: components["schemas"]["View"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedUser: {
             Error?: components["schemas"]["ResponseError"];
             User?: components["schemas"]["User"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedView: {
             Error?: components["schemas"]["ResponseError"];
@@ -5933,6 +6045,8 @@ export interface components {
             Organization?: components["schemas"]["Organization"];
             Space?: components["schemas"]["Space"];
             View?: components["schemas"]["View"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         /** @description Defines an entity filter. */
         Filter: {
@@ -5965,7 +6079,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             FilterID?: string;
-            /** @description From specifies the type of entity (Unit, Space, etc.) to filter, in PascalCase. */
+            /** @description From specifies the type of entity (Unit, Space, etc.) to filter, in PascalCase. Required on create, and immutable. */
             From: string;
             /**
              * Format: uuid
@@ -11421,7 +11535,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, AttestationID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -11436,6 +11550,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Attestation, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Attestation: its Of, or the From of its Filter, must be Attestation.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Attestation entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -11625,7 +11749,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, AttributeID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -11640,6 +11764,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Attribute, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Attribute: its Of, or the From of its Filter, must be Attribute.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Attribute entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -12804,7 +12938,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, BridgeWorkerID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -12819,6 +12953,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each BridgeWorker, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of BridgeWorker: its Of, or the From of its Filter, must be BridgeWorker.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of BridgeWorker entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -13780,7 +13924,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChangeOrderID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -13795,6 +13939,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each ChangeOrder, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of ChangeOrder: its Of, or the From of its Filter, must be ChangeOrder.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of ChangeOrder entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -14734,7 +14888,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChangeSetID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -14749,6 +14903,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each ChangeSet, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of ChangeSet: its Of, or the From of its Filter, must be ChangeSet.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of ChangeSet entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -15839,7 +16003,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChangeWorkflowID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -15854,6 +16018,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each ChangeWorkflow, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of ChangeWorkflow: its Of, or the From of its Filter, must be ChangeWorkflow.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of ChangeWorkflow entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -16977,7 +17151,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+                 *     Supported attributes for filtering on Channel: Annotations, BackingUnitID, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt, UpstreamChannelID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17030,7 +17204,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChannelID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -17045,6 +17219,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Channel, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Channel: its Of, or the From of its Filter, must be Channel.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Channel entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -17052,7 +17236,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Channel: ChannelID, Condition, CreatedAt, DisplayName, EventPosition, HiddenReason, IPAddress, LastMessage, LastSeenAt, OrganizationID, Slug, SpaceID, UpdatedAt.
+                 *     Supported attributes for ordering Channel: BackingUnitID, ChannelID, Condition, CreatedAt, DisplayName, EventPosition, HiddenReason, IPAddress, LastMessage, LastSeenAt, OrganizationID, Slug, SpaceID, UpdatedAt, UpstreamChannelID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -17143,7 +17327,7 @@ export interface operations {
             };
         };
     };
-    BulkDeleteChannels: {
+    BulkCreateChannels: {
         parameters: {
             query?: {
                 /**
@@ -17181,7 +17365,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+                 *     Supported attributes for filtering on Channel: Annotations, BackingUnitID, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt, UpstreamChannelID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17242,6 +17426,357 @@ export interface operations {
                 limit?: number;
                 /** @description The token from the ConfigHub-Continue header of the previous request, to act on the Channel entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
                 continue?: string;
+                /** @description Comma-separated list of prefixes to apply to cloned Channel names */
+                name_prefixes?: string;
+                /** @description Comma-separated list of labels with multiple values for cloned Channel labels, in the format of key1=value1|value2,key2=value1|value2|value3 */
+                variant_labels?: string;
+                /** @description A string for clone names, use the prefix 'template:' for a Go-template with .SourceEntitySlug to access the original entity's slug and .Labels to access variant labels, example: 'template:{{.SourceEntitySlug}}-{{.Labels.env}}' */
+                name_pattern?: string;
+                /**
+                 * @description The specified string is an expression for the purpose of filtering
+                 *     the list of Spaces returned. The expression syntax was inspired by SQL.
+                 *     It supports conjunctions using `AND` of relational expressions of the form *attribute*
+                 *     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+                 *     as in the JSON encoding.
+                 *     Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+                 *     String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+                 *     `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+                 *     String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+                 *     `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+                 *     Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+                 *     UUIDs and boolean attributes support equality and inequality only.
+                 *     UUID and time literals must be quoted as string literals.
+                 *     String literals are quoted with single quotes, such as `'string'`.
+                 *     Time literals use the same form as when serialized as JSON,
+                 *     such as: `CreatedAt > '2025-02-18T23:16:34'`.
+                 *     Integer and boolean literals are also supported for attributes of those types.
+                 *     Arrays support the `?` operator to to match any element of the array,
+                 *     as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+                 *     Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+                 *     An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+                 *     as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+                 *     Without the `*` such a reference is an error, since it names no single value to compare.
+                 *     Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+                 *     Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+                 *     as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+                 *     Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+                 *     These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+                 *     The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+                 *     such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+                 *     Conjunctions are supported using the `AND` operator.
+                 *     An example conjunction is:
+                 *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+                 *
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *
+                 *     Where expression to select destination spaces for cloning channels
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                where_space?: string;
+                /**
+                 * @description UUID of a Filter entity to apply to the Space list.
+                 *
+                 *     The Filter must be in the same Organization as the user credentials.
+                 *
+                 *     The Filter's From field must match the entity type being filtered (Space).
+                 *
+                 *     For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+                 *
+                 *     The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+                 *
+                 *     If both 'filter' and 'where' parameters are specified, they are combined with AND logic.
+                 */
+                filter_space?: string;
+                /** @description Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
+                allow_exists?: string;
+                /** @description Give each Channel written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Channel's configuration, which is then kept in step with it. */
+                with_backing_units?: boolean;
+                /** @description Create Channels from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
+                from_backing_units?: boolean;
+                /**
+                 * @description The specified string is an expression for the purpose of filtering
+                 *     the list of Units returned. The expression syntax was inspired by SQL.
+                 *     It supports conjunctions using `AND` of relational expressions of the form *attribute*
+                 *     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+                 *     as in the JSON encoding.
+                 *     Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+                 *     String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+                 *     `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+                 *     String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+                 *     `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+                 *     Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+                 *     UUIDs and boolean attributes support equality and inequality only.
+                 *     UUID and time literals must be quoted as string literals.
+                 *     String literals are quoted with single quotes, such as `'string'`.
+                 *     Time literals use the same form as when serialized as JSON,
+                 *     such as: `CreatedAt > '2025-02-18T23:16:34'`.
+                 *     Integer and boolean literals are also supported for attributes of those types.
+                 *     Arrays support the `?` operator to to match any element of the array,
+                 *     as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+                 *     Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+                 *     An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+                 *     as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+                 *     Without the `*` such a reference is an error, since it names no single value to compare.
+                 *     Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+                 *     Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+                 *     as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+                 *     Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+                 *     These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+                 *     The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+                 *     such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+                 *     Conjunctions are supported using the `AND` operator.
+                 *     An example conjunction is:
+                 *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+                 *
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *
+                 *     The Units to create entities from, with from_backing_units.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                where_unit?: string;
+                /** @description A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+                filter_unit?: string;
+                /** @description With from_backing_units, patch a Channel a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Channel is returned as it is. */
+                patch_existing?: boolean;
+                /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+                dry_run?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/merge-patch+json": {
+                    /** @description An optional map of Annotation key/value pairs for tools to attach information to entities. */
+                    Annotations?: {
+                        [key: string]: string | null;
+                    } | null;
+                    Commands?: {
+                        [key: string]: Record<string, never> | null;
+                    } | null;
+                    /** @description An optional set of gates that, if any is present, will block deletion */
+                    DeleteGates?: {
+                        [key: string]: boolean | null;
+                    } | null;
+                    /** @description Friendly name for the entity. */
+                    DisplayName?: string | null;
+                    EventPosition?: number | null;
+                    /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+                    HiddenReason?: string | null;
+                    /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
+                    Labels?: {
+                        [key: string]: string | null;
+                    } | null;
+                    Permissions?: {
+                        [key: string]: Record<string, never> | null;
+                    } | null;
+                    /** @description Unique URL-safe identifier for the entity. */
+                    Slug?: string | null;
+                    Subscriptions?: (Record<string, never> | null)[] | null;
+                    /** @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+                    Version?: number | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    /** @description The token to pass as the continue parameter of the next request, when there may be more entities after this page. It is absent on the last page. A page can hold fewer entities than the limit, or none, and still have one. */
+                    "ConfigHub-Continue"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChannelCreateOrUpdateResponse"][];
+                };
+            };
+            /** @description Multi-Status (partial success) */
+            207: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChannelCreateOrUpdateResponse"][];
+                };
+            };
+            /** @description Channel request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Channel not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Channel data conflict. Data has changed since last read. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description A backing Unit has outstanding ValidationErrors */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing Channel. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    BulkDeleteChannels: {
+        parameters: {
+            query?: {
+                /**
+                 * @description The specified string is an expression for the purpose of filtering
+                 *     the list of Channels returned. The expression syntax was inspired by SQL.
+                 *     It supports conjunctions using `AND` of relational expressions of the form *attribute*
+                 *     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+                 *     as in the JSON encoding.
+                 *     Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+                 *     String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+                 *     `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+                 *     String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+                 *     `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+                 *     Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+                 *     UUIDs and boolean attributes support equality and inequality only.
+                 *     UUID and time literals must be quoted as string literals.
+                 *     String literals are quoted with single quotes, such as `'string'`.
+                 *     Time literals use the same form as when serialized as JSON,
+                 *     such as: `CreatedAt > '2025-02-18T23:16:34'`.
+                 *     Integer and boolean literals are also supported for attributes of those types.
+                 *     Arrays support the `?` operator to to match any element of the array,
+                 *     as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+                 *     Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+                 *     An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+                 *     as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+                 *     Without the `*` such a reference is an error, since it names no single value to compare.
+                 *     Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+                 *     Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+                 *     as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+                 *     Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+                 *     These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+                 *     The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+                 *     such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+                 *     Conjunctions are supported using the `AND` operator.
+                 *     An example conjunction is:
+                 *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+                 *
+                 *     Supported attributes for filtering on Channel: Annotations, BackingUnitID, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt, UpstreamChannelID.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                where?: string;
+                /**
+                 * @description UUID of a Filter entity to apply to the Channel list.
+                 *
+                 *     The Filter must be in the same Organization as the user credentials.
+                 *
+                 *     The Filter's From field must match the entity type being filtered (Channel).
+                 *
+                 *     For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+                 *
+                 *     The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+                 *
+                 *     If both 'filter' and 'where' parameters are specified, they are combined with AND logic.
+                 */
+                filter?: string;
+                /**
+                 * @description Free text search that approximately matches the specified string against string fields and map keys/values.
+                 *
+                 *     The search is case-insensitive and uses pattern matching to find entities containing the text.
+                 *
+                 *     Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+                 *
+                 *     For map fields (like Labels and Annotations), the search matches both map keys and values.
+                 *
+                 *     The search uses OR logic across all searchable fields, so matching any field will return the entity.
+                 *
+                 *     If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+                 *
+                 *     Searchable fields for Channel include string and map-type attributes from the queryable attributes list.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                contains?: string;
+                /**
+                 * @description Hidden Channel entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+                 *
+                 *     It is a comma-separated list of HiddenReasons, or `*` for all of them.
+                 *
+                 *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+                 *
+                 *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 */
+                include_hidden?: string;
+                /**
+                 * @description Include clause for expanding related entities in the response for Channel.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *
+                 *     Supported attributes for Channel are OrganizationID, SpaceID.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                include?: string;
+                /** @description Maximum number of Channel entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+                limit?: number;
+                /** @description The token from the ConfigHub-Continue header of the previous request, to act on the Channel entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+                continue?: string;
+                /** @description Prune: of the Channels selected, delete those whose backing Unit is empty, which says the Channel should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Channel's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
+                from_backing_units?: boolean;
             };
             header?: never;
             path?: never;
@@ -17381,7 +17916,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+                 *     Supported attributes for filtering on Channel: Annotations, BackingUnitID, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt, UpstreamChannelID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17442,6 +17977,10 @@ export interface operations {
                 limit?: number;
                 /** @description The token from the ConfigHub-Continue header of the previous request, to act on the Channel entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
                 continue?: string;
+                /** @description Give each Channel written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Channel's configuration, which is then kept in step with it. */
+                with_backing_units?: boolean;
+                /** @description Patch each selected Channel with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
+                from_backing_units?: boolean;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
                 dry_run?: boolean;
             };
@@ -17502,6 +18041,206 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ChannelCreateOrUpdateResponse"][];
+                };
+            };
+            /** @description Channel request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Channel not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Channel data conflict. Data has changed since last read. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description A backing Unit has outstanding ValidationErrors */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing Channel. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    BulkMoveChannels: {
+        parameters: {
+            query?: {
+                /**
+                 * @description The specified string is an expression for the purpose of filtering
+                 *     the list of Channels returned. The expression syntax was inspired by SQL.
+                 *     It supports conjunctions using `AND` of relational expressions of the form *attribute*
+                 *     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+                 *     as in the JSON encoding.
+                 *     Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+                 *     String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+                 *     `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+                 *     String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+                 *     `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+                 *     Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+                 *     UUIDs and boolean attributes support equality and inequality only.
+                 *     UUID and time literals must be quoted as string literals.
+                 *     String literals are quoted with single quotes, such as `'string'`.
+                 *     Time literals use the same form as when serialized as JSON,
+                 *     such as: `CreatedAt > '2025-02-18T23:16:34'`.
+                 *     Integer and boolean literals are also supported for attributes of those types.
+                 *     Arrays support the `?` operator to to match any element of the array,
+                 *     as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+                 *     Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+                 *     An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+                 *     as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+                 *     Without the `*` such a reference is an error, since it names no single value to compare.
+                 *     Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+                 *     Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+                 *     as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+                 *     Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+                 *     These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+                 *     The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+                 *     such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+                 *     Conjunctions are supported using the `AND` operator.
+                 *     An example conjunction is:
+                 *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+                 *
+                 *     Supported attributes for filtering on Channel: Annotations, BackingUnitID, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt, UpstreamChannelID.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                where?: string;
+                /**
+                 * @description UUID of a Filter entity to apply to the Channel list.
+                 *
+                 *     The Filter must be in the same Organization as the user credentials.
+                 *
+                 *     The Filter's From field must match the entity type being filtered (Channel).
+                 *
+                 *     For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+                 *
+                 *     The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+                 *
+                 *     If both 'filter' and 'where' parameters are specified, they are combined with AND logic.
+                 */
+                filter?: string;
+                /**
+                 * @description Free text search that approximately matches the specified string against string fields and map keys/values.
+                 *
+                 *     The search is case-insensitive and uses pattern matching to find entities containing the text.
+                 *
+                 *     Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+                 *
+                 *     For map fields (like Labels and Annotations), the search matches both map keys and values.
+                 *
+                 *     The search uses OR logic across all searchable fields, so matching any field will return the entity.
+                 *
+                 *     If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+                 *
+                 *     Searchable fields for Channel include string and map-type attributes from the queryable attributes list.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                contains?: string;
+                /**
+                 * @description Hidden Channel entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+                 *
+                 *     It is a comma-separated list of HiddenReasons, or `*` for all of them.
+                 *
+                 *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+                 *
+                 *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 */
+                include_hidden?: string;
+                /**
+                 * @description Include clause for expanding related entities in the response for Channel.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *
+                 *     Supported attributes for Channel are OrganizationID, SpaceID.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                include?: string;
+                /** @description Report what the move would do, and what would stop it, without moving anything */
+                dry_run?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["MoveRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MoveResponse"][];
+                };
+            };
+            /** @description Multi-Status: nothing was moved, or some moved and others did not */
+            207: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MoveResponse"][];
                 };
             };
             /** @description Channel request is invalid (Bad Request). */
@@ -17737,7 +18476,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, CommandRunID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -17749,7 +18488,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, SpaceID, Status, TargetID, TimeoutAt, UnitID.
+                 *     Supported attributes for ordering CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, Status, TargetID, TimeoutAt, UnitID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -17931,7 +18670,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ComponentID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -17946,6 +18685,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Component, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Component: its Of, or the From of its Filter, must be Component.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Component entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -18159,7 +18908,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ComponentID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -19017,7 +19766,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, FilterID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -19032,6 +19781,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Filter, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Filter: its Of, or the From of its Filter, must be Filter.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Filter entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -20345,7 +21104,7 @@ export interface operations {
                 trigger_filter?: string;
                 /** @description When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
                 triggers_passed?: boolean;
-                /** @description View slug or UUID. Applies the View's column definitions to extract values for each unit. If the View has a FilterID, its filter is ANDed with other filters. The View must have Of=Unit or a Filter with From=Unit. */
+                /** @description UUID of a View of Unit. Its Filter selects the Units as the filter parameter does, so the two may not both be specified. */
                 view?: string;
             };
             header?: never;
@@ -20558,7 +21317,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, GroupID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -20573,6 +21332,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Group, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Group: its Of, or the From of its Filter, must be Group.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Group entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -20680,7 +21449,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, GroupID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -21058,7 +21827,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, InvocationID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -21073,6 +21842,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Invocation, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Invocation: its Of, or the From of its Filter, must be Invocation.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Invocation entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -22249,7 +23028,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, LinkID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -22264,6 +23043,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Link, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Link: its Of, or the From of its Filter, must be Link.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Link entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -23771,7 +24560,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, OrganizationID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -23786,6 +24575,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Organization, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Organization: its Of, or the From of its Filter, must be Organization.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
             };
             header?: never;
             path?: never;
@@ -23967,7 +24766,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, OrganizationID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -24310,6 +25109,16 @@ export interface operations {
                  *     The whole string must be query-encoded.
                  */
                 contains?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each OrganizationMember, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of OrganizationMember: its Of, or the From of its Filter, must be OrganizationMember.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
             };
             header?: never;
             path: {
@@ -24859,7 +25668,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ReleaseID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -24874,6 +25683,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Release, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Release: its Of, or the From of its Filter, must be Release.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Release entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -25075,7 +25894,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ResourceID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -25090,6 +25909,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Resource, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Resource: its Of, or the From of its Filter, must be Resource.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Resource entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -25119,8 +25948,6 @@ export interface operations {
                  * @description Deprecated: use continue. Number of Resource entities to skip before returning results. Cannot be combined with continue.
                  */
                 offset?: number;
-                /** @description UUID of a View whose columns to extract for each resource, returned as ViewColumns. DataPath columns are read from the stored JSON rather than by invoking a function. */
-                view?: string;
                 /** @description Return each resource's configuration in its original toolchain-native form, as RawData on the response envelope. Off by default: the bodies are bulk, and a table view needs only the queryable Data projection. */
                 raw_data?: boolean;
             };
@@ -25288,7 +26115,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ReviewCommentID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -25303,6 +26130,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each ReviewComment, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of ReviewComment: its Of, or the From of its Filter, must be ReviewComment.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of ReviewComment entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -25906,7 +26743,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, RevisionID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -25921,6 +26758,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Revision, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Revision: its Of, or the From of its Filter, must be Revision.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Revision entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -26127,7 +26974,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, RevisionID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -26348,7 +27195,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, RevisionID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -26567,7 +27414,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ServiceAccountID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -26582,6 +27429,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each ServiceAccount, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of ServiceAccount: its Of, or the From of its Filter, must be ServiceAccount.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of ServiceAccount entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -26791,7 +27648,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ServiceAccountID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -27802,7 +28659,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, SpaceID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -27817,6 +28674,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Space, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Space: its Of, or the From of its Filter, must be Space.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Space entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -28032,7 +28899,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, SpaceID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -28531,7 +29398,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, AttestationID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -28546,6 +29413,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Attestation, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Attestation: its Of, or the From of its Filter, must be Attestation.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Attestation entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -28759,7 +29636,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, AttestationID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -28932,7 +29809,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, AttributeID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -28947,6 +29824,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Attribute, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Attribute: its Of, or the From of its Filter, must be Attribute.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Attribute entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -29169,7 +30056,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, AttributeID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -29847,7 +30734,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, BridgeWorkerID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -29862,6 +30749,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each BridgeWorker, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of BridgeWorker: its Of, or the From of its Filter, must be BridgeWorker.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of BridgeWorker entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -30086,7 +30983,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, BridgeWorkerID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -30782,7 +31679,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChangeOrderID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -30797,6 +31694,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each ChangeOrder, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of ChangeOrder: its Of, or the From of its Filter, must be ChangeOrder.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of ChangeOrder entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -31012,7 +31919,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChangeOrderID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -31525,7 +32432,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChangeSetID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -31540,6 +32447,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each ChangeSet, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of ChangeSet: its Of, or the From of its Filter, must be ChangeSet.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of ChangeSet entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -31755,7 +32672,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChangeSetID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -32243,7 +33160,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChangeWorkflowID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -32258,6 +33175,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each ChangeWorkflow, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of ChangeWorkflow: its Of, or the From of its Filter, must be ChangeWorkflow.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of ChangeWorkflow entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -32475,7 +33402,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChangeWorkflowID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -33088,7 +34015,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Channel: Annotations, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt.
+                 *     Supported attributes for filtering on Channel: Annotations, BackingUnitID, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt, UpstreamChannelID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -33141,7 +34068,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChannelID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -33156,6 +34083,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Channel, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Channel: its Of, or the From of its Filter, must be Channel.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Channel entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -33163,7 +34100,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Channel: ChannelID, Condition, CreatedAt, DisplayName, EventPosition, HiddenReason, IPAddress, LastMessage, LastSeenAt, OrganizationID, Slug, SpaceID, UpdatedAt.
+                 *     Supported attributes for ordering Channel: BackingUnitID, ChannelID, Condition, CreatedAt, DisplayName, EventPosition, HiddenReason, IPAddress, LastMessage, LastSeenAt, OrganizationID, Slug, SpaceID, UpdatedAt, UpstreamChannelID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -33260,6 +34197,8 @@ export interface operations {
     CreateChannel: {
         parameters: {
             query?: {
+                /** @description Give each Channel written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Channel's configuration, which is then kept in step with it. */
+                with_backing_units?: boolean;
                 /** @description Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
                 allow_exists?: string;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
@@ -33371,7 +34310,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ChannelID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -33863,6 +34802,180 @@ export interface operations {
             };
         };
     };
+    GetChannelDocument: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Unique identifier for a space_id */
+                space_id: string;
+                /** @description Unique identifier for a channel_id */
+                channel_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EntityDocument"];
+                };
+            };
+            /** @description Channel request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Channel not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing Channel. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    UpdateChannelDocument: {
+        parameters: {
+            query?: {
+                /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+                dry_run?: boolean;
+            };
+            header?: never;
+            path: {
+                /** @description Unique identifier for a space_id */
+                space_id: string;
+                /** @description Unique identifier for a channel_id */
+                channel_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["EntityDocumentEdit"];
+            };
+        };
+        responses: {
+            /** @description A Channel is a mailbox between ConfigHub and one bot. A client claims it and polls it; callers run the commands it declares on it, each as a CommandRun; it subscribes to events and bookmarks how far it has read. It owns no identity: a ServiceAccount claims it by holding Claim on it. Its Commands and Subscriptions are set by whoever manages it, not by the client. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Channel"];
+                };
+            };
+            /** @description Channel request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Channel not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description The Channel changed since the document was read. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing Channel. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
     AcquireChannelLease: {
         parameters: {
             query?: never;
@@ -34314,7 +35427,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, CommandRunID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -34326,7 +35439,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, SpaceID, Status, TargetID, TimeoutAt, UnitID.
+                 *     Supported attributes for ordering CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, Status, TargetID, TimeoutAt, UnitID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -34524,7 +35637,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, CommandRunID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -34955,7 +36068,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, FilterID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -34970,6 +36083,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Filter, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Filter: its Of, or the From of its Filter, must be Filter.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Filter entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -35191,7 +36314,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, FilterID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -35998,7 +37121,7 @@ export interface operations {
                 trigger_filter?: string;
                 /** @description When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
                 triggers_passed?: boolean;
-                /** @description View slug or UUID. Applies the View's column definitions to extract values for each unit. If the View has a FilterID, its filter is ANDed with other filters. The View must have Of=Unit or a Filter with From=Unit. */
+                /** @description UUID of a View of Unit. Its Filter selects the Units as the filter parameter does, so the two may not both be specified. */
                 view?: string;
             };
             header?: never;
@@ -36226,7 +37349,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, InvocationID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -36241,6 +37364,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Invocation, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Invocation: its Of, or the From of its Filter, must be Invocation.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Invocation entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -36458,7 +37591,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, InvocationID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -37121,7 +38254,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, LinkID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -37136,6 +38269,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Link, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Link: its Of, or the From of its Filter, must be Link.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Link entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -37358,7 +38501,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, LinkID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -38060,7 +39203,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ReleaseID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -38075,6 +39218,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Release, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Release: its Of, or the From of its Filter, must be Release.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Release entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -38294,7 +39447,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ReleaseID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -38954,7 +40107,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, TagID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -38969,6 +40122,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Tag, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Tag: its Of, or the From of its Filter, must be Tag.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Tag entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -39184,7 +40347,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, TagID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -39671,7 +40834,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, TargetID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -39686,6 +40849,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Target, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Target: its Of, or the From of its Filter, must be Target.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Target entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -39903,7 +41076,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, TargetID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -40576,7 +41749,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, TriggerID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -40591,6 +41764,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Trigger, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Trigger: its Of, or the From of its Filter, must be Trigger.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Trigger entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -40818,7 +42001,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, TriggerID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -41534,7 +42717,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, UnitID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -41549,6 +42732,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Unit, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Unit: its Of, or the From of its Filter, must be Unit.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Unit entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -41585,8 +42778,6 @@ export interface operations {
                 trigger_filter?: string;
                 /** @description When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
                 triggers_passed?: boolean;
-                /** @description View slug or UUID. Applies the View's column definitions to extract values for each unit. If the View has a FilterID, its filter is ANDed with other filters. The View must have Of=Unit or a Filter with From=Unit. */
-                view?: string;
             };
             header?: never;
             path: {
@@ -41803,7 +42994,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, UnitID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -43013,7 +44204,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, MutationID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -43028,6 +44219,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Mutation, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Mutation: its Of, or the From of its Filter, must be Mutation.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Mutation entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -43150,7 +44351,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, MutationID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -43498,7 +44699,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ResourceID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -43513,6 +44714,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Resource, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Resource: its Of, or the From of its Filter, must be Resource.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Resource entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -43542,8 +44753,6 @@ export interface operations {
                  * @description Deprecated: use continue. Number of Resource entities to skip before returning results. Cannot be combined with continue.
                  */
                 offset?: number;
-                /** @description UUID of a View whose columns to extract for each resource, returned as ViewColumns. DataPath columns are read from the stored JSON rather than by invoking a function. */
-                view?: string;
                 /** @description Return each resource's configuration in its original toolchain-native form, as RawData on the response envelope. Off by default: the bodies are bulk, and a table view needs only the queryable Data projection. */
                 raw_data?: boolean;
             };
@@ -43644,13 +44853,11 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ResourceID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
                 select?: string;
-                /** @description UUID of a View whose columns to extract for each resource, returned as ViewColumns. DataPath columns are read from the stored JSON rather than by invoking a function. */
-                view?: string;
                 /** @description Return each resource's configuration in its original toolchain-native form, as RawData on the response envelope. Off by default: the bodies are bulk, and a table view needs only the queryable Data projection. */
                 raw_data?: boolean;
             };
@@ -43823,7 +45030,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ReviewCommentID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -43838,6 +45045,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each ReviewComment, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of ReviewComment: its Of, or the From of its Filter, must be ReviewComment.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of ReviewComment entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -44055,7 +45272,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ReviewCommentID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -44540,7 +45757,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, RevisionID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -44555,6 +45772,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Revision, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Revision: its Of, or the From of its Filter, must be Revision.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Revision entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -44682,7 +45909,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, RevisionID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -45560,7 +46787,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ViewID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -45575,6 +46802,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each View, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of View: its Of, or the From of its Filter, must be View.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of View entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -45792,7 +47029,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ViewID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -46457,7 +47694,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, TagID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -46472,6 +47709,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Tag, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Tag: its Of, or the From of its Filter, must be Tag.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Tag entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -47560,7 +48807,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, TargetID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -47575,6 +48822,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Target, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Target: its Of, or the From of its Filter, must be Target.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Target entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -48753,7 +50010,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, TriggerID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -48768,6 +50025,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Trigger, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Trigger: its Of, or the From of its Filter, must be Trigger.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Trigger entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -49988,7 +51255,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, UnitID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -50003,6 +51270,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each Unit, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of Unit: its Of, or the From of its Filter, must be Unit.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of Unit entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -50039,8 +51316,6 @@ export interface operations {
                 trigger_filter?: string;
                 /** @description When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
                 triggers_passed?: boolean;
-                /** @description View slug or UUID. Applies the View's column definitions to extract values for each unit. If the View has a FilterID, its filter is ANDed with other filters. The View must have Of=Unit or a Filter with From=Unit. */
-                view?: string;
             };
             header?: never;
             path?: never;
@@ -51893,7 +53168,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, UnitID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -51908,6 +53183,8 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /** @description UUID of a View of Unit. Its Filter selects the Units as the filter parameter does, so the two may not both be specified. */
+                view?: string;
                 /** @description Maximum number of Unit entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -51944,8 +53221,6 @@ export interface operations {
                 trigger_filter?: string;
                 /** @description When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
                 triggers_passed?: boolean;
-                /** @description View slug or UUID. Applies the View's column definitions to extract values for each unit. If the View has a FilterID, its filter is ANDed with other filters. The View must have Of=Unit or a Filter with From=Unit. */
-                view?: string;
             };
             header?: never;
             path?: never;
@@ -52107,6 +53382,8 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /** @description UUID of a View of Unit. Its Filter selects the Units as the filter parameter does, so the two may not both be specified. */
+                view?: string;
                 /** @description Maximum number of Unit entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -52143,8 +53420,6 @@ export interface operations {
                 trigger_filter?: string;
                 /** @description When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
                 triggers_passed?: boolean;
-                /** @description View slug or UUID. Applies the View's column definitions to extract values for each unit. If the View has a FilterID, its filter is ANDed with other filters. The View must have Of=Unit or a Filter with From=Unit. */
-                view?: string;
                 /** @description The Revision on the From side: a number, a Revision ID, HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, or ChangeOrder:<id>, any of them optionally prefixed with Before:. */
                 from?: string;
                 /** @description The Revision on the To side, in the same syntax as from. */
@@ -52522,7 +53797,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, UnitID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -52537,6 +53812,8 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /** @description UUID of a View of Unit. Its Filter selects the Units as the filter parameter does, so the two may not both be specified. */
+                view?: string;
                 /** @description Maximum number of Unit entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -52573,8 +53850,6 @@ export interface operations {
                 trigger_filter?: string;
                 /** @description When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
                 triggers_passed?: boolean;
-                /** @description View slug or UUID. Applies the View's column definitions to extract values for each unit. If the View has a FilterID, its filter is ANDed with other filters. The View must have Of=Unit or a Filter with From=Unit. */
-                view?: string;
             };
             header?: never;
             path?: never;
@@ -52856,7 +54131,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, UserID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -52871,6 +54146,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each User, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of User: its Of, or the From of its Filter, must be User.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of User entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -52978,7 +54263,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, UserID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -53416,7 +54701,7 @@ export interface operations {
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *     If not specified, all fields are returned.
                  *     Entity and parent IDs (like OrganizationID, SpaceID, ViewID) and Slug are always returned regardless of the select parameter.
-                 *     Fields used in where and contains filters, and fields named by order_by, are also automatically included.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
                  *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
                  *     The whole string must be query-encoded.
                  */
@@ -53431,6 +54716,16 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each View, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of View: its Of, or the From of its Filter, must be View.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of View entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**

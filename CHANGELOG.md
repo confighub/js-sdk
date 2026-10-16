@@ -7,6 +7,62 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.26 — 2026-10-15
+
+### API
+
+Compared with ConfigHub `v0.8.25`:
+
+#### Removed (3), breaking for code typed against them
+
+- parameter `view` on `GET /space/{space_id}/unit/{unit_id}/resource/{resource_id}`
+- field `ExtendedResource.View`
+- field `ExtendedUnit.View`
+
+#### Added (77)
+
+- path `/channel/move`
+- path `/space/{space_id}/channel/{channel_id}/document`
+- parameter `view` on `GET /attestation`
+- parameter `view` on `GET /attribute`
+- parameter `view` on `GET /bridge_worker`
+- parameter `view` on `GET /change_order`
+- parameter `view` on `GET /change_set`
+- parameter `view` on `GET /change_workflow`
+- parameter `from_backing_units` on `DELETE /channel`
+- parameter `view` on `GET /channel`
+- parameter `with_backing_units` on `PATCH /channel`
+- parameter `from_backing_units` on `PATCH /channel`
+- operation `POST /channel`
+- parameter `view` on `GET /component`
+- parameter `view` on `GET /filter`
+- parameter `view` on `GET /group`
+- parameter `view` on `GET /invocation`
+- parameter `view` on `GET /link`
+- parameter `view` on `GET /organization`
+- parameter `view` on `GET /organization/{organization_id}/organization_member`
+- parameter `view` on `GET /release`
+- parameter `view` on `GET /review_comment`
+- parameter `view` on `GET /revision`
+- parameter `view` on `GET /service_account`
+- parameter `view` on `GET /space`
+- parameter `view` on `GET /space/{space_id}/attestation`
+- parameter `view` on `GET /space/{space_id}/attribute`
+- parameter `view` on `GET /space/{space_id}/bridge_worker`
+- parameter `view` on `GET /space/{space_id}/change_order`
+- parameter `view` on `GET /space/{space_id}/change_set`
+- parameter `view` on `GET /space/{space_id}/change_workflow`
+- parameter `view` on `GET /space/{space_id}/channel`
+- parameter `with_backing_units` on `POST /space/{space_id}/channel`
+- parameter `view` on `GET /space/{space_id}/filter`
+- parameter `view` on `GET /space/{space_id}/invocation`
+- parameter `view` on `GET /space/{space_id}/link`
+- parameter `view` on `GET /space/{space_id}/release`
+- parameter `view` on `GET /space/{space_id}/tag`
+- parameter `view` on `GET /space/{space_id}/target`
+- parameter `view` on `GET /space/{space_id}/trigger`
+- …and 37 more
+
 ## 0.8.25 — 2026-10-15
 
 ### API
