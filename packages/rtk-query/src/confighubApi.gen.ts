@@ -2382,7 +2382,6 @@ const injectedRtkApi = api
           params: {
             include: queryArg.include,
             select: queryArg.select,
-            container_images: queryArg.containerImages,
           },
         }),
         providesTags: ["ChangeOrder"],
@@ -9855,9 +9854,9 @@ export type DemoteApiResponse =
 export type DemoteApiArg = {
   /** Plan the demotion and return the same response without writing anything. */
   dryRun?: boolean;
-  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each restore changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides.
+  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each restore changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. Context, with Diff, adds to each Diff the unchanged paths around the changes: every unchanged child of each map or array that holds a change, up to the resource, as ChangeType None.
     
-    Supported values: Mutations, Diff. */
+    Supported values: Mutations, Diff, Context. */
   include?: string;
   demoteRequest: DemoteRequest;
 };
@@ -12401,9 +12400,9 @@ export type PromoteApiResponse =
 export type PromoteApiArg = {
   /** Deprecated: use DryRun in the request body. Plan the promotion, evaluate its gates, and return the same response without writing anything. Either one asks for a dry run. */
   dryRun?: boolean;
-  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides, and ConfigData for the configuration each Unit write produced, or on a dry run would produce. On a dry run any of them runs the merges a plan otherwise skips, so they are returned only when named.
+  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides, and ConfigData for the configuration each Unit write produced, or on a dry run would produce. On a dry run any of them runs the merges a plan otherwise skips, so they are returned only when named. Context, with Diff, adds to each Diff the unchanged paths around the changes: every unchanged child of each map or array that holds a change, up to the resource, as ChangeType None.
     
-    Supported values: Mutations, Diff, ConfigData. */
+    Supported values: Mutations, Diff, Context, ConfigData. */
   include?: string;
   promoteRequest: PromoteRequest;
 };
@@ -12705,7 +12704,7 @@ export type BulkDeleteReviewCommentsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    Supported attributes for filtering on ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -12749,7 +12748,7 @@ export type BulkDeleteReviewCommentsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+    Supported attributes for ReviewComment are ChangeOrderID, OrganizationID, RevisionID, SpaceID, UnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -12795,7 +12794,7 @@ export type ListAllReviewCommentsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    Supported attributes for filtering on ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -12831,7 +12830,7 @@ export type ListAllReviewCommentsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+    Supported attributes for ReviewComment are ChangeOrderID, OrganizationID, RevisionID, SpaceID, UnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -12866,7 +12865,7 @@ export type ListAllReviewCommentsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    Supported attributes for ordering ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, Text, UnitID, UpdatedAt, UserAgent, UserID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -12919,7 +12918,7 @@ export type BulkPatchReviewCommentsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    Supported attributes for filtering on ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -12963,7 +12962,7 @@ export type BulkPatchReviewCommentsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+    Supported attributes for ReviewComment are ChangeOrderID, OrganizationID, RevisionID, SpaceID, UnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -12974,6 +12973,7 @@ export type BulkPatchReviewCommentsApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
+    ChangeOrderID?: string | null;
     /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
     HiddenReason?: string | null;
     /** Path to which the remark is attached; optional */
@@ -14700,8 +14700,6 @@ export type GetChangeOrderApiArg = {
   select?: string;
   /** Unique identifier for a change_order_id */
   changeOrderId: string;
-  /** If true, fill in ContainerImages: for each Space the ChangeOrder has landed in, the container images get-container-image finds at the Revisions its end Tag marks that differ from those at the Revisions its start Tag marks. */
-  containerImages?: boolean;
 };
 export type PatchChangeOrderApiResponse =
   /** status 200 Defines a change's identity as it moves between Spaces. */ ChangeOrderRead;
@@ -18454,7 +18452,7 @@ export type ListReviewCommentsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    Supported attributes for filtering on ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -18490,7 +18488,7 @@ export type ListReviewCommentsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+    Supported attributes for ReviewComment are ChangeOrderID, OrganizationID, RevisionID, SpaceID, UnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -18525,7 +18523,7 @@ export type ListReviewCommentsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, Text, UnitID, UpdatedAt, UserAgent, UserID.
+    Supported attributes for ordering ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, Text, UnitID, UpdatedAt, UserAgent, UserID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -18572,7 +18570,7 @@ export type GetReviewCommentApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+    Supported attributes for ReviewComment are ChangeOrderID, OrganizationID, RevisionID, SpaceID, UnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -18600,6 +18598,7 @@ export type PatchReviewCommentApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
+    ChangeOrderID?: string | null;
     /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
     HiddenReason?: string | null;
     /** Path to which the remark is attached; optional */
@@ -22794,9 +22793,9 @@ export type UploadApiResponse =
 export type UploadApiArg = {
   /** Deprecated: use DryRun in the request body. Plan the upload and return the same response without writing anything. Either one asks for a dry run. */
   dryRun?: boolean;
-  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. They cost something to return, and on a dry run either one runs the merges a plan otherwise skips, so they are returned only when named.
+  /** Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. They cost something to return, and on a dry run either one runs the merges a plan otherwise skips, so they are returned only when named. Context, with Diff, adds to each Diff the unchanged paths around the changes: every unchanged child of each map or array that holds a change, up to the resource, as ChangeType None.
     
-    Supported values: Mutations, Diff. */
+    Supported values: Mutations, Diff, Context. */
   include?: string;
   uploadRequest: UploadRequest;
 };
@@ -24968,34 +24967,6 @@ export type ChangeWorkflowSpec = {
   /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. At least one is required. */
   Stages: ChangeWorkflowStage[];
 };
-export type ChangeOrderContainerImageChange = {
-  /** The image before the change; absent for a container the change added. */
-  FromImage?: string;
-  /** The Revision the start Tag marks; absent for a Unit the change added. */
-  FromRevisionNum?: number;
-  /** The path of the image within the resource. */
-  Path?: string;
-  /** The name of the resource the container is in, as it is at the end Tag's Revision. */
-  ResourceName?: string;
-  /** The type of the resource the container is in. */
-  ResourceType?: string;
-  /** The image after the change; absent for a container the change removed. */
-  ToImage?: string;
-  /** The Revision the end Tag marks. */
-  ToRevisionNum?: number;
-  /** The Unit the image is in. */
-  UnitID?: string;
-  /** The Unit's slug. */
-  UnitSlug?: string;
-};
-export type ChangeOrderSpaceContainerImages = {
-  /** The images that changed, by Unit, resource, and path. */
-  Images?: ChangeOrderContainerImageChange[] | null;
-  /** The Space the images changed in. */
-  SpaceID?: string;
-  /** The Space's slug. */
-  SpaceSlug?: string;
-};
 export type ChangeOrderPromotionFailureLink = {
   Error?: string;
   LinkID?: string;
@@ -25060,8 +25031,6 @@ export type ChangeOrderRead = {
   ChangeWorkflow?: ChangeWorkflowSpec;
   /** ChangeWorkflowID is the ChangeWorkflow this ChangeOrder is promoted under. It says which workflow the stored copy was taken from, and keeps saying so after that workflow has been edited or deleted, which is why it is not a foreign key. */
   ChangeWorkflowID?: string;
-  /** ContainerImages lists, for each Space the ChangeOrder has landed in, the container images it changed there: in each Unit the end Tag marks, the images get-container-image finds that differ from those at the Revision the start Tag marks. Derived only when a single ChangeOrder is read with container_images=true, never in a list. Spaces and Units the reader cannot view are left out. */
-  ContainerImages?: ChangeOrderSpaceContainerImages[];
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
   CreatedAt?: string;
   /** An optional set of gates that, if any is present, will block deletion. */
@@ -27641,6 +27610,8 @@ export type ResourceInfoType2 = {
   ResourceType?: string;
 };
 export type ReviewComment = {
+  /** Unique identifier of the ChangeOrder the comment was made in review of, which may be in another Space. Optional; requires Use permission on the ChangeOrder. A reply takes the ChangeOrderID of the comment it answers, and may not name another. Immutable. */
+  ChangeOrderID?: string;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
   /** Unique identifier for an Organization. */
@@ -27667,6 +27638,8 @@ export type ReviewComment = {
   Version?: number;
 };
 export type ReviewCommentRead = {
+  /** Unique identifier of the ChangeOrder the comment was made in review of, which may be in another Space. Optional; requires Use permission on the ChangeOrder. A reply takes the ChangeOrderID of the comment it answers, and may not name another. Immutable. */
+  ChangeOrderID?: string;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
   CreatedAt?: string;
   /** The type of entity. */
@@ -27878,6 +27851,7 @@ export type RevisionRead = {
   Version?: number;
 };
 export type ExtendedReviewComment = {
+  ChangeOrder?: ChangeOrder;
   Error?: ResponseError;
   Organization?: Organization;
   ReviewComment?: ReviewComment;
@@ -27888,6 +27862,7 @@ export type ExtendedReviewComment = {
   ViewColumns?: ViewColumn[];
 };
 export type ExtendedReviewCommentRead = {
+  ChangeOrder?: ChangeOrderRead;
   Error?: ResponseError;
   Organization?: OrganizationRead;
   ReviewComment?: ReviewCommentRead;

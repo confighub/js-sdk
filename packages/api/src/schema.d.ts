@@ -4498,8 +4498,6 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             ChangeWorkflowID?: string;
-            /** @description ContainerImages lists, for each Space the ChangeOrder has landed in, the container images it changed there: in each Unit the end Tag marks, the images get-container-image finds that differ from those at the Revision the start Tag marks. Derived only when a single ChangeOrder is read with container_images=true, never in a list. Spaces and Units the reader cannot view are left out. */
-            readonly ContainerImages?: components["schemas"]["ChangeOrderSpaceContainerImages"][];
             /**
              * Format: date-time
              * @description The timestamp when the entity was created in "2023-01-01T12:00:00Z" format.
@@ -4686,36 +4684,6 @@ export interface components {
             /** @description WhereUnit narrows which Units of each Space in scope an Invoke ChangeOrder covers, and is refused on the other UpdateTypes. It takes what the where parameter of the Unit list does, attributes of what a Unit refers to included, as in `Space.Labels.Environment = 'prod'`. Empty covers every Unit. Unlike InScopeSpaceIDs it is asked again on every read, so a Unit added to a Space afterwards counts against that Space. Immutable. */
             WhereUnit?: string;
         };
-        ChangeOrderContainerImageChange: {
-            /** @description The image before the change; absent for a container the change added. */
-            FromImage?: string;
-            /**
-             * Format: int64
-             * @description The Revision the start Tag marks; absent for a Unit the change added.
-             */
-            FromRevisionNum?: number;
-            /** @description The path of the image within the resource. */
-            Path?: string;
-            /** @description The name of the resource the container is in, as it is at the end Tag's Revision. */
-            ResourceName?: string;
-            /** @description The type of the resource the container is in. */
-            ResourceType?: string;
-            /** @description The image after the change; absent for a container the change removed. */
-            ToImage?: string;
-            /**
-             * Format: int64
-             * @description The Revision the end Tag marks.
-             */
-            ToRevisionNum?: number;
-            /**
-             * Format: uuid
-             * @description The Unit the image is in.
-             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
-             */
-            UnitID?: string;
-            /** @description The Unit's slug. */
-            UnitSlug?: string;
-        };
         ChangeOrderCreateOrUpdateResponse: {
             ChangeOrder?: components["schemas"]["ChangeOrder"];
             Error?: components["schemas"]["ResponseError"];
@@ -4837,18 +4805,6 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             UserID: string;
-        };
-        ChangeOrderSpaceContainerImages: {
-            /** @description The images that changed, by Unit, resource, and path. */
-            Images?: components["schemas"]["ChangeOrderContainerImageChange"][] | null;
-            /**
-             * Format: uuid
-             * @description The Space the images changed in.
-             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
-             */
-            SpaceID?: string;
-            /** @description The Space's slug. */
-            SpaceSlug?: string;
         };
         /** @description Defines an entity changeset. */
         ChangeSet: {
@@ -5890,6 +5846,7 @@ export interface components {
             ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedReviewComment: {
+            ChangeOrder?: components["schemas"]["ChangeOrder"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
             ReviewComment?: components["schemas"]["ReviewComment"];
@@ -7750,6 +7707,12 @@ export interface components {
         };
         /** @description ReviewComment is a remark made in review of a Revision of a Unit, optionally about one resource or path in it. */
         ReviewComment: {
+            /**
+             * Format: uuid
+             * @description Unique identifier of the ChangeOrder the comment was made in review of, which may be in another Space. Optional; requires Use permission on the ChangeOrder. A reply takes the ChangeOrderID of the comment it answers, and may not name another. Immutable.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChangeOrderID?: string;
             /**
              * Format: date-time
              * @description The timestamp when the entity was created in "2023-01-01T12:00:00Z" format.
@@ -19471,9 +19434,9 @@ export interface operations {
                 /** @description Plan the demotion and return the same response without writing anything. */
                 dry_run?: boolean;
                 /**
-                 * @description Comma-separated parts of the result to return in addition to the actions: Mutations for what each restore changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides.
+                 * @description Comma-separated parts of the result to return in addition to the actions: Mutations for what each restore changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. Context, with Diff, adds to each Diff the unchanged paths around the changes: every unchanged child of each map or array that holds a change, up to the resource, as ChangeType None.
                  *
-                 *     Supported values: Mutations, Diff.
+                 *     Supported values: Mutations, Diff, Context.
                  */
                 include?: string;
             };
@@ -25469,9 +25432,9 @@ export interface operations {
                  */
                 dry_run?: boolean;
                 /**
-                 * @description Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides, and ConfigData for the configuration each Unit write produced, or on a dry run would produce. On a dry run any of them runs the merges a plan otherwise skips, so they are returned only when named.
+                 * @description Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides, and ConfigData for the configuration each Unit write produced, or on a dry run would produce. On a dry run any of them runs the merges a plan otherwise skips, so they are returned only when named. Context, with Diff, adds to each Diff the unchanged paths around the changes: every unchanged child of each map or array that holds a change, up to the resource, as ChangeType None.
                  *
-                 *     Supported values: Mutations, Diff, ConfigData.
+                 *     Supported values: Mutations, Diff, Context, ConfigData.
                  */
                 include?: string;
             };
@@ -26062,7 +26025,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+                 *     Supported attributes for filtering on ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -26104,7 +26067,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+                 *     Supported attributes for ReviewComment are ChangeOrderID, OrganizationID, RevisionID, SpaceID, UnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -26147,7 +26110,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, Text, UnitID, UpdatedAt, UserAgent, UserID.
+                 *     Supported attributes for ordering ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, Text, UnitID, UpdatedAt, UserAgent, UserID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -26276,7 +26239,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+                 *     Supported attributes for filtering on ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -26328,7 +26291,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+                 *     Supported attributes for ReviewComment are ChangeOrderID, OrganizationID, RevisionID, SpaceID, UnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -26476,7 +26439,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+                 *     Supported attributes for filtering on ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -26528,7 +26491,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+                 *     Supported attributes for ReviewComment are ChangeOrderID, OrganizationID, RevisionID, SpaceID, UnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -26547,6 +26510,8 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/merge-patch+json": {
+                    /** Format: uuid */
+                    ChangeOrderID?: string | null;
                     /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
                     HiddenReason?: string | null;
                     /** @description Path to which the remark is attached; optional */
@@ -31924,8 +31889,6 @@ export interface operations {
                  *     The whole string must be query-encoded.
                  */
                 select?: string;
-                /** @description If true, fill in ContainerImages: for each Space the ChangeOrder has landed in, the container images get-container-image finds at the Revisions its end Tag marks that differ from those at the Revisions its start Tag marks. */
-                container_images?: boolean;
             };
             header?: never;
             path: {
@@ -44977,7 +44940,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
+                 *     Supported attributes for filtering on ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, SpaceID, Text, UnitID, UpdatedAt, UserAgent, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -45019,7 +44982,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+                 *     Supported attributes for ReviewComment are ChangeOrderID, OrganizationID, RevisionID, SpaceID, UnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -45062,7 +45025,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering ReviewComment: CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, Text, UnitID, UpdatedAt, UserAgent, UserID.
+                 *     Supported attributes for ordering ReviewComment: ChangeOrderID, CreatedAt, HiddenReason, OrganizationID, Path, ReplyToID, ReviewCommentID, RevisionID, RevisionNum, Text, UnitID, UpdatedAt, UserAgent, UserID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -45261,7 +45224,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ReviewComment are OrganizationID, RevisionID, SpaceID, UnitID.
+                 *     Supported attributes for ReviewComment are ChangeOrderID, OrganizationID, RevisionID, SpaceID, UnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -45572,6 +45535,8 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/merge-patch+json": {
+                    /** Format: uuid */
+                    ChangeOrderID?: string | null;
                     /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
                     HiddenReason?: string | null;
                     /** @description Path to which the remark is attached; optional */
@@ -53933,9 +53898,9 @@ export interface operations {
                  */
                 dry_run?: boolean;
                 /**
-                 * @description Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. They cost something to return, and on a dry run either one runs the merges a plan otherwise skips, so they are returned only when named.
+                 * @description Comma-separated parts of the result to return in addition to the actions: Mutations for what each Unit write changed, or on a dry run would change, as entries of its MutationSources, and Diff for the same change path by path with the values on both sides. They cost something to return, and on a dry run either one runs the merges a plan otherwise skips, so they are returned only when named. Context, with Diff, adds to each Diff the unchanged paths around the changes: every unchanged child of each map or array that holds a change, up to the resource, as ChangeType None.
                  *
-                 *     Supported values: Mutations, Diff.
+                 *     Supported values: Mutations, Diff, Context.
                  */
                 include?: string;
             };
