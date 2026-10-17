@@ -3670,6 +3670,8 @@ const injectedRtkApi = api
             change_order: queryArg.changeOrder,
             prior_revisions: queryArg.priorRevisions,
             subgroup: queryArg.subgroup,
+            force_close: queryArg.forceClose,
+            force_reason: queryArg.forceReason,
             include: queryArg.include,
           },
         }),
@@ -3702,6 +3704,8 @@ const injectedRtkApi = api
             change_order: queryArg.changeOrder,
             prior_revisions: queryArg.priorRevisions,
             subgroup: queryArg.subgroup,
+            force_close: queryArg.forceClose,
+            force_reason: queryArg.forceReason,
             include: queryArg.include,
           },
         }),
@@ -4566,6 +4570,8 @@ const injectedRtkApi = api
             change_order: queryArg.changeOrder,
             prior_revisions: queryArg.priorRevisions,
             subgroup: queryArg.subgroup,
+            force_close: queryArg.forceClose,
+            force_reason: queryArg.forceReason,
           },
         }),
         invalidatesTags: ["Unit"],
@@ -7612,7 +7618,7 @@ export type BulkDeleteChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, ChangeWorkflow, ChangeWorkflowID, CloseOverride, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, Labels, OrganizationID, Permissions, ReviewRequests, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -7704,7 +7710,7 @@ export type ListAllChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, ChangeWorkflow, ChangeWorkflowID, CloseOverride, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, Labels, OrganizationID, Permissions, ReviewRequests, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -7775,7 +7781,7 @@ export type ListAllChangeSetsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering ChangeSet: ChangeSetID, CreatedAt, Description, DisplayName, EndTagID, HiddenReason, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for ordering ChangeSet: ChangeSetID, ChangeWorkflowID, CreatedAt, Description, DisplayName, EndTagID, HiddenReason, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UserID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -7828,7 +7834,7 @@ export type BulkPatchChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, ChangeWorkflow, ChangeWorkflowID, CloseOverride, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, Labels, OrganizationID, Permissions, ReviewRequests, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -7887,6 +7893,7 @@ export type BulkPatchChangeSetsApiArg = {
     Annotations?: {
       [key: string]: string | null;
     } | null;
+    ChangeWorkflowID?: string | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
       [key: string]: boolean | null;
@@ -7903,6 +7910,7 @@ export type BulkPatchChangeSetsApiArg = {
     Permissions?: {
       [key: string]: object | null;
     } | null;
+    ReviewRequests?: (object | null)[] | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
@@ -7947,7 +7955,7 @@ export type BulkCreateChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, ChangeWorkflow, ChangeWorkflowID, CloseOverride, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, Labels, OrganizationID, Permissions, ReviewRequests, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -8066,6 +8074,7 @@ export type BulkCreateChangeSetsApiArg = {
     Annotations?: {
       [key: string]: string | null;
     } | null;
+    ChangeWorkflowID?: string | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
       [key: string]: boolean | null;
@@ -8082,6 +8091,7 @@ export type BulkCreateChangeSetsApiArg = {
     Permissions?: {
       [key: string]: object | null;
     } | null;
+    ReviewRequests?: (object | null)[] | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
@@ -8126,7 +8136,7 @@ export type BulkMoveChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, ChangeWorkflow, ChangeWorkflowID, CloseOverride, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, Labels, OrganizationID, Permissions, ReviewRequests, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -8505,7 +8515,7 @@ export type BulkPatchChangeWorkflowsApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
-    /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
+    /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. In a workflow with no stages, which governs a ChangeSet, what every Space the ChangeSet was opened in must satisfy for it to close. */
     Final?: object | null;
     /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
     HiddenReason?: string | null;
@@ -8518,7 +8528,7 @@ export type BulkPatchChangeWorkflowsApiArg = {
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
-    /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. At least one is required. */
+    /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. A workflow governing a ChangeOrder needs at least one; one governing a ChangeSet has none. */
     Stages?: (object | null)[] | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
     Version?: number | null;
@@ -8739,7 +8749,7 @@ export type BulkCreateChangeWorkflowsApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
-    /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
+    /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. In a workflow with no stages, which governs a ChangeSet, what every Space the ChangeSet was opened in must satisfy for it to close. */
     Final?: object | null;
     /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
     HiddenReason?: string | null;
@@ -8752,7 +8762,7 @@ export type BulkCreateChangeWorkflowsApiArg = {
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
-    /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. At least one is required. */
+    /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. A workflow governing a ChangeOrder needs at least one; one governing a ChangeSet has none. */
     Stages?: (object | null)[] | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
     Version?: number | null;
@@ -9748,7 +9758,7 @@ export type ListComponentsApiArg = {
   continue?: string;
 };
 export type CreateComponentApiResponse =
-  /** status 200 The Component a set of Variants make up. Each Variant is a Space naming the Component with ComponentID. The Component decides which ChangeWorkflows promotions and releases of its Variants may use, and whether one is required. */ ComponentRead;
+  /** status 200 The Component a set of Variants make up. Each Variant is a Space naming the Component with ComponentID. The Component decides which ChangeWorkflows promotions and releases of its Variants, and ChangeSets opened on their Units, may use, and whether one is required. */ ComponentRead;
 export type CreateComponentApiArg = {
   /** Give each Component written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Component's configuration, which is then kept in step with it. */
   withBackingUnits?: boolean;
@@ -9790,7 +9800,7 @@ export type GetComponentApiArg = {
   componentId: string;
 };
 export type PatchComponentApiResponse =
-  /** status 200 The Component a set of Variants make up. Each Variant is a Space naming the Component with ComponentID. The Component decides which ChangeWorkflows promotions and releases of its Variants may use, and whether one is required. */ ComponentRead;
+  /** status 200 The Component a set of Variants make up. Each Variant is a Space naming the Component with ComponentID. The Component decides which ChangeWorkflows promotions and releases of its Variants, and ChangeSets opened on their Units, may use, and whether one is required. */ ComponentRead;
 export type PatchComponentApiArg = {
   /** Unique identifier for a component_id */
   componentId: string;
@@ -9825,7 +9835,7 @@ export type PatchComponentApiArg = {
   };
 };
 export type UpdateComponentApiResponse =
-  /** status 200 The Component a set of Variants make up. Each Variant is a Space naming the Component with ComponentID. The Component decides which ChangeWorkflows promotions and releases of its Variants may use, and whether one is required. */ ComponentRead;
+  /** status 200 The Component a set of Variants make up. Each Variant is a Space naming the Component with ComponentID. The Component decides which ChangeWorkflows promotions and releases of its Variants, and ChangeSets opened on their Units, may use, and whether one is required. */ ComponentRead;
 export type UpdateComponentApiArg = {
   /** Unique identifier for a component_id */
   componentId: string;
@@ -9840,7 +9850,7 @@ export type GetComponentDocumentApiArg = {
   componentId: string;
 };
 export type UpdateComponentDocumentApiResponse =
-  /** status 200 The Component a set of Variants make up. Each Variant is a Space naming the Component with ComponentID. The Component decides which ChangeWorkflows promotions and releases of its Variants may use, and whether one is required. */ ComponentRead;
+  /** status 200 The Component a set of Variants make up. Each Variant is a Space naming the Component with ComponentID. The Component decides which ChangeWorkflows promotions and releases of its Variants, and ChangeSets opened on their Units, may use, and whether one is required. */ ComponentRead;
 export type UpdateComponentDocumentApiArg = {
   /** Unique identifier for a component_id */
   componentId: string;
@@ -14805,7 +14815,7 @@ export type ListChangeSetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, ChangeWorkflow, ChangeWorkflowID, CloseOverride, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, Labels, OrganizationID, Permissions, ReviewRequests, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UserID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -14876,7 +14886,7 @@ export type ListChangeSetsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering ChangeSet: ChangeSetID, CreatedAt, Description, DisplayName, EndTagID, HiddenReason, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt.
+    Supported attributes for ordering ChangeSet: ChangeSetID, ChangeWorkflowID, CreatedAt, Description, DisplayName, EndTagID, HiddenReason, OrganizationID, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UserID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -14951,6 +14961,7 @@ export type PatchChangeSetApiArg = {
     Annotations?: {
       [key: string]: string | null;
     } | null;
+    ChangeWorkflowID?: string | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
       [key: string]: boolean | null;
@@ -14967,6 +14978,7 @@ export type PatchChangeSetApiArg = {
     Permissions?: {
       [key: string]: object | null;
     } | null;
+    ReviewRequests?: (object | null)[] | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
@@ -15179,7 +15191,7 @@ export type PatchChangeWorkflowApiArg = {
     } | null;
     /** Friendly name for the entity. */
     DisplayName?: string | null;
-    /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
+    /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. In a workflow with no stages, which governs a ChangeSet, what every Space the ChangeSet was opened in must satisfy for it to close. */
     Final?: object | null;
     /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
     HiddenReason?: string | null;
@@ -15192,7 +15204,7 @@ export type PatchChangeWorkflowApiArg = {
     } | null;
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
-    /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. At least one is required. */
+    /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. A workflow governing a ChangeOrder needs at least one; one governing a ChangeSet has none. */
     Stages?: (object | null)[] | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
     Version?: number | null;
@@ -17852,6 +17864,10 @@ export type PatchUnitApiArg = {
   priorRevisions?: string;
   /** User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
   subgroup?: string;
+  /** Close a ChangeSet a ChangeWorkflow governs although the gates of the workflow's Final do not hold. Applies to a write that clears a Unit's ChangeSetID, which closes its ChangeSet. Requires force_reason, and Edit permission on the ChangeSet, whose CloseOverride records the override. */
+  forceClose?: boolean;
+  /** Why a ChangeSet's gates are overridden; required with force_close. */
+  forceReason?: string;
   /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
     
     Supported values: ConfigData, MutationSources, Diff. */
@@ -17992,6 +18008,10 @@ export type UpdateUnitApiArg = {
   priorRevisions?: string;
   /** User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
   subgroup?: string;
+  /** Close a ChangeSet a ChangeWorkflow governs although the gates of the workflow's Final do not hold. Applies to a write that clears a Unit's ChangeSetID, which closes its ChangeSet. Requires force_reason, and Edit permission on the ChangeSet, whose CloseOverride records the override. */
+  forceClose?: boolean;
+  /** Why a ChangeSet's gates are overridden; required with force_close. */
+  forceReason?: string;
   /** Comma-separated parts of the result to return in addition to the Unit: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
     
     Supported values: ConfigData, MutationSources, Diff. */
@@ -21656,6 +21676,10 @@ export type BulkPatchUnitsApiArg = {
   priorRevisions?: string;
   /** User-defined category for the Mutation. Must be alphanumeric, at most 64 characters. The prefix 'ConfigHub' is reserved. */
   subgroup?: string;
+  /** Close a ChangeSet a ChangeWorkflow governs although the gates of the workflow's Final do not hold. Applies to a write that clears a Unit's ChangeSetID, which closes its ChangeSet. Requires force_reason, and Edit permission on the ChangeSet, whose CloseOverride records the override. */
+  forceClose?: boolean;
+  /** Why a ChangeSet's gates are overridden; required with force_close. */
+  forceReason?: string;
   body: {
     /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
     Annotations?: {
@@ -23666,13 +23690,13 @@ export type Permissions = {
   [key: string]: Subjects;
 };
 export type Component = {
-  /** The set of ChangeWorkflows that can be used for promotions and releases of this component's Variants. Changing it requires Manage permission on the component. (optional) */
+  /** The set of ChangeWorkflows that can be used for promotions and releases of this component's Variants, and for ChangeSets opened on their Units: a ChangeOrder or ChangeSet is governed by one workflow, which every component it reaches has to allow. Changing it requires Manage permission on the component. (optional) */
   AllowedChangeWorkflowIDs?: Uuid[];
   /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
   Annotations?: {
     [key: string]: string;
   };
-  /** Whether a ChangeWorkflow must be used for promotions and releases of this component's Variants. Changing it requires Manage permission on the component. (optional) */
+  /** Whether a ChangeWorkflow must be used for promotions and releases of this component's Variants, and by ChangeSets opened on their Units. Changing it requires Manage permission on the component. (optional) */
   ChangeWorkflowRequired?: boolean;
   /** Unique identifier for a component. */
   ComponentID?: string;
@@ -23698,14 +23722,14 @@ export type Component = {
   Version?: number;
 };
 export type ComponentRead = {
-  /** The set of ChangeWorkflows that can be used for promotions and releases of this component's Variants. Changing it requires Manage permission on the component. (optional) */
+  /** The set of ChangeWorkflows that can be used for promotions and releases of this component's Variants, and for ChangeSets opened on their Units: a ChangeOrder or ChangeSet is governed by one workflow, which every component it reaches has to allow. Changing it requires Manage permission on the component. (optional) */
   AllowedChangeWorkflowIDs?: Uuid[];
   /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
   Annotations?: {
     [key: string]: string;
   };
   BackingUnitID?: string;
-  /** Whether a ChangeWorkflow must be used for promotions and releases of this component's Variants. Changing it requires Manage permission on the component. (optional) */
+  /** Whether a ChangeWorkflow must be used for promotions and releases of this component's Variants, and by ChangeSets opened on their Units. Changing it requires Manage permission on the component. (optional) */
   ChangeWorkflowRequired?: boolean;
   /** Unique identifier for a component. */
   ComponentID?: string;
@@ -24938,7 +24962,7 @@ export type ChangeWorkflowAttestationPrerequisite = {
 export type ChangeWorkflowPrerequisite = {
   /** What the gate checks, in the author's words. A promotion this gate holds up reports the prerequisite by Name, so this is where the reason lives. Read by nobody: it is not part of what the gate evaluates. */
   Description?: string;
-  /** The check itself, carrying the "cel:" prefix. Evaluated against the Space under consideration, the change order being promoted, and that Space's Release. Compiled when the workflow is written. */
+  /** The check itself, carrying the "cel:" prefix. Evaluated against the Space under consideration, the change order being promoted, and that Space's Release; closing a ChangeSet binds Space and ChangeSet, with ChangeOrder and Release null. Compiled when the workflow is written. */
   Expression: string;
   /** What a stage or Final gates on. Unique within a workflow, and refused if it shadows a built-in name. */
   Name: string;
@@ -24962,10 +24986,10 @@ export type ChangeWorkflowSpec = {
   AttestationPrerequisites?: ChangeWorkflowAttestationPrerequisite[];
   /** The checks a stage or Final may gate on beyond the built-in ones. Declared once and named wherever they apply. */
   CustomPrerequisites?: ChangeWorkflowPrerequisite[];
-  /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
+  /** What the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. In a workflow with no stages, which governs a ChangeSet, what every Space the ChangeSet was opened in must satisfy for it to close. */
   Final?: ChangeWorkflowFinalStage;
-  /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. At least one is required. */
-  Stages: ChangeWorkflowStage[];
+  /** The stages a change is promoted through, in order. Ordered between stages and unordered within one. A workflow governing a ChangeOrder needs at least one; one governing a ChangeSet has none. */
+  Stages?: ChangeWorkflowStage[];
 };
 export type ChangeOrderPromotionFailureLink = {
   Error?: string;
@@ -25484,6 +25508,20 @@ export type ChangeOrderCreateOrUpdateResponseRead = {
   ChangeOrder?: ChangeOrderRead;
   Error?: ResponseError;
 };
+export type ChangeSetReviewRequest = {
+  /** When the review was requested, by the server's clock. A new request is stamped with the current time, and an existing one keeps its time; sending a later time than the one recorded re-requests the review, and stamps it with the current time. */
+  RequestedAt?: string;
+  /** The User asked to review. */
+  UserID: string;
+};
+export type ChangeSetReviewRequestRead = {
+  /** When the review was requested, by the server's clock. A new request is stamped with the current time, and an existing one keeps its time; sending a later time than the one recorded re-requests the review, and stamps it with the current time. */
+  RequestedAt?: string;
+  /** Who requested the review, or last re-requested it. Set by the server. */
+  RequestedByUserID?: string;
+  /** The User asked to review. */
+  UserID: string;
+};
 export type ChangeSet = {
   /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
   Annotations?: {
@@ -25491,6 +25529,8 @@ export type ChangeSet = {
   };
   /** ChangeSetID uniquely identifies a changeset within the system. */
   ChangeSetID?: string;
+  /** ChangeWorkflowID is the ChangeWorkflow that gates closing this ChangeSet: its Final prerequisites, evaluated over every Space in InScopeSpaceIDs. The workflow must have no Stages, and its Final may not name Released or Healthy. Settable at creation and immutable afterwards. When a Unit in a Space that is a Variant of a Component joins the ChangeSet, the workflow must be one the Component allows, and is required if the Component requires one. */
+  ChangeWorkflowID?: string;
   /** An optional set of gates that, if any is present, will block deletion. */
   DeleteGates?: {
     [key: string]: boolean;
@@ -25509,12 +25549,20 @@ export type ChangeSet = {
   OrganizationID?: string;
   /** Permissions to access this change set. */
   Permissions?: Permissions;
+  /** ReviewRequests records whose review the change is waiting for: for each, the User, and when and by whom the review was requested. A request is not cleared when the review is given; whether a reviewer has reviewed is read from their Attestations. A merge patch replaces the list whole. At most 256. */
+  ReviewRequests?: ChangeSetReviewRequest[];
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** Unique identifier for a space. */
   SpaceID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
+};
+export type ChangeSetCloseOverride = {
+  FailedGates?: string[];
+  OverriddenAt?: string;
+  Reason?: string;
+  UserID?: string;
 };
 export type ChangeSetRead = {
   /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -25523,6 +25571,12 @@ export type ChangeSetRead = {
   };
   /** ChangeSetID uniquely identifies a changeset within the system. */
   ChangeSetID?: string;
+  /** ChangeWorkflow is a copy of the ChangeWorkflow ChangeWorkflowID names, taken when the ChangeSet was created, so editing the workflow afterwards does not change what closing this ChangeSet is judged against. Empty is a ChangeSet no workflow governs. (readonly) */
+  ChangeWorkflow?: ChangeWorkflowSpec;
+  /** ChangeWorkflowID is the ChangeWorkflow that gates closing this ChangeSet: its Final prerequisites, evaluated over every Space in InScopeSpaceIDs. The workflow must have no Stages, and its Final may not name Released or Healthy. Settable at creation and immutable afterwards. When a Unit in a Space that is a Variant of a Component joins the ChangeSet, the workflow must be one the Component allows, and is required if the Component requires one. */
+  ChangeWorkflowID?: string;
+  /** CloseOverride records a close forced past the ChangeWorkflow's gates: who forced it, when, why, and which gates did not hold. (readonly) */
+  CloseOverride?: ChangeSetCloseOverride;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
   CreatedAt?: string;
   /** An optional set of gates that, if any is present, will block deletion. */
@@ -25539,6 +25593,8 @@ export type ChangeSetRead = {
   EntityType?: string;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
+  /** InScopeSpaceIDs are the Spaces of the Units the ChangeSet has been opened on. A Space is added when the first of its Units joins, and is not removed. Closing a ChangeSet governed by a ChangeWorkflow is gated over every one of them. (readonly) */
+  InScopeSpaceIDs?: Uuid[];
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
   Labels?: {
     [key: string]: string;
@@ -25547,6 +25603,8 @@ export type ChangeSetRead = {
   OrganizationID?: string;
   /** Permissions to access this change set. */
   Permissions?: Permissions;
+  /** ReviewRequests records whose review the change is waiting for: for each, the User, and when and by whom the review was requested. A request is not cleared when the review is given; whether a reviewer has reviewed is read from their Attestations. A merge patch replaces the list whole. At most 256. */
+  ReviewRequests?: ChangeSetReviewRequestRead[];
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** Unique identifier for a space. */
@@ -25561,6 +25619,8 @@ export type ChangeSetRead = {
   State?: string;
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  /** The User who created the ChangeSet. Absent for ChangeSets created before it was recorded. (readonly) */
+  UserID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
@@ -25609,7 +25669,7 @@ export type ChangeWorkflow = {
   };
   /** Friendly name for the entity. */
   DisplayName?: string;
-  /** Final is what the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
+  /** Final is what the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. In a workflow with no stages, which governs a ChangeSet, it is what every Space the ChangeSet was opened in must satisfy for it to close. */
   Final?: ChangeWorkflowFinalStage;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
@@ -25625,8 +25685,8 @@ export type ChangeWorkflow = {
   Slug: string;
   /** Unique identifier for a space. */
   SpaceID?: string;
-  /** Stages is the series a change is promoted through, in order. Ordered between stages and unordered within one. At least one is required. */
-  Stages: ChangeWorkflowStage[];
+  /** Stages is the series a change is promoted through, in order. Ordered between stages and unordered within one. A workflow governing a ChangeOrder needs at least one; one governing a ChangeSet has none. */
+  Stages?: ChangeWorkflowStage[];
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
@@ -25652,7 +25712,7 @@ export type ChangeWorkflowRead = {
   DisplayName?: string;
   /** The type of entity. */
   EntityType?: string;
-  /** Final is what the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. */
+  /** Final is what the last stage must satisfy for the rollout to read as completed. Nothing is promoted into it: a stage's prerequisites gate entry to the stage after it, so the last stage's gate nothing. In a workflow with no stages, which governs a ChangeSet, it is what every Space the ChangeSet was opened in must satisfy for it to close. */
   Final?: ChangeWorkflowFinalStage;
   /** SHA256 hash of the change workflow's Stages, Final, CustomPrerequisites and AttestationPrerequisites encoded as hexadecimal. (readonly) */
   Hash?: string;
@@ -25672,8 +25732,8 @@ export type ChangeWorkflowRead = {
   SpaceID?: string;
   /** Slug of the Space this entity belongs to. (readonly) */
   SpaceSlug?: string;
-  /** Stages is the series a change is promoted through, in order. Ordered between stages and unordered within one. At least one is required. */
-  Stages: ChangeWorkflowStage[];
+  /** Stages is the series a change is promoted through, in order. Ordered between stages and unordered within one. A workflow governing a ChangeOrder needs at least one; one governing a ChangeSet has none. */
+  Stages?: ChangeWorkflowStage[];
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
   UpstreamChangeWorkflowID?: string;
@@ -28635,7 +28695,17 @@ export type ExtendedUnitRead = {
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
 };
+export type ChangeSetCloseResult = {
+  /** The ChangeSet the write closed, or would have closed. */
+  ChangeSetID?: string;
+  /** The close was forced past gates that did not hold, which the ChangeSet's CloseOverride records. */
+  Forced?: boolean;
+  /** Each Final prerequisite of the ChangeSet's ChangeWorkflow, evaluated over each Space the ChangeSet was opened in. */
+  Gates?: PromoteGateResult[];
+};
 export type UnitCreateOrUpdateResponse = {
+  /** The gates closing the Unit's ChangeSet was judged against, when the write closed, or on a dry run would close, a ChangeSet a ChangeWorkflow governs. Returned for every Unit of the ChangeSet the write detaches. A close the gates refuse fails every such Unit alike, so a write detaching nothing else answers with the refusal alone, whose items name each gate that does not hold, by Space. */
+  ChangeSetClose?: ChangeSetCloseResult;
   /** The configuration the operation produced; returned when include names ConfigData. */
   ConfigData?: string;
   Conflicts?: MutationConflictList;
@@ -28648,6 +28718,8 @@ export type UnitCreateOrUpdateResponse = {
   Unit?: Unit;
 };
 export type UnitCreateOrUpdateResponseRead = {
+  /** The gates closing the Unit's ChangeSet was judged against, when the write closed, or on a dry run would close, a ChangeSet a ChangeWorkflow governs. Returned for every Unit of the ChangeSet the write detaches. A close the gates refuse fails every such Unit alike, so a write detaching nothing else answers with the refusal alone, whose items name each gate that does not hold, by Space. */
+  ChangeSetClose?: ChangeSetCloseResult;
   /** The configuration the operation produced; returned when include names ConfigData. */
   ConfigData?: string;
   Conflicts?: MutationConflictList;
@@ -29131,6 +29203,8 @@ export type UploadSpaceResult = {
   Action?: string;
   /** The ChangeSet the writes were recorded in. Absent on a dry run. */
   ChangeSetID?: string;
+  /** The upload left the ChangeSet open, with the Units it wrote in it, because a ChangeWorkflow governs it: closing it is gated on the workflow's Final prerequisites. */
+  ChangeSetOpen?: boolean;
   /** Resources this upload writes that other Units deployed to the same Target also define: the Space's other Units, and when the Space has a Target, Units elsewhere on that Target. */
   Duplicates?: UploadDuplicate[];
   Links?: UploadLinkResult[];
@@ -29244,8 +29318,10 @@ export type UploadRequest = {
   /** Recorded on each Unit write. */
   ChangeDescription?: string;
   ChangeSetDescription?: string;
-  /** An existing ChangeSet to record the writes in. Default: one new ChangeSet per Space. */
+  /** An existing ChangeSet to record the writes in. Default: one new ChangeSet per Space. The upload closes it afterwards, unless a ChangeWorkflow governs it. */
   ChangeSetID?: string;
+  /** The ChangeWorkflow governing the ChangeSet the upload opens, which a Space whose Component requires one needs. A ChangeSet a ChangeWorkflow governs is left open, with the Units the upload wrote in it, since closing it is gated on the workflow's Final prerequisites. Not accepted with ChangeSetID, whose ChangeSet names its own. */
+  ChangeWorkflowID?: string;
   /** The guarded reasons the Unit writes are cleared for. A path whose guards this does not cover is not written, and the withheld change is reported in the Unit's Conflicts. */
   Clearance?: Clearance;
   /** Placement of each component. Exactly one is supported. */

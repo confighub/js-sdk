@@ -7,6 +7,33 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.29 — 2026-10-16
+
+### API
+
+Compared with ConfigHub `v0.8.28`:
+
+#### Added (18)
+
+- parameter `force_close` on `PATCH /space/{space_id}/unit/{unit_id}`
+- parameter `force_reason` on `PATCH /space/{space_id}/unit/{unit_id}`
+- parameter `force_close` on `PUT /space/{space_id}/unit/{unit_id}`
+- parameter `force_reason` on `PUT /space/{space_id}/unit/{unit_id}`
+- parameter `force_close` on `PATCH /unit`
+- parameter `force_reason` on `PATCH /unit`
+- field `ChangeSet.ChangeWorkflow`
+- field `ChangeSet.ChangeWorkflowID`
+- field `ChangeSet.CloseOverride`
+- field `ChangeSet.InScopeSpaceIDs`
+- field `ChangeSet.ReviewRequests`
+- field `ChangeSet.UserID`
+- field `UnitCreateOrUpdateResponse.ChangeSetClose`
+- field `UploadRequest.ChangeWorkflowID`
+- field `UploadSpaceResult.ChangeSetOpen`
+- schema `ChangeSetCloseOverride`
+- schema `ChangeSetCloseResult`
+- schema `ChangeSetReviewRequest`
+
 ## 0.8.28 — 2026-10-16
 
 ### API
