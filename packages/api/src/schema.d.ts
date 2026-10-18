@@ -4308,14 +4308,14 @@ export interface components {
         };
         BindingList: components["schemas"]["Binding"][];
         /**
-         * @description BridgeWorker represents a bridge worker in ConfigHub.
-         *     A bridge worker is a worker program that connects ConfigHub to external systems and targets.
-         *     It acts as a bridge between ConfigHub and the infrastructure where configurations need
-         *     to be applied. Bridge workers are responsible for executing configuration changes on
-         *     remote targets and reporting status back to ConfigHub.
+         * @description BridgeWorker represents a worker in ConfigHub: an identity, with a secret,
+         *     for a program that connects to ConfigHub to serve external functions. Workers are deprecated
+         *     for anything else: a ServiceAccount is the identity for automation, including a GitOps tool
+         *     pulling Releases, and a Channel carries events and commands. Configuration reaches clusters
+         *     only through Releases, so a worker does not apply it to targets.
          *     When starting a bridge worker program, both the BridgeWorkerID and Secret are
          *     required for authentication with the ConfigHub server. These credentials allow the
-         *     bridge worker to establish a secure connection and receive configuration actions.
+         *     bridge worker to establish a secure connection and receive function invocations.
          */
         BridgeWorker: {
             /** @description An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -4676,7 +4676,7 @@ export interface components {
              *     An example conjunction is:
              *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
              *
-             *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+             *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
              *
              *     The whole string must be query-encoded.
              */
@@ -6196,6 +6196,11 @@ export interface components {
             BridgeWorkerID?: string;
             /** @description ChangeDescription is a description of the change being made, if any. */
             ChangeDescription?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChannelID?: string;
             FunctionInvocations?: components["schemas"]["FunctionInvocationList"];
             /** @description Put the Unit's outstanding merge conflicts in the FunctionContext, for functions that reason about them */
             IncludeConflicts?: boolean;
@@ -7281,11 +7286,11 @@ export interface components {
         };
         /** @description UnitAction is a record of an operation queued for a Worker, such as a function invocation on a unit. Operations are delivered to the worker in creation order; if the worker is disconnected, pending operations are delivered when it reconnects. One or more UnitEvents will correspond to each UnitAction. */
         QueuedOperation: {
-            /** @description Action is the type of action to be performed by the bridge worker. */
+            /** @description Action is the type of action to be performed by the worker, such as InvokeFunctions or Cancel. UnitActions queued for bridge workers, which have been removed, can carry the actions they performed, such as Apply. */
             Action?: components["schemas"]["ActionType"];
             /**
              * Format: uuid
-             * @description BridgeWorkerID is the unique identifier of the bridge worker that will process this operation.
+             * @description BridgeWorkerID is the unique identifier of the worker that will process this operation.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             BridgeWorkerID?: string;
@@ -7297,7 +7302,7 @@ export interface components {
             CreatedAt?: string;
             /**
              * Format: base64
-             * @description The result of a dry-run Data-changing action like refresh and import, where the data is not stored in the Unit.
+             * @description Data is the result the worker reported for a finished function invocation: its FunctionInvocationResponse, as JSON.
              */
             Data?: string;
             /** @description Unused. No longer populated or consulted for delivery; retained for schema compatibility and scheduled for removal. */
@@ -7412,6 +7417,8 @@ export interface components {
             LiveStatus?: components["schemas"]["ReleaseLiveStatus"];
             /** @description OCI digest (sha256:...) of the Release's OCI image manifest. */
             readonly ManifestDigest?: string;
+            /** @description The OCI repository the Release is served from: its Space's, as the Space's OCIRepositoryURL says, while the Release is Published. It is oci://<registry host>:<port>/space/<space slug>, for a GitOps operator such as Argo CD or Flux to pull: its tag latest is the newest Release published for the Space's current release Target, and a ManifestDigest pins one. The registry is the one GET /api/info advertises to the same caller (OCIHost and OCIPort). Derived when the entity is read rather than stored, and returned whatever select names. (readonly) */
+            readonly OCIRepositoryURL?: string;
             /**
              * Format: uuid
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
@@ -8192,6 +8199,8 @@ export interface components {
             Labels?: {
                 [key: string]: string;
             };
+            /** @description The OCI repository the Space's Releases are served from, set when the Space has a ReleaseTargetID. It is oci://<registry host>:<port>/space/<space slug>, for a GitOps operator such as Argo CD or Flux to pull: its tag latest is the newest Release published for the Space's current release Target, and a ManifestDigest pins one. The registry is the one GET /api/info advertises to the same caller (OCIHost and OCIPort). Derived when the entity is read rather than stored, and returned whatever select names. (readonly) */
+            readonly OCIRepositoryURL?: string;
             /**
              * Format: uuid
              * @description Unique identifier for an organization.
@@ -8901,11 +8910,11 @@ export interface components {
         };
         /** @description UnitAction is a record of an operation queued for a Worker, such as a function invocation on a unit. Operations are delivered to the worker in creation order; if the worker is disconnected, pending operations are delivered when it reconnects. One or more UnitEvents will correspond to each UnitAction. */
         UnitAction: {
-            /** @description Action is the type of action to be performed by the bridge worker. */
+            /** @description Action is the type of action to be performed by the worker, such as InvokeFunctions or Cancel. UnitActions queued for bridge workers, which have been removed, can carry the actions they performed, such as Apply. */
             Action?: components["schemas"]["ActionType"];
             /**
              * Format: uuid
-             * @description BridgeWorkerID is the unique identifier of the bridge worker that will process this operation.
+             * @description BridgeWorkerID is the unique identifier of the worker that will process this operation.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             BridgeWorkerID?: string;
@@ -8917,7 +8926,7 @@ export interface components {
             CreatedAt?: string;
             /**
              * Format: base64
-             * @description The result of a dry-run Data-changing action like refresh and import, where the data is not stored in the Unit.
+             * @description Data is the result the worker reported for a finished function invocation: its FunctionInvocationResponse, as JSON.
              */
             Data?: string;
             /** @description Unused. No longer populated or consulted for delivery; retained for schema compatibility and scheduled for removal. */
@@ -9094,19 +9103,23 @@ export interface components {
             UnitID?: string;
         };
         /**
-         * @description UnitEvent represents an event of action performed on a Unit's configuration. Each action tracks
-         *     the lifecycle of applying, destroying, or refreshing a Unit's configuration in the target
-         *     live system. The event captures the current status of the operation, any configuration
-         *     drift detected, and timing information about when the action started and completed.
-         *     Actions are atomic from ConfigHub's perspective but may involve multiple steps
-         *     in the connected Bridge. The status and drift detection help track the health
-         *     and consistency of the provisioned configuration compared to what is defined in the Unit.
+         * @description UnitEvent records the outcome of a UnitAction on a Unit: the result a worker reported for an
+         *     operation queued for it, such as a function invocation on the Unit completing or failing, or a
+         *     cancellation being acknowledged, and the failure of an operation that could not be delivered to
+         *     its worker. Each event records the action, its result and status, any message, and when the
+         *     operation started and ended. UnitEvents are numbered per Unit by UnitEventNum.
+         *
+         *     UnitEvents do not report on live systems. Configuration reaches live systems through Releases,
+         *     which GitOps tools such as Argo CD and Flux pull. Events written by bridge workers, which applied,
+         *     destroyed, and refreshed Units in live systems and have been removed, can remain in a Unit's
+         *     history, but are no longer written.
          */
         UnitEvent: {
+            /** @description Action is the action of the UnitAction this event reports on, such as InvokeFunctions or Cancel. Events written by bridge workers, which have been removed, can carry the actions they performed, such as Apply. */
             Action?: components["schemas"]["ActionType"];
             /**
              * Format: uuid
-             * @description BridgeWorkerID is the ID of the bridge worker that performed this action: the worker that reported the result.
+             * @description BridgeWorkerID is the ID of the worker the UnitAction was queued for: the worker that reported the result.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             BridgeWorkerID?: string;
@@ -9120,6 +9133,7 @@ export interface components {
             readonly EntityType?: string;
             /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
             HiddenReason?: string;
+            /** @description Message is the message reported with the result, by the worker or, for an operation that failed before reaching it, by ConfigHub. */
             Message?: string;
             /**
              * Format: uuid
@@ -9129,12 +9143,16 @@ export interface components {
             OrganizationID?: string;
             /**
              * Format: uuid
-             * @description QueuedOperationID is the unique identifier for the corresponding queued operation.
+             * @description QueuedOperationID is the unique identifier of the UnitAction this event reports on.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             QueuedOperationID?: string;
+            /** @description Result is what the action produced: FunctionInvocationCompleted or FunctionInvocationFailed for a function invocation, and None otherwise. Events written by bridge workers, which have been removed, can carry the results they reported. */
             Result?: components["schemas"]["ActionResultType"];
-            /** Format: int64 */
+            /**
+             * Format: int64
+             * @description RevisionNum is the number of the Unit's Revision the action was performed on.
+             */
             RevisionNum?: number;
             /**
              * Format: uuid
@@ -9146,20 +9164,26 @@ export interface components {
             readonly SpaceSlug?: string;
             /**
              * Format: date-time
+             * @description StartedAt is when the operation started, in "2023-01-01T12:00:00Z" format.
              * @example 2006-01-02T15:04:05Z07:00
              */
             StartedAt?: string;
+            /** @description Status is the state of the operation the event reports: None, Pending, Submitted, Progressing, Completed, Failed, Canceled, or Aborted. */
             Status?: components["schemas"]["ActionStatusType"];
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description TerminatedAt is when the operation ended, in "2023-01-01T12:00:00Z" format. It is absent for an operation that had not ended when the event was recorded.
+             */
             TerminatedAt?: string | null;
             /**
              * Format: uuid
+             * @description UnitEventID is the unique identifier for this UnitEvent.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             UnitEventID?: string;
             /**
              * Format: int64
-             * @description Sequence number for this unit event.
+             * @description UnitEventNum is the sequence number of this UnitEvent among the Unit's UnitEvents.
              */
             UnitEventNum?: number;
             /**
@@ -10666,7 +10690,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -10966,7 +10990,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -11174,7 +11198,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -12045,7 +12069,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning attributes
                  *
@@ -14226,7 +14250,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning change orders
                  *
@@ -15190,7 +15214,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning change sets
                  *
@@ -16311,7 +16335,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning change workflows
                  *
@@ -17512,7 +17536,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning channels
                  *
@@ -20078,7 +20102,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning filters
                  *
@@ -22137,7 +22161,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning invocations
                  *
@@ -25660,7 +25684,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, LiveStatus, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, ReleaseNum, SkippedUnits, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
+                 *     Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, LiveStatus, ManifestDigest, OCIRepositoryURL, OrganizationID, Permissions, Published, ReleaseID, ReleaseNum, SkippedUnits, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -28653,7 +28677,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -30929,14 +30953,14 @@ export interface operations {
         };
         responses: {
             /**
-             * @description BridgeWorker represents a bridge worker in ConfigHub.
-             *     A bridge worker is a worker program that connects ConfigHub to external systems and targets.
-             *     It acts as a bridge between ConfigHub and the infrastructure where configurations need
-             *     to be applied. Bridge workers are responsible for executing configuration changes on
-             *     remote targets and reporting status back to ConfigHub.
+             * @description BridgeWorker represents a worker in ConfigHub: an identity, with a secret,
+             *     for a program that connects to ConfigHub to serve external functions. Workers are deprecated
+             *     for anything else: a ServiceAccount is the identity for automation, including a GitOps tool
+             *     pulling Releases, and a Channel carries events and commands. Configuration reaches clusters
+             *     only through Releases, so a worker does not apply it to targets.
              *     When starting a bridge worker program, both the BridgeWorkerID and Secret are
              *     required for authentication with the ConfigHub server. These credentials allow the
-             *     bridge worker to establish a secure connection and receive configuration actions.
+             *     bridge worker to establish a secure connection and receive function invocations.
              */
             200: {
                 headers: {
@@ -31134,14 +31158,14 @@ export interface operations {
         };
         responses: {
             /**
-             * @description BridgeWorker represents a bridge worker in ConfigHub.
-             *     A bridge worker is a worker program that connects ConfigHub to external systems and targets.
-             *     It acts as a bridge between ConfigHub and the infrastructure where configurations need
-             *     to be applied. Bridge workers are responsible for executing configuration changes on
-             *     remote targets and reporting status back to ConfigHub.
+             * @description BridgeWorker represents a worker in ConfigHub: an identity, with a secret,
+             *     for a program that connects to ConfigHub to serve external functions. Workers are deprecated
+             *     for anything else: a ServiceAccount is the identity for automation, including a GitOps tool
+             *     pulling Releases, and a Channel carries events and commands. Configuration reaches clusters
+             *     only through Releases, so a worker does not apply it to targets.
              *     When starting a bridge worker program, both the BridgeWorkerID and Secret are
              *     required for authentication with the ConfigHub server. These credentials allow the
-             *     bridge worker to establish a secure connection and receive configuration actions.
+             *     bridge worker to establish a secure connection and receive function invocations.
              */
             200: {
                 headers: {
@@ -31364,14 +31388,14 @@ export interface operations {
         };
         responses: {
             /**
-             * @description BridgeWorker represents a bridge worker in ConfigHub.
-             *     A bridge worker is a worker program that connects ConfigHub to external systems and targets.
-             *     It acts as a bridge between ConfigHub and the infrastructure where configurations need
-             *     to be applied. Bridge workers are responsible for executing configuration changes on
-             *     remote targets and reporting status back to ConfigHub.
+             * @description BridgeWorker represents a worker in ConfigHub: an identity, with a secret,
+             *     for a program that connects to ConfigHub to serve external functions. Workers are deprecated
+             *     for anything else: a ServiceAccount is the identity for automation, including a GitOps tool
+             *     pulling Releases, and a Channel carries events and commands. Configuration reaches clusters
+             *     only through Releases, so a worker does not apply it to targets.
              *     When starting a bridge worker program, both the BridgeWorkerID and Secret are
              *     required for authentication with the ConfigHub server. These credentials allow the
-             *     bridge worker to establish a secure connection and receive configuration actions.
+             *     bridge worker to establish a secure connection and receive function invocations.
              */
             200: {
                 headers: {
@@ -39198,7 +39222,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, LiveStatus, ManifestDigest, OrganizationID, Permissions, Published, ReleaseID, ReleaseNum, SkippedUnits, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
+                 *     Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, LiveStatus, ManifestDigest, OCIRepositoryURL, OrganizationID, Permissions, Published, ReleaseID, ReleaseNum, SkippedUnits, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -46682,13 +46706,16 @@ export interface operations {
         requestBody?: never;
         responses: {
             /**
-             * @description UnitEvent represents an event of action performed on a Unit's configuration. Each action tracks
-             *     the lifecycle of applying, destroying, or refreshing a Unit's configuration in the target
-             *     live system. The event captures the current status of the operation, any configuration
-             *     drift detected, and timing information about when the action started and completed.
-             *     Actions are atomic from ConfigHub's perspective but may involve multiple steps
-             *     in the connected Bridge. The status and drift detection help track the health
-             *     and consistency of the provisioned configuration compared to what is defined in the Unit.
+             * @description UnitEvent records the outcome of a UnitAction on a Unit: the result a worker reported for an
+             *     operation queued for it, such as a function invocation on the Unit completing or failing, or a
+             *     cancellation being acknowledged, and the failure of an operation that could not be delivered to
+             *     its worker. Each event records the action, its result and status, any message, and when the
+             *     operation started and ended. UnitEvents are numbered per Unit by UnitEventNum.
+             *
+             *     UnitEvents do not report on live systems. Configuration reaches live systems through Releases,
+             *     which GitOps tools such as Argo CD and Flux pull. Events written by bridge workers, which applied,
+             *     destroyed, and refreshed Units in live systems and have been removed, can remain in a Unit's
+             *     history, but are no longer written.
              */
             200: {
                 headers: {
@@ -48015,7 +48042,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning tags
                  *
@@ -49128,7 +49155,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning targets
                  *
@@ -50333,7 +50360,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning triggers
                  *
@@ -51594,7 +51621,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning units
                  *
@@ -55026,7 +55053,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
                  *
                  *     Where expression to select destination spaces for cloning views
                  *
