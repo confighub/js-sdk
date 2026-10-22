@@ -7,6 +7,56 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.8.38 — 2026-10-21
+
+### API
+
+Compared with ConfigHub `v0.8.37`:
+
+#### Added (58)
+
+- parameter `where_permission` on `GET /attestation`
+- parameter `where_permission` on `GET /attribute`
+- parameter `where_permission` on `GET /bridge_worker`
+- parameter `where_permission` on `GET /bridge_worker/{bridge_worker_id}/queued_operation`
+- parameter `where_permission` on `GET /change_order`
+- parameter `where_permission` on `GET /change_set`
+- parameter `where_permission` on `GET /change_workflow`
+- parameter `where_permission` on `GET /channel`
+- parameter `where_permission` on `GET /command_run`
+- parameter `where_permission` on `GET /component`
+- parameter `where_permission` on `GET /filter`
+- parameter `where_permission` on `GET /group`
+- parameter `where_permission` on `GET /invocation`
+- parameter `where_permission` on `GET /link`
+- parameter `where_permission` on `GET /organization`
+- parameter `where_permission` on `GET /organization/{organization_id}/organization_member`
+- parameter `where_permission` on `GET /release`
+- parameter `where_permission` on `GET /resource`
+- parameter `where_permission` on `GET /review_comment`
+- parameter `where_permission` on `GET /revision`
+- parameter `where_permission` on `GET /revision_data`
+- parameter `where_permission` on `GET /revision_mutation_sources`
+- parameter `where_permission` on `GET /service_account`
+- parameter `where_permission` on `GET /space`
+- parameter `where_permission` on `GET /space/{space_id}/attestation`
+- parameter `where_permission` on `GET /space/{space_id}/attribute`
+- parameter `where_permission` on `GET /space/{space_id}/bridge_worker`
+- parameter `where_permission` on `GET /space/{space_id}/change_order`
+- parameter `where_permission` on `GET /space/{space_id}/change_set`
+- parameter `where_permission` on `GET /space/{space_id}/change_workflow`
+- parameter `where_permission` on `GET /space/{space_id}/channel`
+- parameter `where_permission` on `GET /space/{space_id}/command_run`
+- parameter `where_permission` on `GET /space/{space_id}/filter`
+- parameter `where_permission` on `GET /space/{space_id}/invocation`
+- parameter `where_permission` on `GET /space/{space_id}/link`
+- parameter `where_permission` on `GET /space/{space_id}/release`
+- parameter `where_permission` on `GET /space/{space_id}/tag`
+- parameter `where_permission` on `GET /space/{space_id}/target`
+- parameter `where_permission` on `GET /space/{space_id}/trigger`
+- parameter `where_permission` on `GET /space/{space_id}/unit`
+- …and 18 more
+
 ## 0.8.37 — 2026-10-21
 
 ### API

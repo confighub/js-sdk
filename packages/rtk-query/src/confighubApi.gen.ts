@@ -238,6 +238,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -279,6 +280,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -391,6 +393,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -432,6 +435,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            where_permission: queryArg.wherePermission,
             limit: queryArg.limit,
             order_by: queryArg.orderBy,
             continue: queryArg["continue"],
@@ -491,6 +495,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -581,6 +586,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -689,6 +695,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -804,6 +811,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -911,6 +919,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             limit: queryArg.limit,
             order_by: queryArg.orderBy,
             continue: queryArg["continue"],
@@ -930,6 +939,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -1086,6 +1096,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -1224,6 +1235,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            where_permission: queryArg.wherePermission,
             select: queryArg.select,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
@@ -1299,6 +1311,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -1414,6 +1427,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -1531,6 +1545,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
           },
@@ -1598,6 +1613,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            where_permission: queryArg.wherePermission,
             view: queryArg.view,
           },
         }),
@@ -1657,6 +1673,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -1679,6 +1696,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -1721,6 +1739,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -1763,6 +1782,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -1786,6 +1806,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             limit: queryArg.limit,
             order_by: queryArg.orderBy,
@@ -1808,6 +1829,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             limit: queryArg.limit,
             order_by: queryArg.orderBy,
@@ -1830,6 +1852,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -1980,6 +2003,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -2063,6 +2087,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -2111,6 +2136,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -2219,6 +2245,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -2336,6 +2363,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -2428,6 +2456,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -2515,6 +2544,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -2623,6 +2653,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -2781,6 +2812,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             limit: queryArg.limit,
             order_by: queryArg.orderBy,
             continue: queryArg["continue"],
@@ -2854,6 +2886,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -3005,6 +3038,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -3112,6 +3146,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -3209,6 +3244,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -3310,6 +3346,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -3382,6 +3419,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -3486,6 +3524,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -3590,6 +3629,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -3793,6 +3833,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -3847,6 +3888,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -3884,6 +3926,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -3970,6 +4013,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -4021,6 +4065,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            where_permission: queryArg.wherePermission,
             limit: queryArg.limit,
             order_by: queryArg.orderBy,
             continue: queryArg["continue"],
@@ -4046,6 +4091,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             offset: queryArg.offset,
             limit: queryArg.limit,
@@ -4070,6 +4116,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -4183,6 +4230,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -4291,6 +4339,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -4407,6 +4456,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -4519,6 +4569,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -4669,6 +4720,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            where_permission: queryArg.wherePermission,
             limit: queryArg.limit,
             order_by: queryArg.orderBy,
             continue: queryArg["continue"],
@@ -4688,6 +4740,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -4713,6 +4766,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -4742,6 +4796,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             offset: queryArg.offset,
             limit: queryArg.limit,
@@ -4764,6 +4819,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -4798,6 +4854,7 @@ const injectedRtkApi = api
             where: queryArg.where,
             filter: queryArg.filter,
             contains: queryArg.contains,
+            where_permission: queryArg.wherePermission,
             select: queryArg.select,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
@@ -4874,6 +4931,7 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include: queryArg.include,
             select: queryArg.select,
+            where_permission: queryArg.wherePermission,
             include_hidden: queryArg.includeHidden,
             view: queryArg.view,
             limit: queryArg.limit,
@@ -5759,7 +5817,7 @@ export type BulkCreateSpacesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -5897,6 +5955,12 @@ export type ListAllAttestationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Attestation entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Attestation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -6113,6 +6177,12 @@ export type ListAllAttributesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Attribute entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Attribute entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -6459,7 +6529,7 @@ export type BulkCreateAttributesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -6771,6 +6841,24 @@ export type ListAllBridgeWorkersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return BridgeWorker entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, ManageChildren, EditChildren, UseChildren, ViewChildren, CreateChildren, ApproveChildren, TargetEditChildren, TargetViewChildren. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "ManageChildren"
+    | "EditChildren"
+    | "UseChildren"
+    | "ViewChildren"
+    | "CreateChildren"
+    | "ApproveChildren"
+    | "TargetEditChildren"
+    | "TargetViewChildren";
   /** Hidden BridgeWorker entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -7001,6 +7089,12 @@ export type ListQueuedOperationsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Only return QueuedOperation entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Maximum number of QueuedOperation entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
   limit?: number;
   /** Comma-separated list of fields to sort QueuedOperation results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
@@ -7215,6 +7309,12 @@ export type ListAllChangeOrdersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return ChangeOrder entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden ChangeOrder entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -7759,6 +7859,12 @@ export type ListAllChangeSetsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return ChangeSet entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden ChangeSet entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -8367,6 +8473,12 @@ export type ListAllChangeWorkflowsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return ChangeWorkflow entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden ChangeWorkflow entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -8722,7 +8834,7 @@ export type BulkCreateChangeWorkflowsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -9037,6 +9149,12 @@ export type ListAllChannelsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Channel entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, Claim. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View" | "Claim";
   /** Hidden Channel entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -9389,7 +9507,7 @@ export type BulkCreateChannelsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -9613,6 +9731,12 @@ export type ListAllCommandRunsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return CommandRun entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Maximum number of CommandRun entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
   limit?: number;
   /** Comma-separated list of fields to sort CommandRun results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
@@ -9720,6 +9844,12 @@ export type ListComponentsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Component entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Component entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -10059,6 +10189,12 @@ export type ListAllFiltersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Filter entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Filter entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -10416,7 +10552,7 @@ export type BulkCreateFiltersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -10653,7 +10789,7 @@ export type InvokeFunctionsOnOrgApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -10767,6 +10903,12 @@ export type ListGroupsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Only return Group entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Select clause for specifying which fields to include in the response for Group.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -11030,6 +11172,12 @@ export type ListAllInvocationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Invocation entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Invocation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -11385,7 +11533,7 @@ export type BulkCreateInvocationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -11696,6 +11844,12 @@ export type SearchListLinksApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Link entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Link entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -12066,7 +12220,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -12239,6 +12393,12 @@ export type ListOrganizationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Organization entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Organization entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -12372,6 +12532,12 @@ export type ListOrganizationMembersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Only return OrganizationMember entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** UUID of a View whose columns to compute for each OrganizationMember, returned as ViewColumns.
     
     The View must be in the same Organization as the user credentials, and be a View of OrganizationMember: its Of, or the From of its Filter, must be OrganizationMember.
@@ -12502,6 +12668,12 @@ export type ListAllReleasesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Release entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Release entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -12635,6 +12807,12 @@ export type ListAllResourcesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Resource entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Resource entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -12853,6 +13031,12 @@ export type ListAllReviewCommentsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return ReviewComment entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden ReviewComment entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -13035,7 +13219,7 @@ export type ListAllRevisionsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list tagged Revisions use `Tags ? '<tag-id>'`.
     
@@ -13086,6 +13270,12 @@ export type ListAllRevisionsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Revision entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Revision entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -13169,7 +13359,7 @@ export type SearchRevisionDataApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list tagged Revisions use `Tags ? '<tag-id>'`.
     
@@ -13220,6 +13410,12 @@ export type SearchRevisionDataApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Revision entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Revision entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -13296,7 +13492,7 @@ export type SearchRevisionMutationSourcesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list tagged Revisions use `Tags ? '<tag-id>'`.
     
@@ -13347,6 +13543,12 @@ export type SearchRevisionMutationSourcesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Revision entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Revision entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -13472,6 +13674,12 @@ export type ListServiceAccountsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return ServiceAccount entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, Impersonate. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View" | "Impersonate";
   /** Hidden ServiceAccount entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -13719,6 +13927,24 @@ export type ListSpacesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Space entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, ManageChildren, EditChildren, UseChildren, ViewChildren, CreateChildren, ApproveChildren, TargetEditChildren, TargetViewChildren. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "ManageChildren"
+    | "EditChildren"
+    | "UseChildren"
+    | "ViewChildren"
+    | "CreateChildren"
+    | "ApproveChildren"
+    | "TargetEditChildren"
+    | "TargetViewChildren";
   /** Hidden Space entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -13947,6 +14173,12 @@ export type ListExtendedAttestationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Attestation entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Attestation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -14106,6 +14338,12 @@ export type ListAttributesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Attribute entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Attribute entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -14359,6 +14597,24 @@ export type ListBridgeWorkersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return BridgeWorker entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, ManageChildren, EditChildren, UseChildren, ViewChildren, CreateChildren, ApproveChildren, TargetEditChildren, TargetViewChildren. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "ManageChildren"
+    | "EditChildren"
+    | "UseChildren"
+    | "ViewChildren"
+    | "CreateChildren"
+    | "ApproveChildren"
+    | "TargetEditChildren"
+    | "TargetViewChildren";
   /** Hidden BridgeWorker entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -14628,6 +14884,12 @@ export type ListChangeOrdersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return ChangeOrder entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden ChangeOrder entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -14864,6 +15126,12 @@ export type ListChangeSetsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return ChangeSet entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden ChangeSet entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -15084,6 +15352,12 @@ export type ListChangeWorkflowsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return ChangeWorkflow entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden ChangeWorkflow entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -15328,6 +15602,12 @@ export type ListChannelsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Channel entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, Claim. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View" | "Claim";
   /** Hidden Channel entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -15611,6 +15891,12 @@ export type ListCommandRunsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return CommandRun entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Maximum number of CommandRun entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
   limit?: number;
   /** Comma-separated list of fields to sort CommandRun results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
@@ -15769,6 +16055,12 @@ export type ListFiltersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Filter entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Filter entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -16036,7 +16328,7 @@ export type InvokeFunctionsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -16172,6 +16464,12 @@ export type ListInvocationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Invocation entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Invocation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -16411,6 +16709,12 @@ export type ListLinksApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Link entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Link entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -16682,6 +16986,12 @@ export type ListExtendedReleasesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Release entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Release entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -16906,6 +17216,12 @@ export type ListTagsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Tag entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Tag entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -17121,6 +17437,24 @@ export type ListTargetsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Target entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, ManageChildren, EditChildren, UseChildren, ViewChildren, CreateChildren, ApproveChildren, TargetEditChildren, TargetViewChildren. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "ManageChildren"
+    | "EditChildren"
+    | "UseChildren"
+    | "ViewChildren"
+    | "CreateChildren"
+    | "ApproveChildren"
+    | "TargetEditChildren"
+    | "TargetViewChildren";
   /** Hidden Target entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -17368,6 +17702,12 @@ export type ListTriggersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Trigger entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Trigger entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -17607,7 +17947,7 @@ export type ListUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -17658,6 +17998,19 @@ export type ListUnitsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Unit entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, Approve, TargetEdit, TargetView. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "Approve"
+    | "TargetEdit"
+    | "TargetView";
   /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -18188,6 +18541,12 @@ export type ListExtendedMutationsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Mutation entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Mutation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -18361,6 +18720,12 @@ export type ListExtendedResourcesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Resource entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Resource entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -18521,6 +18886,12 @@ export type ListReviewCommentsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return ReviewComment entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden ReviewComment entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -18687,7 +19058,7 @@ export type ListExtendedRevisionsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Revision: ApplyGates, ApplyWarnings, Attestations, ChangeOrders, ChangeSetID, Conflicts, CreatedAt, DataHash, Description, HiddenReason, LinkFindings, NeededPaths, OrganizationID, ProvidedPaths, Releases, RevisionID, RevisionNum, Source, SpaceID, Tags, UnitID, UpdatedAt, UserAgent, UserID, ValidationErrors, ValidationPassed, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     To list a tagged Revision use `Tags ? '<tag-id>'`.
     
@@ -18738,6 +19109,12 @@ export type ListExtendedRevisionsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Revision entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Revision entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -18895,6 +19272,12 @@ export type ListUnitActionsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Only return QueuedOperation entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Maximum number of QueuedOperation entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
   limit?: number;
   /** Comma-separated list of fields to sort QueuedOperation results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
@@ -18998,6 +19381,12 @@ export type ListUnitEventsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Only return UnitEvent entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden UnitEvent entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -19135,6 +19524,12 @@ export type ListViewsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return View entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden View entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -19465,6 +19860,12 @@ export type ListAllTagsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Tag entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Tag entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -20069,6 +20470,24 @@ export type ListAllTargetsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Target entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, ManageChildren, EditChildren, UseChildren, ViewChildren, CreateChildren, ApproveChildren, TargetEditChildren, TargetViewChildren. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "ManageChildren"
+    | "EditChildren"
+    | "UseChildren"
+    | "ViewChildren"
+    | "CreateChildren"
+    | "ApproveChildren"
+    | "TargetEditChildren"
+    | "TargetViewChildren";
   /** Hidden Target entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -20423,7 +20842,7 @@ export type BulkCreateTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -20739,6 +21158,12 @@ export type ListAllTriggersApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Trigger entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden Trigger entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -21113,7 +21538,7 @@ export type BulkCreateTriggersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -21302,7 +21727,7 @@ export type BulkDeleteUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -21395,7 +21820,7 @@ export type ListAllUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -21446,6 +21871,19 @@ export type ListAllUnitsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Unit entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, Approve, TargetEdit, TargetView. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "Approve"
+    | "TargetEdit"
+    | "TargetView";
   /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -21533,7 +21971,7 @@ export type BulkPatchUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -21760,7 +22198,7 @@ export type BulkCreateUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -22001,7 +22439,7 @@ export type BulkCancelUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -22090,7 +22528,7 @@ export type BulkMoveUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -22182,7 +22620,7 @@ export type BulkTagUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -22302,6 +22740,12 @@ export type ListAllUnitActionsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Only return QueuedOperation entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Maximum number of QueuedOperation entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
   limit?: number;
   /** Comma-separated list of fields to sort QueuedOperation results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
@@ -22359,7 +22803,7 @@ export type SearchUnitDataApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -22410,6 +22854,19 @@ export type SearchUnitDataApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Unit entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, Approve, TargetEdit, TargetView. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "Approve"
+    | "TargetEdit"
+    | "TargetView";
   /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -22489,7 +22946,7 @@ export type SearchUnitDiffApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -22523,6 +22980,19 @@ export type SearchUnitDiffApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Only return Unit entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, Approve, TargetEdit, TargetView. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "Approve"
+    | "TargetEdit"
+    | "TargetView";
   /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -22644,6 +23114,12 @@ export type ListAllUnitEventsApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Only return UnitEvent entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden UnitEvent entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -22720,7 +23196,7 @@ export type SearchUnitMutationSourcesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
     
@@ -22771,6 +23247,19 @@ export type SearchUnitMutationSourcesApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return Unit entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, Approve, TargetEdit, TargetView. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "Approve"
+    | "TargetEdit"
+    | "TargetView";
   /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -22894,6 +23383,12 @@ export type ListUsersApiArg = {
     
     The whole string must be query-encoded. */
   contains?: string;
+  /** Only return User entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Select clause for specifying which fields to include in the response for User.
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
@@ -23153,6 +23648,12 @@ export type ListAllViewsApiArg = {
     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
     The whole string must be query-encoded. */
   select?: string;
+  /** Only return View entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
   /** Hidden View entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -23506,7 +24007,7 @@ export type BulkCreateViewsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -26336,9 +26837,9 @@ export type FunctionInvocationsRequest = {
   ChangeDescription?: string;
   ChannelID?: string;
   FunctionInvocations?: FunctionInvocationList;
-  /** Put the Unit's outstanding merge conflicts in the FunctionContext, for functions that reason about them */
+  /** Put the Unit's outstanding merge conflicts in the FunctionContext, for functions that reason about them. A request that runs Triggers gets them regardless */
   IncludeConflicts?: boolean;
-  /** Put what the resolves of the Unit's Links could not do in the FunctionContext, for functions that reason about it */
+  /** Put what the resolves of the Unit's Links could not do in the FunctionContext, for functions that reason about it. A request that runs Triggers gets them regardless */
   IncludeLinkFindings?: boolean;
   /** Invocations is a list of Invocation IDs to execute. The invocations must be within the same Organization. Invocations will be executed after the FunctionInvocations list. Functions are grouped by executor (built-in vs bridge worker) and executed in phases: general mutating functions first, then final mutating functions (like ensure-context), then validating functions. Functions that don't match the unit's toolchain type are ignored. */
   Invocations?: Uuid[];
@@ -26653,13 +27154,13 @@ export type ValidationResult = {
   /** Name of the function invocation corresponding to the result */
   FunctionName?: string;
   /** Index of the function invocation corresponding to the result. Useful in the case that multiple function invocations in the same executor call return ValidationResultList output. */
-  Index?: number;
+  Index: number;
   /** Issues found with the configuration unit that are not associated with specific attributes/paths. Use FailedAttributes where possible. */
   Issues?: Issue[];
   /** Maximum score of all findings */
   MaxScore?: string;
   /** True if valid, false otherwise */
-  Passed?: boolean;
+  Passed: boolean;
 };
 export type ValidationResultList = ValidationResult[];
 export type UnitRead = {
@@ -28033,14 +28534,23 @@ export type CreateUserKeyRequest = {
   PublicJWK?: any;
 };
 export type UserToken = {
+  /** When the token was issued. (readonly) */
   CreatedAt?: string;
+  /** The User who issued the token. A token is never issued by the identity it authenticates as. (readonly) */
   CreatedByUserID?: string;
+  /** Which system holds the token, so it can be retired without guessing what breaks. */
   Description?: string;
+  /** When the token stops working. Zero when it does not expire. */
   ExpiresAt?: string;
+  /** The token's jti claim, which names the token in a revocation. (readonly) */
   Jti?: string;
+  /** When the token was last exchanged at the registry, stamped at most once per cache period per server. Zero when it has not been used. (readonly) */
   LastUsedAt?: string;
+  /** When the token was revoked. Zero when it is live. (readonly) */
   RevokedAt?: string;
+  /** The User the token authenticates as: the ServiceAccount's User. (readonly) */
   UserID?: string;
+  /** Unique identifier for the record. (readonly) */
   UserTokenID?: string;
 };
 export type IssuedUserToken = {
