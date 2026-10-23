@@ -7,6 +7,87 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.9.0 — 2026-10-23
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: `UserKey` and `UserToken` are entities, with the
+  `EntityType`, `CreatedAt`, `UpdatedAt`, `Version`, `HiddenReason`, `DisplayName` and `Slug` of
+  any other; the server names each from its ID, and its `DisplayName` is its `Description`, or that
+  `Slug`. A service account's keys and tokens moved to `/service_account/{id}/user_key` and
+  `/service_account/{id}/user_token`, and one is addressed by its ID, `{user_key_id}` or
+  `{user_token_id}`, where it was addressed by its `kid` or `jti`; list with `where` to find one by
+  those. The operations are `listServiceAccountUserKeys`, `createServiceAccountUserKey`,
+  `getServiceAccountUserKey` (new), `deleteServiceAccountUserKey`, `listServiceAccountUserTokens`,
+  `createServiceAccountUserToken`, `getServiceAccountUserToken` (new),
+  `revokeServiceAccountUserToken`, now `POST …/user_token/{user_token_id}/revoke` returning the
+  `UserToken`, and `deleteServiceAccountUserToken` (new), which removes the token's record. The
+  lists take `where`, `contains`, `select`, `include_hidden`, `limit`, `order_by` and `continue`,
+  as other lists do, and return `ExtendedUserKey` / `ExtendedUserToken`, as Get does; given no
+  `limit`, they return every key or token, as before.
+- `@confighub/api`, `@confighub/rtk-query`: `Trigger` and `Invocation` have an optional `ChannelID`,
+  the Channel whose client runs their functions, beside `BridgeWorkerID`; at most one of the two is
+  set, and `ExtendedTrigger` and `ExtendedInvocation` carry the `Channel` when `include` names
+  `ChannelID`. `Mutation` has `ChannelID` when a Channel's client produced it.
+- `@confighub/api`, `@confighub/rtk-query`: `getCommandRun`, `listCommandRuns` and `listAllCommandRuns`
+  return `ExtendedCommandRun`, the run under `CommandRun` with its `Space` and `Channel` when
+  `include` names them, where they returned `CommandRun`. A run has `EntityType`, `UpdatedAt` and
+  `HiddenReason`, and no longer `UnitID` or `TargetID`: a function run's Unit and Target are in its
+  request's `FunctionContext`. Lists take `view` and `include_hidden`. `createCommandRun` takes `dry_run`,
+  and refuses a command that does not resolve to one Channel with a `CommandRunRefusal`, whose
+  `Reason` is `CommandNotDeclared` (404), `CommandDeclaredByMany` (409, listing the `Channels`) or
+  `ChannelDoesNotDeclare` (422, where it answered 400).
+
+### API
+
+Compared with ConfigHub `v0.8.39`:
+
+#### Removed (6), breaking for code typed against them
+
+- path `/service_account/{service_account_id}/key`
+- path `/service_account/{service_account_id}/key/{kid}`
+- path `/service_account/{service_account_id}/token`
+- path `/service_account/{service_account_id}/token/{jti}`
+- field `CommandRun.TargetID`
+- field `CommandRun.UnitID`
+
+#### Added (34)
+
+- path `/service_account/{service_account_id}/user_key`
+- path `/service_account/{service_account_id}/user_key/{user_key_id}`
+- path `/service_account/{service_account_id}/user_token`
+- path `/service_account/{service_account_id}/user_token/{user_token_id}`
+- path `/service_account/{service_account_id}/user_token/{user_token_id}/revoke`
+- parameter `include_hidden` on `GET /command_run`
+- parameter `view` on `GET /command_run`
+- parameter `include_hidden` on `GET /space/{space_id}/command_run`
+- parameter `view` on `GET /space/{space_id}/command_run`
+- parameter `include` on `GET /space/{space_id}/command_run/{command_run_id}`
+- field `CommandRun.EntityType`
+- field `CommandRun.HiddenReason`
+- field `CommandRun.UpdatedAt`
+- field `ExtendedInvocation.Channel`
+- field `ExtendedTrigger.Channel`
+- field `Invocation.ChannelID`
+- field `Mutation.ChannelID`
+- field `Trigger.ChannelID`
+- field `UserKey.DisplayName`
+- field `UserKey.EntityType`
+- field `UserKey.HiddenReason`
+- field `UserKey.Slug`
+- field `UserKey.UpdatedAt`
+- field `UserKey.Version`
+- field `UserToken.DisplayName`
+- field `UserToken.EntityType`
+- field `UserToken.HiddenReason`
+- field `UserToken.Slug`
+- field `UserToken.UpdatedAt`
+- field `UserToken.Version`
+- schema `CommandRunRefusal`
+- schema `ExtendedCommandRun`
+- schema `ExtendedUserKey`
+- schema `ExtendedUserToken`
+
 ## 0.8.39 — 2026-10-23
 
 ### API

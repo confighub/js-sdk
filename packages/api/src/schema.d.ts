@@ -1257,7 +1257,7 @@ export interface paths {
         patch: operations["PatchServiceAccount"];
         trace?: never;
     };
-    "/service_account/{service_account_id}/key": {
+    "/service_account/{service_account_id}/user_key": {
         parameters: {
             query?: never;
             header?: never;
@@ -1268,40 +1268,44 @@ export interface paths {
          * List a service account's public keys
          * @description List the public keys registered for a service account. Keys are returned unredacted, deliberately: they are public material, and an operator noticing a key nobody registered is how an injected one is caught. Requires View permission on the service account.
          */
-        get: operations["ListServiceAccountKeys"];
+        get: operations["ListServiceAccountUserKeys"];
         put?: never;
         /**
          * Register a public key for a service account
          * @description Register a public key for a service account. The holder of the matching private key then authenticates as the service account by signing a short-lived assertion (RFC 7523 private_key_jwt), so no secret is exchanged and none is stored. Requires Impersonate permission on the service account, which Manage does not include; a service account cannot register a key for itself.
          */
-        post: operations["CreateServiceAccountKey"];
+        post: operations["CreateServiceAccountUserKey"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/service_account/{service_account_id}/key/{kid}": {
+    "/service_account/{service_account_id}/user_key/{user_key_id}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /**
+         * Get a service account's public key
+         * @description Get one of the public keys registered for a service account, unredacted. Requires View permission on the service account.
+         */
+        get: operations["GetServiceAccountUserKey"];
         put?: never;
         post?: never;
         /**
          * Remove a public key from a service account
-         * @description Remove one of a service account's public keys by its thumbprint. This is the second half of rotation, and the response to a compromised private key. Requires Impersonate permission on the service account.
+         * @description Remove one of a service account's public keys. This is the second half of rotation, and the response to a compromised private key. Requires Impersonate permission on the service account.
          */
-        delete: operations["DeleteServiceAccountKey"];
+        delete: operations["DeleteServiceAccountUserKey"];
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/service_account/{service_account_id}/token": {
+    "/service_account/{service_account_id}/user_token": {
         parameters: {
             query?: never;
             header?: never;
@@ -1312,20 +1316,44 @@ export interface paths {
          * List a service account's long-lived tokens
          * @description List the long-lived tokens issued to a service account, revoked ones included. The tokens themselves are not returned; each entry carries the jti, who issued it, when it was last used, and whether it has been revoked. Requires View permission on the service account.
          */
-        get: operations["ListServiceAccountTokens"];
+        get: operations["ListServiceAccountUserTokens"];
         put?: never;
         /**
          * Issue a long-lived token for a service account
-         * @description Issue a token with no expiry (or the given ExpiresAt) that authenticates as the service account, for consumers that can hold only a static credential, such as a registry Secret. The token is returned once and never stored; it can be revoked by its jti. Requires Impersonate permission on the service account, which Manage does not include; a service account cannot issue a token for itself.
+         * @description Issue a token with no expiry (or the given ExpiresAt) that authenticates as the service account, for consumers that can hold only a static credential, such as a registry Secret. The token is returned once and never stored; its record can be revoked or deleted. Requires Impersonate permission on the service account, which Manage does not include; a service account cannot issue a token for itself.
          */
-        post: operations["CreateServiceAccountToken"];
+        post: operations["CreateServiceAccountUserToken"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/service_account/{service_account_id}/token/{jti}": {
+    "/service_account/{service_account_id}/user_token/{user_token_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a service account's long-lived token
+         * @description Get the record of one long-lived token issued to a service account. The token itself is not returned. Requires View permission on the service account.
+         */
+        get: operations["GetServiceAccountUserToken"];
+        put?: never;
+        post?: never;
+        /**
+         * Delete a service account's long-lived token
+         * @description Delete one token's record. A token that is still live stops working within a minute on every server, as a revoked one does, and is refused afterwards as unknown. Revoke instead to keep the record. Requires Impersonate permission on the service account.
+         */
+        delete: operations["DeleteServiceAccountUserToken"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/service_account/{service_account_id}/user_token/{user_token_id}/revoke": {
         parameters: {
             query?: never;
             header?: never;
@@ -1334,12 +1362,12 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post?: never;
         /**
          * Revoke a service account's long-lived token
-         * @description Revoke one token by its jti. The token stops working within a minute on every server; the record stays, marked revoked. Requires Impersonate permission on the service account.
+         * @description Revoke one token. The token stops working within a minute on every server; the record stays, marked revoked, and is returned. Revoking a revoked token is not an error. Requires Impersonate permission on the service account.
          */
-        delete: operations["RevokeServiceAccountToken"];
+        post: operations["RevokeServiceAccountUserToken"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -2009,7 +2037,7 @@ export interface paths {
         put?: never;
         /**
          * Run a command on a Channel
-         * @description Creates a run of the command on a Channel of the Space: the one named by ChannelID, or else the one Channel in the Space that declares the command. Running a command takes Use on the Channel. The run is returned Pending; read it back with GET, with ?wait=<seconds> to hold until it completes.
+         * @description Creates a run of the command on a Channel of the Space: the one named by ChannelID, or else the one Channel in the Space that declares the command. Running a command takes Use on the Channel. The run is returned Pending; read it back with GET, with ?wait=<seconds> to hold until it completes. A command that does not resolve to one Channel is refused with a CommandRunRefusal, whose Reason says why.
          */
         post: operations["CreateCommandRun"];
         delete?: never;
@@ -5296,7 +5324,7 @@ export interface components {
             /**
              * Format: date-time
              * @description When the run was created, in "2023-01-01T12:00:00Z" format.
-             * @example 2006-01-02T15:04:05Z07:00
+             * @example 2025-04-04T11:50:02.95102-07:00
              */
             readonly CreatedAt?: string;
             /**
@@ -5317,8 +5345,12 @@ export interface components {
              * @example 2006-01-02T15:04:05Z07:00
              */
             readonly DeliveredAt?: string;
+            /** @description The type of entity. */
+            readonly EntityType?: string;
             /** @description ErrorMessage explains a Failed or Rejected run. */
             readonly ErrorMessage?: string;
+            /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+            HiddenReason?: string;
             /**
              * Format: uuid
              * @description OrganizationID of the Space the run is in.
@@ -5340,28 +5372,32 @@ export interface components {
             /** @description Status is where the run is: Pending, Delivered, Completed, Failed, Rejected, Canceled, Expired or TimedOut. */
             readonly Status?: string;
             /**
-             * Format: uuid
-             * @description TargetID is the Target the run is about, if any. For the record; not a foreign key.
-             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
-             */
-            TargetID?: string;
-            /**
              * Format: date-time
              * @description TimeoutAt is when a Delivered run times out if the client has reported nothing.
              * @example 2006-01-02T15:04:05Z07:00
              */
             readonly TimeoutAt?: string;
             /**
-             * Format: uuid
-             * @description UnitID is the Unit the run is about, if any. For the record; not a foreign key.
-             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             * Format: date-time
+             * @description When the run last changed: created, delivered, returned to Pending, or closed, in "2023-01-01T12:00:00Z" format.
+             * @example 2025-04-04T11:50:02.95102-07:00
              */
-            UnitID?: string;
+            readonly UpdatedAt?: string;
             /**
              * Format: int64
-             * @description An entity-specific sequence number used for optimistic concurrency control.
+             * @description An entity-specific sequence number used for optimistic concurrency control. A run is not updated by its callers, so they never send it.
              */
-            readonly Version?: number;
+            Version?: number;
+        };
+        CommandRunRefusal: {
+            /** @description The Channels in the Space that declare the command, when several do: name one as ChannelID. */
+            Channels?: components["schemas"]["DeclaredCommand"][];
+            /** @description The refusal as an error, as every error response carries one. */
+            Error?: components["schemas"]["ResponseError"];
+            /** @description Why the run was refused, for a person. */
+            Message?: string;
+            /** @description Why the run was refused, as a code: CommandNotDeclared, CommandDeclaredByMany or ChannelDoesNotDeclare. */
+            Reason?: string;
         };
         /** @description CommandRunResult is what a Channel's client reports for a run it executed: Completed with a Result, or Failed or Rejected with an ErrorMessage. */
         CommandRunResult: {
@@ -5807,6 +5843,18 @@ export interface components {
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
         };
+        /** @description CommandRun with additional related entities expanded based on the request's include parameter. */
+        ExtendedCommandRun: {
+            /** @description The Channel the run is delivered on. */
+            Channel?: components["schemas"]["Channel"];
+            /** @description The CommandRun. */
+            CommandRun?: components["schemas"]["CommandRun"];
+            Organization?: components["schemas"]["Organization"];
+            /** @description The Space the run is in: its Channel's. */
+            Space?: components["schemas"]["Space"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
+        };
         ExtendedComponent: {
             Component?: components["schemas"]["Component"];
             Error?: components["schemas"]["ResponseError"];
@@ -5833,6 +5881,7 @@ export interface components {
         };
         ExtendedInvocation: {
             BridgeWorker?: components["schemas"]["BridgeWorker"];
+            Channel?: components["schemas"]["Channel"];
             Error?: components["schemas"]["ResponseError"];
             Invocation?: components["schemas"]["Invocation"];
             Organization?: components["schemas"]["Organization"];
@@ -6019,6 +6068,7 @@ export interface components {
         };
         ExtendedTrigger: {
             BridgeWorker?: components["schemas"]["BridgeWorker"];
+            Channel?: components["schemas"]["Channel"];
             Error?: components["schemas"]["ResponseError"];
             Invocation?: components["schemas"]["Invocation"];
             Organization?: components["schemas"]["Organization"];
@@ -6061,6 +6111,14 @@ export interface components {
             User?: components["schemas"]["User"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
+        };
+        ExtendedUserKey: {
+            Error?: components["schemas"]["ResponseError"];
+            UserKey?: components["schemas"]["UserKey"];
+        };
+        ExtendedUserToken: {
+            Error?: components["schemas"]["ResponseError"];
+            UserToken?: components["schemas"]["UserToken"];
         };
         ExtendedView: {
             Error?: components["schemas"]["ResponseError"];
@@ -6423,10 +6481,16 @@ export interface components {
             readonly BackingUnitID?: string;
             /**
              * Format: uuid
-             * @description Unique identifier for a Bridge Worker to execute the functions specified by the Invocation. If unspecified, use the builtin function executor.
+             * @description Unique identifier for a Bridge Worker to execute the functions specified by the Invocation. If neither it nor ChannelID is specified, use the builtin function executor.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             BridgeWorkerID?: string;
+            /**
+             * Format: uuid
+             * @description Unique identifier for a Channel whose client executes the functions specified by the Invocation. At most one of BridgeWorkerID and ChannelID is set.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChannelID?: string;
             /**
              * Format: date-time
              * @description The timestamp when the entity was created in "2023-01-01T12:00:00Z" format.
@@ -6724,6 +6788,11 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             BridgeWorkerID?: string;
+            /**
+             * Format: uuid
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChannelID?: string;
             /**
              * Format: date-time
              * @description The timestamp when the entity was created in "2023-01-01T12:00:00Z" format.
@@ -8323,7 +8392,7 @@ export interface components {
              *     An example conjunction is:
              *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
              *
-             *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+             *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, ChannelID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
              *
              *     The whole string must be query-encoded.
              */
@@ -8551,7 +8620,7 @@ export interface components {
              *     An example conjunction is:
              *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
              *
-             *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+             *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, ChannelID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
              *
              *     The whole string must be query-encoded.
              */
@@ -8586,10 +8655,16 @@ export interface components {
             readonly BackingUnitID?: string;
             /**
              * Format: uuid
-             * @description Unique identifier for a Bridge Worker to execute the function specified by the Trigger. If unspecified, use the builtin function executor.
+             * @description Unique identifier for a Bridge Worker to execute the function specified by the Trigger. If neither it nor ChannelID is specified, use the builtin function executor.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             BridgeWorkerID?: string;
+            /**
+             * Format: uuid
+             * @description Unique identifier for a Channel whose client executes the function specified by the Trigger. At most one of BridgeWorkerID and ChannelID is set. A Trigger that references an Invocation takes the Invocation's.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChannelID?: string;
             Clearance?: components["schemas"]["Clearance"];
             /**
              * Format: date-time
@@ -8615,7 +8690,7 @@ export interface components {
             readonly EntityType?: string;
             /** @description Event specifies the type of event that will activate this trigger. Valid values are Mutation and PostClone */
             Event: string;
-            /** @description Duration after which a disconnected BridgeWorker's triggers are treated as fail-open. Can only be set when BridgeWorkerID is set. */
+            /** @description Duration after which a disconnected BridgeWorker's triggers are treated as fail-open. Can only be set when BridgeWorkerID is set. A Trigger on a Channel fails closed instead: it waits for the Channel's client. */
             FailOpenAfter?: number | null;
             /** @description Function name */
             FunctionName?: string;
@@ -9588,15 +9663,22 @@ export interface components {
         UserKey: {
             /**
              * Format: date-time
-             * @example 2006-01-02T15:04:05Z07:00
+             * @description The timestamp when the entity was created in "2023-01-01T12:00:00Z" format.
+             * @example 2025-04-04T11:50:02.95102-07:00
              */
-            CreatedAt?: string;
+            readonly CreatedAt?: string;
             Description?: string;
+            /** @description Friendly name for the entity. */
+            DisplayName?: string;
+            /** @description The type of entity. */
+            readonly EntityType?: string;
             /**
              * Format: date-time
              * @example 2006-01-02T15:04:05Z07:00
              */
             ExpiresAt?: string;
+            /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+            HiddenReason?: string;
             Kid?: string;
             /**
              * Format: date-time
@@ -9604,6 +9686,14 @@ export interface components {
              */
             LastUsedAt?: string;
             PublicJWK?: unknown;
+            /** @description Unique URL-safe identifier for the entity. */
+            Slug: string;
+            /**
+             * Format: date-time
+             * @description The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format.
+             * @example 2025-04-04T11:50:02.95102-07:00
+             */
+            readonly UpdatedAt?: string;
             /**
              * Format: uuid
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
@@ -9614,15 +9704,20 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             UserKeyID?: string;
+            /**
+             * Format: int64
+             * @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update.
+             */
+            Version?: number;
         };
         /** @description The record of a long-lived token issued to a ServiceAccount. The token itself is shown once, when it is issued, and is not stored; this record is what lets it be listed, traced to whoever issued it, and revoked on its own. */
         UserToken: {
             /**
              * Format: date-time
              * @description When the token was issued. (readonly)
-             * @example 2006-01-02T15:04:05Z07:00
+             * @example 2025-04-04T11:50:02.95102-07:00
              */
-            CreatedAt?: string;
+            readonly CreatedAt?: string;
             /**
              * Format: uuid
              * @description The User who issued the token. A token is never issued by the identity it authenticates as. (readonly)
@@ -9631,13 +9726,19 @@ export interface components {
             CreatedByUserID?: string;
             /** @description Which system holds the token, so it can be retired without guessing what breaks. */
             Description?: string;
+            /** @description Friendly name for the entity. */
+            DisplayName?: string;
+            /** @description The type of entity. */
+            readonly EntityType?: string;
             /**
              * Format: date-time
              * @description When the token stops working. Zero when it does not expire.
              * @example 2006-01-02T15:04:05Z07:00
              */
             ExpiresAt?: string;
-            /** @description The token's jti claim, which names the token in a revocation. (readonly) */
+            /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+            HiddenReason?: string;
+            /** @description The token's jti claim, which the token carries; a where clause names a token by it, as cub does. (readonly) */
             Jti?: string;
             /**
              * Format: date-time
@@ -9651,6 +9752,14 @@ export interface components {
              * @example 2006-01-02T15:04:05Z07:00
              */
             RevokedAt?: string;
+            /** @description Unique URL-safe identifier for the entity. */
+            Slug: string;
+            /**
+             * Format: date-time
+             * @description The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format.
+             * @example 2025-04-04T11:50:02.95102-07:00
+             */
+            readonly UpdatedAt?: string;
             /**
              * Format: uuid
              * @description The User the token authenticates as: the ServiceAccount's User. (readonly)
@@ -9659,10 +9768,15 @@ export interface components {
             UserID?: string;
             /**
              * Format: uuid
-             * @description Unique identifier for the record. (readonly)
+             * @description Unique identifier for the record, by which the API addresses the token. (readonly)
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             UserTokenID?: string;
+            /**
+             * Format: int64
+             * @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update.
+             */
+            Version?: number;
         };
         ValidationResult: {
             /** @description Deprecated. Use Issues or FailedAttributes instead. Optional list of failure details when not associated with specific attributes/paths. */
@@ -18568,7 +18682,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, SpaceID, Status, TargetID, TimeoutAt, UnitID.
+                 *     Supported attributes for filtering on CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, HiddenReason, OrganizationID, SpaceID, Status, TimeoutAt, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -18610,7 +18724,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for CommandRun are .
+                 *     Supported attributes for CommandRun are ChannelID, OrganizationID, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -18634,6 +18748,26 @@ export interface operations {
                  *     Supported values: Manage, Edit, Use, View.
                  */
                 where_permission?: PathsCommand_runGetParametersQueryWhere_permission;
+                /**
+                 * @description Hidden CommandRun entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+                 *
+                 *     It is a comma-separated list of HiddenReasons, or `*` for all of them.
+                 *
+                 *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+                 *
+                 *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 */
+                include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each CommandRun, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of CommandRun: its Of, or the From of its Filter, must be CommandRun.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of CommandRun entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -18641,7 +18775,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, Status, TargetID, TimeoutAt, UnitID.
+                 *     Supported attributes for ordering CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, HiddenReason, OrganizationID, Status, TimeoutAt, UpdatedAt.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -18673,7 +18807,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CommandRun"][];
+                    "application/json": components["schemas"]["ExtendedCommandRun"][];
                 };
             };
             /** @description CommandRun request is invalid (Bad Request). */
@@ -21949,7 +22083,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
+                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, ChannelID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
                  *
                  *     The functions an Invocation calls are addressed with dot notation into `FunctionInvocations`: `FunctionInvocations.*.FunctionName = 'set-image'` matches an Invocation that calls set-image anywhere in its list, and `FunctionInvocations.0.FunctionName` addresses the first function it calls.
                  *
@@ -21993,7 +22127,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -22044,7 +22178,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Invocation: BackingUnitID, BridgeWorkerID, CreatedAt, DisplayName, Hash, HiddenReason, InvocationID, OrganizationID, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
+                 *     Supported attributes for ordering Invocation: BackingUnitID, BridgeWorkerID, ChannelID, CreatedAt, DisplayName, Hash, HiddenReason, InvocationID, OrganizationID, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -22173,7 +22307,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
+                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, ChannelID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
                  *
                  *     The functions an Invocation calls are addressed with dot notation into `FunctionInvocations`: `FunctionInvocations.*.FunctionName = 'set-image'` matches an Invocation that calls set-image anywhere in its list, and `FunctionInvocations.0.FunctionName` addresses the first function it calls.
                  *
@@ -22227,7 +22361,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -22366,6 +22500,8 @@ export interface operations {
                     } | null;
                     /** Format: uuid */
                     BridgeWorkerID?: string | null;
+                    /** Format: uuid */
+                    ChannelID?: string | null;
                     /** @description An optional set of gates that, if any is present, will block deletion */
                     DeleteGates?: {
                         [key: string]: boolean | null;
@@ -22524,7 +22660,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
+                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, ChannelID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
                  *
                  *     The functions an Invocation calls are addressed with dot notation into `FunctionInvocations`: `FunctionInvocations.*.FunctionName = 'set-image'` matches an Invocation that calls set-image anywhere in its list, and `FunctionInvocations.0.FunctionName` addresses the first function it calls.
                  *
@@ -22578,7 +22714,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -22728,7 +22864,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
+                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, ChannelID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
                  *
                  *     The functions an Invocation calls are addressed with dot notation into `FunctionInvocations`: `FunctionInvocations.*.FunctionName = 'set-image'` matches an Invocation that calls set-image anywhere in its list, and `FunctionInvocations.0.FunctionName` addresses the first function it calls.
                  *
@@ -22782,7 +22918,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -22811,6 +22947,8 @@ export interface operations {
                     } | null;
                     /** Format: uuid */
                     BridgeWorkerID?: string | null;
+                    /** Format: uuid */
+                    ChannelID?: string | null;
                     /** @description An optional set of gates that, if any is present, will block deletion */
                     DeleteGates?: {
                         [key: string]: boolean | null;
@@ -22969,7 +23107,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
+                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, ChannelID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -23021,7 +23159,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -28301,9 +28439,113 @@ export interface operations {
             };
         };
     };
-    ListServiceAccountKeys: {
+    ListServiceAccountUserKeys: {
         parameters: {
-            query?: never;
+            query?: {
+                /**
+                 * @description The specified string is an expression for the purpose of filtering
+                 *     the list of UserKeys returned. The expression syntax was inspired by SQL.
+                 *     It supports conjunctions using `AND` of relational expressions of the form *attribute*
+                 *     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+                 *     as in the JSON encoding.
+                 *     Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+                 *     String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+                 *     `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+                 *     String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+                 *     `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+                 *     Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+                 *     UUIDs and boolean attributes support equality and inequality only.
+                 *     UUID and time literals must be quoted as string literals.
+                 *     String literals are quoted with single quotes, such as `'string'`.
+                 *     Time literals use the same form as when serialized as JSON,
+                 *     such as: `CreatedAt > '2025-02-18T23:16:34'`.
+                 *     Integer and boolean literals are also supported for attributes of those types.
+                 *     Arrays support the `?` operator to to match any element of the array,
+                 *     as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+                 *     Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+                 *     An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+                 *     as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+                 *     Without the `*` such a reference is an error, since it names no single value to compare.
+                 *     Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+                 *     Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+                 *     as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+                 *     Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+                 *     These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+                 *     The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+                 *     such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+                 *     Conjunctions are supported using the `AND` operator.
+                 *     An example conjunction is:
+                 *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+                 *
+                 *     Supported attributes for filtering on UserKey: CreatedAt, Description, DisplayName, ExpiresAt, HiddenReason, Kid, LastUsedAt, Slug, UpdatedAt, UserID, UserKeyID.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                where?: string;
+                /**
+                 * @description Free text search that approximately matches the specified string against string fields and map keys/values.
+                 *
+                 *     The search is case-insensitive and uses pattern matching to find entities containing the text.
+                 *
+                 *     Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+                 *
+                 *     For map fields (like Labels and Annotations), the search matches both map keys and values.
+                 *
+                 *     The search uses OR logic across all searchable fields, so matching any field will return the entity.
+                 *
+                 *     If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+                 *
+                 *     Searchable fields for UserKey include string and map-type attributes from the queryable attributes list.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                contains?: string;
+                /**
+                 * @description Select clause for specifying which fields to include in the response for UserKey.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *     If not specified, all fields are returned.
+                 *     Entity and parent IDs (like OrganizationID, SpaceID, UserKeyID) and Slug are always returned regardless of the select parameter.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
+                 *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+                 *     The whole string must be query-encoded.
+                 */
+                select?: string;
+                /**
+                 * @description Hidden UserKey entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+                 *
+                 *     It is a comma-separated list of HiddenReasons, or `*` for all of them.
+                 *
+                 *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+                 *
+                 *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 */
+                include_hidden?: string;
+                /** @description Maximum number of UserKey entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
+                limit?: number;
+                /**
+                 * @description Comma-separated list of fields to sort UserKey results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
+                 *
+                 *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
+                 *
+                 *     Supported attributes for ordering UserKey: CreatedAt, Description, DisplayName, ExpiresAt, HiddenReason, Kid, LastUsedAt, Slug, UpdatedAt, UserID, UserKeyID.
+                 *
+                 *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
+                 *
+                 *     Results are ordered by the UserKey's ID after the fields named, and by the ID alone if none are.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                order_by?: string;
+                /**
+                 * @description The token from the ConfigHub-Continue header of the previous page, to return the UserKey entities after it.
+                 *
+                 *     The request's other parameters, except limit, must be the same as those of the request that returned the token.
+                 *
+                 *     Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more.
+                 */
+                continue?: string;
+            };
             header?: never;
             path: {
                 /** @description UUID of the service account whose keys are being managed. */
@@ -28316,10 +28558,12 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    /** @description The token to pass as the continue parameter of the next request, when there may be more entities after this page. It is absent on the last page. A page can hold fewer entities than the limit, or none, and still have one. */
+                    "ConfigHub-Continue"?: string;
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["UserKey"][];
+                    "application/json": components["schemas"]["ExtendedUserKey"][];
                 };
             };
             /** @description ServiceAccount request is invalid (Bad Request). */
@@ -28378,7 +28622,7 @@ export interface operations {
             };
         };
     };
-    CreateServiceAccountKey: {
+    CreateServiceAccountUserKey: {
         parameters: {
             query?: {
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
@@ -28471,15 +28715,106 @@ export interface operations {
             };
         };
     };
-    DeleteServiceAccountKey: {
+    GetServiceAccountUserKey: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Select clause for specifying which fields to include in the response for UserKey.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *     If not specified, all fields are returned.
+                 *     Entity and parent IDs (like OrganizationID, SpaceID, UserKeyID) and Slug are always returned regardless of the select parameter.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
+                 *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+                 *     The whole string must be query-encoded.
+                 */
+                select?: string;
+            };
+            header?: never;
+            path: {
+                /** @description UUID of the service account whose keys are being managed. */
+                service_account_id: string;
+                /** @description UUID of the key. To address a key by its thumbprint, list with where "Kid = '<kid>'". */
+                user_key_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExtendedUserKey"];
+                };
+            };
+            /** @description ServiceAccount request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description ServiceAccount not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing ServiceAccount. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    DeleteServiceAccountUserKey: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 /** @description UUID of the service account whose keys are being managed. */
                 service_account_id: string;
-                /** @description RFC 7638 thumbprint of the key to remove. The key names itself, so a holder can address it without asking what it was called. */
-                kid: string;
+                /** @description UUID of the key. To address a key by its thumbprint, list with where "Kid = '<kid>'". */
+                user_key_id: string;
             };
             cookie?: never;
         };
@@ -28568,9 +28903,113 @@ export interface operations {
             };
         };
     };
-    ListServiceAccountTokens: {
+    ListServiceAccountUserTokens: {
         parameters: {
-            query?: never;
+            query?: {
+                /**
+                 * @description The specified string is an expression for the purpose of filtering
+                 *     the list of UserTokens returned. The expression syntax was inspired by SQL.
+                 *     It supports conjunctions using `AND` of relational expressions of the form *attribute*
+                 *     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+                 *     as in the JSON encoding.
+                 *     Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+                 *     String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+                 *     `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+                 *     String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+                 *     `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+                 *     Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+                 *     UUIDs and boolean attributes support equality and inequality only.
+                 *     UUID and time literals must be quoted as string literals.
+                 *     String literals are quoted with single quotes, such as `'string'`.
+                 *     Time literals use the same form as when serialized as JSON,
+                 *     such as: `CreatedAt > '2025-02-18T23:16:34'`.
+                 *     Integer and boolean literals are also supported for attributes of those types.
+                 *     Arrays support the `?` operator to to match any element of the array,
+                 *     as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+                 *     Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+                 *     An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+                 *     as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+                 *     Without the `*` such a reference is an error, since it names no single value to compare.
+                 *     Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+                 *     Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+                 *     as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+                 *     Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+                 *     These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+                 *     The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+                 *     such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+                 *     Conjunctions are supported using the `AND` operator.
+                 *     An example conjunction is:
+                 *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+                 *
+                 *     Supported attributes for filtering on UserToken: CreatedAt, CreatedByUserID, Description, DisplayName, ExpiresAt, HiddenReason, Jti, LastUsedAt, RevokedAt, Slug, UpdatedAt, UserID, UserTokenID.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                where?: string;
+                /**
+                 * @description Free text search that approximately matches the specified string against string fields and map keys/values.
+                 *
+                 *     The search is case-insensitive and uses pattern matching to find entities containing the text.
+                 *
+                 *     Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+                 *
+                 *     For map fields (like Labels and Annotations), the search matches both map keys and values.
+                 *
+                 *     The search uses OR logic across all searchable fields, so matching any field will return the entity.
+                 *
+                 *     If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+                 *
+                 *     Searchable fields for UserToken include string and map-type attributes from the queryable attributes list.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                contains?: string;
+                /**
+                 * @description Select clause for specifying which fields to include in the response for UserToken.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *     If not specified, all fields are returned.
+                 *     Entity and parent IDs (like OrganizationID, SpaceID, UserTokenID) and Slug are always returned regardless of the select parameter.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
+                 *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+                 *     The whole string must be query-encoded.
+                 */
+                select?: string;
+                /**
+                 * @description Hidden UserToken entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+                 *
+                 *     It is a comma-separated list of HiddenReasons, or `*` for all of them.
+                 *
+                 *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+                 *
+                 *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 */
+                include_hidden?: string;
+                /** @description Maximum number of UserToken entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
+                limit?: number;
+                /**
+                 * @description Comma-separated list of fields to sort UserToken results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
+                 *
+                 *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
+                 *
+                 *     Supported attributes for ordering UserToken: CreatedAt, CreatedByUserID, Description, DisplayName, ExpiresAt, HiddenReason, Jti, LastUsedAt, RevokedAt, Slug, UpdatedAt, UserID, UserTokenID.
+                 *
+                 *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
+                 *
+                 *     Results are ordered by the UserToken's ID after the fields named, and by the ID alone if none are.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                order_by?: string;
+                /**
+                 * @description The token from the ConfigHub-Continue header of the previous page, to return the UserToken entities after it.
+                 *
+                 *     The request's other parameters, except limit, must be the same as those of the request that returned the token.
+                 *
+                 *     Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more.
+                 */
+                continue?: string;
+            };
             header?: never;
             path: {
                 /** @description UUID of the service account whose tokens are being managed. */
@@ -28583,10 +29022,12 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    /** @description The token to pass as the continue parameter of the next request, when there may be more entities after this page. It is absent on the last page. A page can hold fewer entities than the limit, or none, and still have one. */
+                    "ConfigHub-Continue"?: string;
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["UserToken"][];
+                    "application/json": components["schemas"]["ExtendedUserToken"][];
                 };
             };
             /** @description ServiceAccount request is invalid (Bad Request). */
@@ -28645,7 +29086,7 @@ export interface operations {
             };
         };
     };
-    CreateServiceAccountToken: {
+    CreateServiceAccountUserToken: {
         parameters: {
             query?: {
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
@@ -28738,15 +29179,106 @@ export interface operations {
             };
         };
     };
-    RevokeServiceAccountToken: {
+    GetServiceAccountUserToken: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Select clause for specifying which fields to include in the response for UserToken.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *     If not specified, all fields are returned.
+                 *     Entity and parent IDs (like OrganizationID, SpaceID, UserTokenID) and Slug are always returned regardless of the select parameter.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
+                 *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+                 *     The whole string must be query-encoded.
+                 */
+                select?: string;
+            };
+            header?: never;
+            path: {
+                /** @description UUID of the service account whose tokens are being managed. */
+                service_account_id: string;
+                /** @description UUID of the token's record. To address a token by the jti it carries, list with where "Jti = '<jti>'". */
+                user_token_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExtendedUserToken"];
+                };
+            };
+            /** @description ServiceAccount request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description ServiceAccount not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing ServiceAccount. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    DeleteServiceAccountUserToken: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 /** @description UUID of the service account whose tokens are being managed. */
                 service_account_id: string;
-                /** @description The jti of the token to revoke, as listed and as carried in the token's own claims. */
-                jti: string;
+                /** @description UUID of the token's record. To address a token by the jti it carries, list with where "Jti = '<jti>'". */
+                user_token_id: string;
             };
             cookie?: never;
         };
@@ -28808,6 +29340,94 @@ export interface operations {
             };
             /** @description ServiceAccount could not be deleted. */
             422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing ServiceAccount. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    RevokeServiceAccountUserToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description UUID of the service account whose tokens are being managed. */
+                service_account_id: string;
+                /** @description UUID of the token's record. To address a token by the jti it carries, list with where "Jti = '<jti>'". */
+                user_token_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The record of a long-lived token issued to a ServiceAccount. The token itself is shown once, when it is issued, and is not stored; this record is what lets it be listed, traced to whoever issued it, and revoked on its own. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserToken"];
+                };
+            };
+            /** @description ServiceAccount request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description ServiceAccount not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description ServiceAccount data conflict. Data has changed since last read. */
+            409: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -35706,7 +36326,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, SpaceID, Status, TargetID, TimeoutAt, UnitID.
+                 *     Supported attributes for filtering on CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, HiddenReason, OrganizationID, SpaceID, Status, TimeoutAt, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -35748,7 +36368,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for CommandRun are .
+                 *     Supported attributes for CommandRun are ChannelID, OrganizationID, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -35772,6 +36392,26 @@ export interface operations {
                  *     Supported values: Manage, Edit, Use, View.
                  */
                 where_permission?: PathsSpaceSpace_idCommand_runGetParametersQueryWhere_permission;
+                /**
+                 * @description Hidden CommandRun entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+                 *
+                 *     It is a comma-separated list of HiddenReasons, or `*` for all of them.
+                 *
+                 *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+                 *
+                 *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 */
+                include_hidden?: string;
+                /**
+                 * @description UUID of a View whose columns to compute for each CommandRun, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of CommandRun: its Of, or the From of its Filter, must be CommandRun.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
                 /** @description Maximum number of CommandRun entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
                 limit?: number;
                 /**
@@ -35779,7 +36419,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, OrganizationID, Status, TargetID, TimeoutAt, UnitID.
+                 *     Supported attributes for ordering CommandRun: ChannelID, Command, CommandRunID, CompletedAt, CreatedAt, CreatedBy, Deadline, DeliveredAt, HiddenReason, OrganizationID, Status, TimeoutAt, UpdatedAt.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -35814,7 +36454,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CommandRun"][];
+                    "application/json": components["schemas"]["ExtendedCommandRun"][];
                 };
             };
             /** @description CommandRun request is invalid (Bad Request). */
@@ -35928,22 +36568,31 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description CommandRun not found. */
+            /** @description CommandNotDeclared: no Channel in the Space declares the command. */
             404: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
+                    "application/json": components["schemas"]["CommandRunRefusal"];
                 };
             };
-            /** @description Several Channels in the Space declare the command; name one with ChannelID. */
+            /** @description CommandDeclaredByMany: several Channels in the Space declare the command; name one of Channels with ChannelID. */
             409: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
+                    "application/json": components["schemas"]["CommandRunRefusal"];
+                };
+            };
+            /** @description ChannelDoesNotDeclare: the Channel named by ChannelID does not declare the command. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommandRunRefusal"];
                 };
             };
             /** @description Something went wrong while processing CommandRun. */
@@ -35972,6 +36621,16 @@ export interface operations {
                 /** @description Seconds to hold for a terminal status; at most 25. */
                 wait?: number;
                 /**
+                 * @description Include clause for expanding related entities in the response for CommandRun.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *
+                 *     Supported attributes for CommandRun are ChannelID, OrganizationID, SpaceID.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                include?: string;
+                /**
                  * @description Select clause for specifying which fields to include in the response for CommandRun.
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
@@ -35994,13 +36653,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description CommandRun is one execution of a command on a Channel: the request, from the caller, and the outcome, from the channel's client. Create one at the Space, naming the command and optionally the Channel; without a Channel, the command is resolved to the one Channel in the Space that declares it. A Pending run waits for the client until its Deadline; a Delivered run has a fixed time to its outcome. */
+            /** @description CommandRun with additional related entities expanded based on the request's include parameter. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CommandRun"];
+                    "application/json": components["schemas"]["ExtendedCommandRun"];
                 };
             };
             /** @description CommandRun request is invalid (Bad Request). */
@@ -37642,7 +38301,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
+                 *     Supported attributes for filtering on Invocation: Annotations, BackingUnitID, BridgeWorkerID, ChannelID, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Hash, HiddenReason, InvocationID, Labels, OrganizationID, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
                  *
                  *     The functions an Invocation calls are addressed with dot notation into `FunctionInvocations`: `FunctionInvocations.*.FunctionName = 'set-image'` matches an Invocation that calls set-image anywhere in its list, and `FunctionInvocations.0.FunctionName` addresses the first function it calls.
                  *
@@ -37686,7 +38345,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -37737,7 +38396,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Invocation: BackingUnitID, BridgeWorkerID, CreatedAt, DisplayName, Hash, HiddenReason, InvocationID, OrganizationID, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
+                 *     Supported attributes for ordering Invocation: BackingUnitID, BridgeWorkerID, ChannelID, CreatedAt, DisplayName, Hash, HiddenReason, InvocationID, OrganizationID, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -37936,7 +38595,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -38245,6 +38904,8 @@ export interface operations {
                     } | null;
                     /** Format: uuid */
                     BridgeWorkerID?: string | null;
+                    /** Format: uuid */
+                    ChannelID?: string | null;
                     /** @description An optional set of gates that, if any is present, will block deletion */
                     DeleteGates?: {
                         [key: string]: boolean | null;
@@ -42082,7 +42743,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, ChannelID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
                  *
                  *     A Trigger returns the function it invokes inline rather than in a FunctionInvocation object, so `where` names FunctionName and Arguments directly. The arguments are addressed with dot notation into `Arguments`, which is a list: `Arguments.?ParameterName=attribute-name.Value = 'owner'` reads the argument bound to a named parameter, `Arguments.*.Value` matches any argument's value, and `Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
                  *
@@ -42126,7 +42787,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -42177,7 +42838,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Trigger: BackingUnitID, BridgeWorkerID, CreatedAt, Description, Disabled, DisplayName, Event, FunctionName, Hash, HiddenReason, InvocationID, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+                 *     Supported attributes for ordering Trigger: BackingUnitID, BridgeWorkerID, ChannelID, CreatedAt, Description, Disabled, DisplayName, Event, FunctionName, Hash, HiddenReason, InvocationID, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -42386,7 +43047,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -42707,6 +43368,8 @@ export interface operations {
                     Arguments?: (Record<string, never> | null)[] | null;
                     /** Format: uuid */
                     BridgeWorkerID?: string | null;
+                    /** Format: uuid */
+                    ChannelID?: string | null;
                     Clearance?: (Record<string, never> | null)[] | null;
                     /** @description An optional set of gates that, if any is present, will block deletion */
                     DeleteGates?: {
@@ -43546,7 +44209,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
+                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, ChannelID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
                  *
                  *     Selects Mutations of this Unit whose paths the merge must not overwrite, unioned with the Protected values stored on the Unit's MutationSources.
                  *
@@ -43861,7 +44524,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
+                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, ChannelID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
                  *
                  *     Selects Mutations of this Unit whose paths the merge must not overwrite, unioned with the Protected values stored on the Unit's MutationSources.
                  *
@@ -44561,7 +45224,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
+                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, ChannelID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
                  *
                  *     The function invoked is returned as a FunctionInvocation object, and `where` names its fields the same way: `FunctionInvocation.FunctionName`, `FunctionInvocation.Guards.<reason>`, and `FunctionInvocation.Arguments`, which is a list addressed with dot notation. `FunctionInvocation.Arguments.?ParameterName=container-image.Value LIKE 'nginx%'` reads the argument bound to a named parameter, `FunctionInvocation.Arguments.*.Value` matches any argument's value, and `FunctionInvocation.Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
                  *
@@ -44656,7 +45319,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Mutation: BridgeWorkerID, CreatedAt, FunctionName, HiddenReason, InvocationID, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, Subgroup, TriggerID, UnitID, UpdatedAt.
+                 *     Supported attributes for ordering Mutation: BridgeWorkerID, ChannelID, CreatedAt, FunctionName, HiddenReason, InvocationID, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, Subgroup, TriggerID, UnitID, UpdatedAt.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -50444,7 +51107,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, ChannelID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
                  *
                  *     A Trigger returns the function it invokes inline rather than in a FunctionInvocation object, so `where` names FunctionName and Arguments directly. The arguments are addressed with dot notation into `Arguments`, which is a list: `Arguments.?ParameterName=attribute-name.Value = 'owner'` reads the argument bound to a named parameter, `Arguments.*.Value` matches any argument's value, and `Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
                  *
@@ -50488,7 +51151,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -50539,7 +51202,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Trigger: BackingUnitID, BridgeWorkerID, CreatedAt, Description, Disabled, DisplayName, Event, FunctionName, Hash, HiddenReason, InvocationID, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+                 *     Supported attributes for ordering Trigger: BackingUnitID, BridgeWorkerID, ChannelID, CreatedAt, Description, Disabled, DisplayName, Event, FunctionName, Hash, HiddenReason, InvocationID, OrganizationID, OtherDataSource, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -50668,7 +51331,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, ChannelID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
                  *
                  *     A Trigger returns the function it invokes inline rather than in a FunctionInvocation object, so `where` names FunctionName and Arguments directly. The arguments are addressed with dot notation into `Arguments`, which is a list: `Arguments.?ParameterName=attribute-name.Value = 'owner'` reads the argument bound to a named parameter, `Arguments.*.Value` matches any argument's value, and `Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
                  *
@@ -50722,7 +51385,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -50863,6 +51526,8 @@ export interface operations {
                     Arguments?: (Record<string, never> | null)[] | null;
                     /** Format: uuid */
                     BridgeWorkerID?: string | null;
+                    /** Format: uuid */
+                    ChannelID?: string | null;
                     Clearance?: (Record<string, never> | null)[] | null;
                     /** @description An optional set of gates that, if any is present, will block deletion */
                     DeleteGates?: {
@@ -51040,7 +51705,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, ChannelID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
                  *
                  *     A Trigger returns the function it invokes inline rather than in a FunctionInvocation object, so `where` names FunctionName and Arguments directly. The arguments are addressed with dot notation into `Arguments`, which is a list: `Arguments.?ParameterName=attribute-name.Value = 'owner'` reads the argument bound to a named parameter, `Arguments.*.Value` matches any argument's value, and `Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
                  *
@@ -51094,7 +51759,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -51244,7 +51909,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, ChannelID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
                  *
                  *     A Trigger returns the function it invokes inline rather than in a FunctionInvocation object, so `where` names FunctionName and Arguments directly. The arguments are addressed with dot notation into `Arguments`, which is a list: `Arguments.?ParameterName=attribute-name.Value = 'owner'` reads the argument bound to a named parameter, `Arguments.*.Value` matches any argument's value, and `Arguments.0.Value` addresses the first argument. Arguments passed positionally have no ParameterName.
                  *
@@ -51298,7 +51963,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -51329,6 +51994,8 @@ export interface operations {
                     Arguments?: (Record<string, never> | null)[] | null;
                     /** Format: uuid */
                     BridgeWorkerID?: string | null;
+                    /** Format: uuid */
+                    ChannelID?: string | null;
                     Clearance?: (Record<string, never> | null)[] | null;
                     /** @description An optional set of gates that, if any is present, will block deletion */
                     DeleteGates?: {
@@ -51506,7 +52173,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+                 *     Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, BridgeWorkerID, ChannelID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherDataSource, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -51558,7 +52225,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -52639,7 +53306,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
+                 *     Supported attributes for filtering on Mutation: BridgeWorkerID, ChannelID, CreatedAt, FunctionInvocation.Arguments, FunctionInvocation.Clearance, FunctionInvocation.FunctionName, FunctionInvocation.Guards, FunctionInvocation.WhereResource, FunctionName, HiddenReason, InvocationID, InvocationParams, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, SpaceID, Subgroup, TriggerID, UnitID, UpdatedAt.
                  *
                  *     Selects Mutations of this Unit whose paths the merge must not overwrite, unioned with the Protected values stored on the Unit's MutationSources.
                  *
