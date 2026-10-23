@@ -16551,9 +16551,9 @@ export type ListFunctionsApiResponse = /** status 200 OK */ {
 export type ListFunctionsApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
-  /** Type of entity used to identify the worker whose functions should be listed: worker */
+  /** Type of entity whose functions should be listed: worker or channel */
   entity?: string;
-  /** ID of the entity used to identify the worker whose functions should be listed */
+  /** ID of the worker or channel whose functions should be listed */
   id?: string;
   /** The specified string is an expression for the purpose of filtering
     the list of FunctionSignatures returned. The expression syntax was inspired by SQL.
@@ -18758,7 +18758,7 @@ export type GetUnitDiffApiArg = {
   spaceId: string;
   /** Unique identifier for a unit_id */
   unitId: string;
-  /** The Revision on the From side: a number, a Revision ID, HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, or ChangeOrder:<id>, any of them optionally prefixed with Before:. */
+  /** The Revision on the From side: a number, a Revision ID, HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, ChangeOrder:<id>, or Release:<id> (the Revision the Release bundled), any of them optionally prefixed with Before:. */
   from?: string;
   /** The Revision on the To side, in the same syntax as from. */
   to?: string;
@@ -23365,7 +23365,7 @@ export type SearchUnitDiffApiArg = {
   triggerFilter?: string;
   /** When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
   triggersPassed?: boolean;
-  /** The Revision on the From side: a number, a Revision ID, HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, or ChangeOrder:<id>, any of them optionally prefixed with Before:. */
+  /** The Revision on the From side: a number, a Revision ID, HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, ChangeOrder:<id>, or Release:<id> (the Revision the Release bundled), any of them optionally prefixed with Before:. */
   from?: string;
   /** The Revision on the To side, in the same syntax as from. */
   to?: string;
@@ -30248,7 +30248,7 @@ export type UploadComponentRequest = {
   Adopt?: boolean;
   /** The Space, by slug, for the backing Units of the bundle's Space and Component documents; it may be the component's own Space. Required when the bundle has either. */
   BackingUnitSpace?: string;
-  /** Synthesize the release Namespace if the bundle lacks it. Off by default. */
+  /** Synthesize the release Namespace if the bundle lacks it and it is not one every cluster has (default, kube-node-lease, kube-public, kube-system). Off by default. */
   CreateNamespace?: boolean;
   /** Names of the components this one depends on, recorded by ComponentID in the Space's DependsOn annotation. Each Component must already exist. Requires a Variant Space label. */
   DependsOn?: string[];

@@ -3555,7 +3555,7 @@ export interface paths {
         };
         /**
          * Get the difference between two Revisions of many Units across spaces
-         * @description Returns, for every Unit the where clause selects, across every Space in the organization, what changed in its configuration between the Revision from names and the Revision to names, path by path with the values on both sides. This is the bulk counterpart of the single-Unit diff subresource. from and to must each pick out a Revision in every Unit: HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id> or ChangeOrder:<id>, optionally prefixed with Before:. A Unit with no Revision a side names is absent on that side, and its diff runs against nothing. Scope it to one Space with a where clause.
+         * @description Returns, for every Unit the where clause selects, across every Space in the organization, what changed in its configuration between the Revision from names and the Revision to names, path by path with the values on both sides. This is the bulk counterpart of the single-Unit diff subresource. from and to must each pick out a Revision in every Unit: HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, ChangeOrder:<id> or Release:<id>, optionally prefixed with Before:. A Unit with no Revision a side names is absent on that side, and its diff runs against nothing. Scope it to one Space with a where clause.
          */
         get: operations["SearchUnitDiff"];
         put?: never;
@@ -9375,7 +9375,7 @@ export interface components {
             Adopt?: boolean;
             /** @description The Space, by slug, for the backing Units of the bundle's Space and Component documents; it may be the component's own Space. Required when the bundle has either. */
             BackingUnitSpace?: string;
-            /** @description Synthesize the release Namespace if the bundle lacks it. Off by default. */
+            /** @description Synthesize the release Namespace if the bundle lacks it and it is not one every cluster has (default, kube-node-lease, kube-public, kube-system). Off by default. */
             CreateNamespace?: boolean;
             /** @description Names of the components this one depends on, recorded by ComponentID in the Space's DependsOn annotation. Each Component must already exist. Requires a Variant Space label. */
             DependsOn?: string[];
@@ -37898,9 +37898,9 @@ export interface operations {
     ListFunctions: {
         parameters: {
             query?: {
-                /** @description Type of entity used to identify the worker whose functions should be listed: worker */
+                /** @description Type of entity whose functions should be listed: worker or channel */
                 entity?: string;
-                /** @description ID of the entity used to identify the worker whose functions should be listed */
+                /** @description ID of the worker or channel whose functions should be listed */
                 id?: string;
                 /**
                  * @description The specified string is an expression for the purpose of filtering
@@ -45005,7 +45005,7 @@ export interface operations {
     GetUnitDiff: {
         parameters: {
             query?: {
-                /** @description The Revision on the From side: a number, a Revision ID, HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, or ChangeOrder:<id>, any of them optionally prefixed with Before:. */
+                /** @description The Revision on the From side: a number, a Revision ID, HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, ChangeOrder:<id>, or Release:<id> (the Revision the Release bundled), any of them optionally prefixed with Before:. */
                 from?: string;
                 /** @description The Revision on the To side, in the same syntax as from. */
                 to?: string;
@@ -54620,7 +54620,7 @@ export interface operations {
                 trigger_filter?: string;
                 /** @description When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
                 triggers_passed?: boolean;
-                /** @description The Revision on the From side: a number, a Revision ID, HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, or ChangeOrder:<id>, any of them optionally prefixed with Before:. */
+                /** @description The Revision on the From side: a number, a Revision ID, HeadRevisionNum, LastReleasedRevisionNum, Tag:<id>, ChangeSet:<id>, ChangeOrder:<id>, or Release:<id> (the Revision the Release bundled), any of them optionally prefixed with Before:. */
                 from?: string;
                 /** @description The Revision on the To side, in the same syntax as from. */
                 to?: string;
