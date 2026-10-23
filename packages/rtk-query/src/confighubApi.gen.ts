@@ -29392,6 +29392,8 @@ export type ResourceProtection = {
 export type UnitProtectionRequest = {
   /** Per-resource Protected edits to apply to the Unit's MutationSources */
   ResourceProtection?: ResourceProtection[] | null;
+  /** Clear every Protected value on the Unit's MutationSources before applying ResourceProtection */
+  UnprotectAll?: boolean;
 };
 export type UnitAction = {
   /** Action is the type of action to be performed by the worker, such as InvokeFunctions or Cancel. UnitActions queued for bridge workers, which have been removed, can carry the actions they performed, such as Apply. */

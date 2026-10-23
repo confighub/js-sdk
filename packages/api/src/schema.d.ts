@@ -2885,7 +2885,7 @@ export interface paths {
         put?: never;
         /**
          * Set path protection on a unit
-         * @description Set Protected values on the unit's MutationSources, marking paths as local overrides a merge must not overwrite when subtraction is disabled. A merge's WhereMutation protects further paths on top of these. Creates a new revision only if the protection actually changes. Requires Edit permission.
+         * @description Set Protected values on the unit's MutationSources, marking paths as local overrides a merge must not overwrite when subtraction is disabled. A merge's WhereMutation protects further paths on top of these. UnprotectAll clears every Protected value before ResourceProtection is applied. Creates a new revision only if the protection actually changes. Requires Edit permission.
          */
         post: operations["SetUnitProtection"];
         delete?: never;
@@ -9265,6 +9265,8 @@ export interface components {
         UnitProtectionRequest: {
             /** @description Per-resource Protected edits to apply to the Unit's MutationSources */
             ResourceProtection?: components["schemas"]["ResourceProtection"][] | null;
+            /** @description Clear every Protected value on the Unit's MutationSources before applying ResourceProtection */
+            UnprotectAll?: boolean;
         };
         UnitProtectionResponse: {
             Error?: components["schemas"]["ResponseError"];
