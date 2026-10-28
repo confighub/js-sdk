@@ -554,6 +554,26 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["ChangeOrder"],
       }),
+      bulkRefreshChangeOrderStages: build.mutation<
+        BulkRefreshChangeOrderStagesApiResponse,
+        BulkRefreshChangeOrderStagesApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/change_order/refresh_stage`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["ChangeOrder"],
+      }),
       bulkDeleteChangeSets: build.mutation<
         BulkDeleteChangeSetsApiResponse,
         BulkDeleteChangeSetsApiArg
@@ -2493,6 +2513,19 @@ const injectedRtkApi = api
           body: queryArg.changeOrder,
           params: {
             refresh_spaces: queryArg.refreshSpaces,
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["ChangeOrder"],
+      }),
+      refreshChangeOrderStage: build.mutation<
+        RefreshChangeOrderStageApiResponse,
+        RefreshChangeOrderStageApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/change_order/${queryArg.changeOrderId}/refresh_stage`,
+          method: "POST",
+          params: {
             dry_run: queryArg.dryRun,
           },
         }),
@@ -7736,6 +7769,99 @@ export type BulkCreateChangeOrdersApiArg = {
     WhereSpace?: string | null;
     WhereUnit?: string | null;
   };
+};
+export type BulkRefreshChangeOrderStagesApiResponse =
+  | /** status 200 OK */ ChangeOrderCreateOrUpdateResponseRead[]
+  | /** status 207 Multi-Status: Mixed success and failure results */ ChangeOrderCreateOrUpdateResponseRead[];
+export type BulkRefreshChangeOrderStagesApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of ChangeOrders returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, ReviewRequests, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the ChangeOrder list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (ChangeOrder).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for ChangeOrder include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden ChangeOrder entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for ChangeOrder.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of ChangeOrder entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the ChangeOrder entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
 };
 export type BulkDeleteChangeSetsApiResponse =
   | /** status 200 OK */ DeleteResponse[]
@@ -15338,6 +15464,16 @@ export type UpdateChangeOrderApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   changeOrder: ChangeOrder;
+};
+export type RefreshChangeOrderStageApiResponse =
+  /** status 200 Defines a change's identity as it moves between Spaces. */ ChangeOrderRead;
+export type RefreshChangeOrderStageApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a change_order_id */
+  changeOrderId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
 };
 export type ListChangeSetsApiResponse =
   /** status 200 OK */ ExtendedChangeSetRead[];
@@ -30397,6 +30533,7 @@ export const {
   useLazyListAllChangeOrdersQuery,
   useBulkPatchChangeOrdersMutation,
   useBulkCreateChangeOrdersMutation,
+  useBulkRefreshChangeOrderStagesMutation,
   useBulkDeleteChangeSetsMutation,
   useListAllChangeSetsQuery,
   useLazyListAllChangeSetsQuery,
@@ -30564,6 +30701,7 @@ export const {
   useLazyGetChangeOrderQuery,
   usePatchChangeOrderMutation,
   useUpdateChangeOrderMutation,
+  useRefreshChangeOrderStageMutation,
   useListChangeSetsQuery,
   useLazyListChangeSetsQuery,
   useCreateChangeSetMutation,
