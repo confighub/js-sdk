@@ -986,11 +986,7 @@ export interface paths {
          */
         get: operations["ListOrganizations"];
         put?: never;
-        /**
-         * Create Organization
-         * @description Create Organization
-         */
-        post: operations["CreateOrganization"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1015,14 +1011,14 @@ export interface paths {
          */
         put: operations["UpdateOrganization"];
         post?: never;
-        /**
-         * Delete Organization
-         * @description Delete Organization
-         */
-        delete: operations["DeleteOrganization"];
+        delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        /**
+         * Patch Organization
+         * @description Patch Organization
+         */
+        patch: operations["PatchOrganization"];
         trace?: never;
     };
     "/organization/{organization_id}/organization_member": {
@@ -7063,6 +7059,8 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             OrganizationID?: string;
+            /** @description Permissions to access this organization. Its Children categories apply to the spaces and the other entities that belong to the organization rather than to a space. */
+            Permissions?: components["schemas"]["Permissions"];
             /** @description Unique URL-safe identifier for the entity. */
             Slug: string;
             /**
@@ -25071,7 +25069,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Organization: Annotations, CreatedAt, DeleteGates, DisplayName, EmailDomain, ExternalID, HiddenReason, Labels, OrganizationID, Slug, UpdatedAt.
+                 *     Supported attributes for filtering on Organization: Annotations, CreatedAt, DeleteGates, DisplayName, EmailDomain, ExternalID, HiddenReason, Labels, OrganizationID, Permissions, Slug, UpdatedAt.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -25134,7 +25132,7 @@ export interface operations {
                  *
                  *     A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
                  *
-                 *     Supported values: Manage, Edit, Use, View.
+                 *     Supported values: Manage, Edit, Use, View, ManageChildren, EditChildren, UseChildren, ViewChildren, CreateChildren.
                  */
                 where_permission?: PathsOrganizationGetParametersQueryWhere_permission;
                 /**
@@ -25202,96 +25200,6 @@ export interface operations {
             };
             /** @description Organization not found. */
             404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Something went wrong while processing Organization. */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Unexpected error. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-        };
-    };
-    CreateOrganization: {
-        parameters: {
-            query?: {
-                /** @description Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
-                allow_exists?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["Organization"];
-            };
-        };
-        responses: {
-            /** @description The top-level container for an organization using ConfigHub. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Organization"];
-                };
-            };
-            /** @description Organization request is invalid (Bad Request). */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Unauthorized access. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Forbidden access. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Organization not found. */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Organization data conflict. Data has changed since last read. */
-            409: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25511,9 +25419,12 @@ export interface operations {
             };
         };
     };
-    DeleteOrganization: {
+    PatchOrganization: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+                dry_run?: boolean;
+            };
             header?: never;
             path: {
                 /** @description Unique identifier for a organization_id */
@@ -25521,15 +25432,44 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/merge-patch+json": {
+                    /** @description An optional map of Annotation key/value pairs for tools to attach information to entities. */
+                    Annotations?: {
+                        [key: string]: string | null;
+                    } | null;
+                    /** @description An optional set of gates that, if any is present, will block deletion */
+                    DeleteGates?: {
+                        [key: string]: boolean | null;
+                    } | null;
+                    /** @description Friendly name for the entity. */
+                    DisplayName?: string | null;
+                    EmailDomain?: string | null;
+                    /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+                    HiddenReason?: string | null;
+                    /** @description An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
+                    Labels?: {
+                        [key: string]: string | null;
+                    } | null;
+                    Permissions?: {
+                        [key: string]: Record<string, never> | null;
+                    } | null;
+                    /** @description Unique URL-safe identifier for the entity. */
+                    Slug?: string | null;
+                    /** @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+                    Version?: number | null;
+                };
+            };
+        };
         responses: {
-            /** @description Response for successful delete operation */
+            /** @description The top-level container for an organization using ConfigHub. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteResponse"];
+                    "application/json": components["schemas"]["Organization"];
                 };
             };
             /** @description Organization request is invalid (Bad Request). */
@@ -25568,17 +25508,8 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
-            /** @description Organization is still in use: it has DeleteGates, or other entities still reference it. Or data has changed since last read. */
+            /** @description Organization data conflict. Data has changed since last read. */
             409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StandardErrorResponse"];
-                };
-            };
-            /** @description Organization could not be deleted. */
-            422: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -57463,7 +57394,12 @@ export enum PathsOrganizationGetParametersQueryWhere_permission {
     Manage = "Manage",
     Edit = "Edit",
     Use = "Use",
-    View = "View"
+    View = "View",
+    ManageChildren = "ManageChildren",
+    EditChildren = "EditChildren",
+    UseChildren = "UseChildren",
+    ViewChildren = "ViewChildren",
+    CreateChildren = "CreateChildren"
 }
 export enum PathsOrganizationOrganization_idOrganization_memberGetParametersQueryWhere_permission {
     Manage = "Manage",

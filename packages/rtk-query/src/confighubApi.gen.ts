@@ -1574,30 +1574,6 @@ const injectedRtkApi = api
         }),
         providesTags: ["Organization"],
       }),
-      createOrganization: build.mutation<
-        CreateOrganizationApiResponse,
-        CreateOrganizationApiArg
-      >({
-        query: (queryArg) => ({
-          url: `/organization`,
-          method: "POST",
-          body: queryArg.organization,
-          params: {
-            allow_exists: queryArg.allowExists,
-          },
-        }),
-        invalidatesTags: ["Organization"],
-      }),
-      deleteOrganization: build.mutation<
-        DeleteOrganizationApiResponse,
-        DeleteOrganizationApiArg
-      >({
-        query: (queryArg) => ({
-          url: `/organization/${queryArg.organizationId}`,
-          method: "DELETE",
-        }),
-        invalidatesTags: ["Organization"],
-      }),
       getOrganization: build.query<
         GetOrganizationApiResponse,
         GetOrganizationApiArg
@@ -1610,6 +1586,20 @@ const injectedRtkApi = api
           },
         }),
         providesTags: ["Organization"],
+      }),
+      patchOrganization: build.mutation<
+        PatchOrganizationApiResponse,
+        PatchOrganizationApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/organization/${queryArg.organizationId}`,
+          method: "PATCH",
+          body: queryArg.body,
+          params: {
+            dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Organization"],
       }),
       updateOrganization: build.mutation<
         UpdateOrganizationApiResponse,
@@ -12545,7 +12535,7 @@ export type ListOrganizationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Organization: Annotations, CreatedAt, DeleteGates, DisplayName, EmailDomain, ExternalID, HiddenReason, Labels, OrganizationID, Slug, UpdatedAt.
+    Supported attributes for filtering on Organization: Annotations, CreatedAt, DeleteGates, DisplayName, EmailDomain, ExternalID, HiddenReason, Labels, OrganizationID, Permissions, Slug, UpdatedAt.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -12598,8 +12588,17 @@ export type ListOrganizationsApiArg = {
     
     A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
     
-    Supported values: Manage, Edit, Use, View. */
-  wherePermission?: "Manage" | "Edit" | "Use" | "View";
+    Supported values: Manage, Edit, Use, View, ManageChildren, EditChildren, UseChildren, ViewChildren, CreateChildren. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "ManageChildren"
+    | "EditChildren"
+    | "UseChildren"
+    | "ViewChildren"
+    | "CreateChildren";
   /** Hidden Organization entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
     
     It is a comma-separated list of HiddenReasons, or `*` for all of them.
@@ -12616,19 +12615,6 @@ export type ListOrganizationsApiArg = {
     
     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them. */
   view?: string;
-};
-export type CreateOrganizationApiResponse =
-  /** status 200 The top-level container for an organization using ConfigHub. */ OrganizationRead;
-export type CreateOrganizationApiArg = {
-  /** Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
-  allowExists?: string;
-  organization: Organization;
-};
-export type DeleteOrganizationApiResponse =
-  /** status 200 Response for successful delete operation */ DeleteResponse;
-export type DeleteOrganizationApiArg = {
-  /** Unique identifier for a organization_id */
-  organizationId: string;
 };
 export type GetOrganizationApiResponse =
   /** status 200 OK */ ExtendedOrganizationRead;
@@ -12652,6 +12638,40 @@ export type GetOrganizationApiArg = {
   select?: string;
   /** Unique identifier for a organization_id */
   organizationId: string;
+};
+export type PatchOrganizationApiResponse =
+  /** status 200 The top-level container for an organization using ConfigHub. */ OrganizationRead;
+export type PatchOrganizationApiArg = {
+  /** Unique identifier for a organization_id */
+  organizationId: string;
+  /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
+  dryRun?: boolean;
+  body: {
+    /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
+    Annotations?: {
+      [key: string]: string | null;
+    } | null;
+    /** An optional set of gates that, if any is present, will block deletion */
+    DeleteGates?: {
+      [key: string]: boolean | null;
+    } | null;
+    /** Friendly name for the entity. */
+    DisplayName?: string | null;
+    EmailDomain?: string | null;
+    /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+    HiddenReason?: string | null;
+    /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
+    Labels?: {
+      [key: string]: string | null;
+    } | null;
+    Permissions?: {
+      [key: string]: object | null;
+    } | null;
+    /** Unique URL-safe identifier for the entity. */
+    Slug?: string | null;
+    /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+    Version?: number | null;
+  };
 };
 export type UpdateOrganizationApiResponse =
   /** status 200 The top-level container for an organization using ConfigHub. */ OrganizationRead;
@@ -25222,6 +25242,8 @@ export type Organization = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this organization. Its Children categories apply to the spaces and the other entities that belong to the organization rather than to a space. */
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
@@ -25254,6 +25276,8 @@ export type OrganizationRead = {
   };
   /** Unique identifier for an organization. */
   OrganizationID?: string;
+  /** Permissions to access this organization. Its Children categories apply to the spaces and the other entities that belong to the organization rather than to a space. */
+  Permissions?: Permissions;
   /** Unique URL-safe identifier for the entity. */
   Slug: string;
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
@@ -30608,10 +30632,9 @@ export const {
   useLazyGetOAuthClientQuery,
   useListOrganizationsQuery,
   useLazyListOrganizationsQuery,
-  useCreateOrganizationMutation,
-  useDeleteOrganizationMutation,
   useGetOrganizationQuery,
   useLazyGetOrganizationQuery,
+  usePatchOrganizationMutation,
   useUpdateOrganizationMutation,
   useListOrganizationMembersQuery,
   useLazyListOrganizationMembersQuery,
