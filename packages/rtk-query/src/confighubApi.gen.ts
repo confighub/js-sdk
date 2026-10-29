@@ -5181,7 +5181,7 @@ export type BulkDeleteComponentsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Component are OrganizationID.
+    Supported attributes for Component are OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -5274,7 +5274,7 @@ export type BulkPatchComponentsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Component are OrganizationID.
+    Supported attributes for Component are OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -5400,7 +5400,7 @@ export type BulkDeleteServiceAccountsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ServiceAccount are OrganizationID.
+    Supported attributes for ServiceAccount are OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -5491,7 +5491,7 @@ export type BulkPatchServiceAccountsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ServiceAccount are OrganizationID.
+    Supported attributes for ServiceAccount are OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -5610,7 +5610,7 @@ export type BulkDeleteSpacesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -5709,7 +5709,7 @@ export type BulkPatchSpacesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -5841,7 +5841,7 @@ export type BulkCreateSpacesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -6022,7 +6022,7 @@ export type ListAllAttestationsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Attestation are OrganizationID, SpaceID.
+    Supported attributes for Attestation are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -6160,7 +6160,7 @@ export type BulkDeleteAttributesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Attribute are OrganizationID, SpaceID.
+    Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -6244,7 +6244,7 @@ export type ListAllAttributesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Attribute are OrganizationID, SpaceID.
+    Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -6382,7 +6382,7 @@ export type BulkPatchAttributesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Attribute are OrganizationID, SpaceID.
+    Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -6509,7 +6509,7 @@ export type BulkCreateAttributesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Attribute are OrganizationID, SpaceID.
+    Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -6734,7 +6734,7 @@ export type BulkMoveAttributesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Attribute are OrganizationID, SpaceID.
+    Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -6824,7 +6824,7 @@ export type BulkDeleteBridgeWorkersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for BridgeWorker are OrganizationID, SpaceID.
+    Supported attributes for BridgeWorker are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -6908,7 +6908,7 @@ export type ListAllBridgeWorkersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for BridgeWorker are OrganizationID, SpaceID.
+    Supported attributes for BridgeWorker are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -7060,7 +7060,7 @@ export type BulkPatchBridgeWorkersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for BridgeWorker are OrganizationID, SpaceID.
+    Supported attributes for BridgeWorker are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -7292,7 +7292,7 @@ export type BulkDeleteChangeOrdersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -7376,7 +7376,7 @@ export type ListAllChangeOrdersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -7514,7 +7514,7 @@ export type BulkPatchChangeOrdersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -7649,7 +7649,7 @@ export type BulkCreateChangeOrdersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -7842,7 +7842,7 @@ export type BulkRefreshChangeOrderStagesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -7935,7 +7935,7 @@ export type BulkDeleteChangeSetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+    Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -8019,7 +8019,7 @@ export type ListAllChangeSetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+    Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -8157,7 +8157,7 @@ export type BulkPatchChangeSetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+    Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -8278,7 +8278,7 @@ export type BulkCreateChangeSetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+    Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -8459,7 +8459,7 @@ export type BulkMoveChangeSetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+    Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -8549,7 +8549,7 @@ export type BulkDeleteChangeWorkflowsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+    Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -8633,7 +8633,7 @@ export type ListAllChangeWorkflowsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+    Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -8771,7 +8771,7 @@ export type BulkPatchChangeWorkflowsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+    Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -8901,7 +8901,7 @@ export type BulkCreateChangeWorkflowsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+    Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -9135,7 +9135,7 @@ export type BulkMoveChangeWorkflowsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+    Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -9225,7 +9225,7 @@ export type BulkDeleteChannelsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Channel are OrganizationID, SpaceID.
+    Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -9309,7 +9309,7 @@ export type ListAllChannelsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Channel are OrganizationID, SpaceID.
+    Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -9447,7 +9447,7 @@ export type BulkPatchChannelsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Channel are OrganizationID, SpaceID.
+    Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -9574,7 +9574,7 @@ export type BulkCreateChannelsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Channel are OrganizationID, SpaceID.
+    Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -9805,7 +9805,7 @@ export type BulkMoveChannelsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Channel are OrganizationID, SpaceID.
+    Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -10020,7 +10020,7 @@ export type ListComponentsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Component are OrganizationID.
+    Supported attributes for Component are OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -10102,7 +10102,7 @@ export type GetComponentApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Component are OrganizationID.
+    Supported attributes for Component are OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -10281,7 +10281,7 @@ export type BulkDeleteFiltersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+    Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -10365,7 +10365,7 @@ export type ListAllFiltersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+    Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -10507,7 +10507,7 @@ export type BulkPatchFiltersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+    Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -10635,7 +10635,7 @@ export type BulkCreateFiltersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+    Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -10867,7 +10867,7 @@ export type BulkMoveFiltersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+    Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -11262,7 +11262,7 @@ export type BulkDeleteInvocationsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -11348,7 +11348,7 @@ export type ListAllInvocationsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -11488,7 +11488,7 @@ export type BulkPatchInvocationsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -11617,7 +11617,7 @@ export type BulkCreateInvocationsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -11848,7 +11848,7 @@ export type BulkMoveInvocationsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -11938,7 +11938,7 @@ export type BulkDeleteLinksApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Link are FromUnitID, OrganizationID, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
+    Supported attributes for Link are FromUnitID, OrganizationID, Permissions, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -12022,7 +12022,7 @@ export type SearchListLinksApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Link are FromUnitID, OrganizationID, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
+    Supported attributes for Link are FromUnitID, OrganizationID, Permissions, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -12160,7 +12160,7 @@ export type BulkPatchLinksApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Link are FromUnitID, OrganizationID, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
+    Supported attributes for Link are FromUnitID, OrganizationID, Permissions, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -12571,7 +12571,7 @@ export type ListOrganizationsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Organization are .
+    Supported attributes for Organization are Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -12623,7 +12623,7 @@ export type GetOrganizationApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Organization are .
+    Supported attributes for Organization are Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -12876,7 +12876,7 @@ export type ListAllReleasesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
+    Supported attributes for Release are ChangeOrderID, OrganizationID, Permissions, SpaceID, TagID, TargetID, UserID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -13882,7 +13882,7 @@ export type ListServiceAccountsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ServiceAccount are OrganizationID.
+    Supported attributes for ServiceAccount are OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -13960,7 +13960,7 @@ export type GetServiceAccountApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ServiceAccount are OrganizationID.
+    Supported attributes for ServiceAccount are OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -14361,7 +14361,7 @@ export type ListSpacesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -14462,7 +14462,7 @@ export type GetSpaceApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -14607,7 +14607,7 @@ export type ListExtendedAttestationsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Attestation are OrganizationID, SpaceID.
+    Supported attributes for Attestation are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -14681,7 +14681,7 @@ export type GetExtendedAttestationApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Attestation are OrganizationID, SpaceID.
+    Supported attributes for Attestation are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -14772,7 +14772,7 @@ export type ListAttributesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Attribute are OrganizationID, SpaceID.
+    Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -14861,7 +14861,7 @@ export type GetAttributeApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Attribute are OrganizationID, SpaceID.
+    Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -15031,7 +15031,7 @@ export type ListBridgeWorkersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for BridgeWorker are OrganizationID, SpaceID.
+    Supported attributes for BridgeWorker are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -15136,7 +15136,7 @@ export type GetBridgeWorkerApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for BridgeWorker are OrganizationID, SpaceID.
+    Supported attributes for BridgeWorker are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -15318,7 +15318,7 @@ export type ListChangeOrdersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -15404,7 +15404,7 @@ export type GetChangeOrderApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -15570,7 +15570,7 @@ export type ListChangeSetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+    Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -15656,7 +15656,7 @@ export type GetChangeSetApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+    Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -15796,7 +15796,7 @@ export type ListChangeWorkflowsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+    Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -15882,7 +15882,7 @@ export type GetChangeWorkflowApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+    Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -16046,7 +16046,7 @@ export type ListChannelsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Channel are OrganizationID, SpaceID.
+    Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -16131,7 +16131,7 @@ export type GetChannelApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Channel are OrganizationID, SpaceID.
+    Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -16524,7 +16524,7 @@ export type ListFiltersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+    Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -16613,7 +16613,7 @@ export type GetFilterApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+    Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -16933,7 +16933,7 @@ export type ListInvocationsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -17019,7 +17019,7 @@ export type GetInvocationApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+    Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -17179,7 +17179,7 @@ export type ListLinksApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Link are FromUnitID, OrganizationID, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
+    Supported attributes for Link are FromUnitID, OrganizationID, Permissions, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -17267,7 +17267,7 @@ export type GetLinkApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Link are FromUnitID, OrganizationID, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
+    Supported attributes for Link are FromUnitID, OrganizationID, Permissions, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -17456,7 +17456,7 @@ export type ListExtendedReleasesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
+    Supported attributes for Release are ChangeOrderID, OrganizationID, Permissions, SpaceID, TagID, TargetID, UserID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -17538,7 +17538,7 @@ export type GetExtendedReleaseApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
+    Supported attributes for Release are ChangeOrderID, OrganizationID, Permissions, SpaceID, TagID, TargetID, UserID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -17686,7 +17686,7 @@ export type ListTagsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+    Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -17771,7 +17771,7 @@ export type GetTagApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+    Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -17907,7 +17907,7 @@ export type ListTargetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -18006,7 +18006,7 @@ export type GetTargetApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -18172,7 +18172,7 @@ export type ListTriggersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -18265,7 +18265,7 @@ export type GetTriggerApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -18469,7 +18469,7 @@ export type ListUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -18588,7 +18588,7 @@ export type GetUnitApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -19995,7 +19995,7 @@ export type ListViewsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for View are FilterID, OrganizationID, SpaceID.
+    Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -20080,7 +20080,7 @@ export type GetViewApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for View are FilterID, OrganizationID, SpaceID.
+    Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -20248,7 +20248,7 @@ export type BulkDeleteTagsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+    Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -20331,7 +20331,7 @@ export type ListAllTagsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+    Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -20469,7 +20469,7 @@ export type BulkPatchTagsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+    Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -20587,7 +20587,7 @@ export type BulkCreateTagsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+    Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -20765,7 +20765,7 @@ export type BulkMoveTagsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+    Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -20855,7 +20855,7 @@ export type BulkDeleteTargetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -20941,7 +20941,7 @@ export type ListAllTargetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21091,7 +21091,7 @@ export type BulkPatchTargetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21220,7 +21220,7 @@ export type BulkCreateTargetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21451,7 +21451,7 @@ export type BulkMoveTargetsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21543,7 +21543,7 @@ export type BulkDeleteTriggersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21629,7 +21629,7 @@ export type ListAllTriggersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21769,7 +21769,7 @@ export type BulkPatchTriggersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21917,7 +21917,7 @@ export type BulkCreateTriggersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -22167,7 +22167,7 @@ export type BulkMoveTriggersApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+    Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -22259,7 +22259,7 @@ export type BulkDeleteUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -22344,7 +22344,7 @@ export type ListAllUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -22503,11 +22503,11 @@ export type BulkPatchUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
     A write also accepts the parts of its result: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
     
-    Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
+    Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -22730,11 +22730,11 @@ export type BulkCreateUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
     A write also accepts the parts of its result: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
     
-    Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
+    Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -22971,7 +22971,7 @@ export type BulkCancelUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -23060,7 +23060,7 @@ export type BulkMoveUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -23152,7 +23152,7 @@ export type BulkTagUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -23327,7 +23327,7 @@ export type SearchUnitDataApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -23720,7 +23720,7 @@ export type SearchUnitMutationSourcesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -24038,7 +24038,7 @@ export type BulkDeleteViewsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for View are FilterID, OrganizationID, SpaceID.
+    Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -24121,7 +24121,7 @@ export type ListAllViewsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for View are FilterID, OrganizationID, SpaceID.
+    Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -24259,7 +24259,7 @@ export type BulkPatchViewsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for View are FilterID, OrganizationID, SpaceID.
+    Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -24387,7 +24387,7 @@ export type BulkCreateViewsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for View are FilterID, OrganizationID, SpaceID.
+    Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -24619,7 +24619,7 @@ export type BulkMoveViewsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for View are FilterID, OrganizationID, SpaceID.
+    Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -25285,6 +25285,99 @@ export type OrganizationRead = {
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
+export type Group = {
+  /** Friendly name for the entity. */
+  DisplayName?: string;
+  /** Unique identifier for a Group. (readonly) */
+  GroupID?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** Unique URL-safe identifier for the entity. */
+  Slug: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type GroupRead = {
+  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
+  CreatedAt?: string;
+  /** Friendly name for the entity. */
+  DisplayName?: string;
+  /** The type of entity. */
+  EntityType?: string;
+  /** Unique identifier for the External Identity Provider record matching this Group. */
+  ExternalID?: string;
+  /** Unique identifier for a Group. (readonly) */
+  GroupID?: string;
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** Unique URL-safe identifier for the entity. */
+  Slug: string;
+  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
+  UpdatedAt?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type User = {
+  /** Friendly name for the entity. */
+  DisplayName?: string;
+  /** Unique identifier for the External Identity Provider record matching this User. */
+  ExternalID?: string;
+  /** The Groups the User belongs to, from the identity provider's claims at their last login. A bot User's Groups are the ones it was added to through the Group API instead. (readonly) */
+  GroupIDs?: Uuid[];
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** The URL to get the profile avatar picture of the User. */
+  ProfilePictureURL?: string;
+  /** Unique URL-safe identifier for the entity. */
+  Slug: string;
+  /** Unique identifier for a User. */
+  UserID?: string;
+  /** Unique username for a User. Must be unique for all of Confighub. */
+  Username?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type UserRead = {
+  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
+  CreatedAt?: string;
+  /** Friendly name for the entity. */
+  DisplayName?: string;
+  /** The type of entity. */
+  EntityType?: string;
+  /** Unique identifier for the External Identity Provider record matching this User. */
+  ExternalID?: string;
+  /** The Groups the User belongs to, from the identity provider's claims at their last login. A bot User's Groups are the ones it was added to through the Group API instead. (readonly) */
+  GroupIDs?: Uuid[];
+  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+  HiddenReason?: string;
+  /** The URL to get the profile avatar picture of the User. */
+  ProfilePictureURL?: string;
+  /** Unique URL-safe identifier for the entity. */
+  Slug: string;
+  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
+  UpdatedAt?: string;
+  /** Unique identifier for a User. */
+  UserID?: string;
+  /** Unique username for a User. Must be unique for all of Confighub. */
+  Username?: string;
+  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
+  Version?: number;
+};
+export type ExtendedSubjects = {
+  Groups?: {
+    [key: string]: Group[];
+  };
+  ServiceAccounts?: {
+    [key: string]: ServiceAccount[];
+  };
+  Users?: {
+    [key: string]: User[];
+  };
+};
+export type ExtendedPermissions = {
+  Permissions?: Permissions;
+  Subjects?: ExtendedSubjects;
+};
 export type ViewColumn = {
   Name?: string;
   Value?: string;
@@ -25293,6 +25386,7 @@ export type ExtendedAttestation = {
   /** The Attestation. */
   Attestation?: Attestation;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   /** The Space the Attestation belongs to. */
   Space?: Space;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
@@ -25302,6 +25396,7 @@ export type ExtendedAttestationRead = {
   /** The Attestation. */
   Attestation?: AttestationRead;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   /** The Space the Attestation belongs to. */
   Space?: SpaceRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
@@ -25503,6 +25598,7 @@ export type ExtendedAttribute = {
   Attribute?: Attribute;
   Error?: ResponseError;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -25511,6 +25607,7 @@ export type ExtendedAttributeRead = {
   Attribute?: AttributeRead;
   Error?: ResponseError;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -25710,6 +25807,7 @@ export type ExtendedBridgeWorker = {
   BridgeWorker?: BridgeWorker;
   Error?: ResponseError;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -25718,6 +25816,7 @@ export type ExtendedBridgeWorkerRead = {
   BridgeWorker?: BridgeWorkerRead;
   Error?: ResponseError;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -26476,6 +26575,7 @@ export type ExtendedChangeOrder = {
   Error?: ResponseError;
   Invocation?: Invocation;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   ReleaseTag?: Tag;
   RestoreTag?: Tag;
   Space?: Space;
@@ -26491,6 +26591,7 @@ export type ExtendedChangeOrderRead = {
   Error?: ResponseError;
   Invocation?: InvocationRead;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   ReleaseTag?: TagRead;
   RestoreTag?: TagRead;
   Space?: SpaceRead;
@@ -26629,6 +26730,7 @@ export type ExtendedChangeSet = {
   EndTag?: Tag;
   Error?: ResponseError;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   StartTag?: Tag;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
@@ -26639,6 +26741,7 @@ export type ExtendedChangeSetRead = {
   EndTag?: TagRead;
   Error?: ResponseError;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   StartTag?: TagRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
@@ -26744,6 +26847,7 @@ export type ExtendedChangeWorkflow = {
   ChangeWorkflow?: ChangeWorkflow;
   Error?: ResponseError;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -26752,6 +26856,7 @@ export type ExtendedChangeWorkflowRead = {
   ChangeWorkflow?: ChangeWorkflowRead;
   Error?: ResponseError;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -26892,6 +26997,7 @@ export type ExtendedChannel = {
   Channel?: Channel;
   Error?: ResponseError;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -26900,6 +27006,7 @@ export type ExtendedChannelRead = {
   Channel?: ChannelRead;
   Error?: ResponseError;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -27008,6 +27115,7 @@ export type ExtendedComponent = {
   Component?: Component;
   Error?: ResponseError;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
 };
@@ -27015,6 +27123,7 @@ export type ExtendedComponentRead = {
   Component?: ComponentRead;
   Error?: ResponseError;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
 };
@@ -27244,6 +27353,7 @@ export type ExtendedFilter = {
   Filter?: Filter;
   FromSpace?: Space;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -27253,6 +27363,7 @@ export type ExtendedFilterRead = {
   Filter?: FilterRead;
   FromSpace?: SpaceRead;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -27377,38 +27488,6 @@ export type FunctionInvocationsRequest = {
   /** WhereResource restricts which resources functions operate on using ConfigHub metadata path expressions (ConfigHub.ResourceName, ConfigHub.ResourceNameWithoutScope, ConfigHub.ResourceType, ConfigHub.ResourceCategory). */
   WhereResource?: string;
 };
-export type Group = {
-  /** Friendly name for the entity. */
-  DisplayName?: string;
-  /** Unique identifier for a Group. (readonly) */
-  GroupID?: string;
-  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-  HiddenReason?: string;
-  /** Unique URL-safe identifier for the entity. */
-  Slug: string;
-  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
-  Version?: number;
-};
-export type GroupRead = {
-  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
-  CreatedAt?: string;
-  /** Friendly name for the entity. */
-  DisplayName?: string;
-  /** The type of entity. */
-  EntityType?: string;
-  /** Unique identifier for the External Identity Provider record matching this Group. */
-  ExternalID?: string;
-  /** Unique identifier for a Group. (readonly) */
-  GroupID?: string;
-  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-  HiddenReason?: string;
-  /** Unique URL-safe identifier for the entity. */
-  Slug: string;
-  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
-  UpdatedAt?: string;
-  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
-  Version?: number;
-};
 export type ExtendedGroup = {
   Error?: ResponseError;
   /** The Group. */
@@ -27422,52 +27501,6 @@ export type ExtendedGroupRead = {
   Group?: GroupRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
-};
-export type User = {
-  /** Friendly name for the entity. */
-  DisplayName?: string;
-  /** Unique identifier for the External Identity Provider record matching this User. */
-  ExternalID?: string;
-  /** The Groups the User belongs to, from the identity provider's claims at their last login. A bot User's Groups are the ones it was added to through the Group API instead. (readonly) */
-  GroupIDs?: Uuid[];
-  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-  HiddenReason?: string;
-  /** The URL to get the profile avatar picture of the User. */
-  ProfilePictureURL?: string;
-  /** Unique URL-safe identifier for the entity. */
-  Slug: string;
-  /** Unique identifier for a User. */
-  UserID?: string;
-  /** Unique username for a User. Must be unique for all of Confighub. */
-  Username?: string;
-  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
-  Version?: number;
-};
-export type UserRead = {
-  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
-  CreatedAt?: string;
-  /** Friendly name for the entity. */
-  DisplayName?: string;
-  /** The type of entity. */
-  EntityType?: string;
-  /** Unique identifier for the External Identity Provider record matching this User. */
-  ExternalID?: string;
-  /** The Groups the User belongs to, from the identity provider's claims at their last login. A bot User's Groups are the ones it was added to through the Group API instead. (readonly) */
-  GroupIDs?: Uuid[];
-  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-  HiddenReason?: string;
-  /** The URL to get the profile avatar picture of the User. */
-  ProfilePictureURL?: string;
-  /** Unique URL-safe identifier for the entity. */
-  Slug: string;
-  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
-  UpdatedAt?: string;
-  /** Unique identifier for a User. */
-  UserID?: string;
-  /** Unique username for a User. Must be unique for all of Confighub. */
-  Username?: string;
-  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
-  Version?: number;
 };
 export type ApiInfo = {};
 export type ApiInfoRead = {
@@ -27498,6 +27531,7 @@ export type ExtendedInvocation = {
   Error?: ResponseError;
   Invocation?: Invocation;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -27508,6 +27542,7 @@ export type ExtendedInvocationRead = {
   Error?: ResponseError;
   Invocation?: InvocationRead;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -28016,6 +28051,7 @@ export type ExtendedLink = {
   FromUnit?: Unit;
   Link?: Link;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   ToSpace?: Space;
   ToUnit?: Unit;
@@ -28028,6 +28064,7 @@ export type ExtendedLinkRead = {
   FromUnit?: UnitRead;
   Link?: LinkRead;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   ToSpace?: SpaceRead;
   ToUnit?: UnitRead;
@@ -28089,12 +28126,14 @@ export type OAuthClientRead = {
 export type ExtendedOrganization = {
   Error?: ResponseError;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
 };
 export type ExtendedOrganizationRead = {
   Error?: ResponseError;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
 };
@@ -28572,6 +28611,7 @@ export type ExtendedRelease = {
   /** The ChangeOrder the Release was published for, if any. Expanded when requested via the include parameter. */
   ChangeOrder?: ChangeOrder;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   /** The Release. */
   Release?: Release;
   /** The Space the Release belongs to. */
@@ -28589,6 +28629,7 @@ export type ExtendedReleaseRead = {
   /** The ChangeOrder the Release was published for, if any. Expanded when requested via the include parameter. */
   ChangeOrder?: ChangeOrderRead;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   /** The Release. */
   Release?: ReleaseRead;
   /** The Space the Release belongs to. */
@@ -29028,6 +29069,7 @@ export type RevisionMutationSources = {
 export type ExtendedServiceAccount = {
   Error?: ResponseError;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   ServiceAccount?: ServiceAccount;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -29035,6 +29077,7 @@ export type ExtendedServiceAccount = {
 export type ExtendedServiceAccountRead = {
   Error?: ResponseError;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   ServiceAccount?: ServiceAccountRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
@@ -29327,6 +29370,7 @@ export type ExtendedSpace = {
   Error?: ResponseError;
   GatedUnitCount?: number;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   ReleaseTarget?: Target;
   Space?: Space;
   TotalAttributeCount?: number;
@@ -29362,6 +29406,7 @@ export type ExtendedSpaceRead = {
   Error?: ResponseError;
   GatedUnitCount?: number;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   ReleaseTarget?: TargetRead;
   Space?: SpaceRead;
   TotalAttributeCount?: number;
@@ -29557,6 +29602,7 @@ export type ExtendedTag = {
   ChangeSet?: ChangeSet;
   Error?: ResponseError;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   Tag?: Tag;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
@@ -29566,6 +29612,7 @@ export type ExtendedTagRead = {
   ChangeSet?: ChangeSetRead;
   Error?: ResponseError;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   Tag?: TagRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
@@ -29574,6 +29621,7 @@ export type ExtendedTagRead = {
 export type ExtendedTarget = {
   Error?: ResponseError;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   Target?: Target;
   TriggerFilter?: Filter;
@@ -29584,6 +29632,7 @@ export type ExtendedTarget = {
 export type ExtendedTargetRead = {
   Error?: ResponseError;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   Target?: TargetRead;
   TriggerFilter?: FilterRead;
@@ -29597,6 +29646,7 @@ export type ExtendedTrigger = {
   Error?: ResponseError;
   Invocation?: Invocation;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   Trigger?: Trigger;
   UnitFilter?: Filter;
@@ -29609,6 +29659,7 @@ export type ExtendedTriggerRead = {
   Error?: ResponseError;
   Invocation?: InvocationRead;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   Trigger?: TriggerRead;
   UnitFilter?: FilterRead;
@@ -29815,6 +29866,7 @@ export type ExtendedUnit = {
   LatestUnitEvent?: UnitEvent;
   /** The Organization the Unit belongs to. */
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   /** The Space the Unit belongs to. */
   Space?: Space;
   /** The Target the Unit has been configured to operate with. */
@@ -29842,6 +29894,7 @@ export type ExtendedUnitRead = {
   LatestUnitEvent?: UnitEventRead;
   /** The Organization the Unit belongs to. */
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   /** The Space the Unit belongs to. */
   Space?: SpaceRead;
   /** The Target the Unit has been configured to operate with. */
@@ -30200,6 +30253,7 @@ export type ExtendedView = {
   Error?: ResponseError;
   Filter?: Filter;
   Organization?: Organization;
+  Permissions?: ExtendedPermissions;
   Space?: Space;
   View?: View;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
@@ -30209,6 +30263,7 @@ export type ExtendedViewRead = {
   Error?: ResponseError;
   Filter?: FilterRead;
   Organization?: OrganizationRead;
+  Permissions?: ExtendedPermissions;
   Space?: SpaceRead;
   View?: ViewRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */

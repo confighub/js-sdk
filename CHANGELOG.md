@@ -7,6 +7,45 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.9.11 — 2026-10-29
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: every Extended entity whose entity has `Permissions`
+  carries an `ExtendedPermissions` under `Permissions` when `include` names `Permissions`: the
+  entity's `Permissions`, and under `Subjects` an `ExtendedSubjects` holding the `Users`, `Groups`
+  and `ServiceAccounts` they name, each keyed by the action category that grants them. A
+  ServiceAccount is named by the User it acts as, so that User is in `Users` as well.
+
+### API
+
+Compared with ConfigHub `v0.9.10`:
+
+#### Added (22)
+
+- field `ExtendedAttestation.Permissions`
+- field `ExtendedAttribute.Permissions`
+- field `ExtendedBridgeWorker.Permissions`
+- field `ExtendedChangeOrder.Permissions`
+- field `ExtendedChangeSet.Permissions`
+- field `ExtendedChangeWorkflow.Permissions`
+- field `ExtendedChannel.Permissions`
+- field `ExtendedComponent.Permissions`
+- field `ExtendedFilter.Permissions`
+- field `ExtendedInvocation.Permissions`
+- field `ExtendedLink.Permissions`
+- field `ExtendedOrganization.Permissions`
+- field `ExtendedRelease.Permissions`
+- field `ExtendedServiceAccount.Permissions`
+- field `ExtendedSpace.Permissions`
+- field `ExtendedTag.Permissions`
+- field `ExtendedTarget.Permissions`
+- field `ExtendedTrigger.Permissions`
+- field `ExtendedUnit.Permissions`
+- field `ExtendedView.Permissions`
+- schema `ExtendedPermissions`
+- schema `ExtendedSubjects`
+
 ## 0.9.10 — 2026-10-28
 
 ### API

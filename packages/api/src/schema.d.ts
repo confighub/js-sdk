@@ -5817,6 +5817,7 @@ export interface components {
             /** @description The Attestation. */
             Attestation?: components["schemas"]["Attestation"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             /** @description The Space the Attestation belongs to. */
             Space?: components["schemas"]["Space"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
@@ -5826,6 +5827,7 @@ export interface components {
             Attribute?: components["schemas"]["Attribute"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
@@ -5834,6 +5836,7 @@ export interface components {
             BridgeWorker?: components["schemas"]["BridgeWorker"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
@@ -5844,6 +5847,7 @@ export interface components {
             Error?: components["schemas"]["ResponseError"];
             Invocation?: components["schemas"]["Invocation"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             ReleaseTag?: components["schemas"]["Tag"];
             RestoreTag?: components["schemas"]["Tag"];
             Space?: components["schemas"]["Space"];
@@ -5858,6 +5862,7 @@ export interface components {
             EndTag?: components["schemas"]["Tag"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             StartTag?: components["schemas"]["Tag"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
@@ -5867,6 +5872,7 @@ export interface components {
             ChangeWorkflow?: components["schemas"]["ChangeWorkflow"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
@@ -5875,6 +5881,7 @@ export interface components {
             Channel?: components["schemas"]["Channel"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
@@ -5895,6 +5902,7 @@ export interface components {
             Component?: components["schemas"]["Component"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
         };
@@ -5903,6 +5911,7 @@ export interface components {
             Filter?: components["schemas"]["Filter"];
             FromSpace?: components["schemas"]["Space"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
@@ -5921,6 +5930,7 @@ export interface components {
             Error?: components["schemas"]["ResponseError"];
             Invocation?: components["schemas"]["Invocation"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
@@ -5930,6 +5940,7 @@ export interface components {
             FromUnit?: components["schemas"]["Unit"];
             Link?: components["schemas"]["Link"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             ToSpace?: components["schemas"]["Space"];
             ToUnit?: components["schemas"]["Unit"];
@@ -5954,6 +5965,7 @@ export interface components {
         ExtendedOrganization: {
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
         };
@@ -5963,11 +5975,16 @@ export interface components {
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
         };
+        ExtendedPermissions: {
+            Permissions?: components["schemas"]["Permissions"];
+            Subjects?: components["schemas"]["ExtendedSubjects"];
+        };
         /** @description Release with additional related entities expanded based on the request's include parameter. */
         ExtendedRelease: {
             /** @description The ChangeOrder the Release was published for, if any. Expanded when requested via the include parameter. */
             ChangeOrder?: components["schemas"]["ChangeOrder"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             /** @description The Release. */
             Release?: components["schemas"]["Release"];
             /** @description The Space the Release belongs to. */
@@ -6025,6 +6042,7 @@ export interface components {
         ExtendedServiceAccount: {
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             ServiceAccount?: components["schemas"]["ServiceAccount"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
@@ -6037,6 +6055,7 @@ export interface components {
             /** Format: int64 */
             GatedUnitCount?: number;
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             ReleaseTarget?: components["schemas"]["Target"];
             Space?: components["schemas"]["Space"];
             /** Format: int64 */
@@ -6083,10 +6102,22 @@ export interface components {
             /** Format: int64 */
             WarnedUnitCount?: number;
         };
+        ExtendedSubjects: {
+            Groups?: {
+                [key: string]: components["schemas"]["Group"][];
+            };
+            ServiceAccounts?: {
+                [key: string]: components["schemas"]["ServiceAccount"][];
+            };
+            Users?: {
+                [key: string]: components["schemas"]["User"][];
+            };
+        };
         ExtendedTag: {
             ChangeSet?: components["schemas"]["ChangeSet"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             Tag?: components["schemas"]["Tag"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
@@ -6095,6 +6126,7 @@ export interface components {
         ExtendedTarget: {
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             Target?: components["schemas"]["Target"];
             TriggerFilter?: components["schemas"]["Filter"];
@@ -6108,6 +6140,7 @@ export interface components {
             Error?: components["schemas"]["ResponseError"];
             Invocation?: components["schemas"]["Invocation"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             Trigger?: components["schemas"]["Trigger"];
             UnitFilter?: components["schemas"]["Filter"];
@@ -6129,6 +6162,7 @@ export interface components {
             LatestUnitEvent?: components["schemas"]["UnitEvent"];
             /** @description The Organization the Unit belongs to. */
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             /** @description The Space the Unit belongs to. */
             Space?: components["schemas"]["Space"];
             /** @description The Target the Unit has been configured to operate with. */
@@ -6160,6 +6194,7 @@ export interface components {
             Error?: components["schemas"]["ResponseError"];
             Filter?: components["schemas"]["Filter"];
             Organization?: components["schemas"]["Organization"];
+            Permissions?: components["schemas"]["ExtendedPermissions"];
             Space?: components["schemas"]["Space"];
             View?: components["schemas"]["View"];
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
@@ -10044,7 +10079,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Component are OrganizationID.
+                 *     Supported attributes for Component are OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -10246,7 +10281,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Component are OrganizationID.
+                 *     Supported attributes for Component are OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -10484,7 +10519,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ServiceAccount are OrganizationID.
+                 *     Supported attributes for ServiceAccount are OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -10684,7 +10719,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ServiceAccount are OrganizationID.
+                 *     Supported attributes for ServiceAccount are OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -10906,7 +10941,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -11206,7 +11241,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -11414,7 +11449,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -11751,7 +11786,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Attestation are OrganizationID, SpaceID.
+                 *     Supported attributes for Attestation are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -11973,7 +12008,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Attribute are OrganizationID, SpaceID.
+                 *     Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -12205,7 +12240,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Attribute are OrganizationID, SpaceID.
+                 *     Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -12548,7 +12583,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Attribute are OrganizationID, SpaceID.
+                 *     Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -12750,7 +12785,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Attribute are OrganizationID, SpaceID.
+                 *     Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -12989,7 +13024,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Attribute are OrganizationID, SpaceID.
+                 *     Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -13170,7 +13205,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for BridgeWorker are OrganizationID, SpaceID.
+                 *     Supported attributes for BridgeWorker are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -13404,7 +13439,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for BridgeWorker are OrganizationID, SpaceID.
+                 *     Supported attributes for BridgeWorker are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -13606,7 +13641,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for BridgeWorker are OrganizationID, SpaceID.
+                 *     Supported attributes for BridgeWorker are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -14172,7 +14207,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -14404,7 +14439,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -14709,7 +14744,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -14911,7 +14946,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -15154,7 +15189,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -15337,7 +15372,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -15569,7 +15604,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -15858,7 +15893,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -16060,7 +16095,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -16285,7 +16320,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -16466,7 +16501,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+                 *     Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -16698,7 +16733,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+                 *     Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17050,7 +17085,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+                 *     Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17252,7 +17287,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+                 *     Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17494,7 +17529,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+                 *     Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17675,7 +17710,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Channel are OrganizationID, SpaceID.
+                 *     Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17907,7 +17942,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Channel are OrganizationID, SpaceID.
+                 *     Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -18256,7 +18291,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Channel are OrganizationID, SpaceID.
+                 *     Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -18458,7 +18493,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Channel are OrganizationID, SpaceID.
+                 *     Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -18697,7 +18732,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Channel are OrganizationID, SpaceID.
+                 *     Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -19177,7 +19212,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Component are OrganizationID.
+                 *     Supported attributes for Component are OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -19423,7 +19458,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Component are OrganizationID.
+                 *     Supported attributes for Component are OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -20281,7 +20316,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -20517,7 +20552,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -20868,7 +20903,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -21070,7 +21105,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -21311,7 +21346,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -22358,7 +22393,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -22592,7 +22627,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -22945,7 +22980,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -23149,7 +23184,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -23390,7 +23425,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -23571,7 +23606,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Link are FromUnitID, OrganizationID, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
+                 *     Supported attributes for Link are FromUnitID, OrganizationID, Permissions, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -24166,7 +24201,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Link are FromUnitID, OrganizationID, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
+                 *     Supported attributes for Link are FromUnitID, OrganizationID, Permissions, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -24368,7 +24403,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Link are FromUnitID, OrganizationID, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
+                 *     Supported attributes for Link are FromUnitID, OrganizationID, Permissions, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -25111,7 +25146,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Organization are .
+                 *     Supported attributes for Organization are Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -25235,7 +25270,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Organization are .
+                 *     Supported attributes for Organization are Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -26168,7 +26203,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
+                 *     Supported attributes for Release are ChangeOrderID, OrganizationID, Permissions, SpaceID, TagID, TargetID, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -27964,7 +27999,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ServiceAccount are OrganizationID.
+                 *     Supported attributes for ServiceAccount are OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -28206,7 +28241,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ServiceAccount are OrganizationID.
+                 *     Supported attributes for ServiceAccount are OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -29699,7 +29734,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -29947,7 +29982,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -30446,7 +30481,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Attestation are OrganizationID, SpaceID.
+                 *     Supported attributes for Attestation are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -30692,7 +30727,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Attestation are OrganizationID, SpaceID.
+                 *     Supported attributes for Attestation are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -30865,7 +30900,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Attribute are OrganizationID, SpaceID.
+                 *     Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -31120,7 +31155,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Attribute are OrganizationID, SpaceID.
+                 *     Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -31798,7 +31833,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for BridgeWorker are OrganizationID, SpaceID.
+                 *     Supported attributes for BridgeWorker are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -32055,7 +32090,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for BridgeWorker are OrganizationID, SpaceID.
+                 *     Supported attributes for BridgeWorker are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -32751,7 +32786,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -32999,7 +33034,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+                 *     Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -33601,7 +33636,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -33849,7 +33884,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, SpaceID, StartTagID.
+                 *     Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -34340,7 +34375,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+                 *     Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -34590,7 +34625,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for ChangeWorkflow are OrganizationID, SpaceID.
+                 *     Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -35256,7 +35291,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Channel are OrganizationID, SpaceID.
+                 *     Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -35506,7 +35541,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Channel are OrganizationID, SpaceID.
+                 *     Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -37311,7 +37346,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -37565,7 +37600,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, SpaceID.
+                 *     Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -38600,7 +38635,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -38850,7 +38885,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, SpaceID.
+                 *     Supported attributes for Invocation are BridgeWorkerID, ChannelID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -39515,7 +39550,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Link are FromUnitID, OrganizationID, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
+                 *     Supported attributes for Link are FromUnitID, OrganizationID, Permissions, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -39770,7 +39805,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Link are FromUnitID, OrganizationID, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
+                 *     Supported attributes for Link are FromUnitID, OrganizationID, Permissions, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -40472,7 +40507,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
+                 *     Supported attributes for Release are ChangeOrderID, OrganizationID, Permissions, SpaceID, TagID, TargetID, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -40724,7 +40759,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Release are ChangeOrderID, OrganizationID, SpaceID, TagID, TargetID, UserID.
+                 *     Supported attributes for Release are ChangeOrderID, OrganizationID, Permissions, SpaceID, TagID, TargetID, UserID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -41384,7 +41419,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -41632,7 +41667,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -42119,7 +42154,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -42369,7 +42404,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -43042,7 +43077,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -43302,7 +43337,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -44020,7 +44055,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -44305,7 +44340,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -48159,7 +48194,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for View are FilterID, OrganizationID, SpaceID.
+                 *     Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -48409,7 +48444,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for View are FilterID, OrganizationID, SpaceID.
+                 *     Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -49074,7 +49109,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -49306,7 +49341,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -49591,7 +49626,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -49793,7 +49828,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -50014,7 +50049,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, SpaceID.
+                 *     Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -50195,7 +50230,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -50427,7 +50462,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -50777,7 +50812,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -50981,7 +51016,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -51223,7 +51258,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Target are OrganizationID, SpaceID, TriggerFilterID, TriggerIDs.
+                 *     Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -51406,7 +51441,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -51640,7 +51675,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -52014,7 +52049,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -52218,7 +52253,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -52480,7 +52515,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, SpaceID, UnitFilterID.
+                 *     Supported attributes for Trigger are BridgeWorkerID, ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -52663,7 +52698,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -52909,11 +52944,11 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
                  *
                  *     A write also accepts the parts of its result: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
                  *
-                 *     Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
+                 *     Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -53274,7 +53309,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -53487,11 +53522,11 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
                  *
                  *     A write also accepts the parts of its result: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
                  *
-                 *     Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
+                 *     Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -53836,7 +53871,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -54032,7 +54067,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -54225,7 +54260,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -54596,7 +54631,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -55249,7 +55284,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+                 *     Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -56169,7 +56204,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for View are FilterID, OrganizationID, SpaceID.
+                 *     Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -56401,7 +56436,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for View are FilterID, OrganizationID, SpaceID.
+                 *     Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -56752,7 +56787,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for View are FilterID, OrganizationID, SpaceID.
+                 *     Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -56954,7 +56989,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for View are FilterID, OrganizationID, SpaceID.
+                 *     Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -57195,7 +57230,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for View are FilterID, OrganizationID, SpaceID.
+                 *     Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
