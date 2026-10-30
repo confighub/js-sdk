@@ -7,10 +7,21 @@ name: Release
 # versions to `X.Y.Z`, and prepends the release's section to CHANGELOG.md. So there is
 # nothing to compute here: check that the tag and the packages agree, build, publish,
 # and make the GitHub release from that section.
+#
+# A release that failed partway is finished by running this workflow by hand with its
+# tag: a package already on npm at that version is skipped, and so is a GitHub release
+# that already exists. (Re-running the failed job would not do: it runs the workflow as
+# it was at the tag.) The provenance of a package published that way names the commit
+# the workflow ran from, not the tag's.
 on:
   push:
     tags:
       - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: The release tag to publish, vX.Y.Z
+        required: true
 
 jobs:
   publish:
@@ -18,8 +29,12 @@ jobs:
     permissions:
       contents: write # the GitHub release
       id-token: write # npm trusted publishing and provenance
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ inputs.tag || github.ref_name }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -35,11 +50,11 @@ jobs:
         id: v
         run: |
           set -euo pipefail
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION="${TAG#v}"
           for pkg in api react-auth rtk-query; do
             got="$(node -p "require('./packages/$pkg/package.json').version")"
             if [ "$got" != "$VERSION" ]; then
-              echo "::error::packages/$pkg is at $got, but the tag is $GITHUB_REF_NAME"
+              echo "::error::packages/$pkg is at $got, but the tag is $TAG"
               exit 1
             fi
           done
@@ -47,9 +62,33 @@ jobs:
 
       - run: npm run build
 
-      # Publishes every non-private workspace: the three packages. Provenance comes
-      # with trusted publishing.
-      - run: npm publish --workspaces --access public
+      # Provenance comes with trusted publishing. Signing it writes an entry to Sigstore's
+      # transparency log, and when the log is slow npm's request times out after the entry
+      # was written; npm's own retry then gets "an equivalent entry already exists" and the
+      # publish fails. Publishing again signs afresh, so it is retried here. api goes
+      # first, since react-auth depends on it.
+      - name: Publish to npm
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          set -euo pipefail
+          published() {
+            [ -n "$(npm view "@confighub/$1@$VERSION" version --prefer-online 2>/dev/null)" ]
+          }
+          for pkg in api react-auth rtk-query; do
+            attempt=0
+            # A failed publish may still have reached the registry, which the next check
+            # finds.
+            until published "$pkg"; do
+              attempt=$((attempt + 1))
+              if [ "$attempt" -gt 3 ]; then
+                echo "::error::@confighub/$pkg@$VERSION was not published after 3 attempts"
+                exit 1
+              fi
+              npm publish --workspace "packages/$pkg" --access public && break
+              sleep 30
+            done
+          done
 
       # The notes are this version's section of CHANGELOG.md: from its heading to the
       # next version's.
@@ -64,4 +103,8 @@ jobs:
             on && /^## / { exit }
             on { print }
           ' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
-          gh release create "v$VERSION" --verify-tag --title "v$VERSION" --notes-file "$RUNNER_TEMP/notes.md"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "The GitHub release $TAG exists"
+            exit 0
+          fi
+          gh release create "$TAG" --verify-tag --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md"
