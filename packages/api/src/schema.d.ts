@@ -8979,6 +8979,8 @@ export interface components {
             readonly ProvidedPaths?: components["schemas"]["AttributeInfo"][];
             /** @description ProviderType says whether and how the Unit is delivered. None keeps it off every Target and out of Releases, ConfigHub marks configuration ConfigHub applies to itself, and OCI or empty means it is published in its Space's Releases. */
             ProviderType?: string;
+            /** @description Whether a Release of the Unit's Space publishes the Unit. In a Space with a ReleaseTargetID, a Unit is releasable when its TargetID is that Target. In a Space without one, it is releasable when its ProviderType is OCI or empty, the Units that would be given the Space's ReleaseTargetID when it is set. Derived when the Unit is read. (readonly) */
+            readonly Releasable?: boolean;
             /** @description Unique URL-safe identifier for the entity. */
             Slug: string;
             /**
@@ -10999,7 +11001,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     The Units to create entities from, with from_backing_units.
                  *
@@ -12346,7 +12348,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     The Units to create entities from, with from_backing_units.
                  *
@@ -16845,7 +16847,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     The Units to create entities from, with from_backing_units.
                  *
@@ -18054,7 +18056,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     The Units to create entities from, with from_backing_units.
                  *
@@ -20664,7 +20666,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     The Units to create entities from, with from_backing_units.
                  *
@@ -21624,7 +21626,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -22739,7 +22741,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     The Units to create entities from, with from_backing_units.
                  *
@@ -23944,7 +23946,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     The Units to create entities from, with from_backing_units.
                  *
@@ -38369,7 +38371,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -44011,7 +44013,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -50574,7 +50576,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     The Units to create entities from, with from_backing_units.
                  *
@@ -51787,7 +51789,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     The Units to create entities from, with from_backing_units.
                  *
@@ -52654,7 +52656,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -52890,7 +52892,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -53255,7 +53257,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -53468,7 +53470,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -53817,7 +53819,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -54013,7 +54015,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -54206,7 +54208,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -54587,7 +54589,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -54815,7 +54817,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -55240,7 +55242,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND TargetID IS NOT NULL`.
                  *
@@ -56548,7 +56550,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitActionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, ProviderType, Releasable, Slug, SpaceID, TargetID, ToolchainType, UnitID, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
                  *     The Units to create entities from, with from_backing_units.
                  *
