@@ -868,7 +868,7 @@ export interface paths {
         put?: never;
         /**
          * Bulk create (copy) multiple links
-         * @description Copy existing links with retargeted From and/or To units. Select source links via where/filter, then retarget using reverse, from_downstream_where, or to_downstream_where parameters.
+         * @description Copy existing links with retargeted From and/or To units. Select source links via where/filter, then retarget using reverse, from_downstream_where (optionally with to_downstream_where), or where_space/filter_space parameters.
          */
         post: operations["BulkCreateLinks"];
         /**
@@ -2949,7 +2949,7 @@ export interface paths {
         put?: never;
         /**
          * Set path protection on a unit
-         * @description Set Protected values on the unit's MutationSources, marking paths as local overrides a merge must not overwrite when subtraction is disabled. A merge's WhereMutation protects further paths on top of these. UnprotectAll clears every Protected value before ResourceProtection is applied. Creates a new revision only if the protection actually changes. Requires Edit permission.
+         * @description Set Protected values on the unit's MutationSources, marking paths as local overrides a merge must not overwrite when subtraction is disabled. The empty path protects a resource as a whole: a merge then withholds every change to it, including its deletion and replacement. A merge's WhereMutation protects further paths on top of these. UnprotectAll clears every Protected value before ResourceProtection is applied. Creates a new revision only if the protection actually changes. Requires Edit permission.
          */
         post: operations["SetUnitProtection"];
         delete?: never;
@@ -7871,11 +7871,11 @@ export interface components {
             ResourceAnnotations?: components["schemas"]["PathAnnotations"];
         };
         ResourceProtection: {
-            /** @description Map of resolved path to its new Protected value: true = a local override a merge must not overwrite, false = the merge's to update */
+            /** @description Map of resolved path to its new Protected value: true = a local override a merge must not overwrite, false = the merge's to update. The empty path addresses the resource as a whole: a merge withholds every change to a resource protected as a whole, including its deletion and replacement, whatever its paths' values are */
             Protected?: {
                 [key: string]: boolean;
             } | null;
-            /** @description Identifies the resource within the unit whose path protection is being set */
+            /** @description Identifies the resource within the unit whose protection is being set */
             Resource?: components["schemas"]["ResourceInfo"];
         };
         ResourceTypePathsEntry: {
@@ -23848,7 +23848,7 @@ export interface operations {
                  *
                  *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
                  *
-                 *     Where expression to find downstream UpgradeUnit links from each source link's FromUnit. Creates one copy per match. Required if reverse is not specified.
+                 *     Where expression to find downstream UpgradeUnit links from each source link's FromUnit. Creates one copy per match. Exactly one of reverse, from_downstream_where and where_space/filter_space is required.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -23895,6 +23895,62 @@ export interface operations {
                  *     The whole string must be query-encoded.
                  */
                 to_downstream_where?: string;
+                /**
+                 * @description The specified string is an expression for the purpose of filtering
+                 *     the list of Spaces returned. The expression syntax was inspired by SQL.
+                 *     It supports conjunctions using `AND` of relational expressions of the form *attribute*
+                 *     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+                 *     as in the JSON encoding.
+                 *     Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+                 *     String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+                 *     `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+                 *     String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+                 *     `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+                 *     Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+                 *     UUIDs and boolean attributes support equality and inequality only.
+                 *     UUID and time literals must be quoted as string literals.
+                 *     String literals are quoted with single quotes, such as `'string'`.
+                 *     Time literals use the same form as when serialized as JSON,
+                 *     such as: `CreatedAt > '2025-02-18T23:16:34'`.
+                 *     Integer and boolean literals are also supported for attributes of those types.
+                 *     Arrays support the `?` operator to to match any element of the array,
+                 *     as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+                 *     Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+                 *     An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+                 *     as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+                 *     Without the `*` such a reference is an error, since it names no single value to compare.
+                 *     Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+                 *     Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+                 *     as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+                 *     Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+                 *     These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+                 *     The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+                 *     such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+                 *     Conjunctions are supported using the `AND` operator.
+                 *     An example conjunction is:
+                 *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+                 *
+                 *     Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamSpaceID.
+                 *
+                 *     Where expression selecting spaces to copy each source link to, from and to the units of the same slugs there. A link to a unit in another space keeps that unit. A space with no unit of a slug the link needs gets an error for that copy. UpgradeUnit links are not copied.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                where_space?: string;
+                /**
+                 * @description UUID of a Filter entity to apply to the Space list.
+                 *
+                 *     The Filter must be in the same Organization as the user credentials.
+                 *
+                 *     The Filter's From field must match the entity type being filtered (Space).
+                 *
+                 *     For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+                 *
+                 *     The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+                 *
+                 *     If both 'filter' and 'where' parameters are specified, they are combined with AND logic.
+                 */
+                filter_space?: string;
                 /** @description Allowed values are true and false. Default is false. When true, reports success when an entity already exists and returns the existing entity */
                 allow_exists?: string;
                 /**
