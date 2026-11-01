@@ -7,6 +7,79 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.10.0 — 2026-10-31
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: Bridge Workers are gone, and with them unit actions and
+  user keys addressed by user. Removed operations: `createBridgeWorker`, `getBridgeWorker`,
+  `updateBridgeWorker`, `patchBridgeWorker`, `deleteBridgeWorker`, `listBridgeWorkers`,
+  `listAllBridgeWorkers`, `bulkPatchBridgeWorkers`, `bulkDeleteBridgeWorkers`,
+  `getBridgeWorkerStatus`, `listBridgeWorkerStatuses`, `listBridgeWorkerFunctions`,
+  `getQueuedOperation`, `listQueuedOperations`, `getUnitAction`, `listUnitActions`,
+  `listAllUnitActions`, `userCreateActionResult`, `bulkCancelUnits`, `createUserKey`,
+  `listUserKeys` and `deleteUserKey`; a service account's keys are under
+  `/service_account/{id}/user_key`. Removed types: `BridgeWorker`, `ExtendedBridgeWorker`,
+  `BridgeWorkerCreateOrUpdateResponse`, `BridgeWorkerStatus`, `WorkerInfo`, `FunctionWorkerInfo`,
+  `QueuedOperation`, `UnitAction`, `UnitActionResponse` and `ActionResult`. Removed fields:
+  `BridgeWorkerID` on `Trigger`, `Invocation`, `Mutation`, `UnitEvent` and
+  `FunctionInvocationsRequest`; `BridgeWorker` on `ExtendedTrigger` and `ExtendedInvocation`;
+  `Trigger.FailOpenAfter`, `UnitEvent.QueuedOperationID`, `Unit.HeadUnitActionNum`,
+  `ExtendedSpace.TotalBridgeWorkerCount` and `ApiInfo.WorkerPort`. A Trigger or Invocation runs its
+  functions in the server or through its `ChannelID`.
+
+### API
+
+Compared with ConfigHub `v0.9.16`:
+
+#### Removed (39), breaking for code typed against them
+
+- path `/bridge_worker`
+- path `/bridge_worker/{bridge_worker_id}/queued_operation`
+- path `/bridge_worker/{bridge_worker_id}/queued_operation/{queued_operation_id}`
+- path `/bridge_worker/{bridge_worker_id}/user_action_result`
+- path `/space/{space_id}/bridge_worker`
+- path `/space/{space_id}/bridge_worker/{bridge_worker_id}`
+- path `/space/{space_id}/bridge_worker/{bridge_worker_id}/function`
+- path `/space/{space_id}/bridge_worker/{bridge_worker_id}/status`
+- path `/space/{space_id}/bridge_worker/{bridge_worker_id}/status/{status_id}`
+- path `/space/{space_id}/unit/{unit_id}/unit_action`
+- path `/space/{space_id}/unit/{unit_id}/unit_action/{unit_action_id}`
+- path `/unit/cancel`
+- path `/unit_action`
+- path `/user/{user_id}/key`
+- path `/user/{user_id}/key/{kid}`
+- schema `ActionResult`
+- field `ApiInfo.WorkerPort`
+- schema `BridgeWorker`
+- schema `BridgeWorkerCreateOrUpdateResponse`
+- schema `BridgeWorkerStatus`
+- schema `ExtendedBridgeWorker`
+- field `ExtendedInvocation.BridgeWorker`
+- field `ExtendedSpace.TotalBridgeWorkerCount`
+- field `ExtendedTrigger.BridgeWorker`
+- field `FunctionInvocationsRequest.BridgeWorkerID`
+- schema `FunctionWorkerInfo`
+- field `Invocation.BridgeWorkerID`
+- field `Mutation.BridgeWorkerID`
+- schema `QueuedOperation`
+- field `Trigger.BridgeWorkerID`
+- field `Trigger.FailOpenAfter`
+- field `Unit.HeadUnitActionNum`
+- field `Unit.ProviderType`
+- field `Unit.Releasable`
+- schema `UnitAction`
+- schema `UnitActionResponse`
+- field `UnitEvent.BridgeWorkerID`
+- field `UnitEvent.QueuedOperationID`
+- schema `WorkerInfo`
+
+#### Added (3)
+
+- field `Unit.Unreleasable`
+- field `UploadSpaceResult.Triggers`
+- schema `UploadTriggerResult`
+
 ## 0.9.16 — 2026-10-31
 
 ### API
