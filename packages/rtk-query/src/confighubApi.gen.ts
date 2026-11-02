@@ -3609,6 +3609,20 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Unit"],
       }),
+      getUnitBlame: build.query<GetUnitBlameApiResponse, GetUnitBlameApiArg>({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/blame`,
+          params: {
+            path: queryArg.path,
+            resource: queryArg.resource,
+            flags: queryArg.flags,
+            upstream: queryArg.upstream,
+            upstream_depth: queryArg.upstreamDepth,
+            include_comments: queryArg.includeComments,
+          },
+        }),
+        providesTags: ["Unit"],
+      }),
       resolveUnitConflicts: build.mutation<
         ResolveUnitConflictsApiResponse,
         ResolveUnitConflictsApiArg
@@ -3720,6 +3734,19 @@ const injectedRtkApi = api
       >({
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/mutation_sources`,
+        }),
+        providesTags: ["Unit"],
+      }),
+      getUnitPath: build.query<GetUnitPathApiResponse, GetUnitPathApiArg>({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/path`,
+          params: {
+            field: queryArg.field,
+            history: queryArg.history,
+            resource: queryArg.resource,
+            upstream: queryArg.upstream,
+            upstream_depth: queryArg.upstreamDepth,
+          },
         }),
         providesTags: ["Unit"],
       }),
@@ -4525,6 +4552,38 @@ const injectedRtkApi = api
           invalidatesTags: ["Unit"],
         },
       ),
+      searchUnitBlame: build.query<
+        SearchUnitBlameApiResponse,
+        SearchUnitBlameApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/unit_blame`,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            where_permission: queryArg.wherePermission,
+            include_hidden: queryArg.includeHidden,
+            view: queryArg.view,
+            limit: queryArg.limit,
+            order_by: queryArg.orderBy,
+            continue: queryArg["continue"],
+            resource_type: queryArg.resourceType,
+            where_data: queryArg.whereData,
+            where_data_engine: queryArg.whereDataEngine,
+            where_trigger: queryArg.whereTrigger,
+            trigger_filter: queryArg.triggerFilter,
+            triggers_passed: queryArg.triggersPassed,
+            path: queryArg.path,
+            resource: queryArg.resource,
+            flags: queryArg.flags,
+            upstream: queryArg.upstream,
+            upstream_depth: queryArg.upstreamDepth,
+            include_comments: queryArg.includeComments,
+          },
+        }),
+        providesTags: ["Unit"],
+      }),
       searchUnitData: build.query<
         SearchUnitDataApiResponse,
         SearchUnitDataApiArg
@@ -5299,7 +5358,7 @@ export type BulkDeleteSpacesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -5398,7 +5457,7 @@ export type BulkPatchSpacesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -5442,6 +5501,7 @@ export type BulkPatchSpacesApiArg = {
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     TriggerFilterID?: string | null;
+    UpstreamSpaceID?: string | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
     Version?: number | null;
     WhereAttribute?: string | null;
@@ -5530,7 +5590,7 @@ export type BulkCreateSpacesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -5624,6 +5684,7 @@ export type BulkCreateSpacesApiArg = {
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     TriggerFilterID?: string | null;
+    UpstreamSpaceID?: string | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
     Version?: number | null;
     WhereAttribute?: string | null;
@@ -13632,7 +13693,7 @@ export type ListSpacesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -13733,7 +13794,7 @@ export type GetSpaceApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs.
+    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -13786,6 +13847,7 @@ export type PatchSpaceApiArg = {
     /** Unique URL-safe identifier for the entity. */
     Slug?: string | null;
     TriggerFilterID?: string | null;
+    UpstreamSpaceID?: string | null;
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
     Version?: number | null;
     WhereAttribute?: string | null;
@@ -17834,6 +17896,27 @@ export type UpdateUnitApiArg = {
   include?: string;
   unit: Unit;
 };
+export type GetUnitBlameApiResponse = /** status 200 OK */ UnitBlame;
+export type GetUnitBlameApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a unit_id */
+  unitId: string;
+  /** Only the fields whose path contains this substring. */
+  path?: string;
+  /** Only the fields of this resource, named as <type>/<name> or <name>; a substring of either matches. */
+  resource?: string;
+  /** Only the fields with at least one of these flags, comma-separated. Conflict,Absent,Finding,ValidationError,ValidationWarning selects the fields that need attention.
+    
+    Supported values: Protected, Guarded, Conflict, Absent, Finding, ValidationError, ValidationWarning, Upgraded, SetByLink, SetByTrigger, ChangeOrder, Unreleased, Needed, Provided. */
+  flags?: string;
+  /** Follow each merge and Link resolve into the unit it took the value from, to where the value was set. Default true; false reports each unit's own record, which names the upstream unit without reading it. */
+  upstream?: boolean;
+  /** How many upstream units to follow before stopping. */
+  upstreamDepth?: number;
+  /** Include the $comment$ pseudo-fields that carry YAML comments. */
+  includeComments?: boolean;
+};
 export type ResolveUnitConflictsApiResponse =
   /** status 200 OK */ UnitConflictsResponseRead;
 export type ResolveUnitConflictsApiArg = {
@@ -18081,6 +18164,23 @@ export type GetUnitMutationSourcesApiArg = {
   spaceId: string;
   /** Unique identifier for a unit_id */
   unitId: string;
+};
+export type GetUnitPathApiResponse = /** status 200 OK */ UnitPathReportRead;
+export type GetUnitPathApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a unit_id */
+  unitId: string;
+  /** The field: its REF, a prefix of a REF of at least four characters, or its path. */
+  field: string;
+  /** Also return every change the Unit recorded to the field. Reads the record of every Revision of the Unit. */
+  history?: boolean;
+  /** Only the fields of this resource, named as <type>/<name> or <name>; a substring of either matches. */
+  resource?: string;
+  /** Follow each merge and Link resolve into the unit it took the value from, to where the value was set. Default true; false reports each unit's own record, which names the upstream unit without reading it. */
+  upstream?: boolean;
+  /** How many upstream units to follow before stopping. */
+  upstreamDepth?: number;
 };
 export type SetUnitProtectionApiResponse =
   /** status 200 OK */ UnitProtectionResponse;
@@ -21928,6 +22028,146 @@ export type BulkTagUnitsApiArg = {
   include?: string;
   unitTagRequest: UnitTagRequest;
 };
+export type SearchUnitBlameApiResponse = /** status 200 OK */ UnitBlame[];
+export type SearchUnitBlameApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, NeededPaths, OrganizationID, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Unit list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Unit).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Unit include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Only return Unit entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View, Approve, TargetEdit, TargetView. */
+  wherePermission?:
+    | "Manage"
+    | "Edit"
+    | "Use"
+    | "View"
+    | "Approve"
+    | "TargetEdit"
+    | "TargetView";
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** UUID of a View of Unit. Its Filter selects the Units as the filter parameter does, so the two may not both be specified. */
+  view?: string;
+  /** Maximum number of Units to return the blame of; 50 when not given, and larger values are rejected with 400. When there may be more, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
+  limit?: number;
+  /** Comma-separated list of fields to sort Unit results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
+    
+    Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
+    
+    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
+    
+    Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
+    
+    Results are ordered by the Unit's ID after the fields named, and by the ID alone if none are.
+    
+    The whole string must be query-encoded. */
+  orderBy?: string;
+  /** The token from the ConfigHub-Continue header of the previous page, to return the Unit entities after it.
+    
+    The request's other parameters, except limit, must be the same as those of the request that returned the token.
+    
+    Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more. */
+  continue?: string;
+  /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
+  resourceType?: string;
+  /** Where data: The specified string is an expression for the purpose of evaluating whether the configuration data matches the filter. It supports conjunctions using `AND` of relational expressions of the form *path* *operator* *literal*. The path specifications are dot-separated, for both map fields and array indices, as in `spec.template.spec.containers.0.image = 'ghcr.io/headlamp-k8s/headlamp:latest' AND spec.replicas > 1`. Path expressions support `*` for wildcard array or map segments and `?key=value` syntax for associative matches of array elements containing objects with a `key` attribute. Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `!~`, `~*`, `!~*`, `IN`, `NOT IN`. String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards, `ILIKE` for case-insensitive pattern matching, `!~~` for NOT LIKE. String regex operators: `~` for regex matching, `~*` for case-insensitive regex, `!~` and `!~*` for regex not matching (case-sensitive and insensitive). Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`. Boolean values support equality and inequality only. The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses, such as `spec.template.spec.containers.0.image#reference IN (':latest', ':arm64-latest')`. The syntax `.|` splits the path: the left side selects, and the right side is a property of what was selected. On the right side of a `.|`, and only there, `!=` is true when the property is absent: `spec.containers.*.|image != 'nginx'` selects the containers and asks that none of their images be nginx, which a container with no image satisfies. Everywhere else a path that is not present is not a match, `!=` included. String literals are quoted with single quotes, such as `'string'`. Integer and boolean literals are also supported for attributes of those types. The whole string must be query-encoded. */
+  whereData?: string;
+  /** Which engine answers where_data and resource_type: `sql` (the default) evaluates the expression against the stored resource projection in a single query, falling back to the function engine for the expressions it cannot translate; `function` invokes the where-filter function on each candidate Unit, reading every one's configuration; `shadow` runs both, answers with `function`, and logs any disagreement. Temporary: `function` is the escape hatch for one release, after which this parameter goes away. */
+  whereDataEngine?: string;
+  /** Where expression to match Triggers. Matched triggers are invoked on each unit to filter by validation results. Use with triggers_passed to control whether passing or failing units are returned (default: failing). */
+  whereTrigger?: string;
+  /** Filter UUID (with From=Trigger). The filter's matching triggers are invoked on units to filter by validation results. Can be combined with where_trigger. */
+  triggerFilter?: string;
+  /** When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
+  triggersPassed?: boolean;
+  /** Only the fields whose path contains this substring. */
+  path?: string;
+  /** Only the fields of this resource, named as <type>/<name> or <name>; a substring of either matches. */
+  resource?: string;
+  /** Only the fields with at least one of these flags, comma-separated. Conflict,Absent,Finding,ValidationError,ValidationWarning selects the fields that need attention.
+    
+    Supported values: Protected, Guarded, Conflict, Absent, Finding, ValidationError, ValidationWarning, Upgraded, SetByLink, SetByTrigger, ChangeOrder, Unreleased, Needed, Provided. */
+  flags?: string;
+  /** Follow each merge and Link resolve into the unit it took the value from, to where the value was set. Default true; false reports each unit's own record, which names the upstream unit without reading it. */
+  upstream?: boolean;
+  /** How many upstream units to follow before stopping. */
+  upstreamDepth?: number;
+  /** Include the $comment$ pseudo-fields that carry YAML comments. */
+  includeComments?: boolean;
+};
 export type SearchUnitDataApiResponse = /** status 200 OK */ UnitData[];
 export type SearchUnitDataApiArg = {
   /** The specified string is an expression for the purpose of filtering
@@ -23522,6 +23762,8 @@ export type Space = {
   SpaceID?: string;
   /** Reference to a Filter entity used to identify Triggers that should be invoked on Units within this Space. The Filter's From field must be set to 'Trigger'. */
   TriggerFilterID?: string;
+  /** Reference to the Space this Space takes its configuration from, which promotion takes from: the Space it was cloned from, which a clone sets, or one set since. Setting it requires Use on that Space. (optional) */
+  UpstreamSpaceID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
   /** Filter expression to identify Attributes that should be registered in the Space's FunctionExecutor. The specified string is an expression for the purpose of filtering
@@ -23650,6 +23892,7 @@ export type SpaceRead = {
   TriggerIDs?: Uuid[];
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
+  /** Reference to the Space this Space takes its configuration from, which promotion takes from: the Space it was cloned from, which a clone sets, or one set since. Setting it requires Use on that Space. (optional) */
   UpstreamSpaceID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
@@ -27791,6 +28034,7 @@ export type ExtendedSpace = {
   UnlinkedUnitCount?: number;
   UnreleasedUnitCount?: number;
   UpgradableUnitCount?: number;
+  UpstreamSpace?: Space;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
   WarnedUnitCount?: number;
@@ -27826,6 +28070,7 @@ export type ExtendedSpaceRead = {
   UnlinkedUnitCount?: number;
   UnreleasedUnitCount?: number;
   UpgradableUnitCount?: number;
+  UpstreamSpace?: SpaceRead;
   /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
   ViewColumns?: ViewColumn[];
   WarnedUnitCount?: number;
@@ -28322,6 +28567,175 @@ export type UnitCreateOrUpdateResponseRead = {
   MutationSources?: ResourceMutationList;
   Unit?: UnitRead;
 };
+export type BlameOrigin = {
+  /** The ChangeOrders that made the Revision. */
+  ChangeOrderIDs?: Uuid[];
+  /** The slugs of the ChangeOrders that made the Revision. */
+  ChangeOrders?: string[];
+  /** The Revision's change description. */
+  Description?: string;
+  /** The function the change ran, if it ran one. */
+  Function?: string;
+  /** The slug of the Invocation the change ran. */
+  Invocation?: string;
+  /** The Invocation the change ran, if it ran one. */
+  InvocationID?: string;
+  /** The slug of the Link that made the change. */
+  Link?: string;
+  /** The Link that made the change, if one did. */
+  LinkID?: string;
+  /** The unit a Link's resolve read the value from, as space/unit or unit. */
+  LinkUpstream?: string;
+  /** The number of the Revision of the upstream unit the Link's resolve read. */
+  LinkUpstreamRevisionNum?: number;
+  /** The unit a Link's resolve read the value from, whether or not the chain could follow it there. */
+  LinkUpstreamUnitID?: string;
+  /** The number of the Mutation that recorded the change; 0 for a change no Mutation recorded. */
+  MutationNum?: number;
+  /** The Releases that bundle the Revision. */
+  ReleaseIDs?: Uuid[];
+  /** The numbers of the Releases that bundle the Revision. */
+  Releases?: string[];
+  /** The Revision the change made. */
+  RevisionID?: string;
+  /** The number of the Revision the change made. */
+  RevisionNum?: number;
+  /** What decided to make the change, most specific first: the Link or Trigger, the function, the external source, the Invocation, the merge, or otherwise the operation that made the Revision. For people to read; the fields beside it say the same for programs. */
+  SetBy?: string;
+  /** The operation that made the Revision, such as UpdateUnit or TransformPaths. */
+  Source?: string;
+  /** The Space of the unit the change was made in. */
+  SpaceID?: string;
+  /** The slug of the Space of the unit the change was made in. */
+  SpaceSlug?: string;
+  /** The Tags that mark the Revision. */
+  TagIDs?: Uuid[];
+  /** The slugs of the Tags that mark the Revision. */
+  Tags?: string[];
+  /** The slug of the Trigger that made the change. */
+  Trigger?: string;
+  /** The Trigger that made the change, if one did. */
+  TriggerID?: string;
+  /** The unit the change was made in. */
+  UnitID?: string;
+  /** The slug of the unit the change was made in. */
+  UnitSlug?: string;
+  /** The username of the user who made the change, or automation for a change made by no user. */
+  User?: string;
+  /** The user who made the change; absent for one made by no user. */
+  UserID?: string;
+  /** When the Revision was made. */
+  When?: string;
+};
+export type BlameNeededPath = {
+  /** Name of the registered attribute */
+  AttributeName?: string;
+  BoundLink?: string;
+  /** Line comment on the attribute at the specified Path */
+  Comment?: string;
+  /** Data type if the attribute value. */
+  DataType?: string;
+  /** Additional attribute details */
+  Details?: AttributeDetails;
+  /** Name of the function invocation corresponding to the output */
+  FunctionName?: string;
+  /** Index of the function invocation corresponding to the output. Useful in the case that multiple function invocations in the same executor call return AttributeValueList output. */
+  Index?: number;
+  /** Issues found with the attribute */
+  Issues?: Issue[];
+  /** Path of the attribute */
+  Path?: string;
+  /** Category of configuration element represented in the configuration data; Kubernetes resources are of category Resource, and application configuration files are of category AppConfig */
+  ResourceCategory?: string;
+  /** Name of a resource in the system under management represented in the configuration data; Kubernetes resources are represented in the form <metadata.namespace>/<metadata.name>; not all ToolchainTypes necessarily use '/' as a separator between any scope(s) and name or other client-chosen ID */
+  ResourceName?: string;
+  /** Name of a resource in the system under management represented in the configuration data with generated prefixes and suffixes stripped; empty if nothing to strip */
+  ResourceNameStableCore?: string;
+  /** Name of a resource in the system under management represented in the configuration data, without any uniquifying scope, such as Namespace, Project, Account, Region, etc.; Kubernetes resources are represented in the form <metadata.name> */
+  ResourceNameWithoutScope?: string;
+  /** Type of a resource in the system under management represented in the configuration data; Kubernetes resources are represented in the form <apiVersion>/<kind> (aka group-version-kind) */
+  ResourceType?: string;
+  /** Score of finding attributed to this Path */
+  Score?: string;
+  /** Value of the attribute at the specified Path */
+  Value?: any;
+};
+export type BlameValidation = {
+  /** The result's free-text messages, where the function gave no Issues. */
+  Details?: string[];
+  /** The validating function that failed. */
+  Function?: string;
+  /** The check, as <space slug>/<trigger slug>/<function name>, the key of ValidationErrors, ValidationWarnings and ValidationResults on the Unit. */
+  Gate?: string;
+  /** What is wrong, as the function put it. */
+  Issues?: Issue[];
+  /** What the result named, when it named an ancestor of the field, or the field by its position in an array rather than by its path. */
+  Path?: string;
+  /** The severity the function gave the finding, if it gives one. */
+  Score?: string;
+  /** The Trigger that ran the check. The gate names it by the slugs it had when it ran. */
+  TriggerID?: string;
+  /** What the function found at the path, when it reported it. */
+  Value?: any;
+  /** True for a check of a Trigger with Warn set, whose failures do not block a release. */
+  Warning?: boolean;
+};
+export type BlameField = {
+  /** True for a field the unit does not have, listed because a conflict names it: a merge could not find the path, or the resource, to make an upstream change to. It has no value and no history. */
+  Absent?: boolean;
+  /** The changes that put the value here, from this unit out to where it was set, following each merge and Link resolve upstream. The last is the answer. */
+  Chain?: BlameOrigin[];
+  /** The unit's outstanding conflicts about the field: upstream changes to it a merge or resolve dropped. */
+  Conflicts?: MutationConflict[];
+  /** The unit's Link findings about the field: what a Link's resolve could not do here. */
+  Findings?: LinkFinding[];
+  /** What there is to know about the field, one code each: Protected, Guarded, Conflict, Absent, Finding, ValidationError, ValidationWarning, Upgraded, SetByLink, SetByTrigger, ChangeOrder, Unreleased, Needed and Provided. */
+  Flags?: string[];
+  /** The guards on the field: its own, its ancestors' and its resource's, which an operation writing here has to be cleared for. */
+  Guards?: {
+    [key: string]: string;
+  };
+  /** The unit's needed paths that are the field: a value it is to take from an upstream unit through a NeedsProvides Link. */
+  Needed?: BlameNeededPath[];
+  /** The field's path, in the syntax functions and Links take. */
+  Path?: string;
+  /** True for a local override, which a merge from upstream leaves alone. */
+  Protected?: boolean;
+  /** The unit's provided paths that are the field: a value it offers downstream units through NeedsProvides Links. */
+  Provided?: AttributeInfo[];
+  /** The field's short reference: the same in every Revision of the unit and in every variant of it, so it lines up one field across variants. The path report takes it, or a prefix of it, in place of the resource and path. */
+  Ref?: string;
+  /** The name of the resource the field is in. */
+  ResourceName?: string;
+  /** The name of the resource without its scope, such as its namespace, which is how a resource a variant renamed is matched. */
+  ResourceNameWithoutScope?: string;
+  /** True when the field is protected because its resource is protected as a whole. */
+  ResourceProtected?: boolean;
+  /** The type of the resource the field is in. */
+  ResourceType?: string;
+  /** The Space of the unit the field is in. */
+  SpaceID?: string;
+  /** The slug of the Space of the unit the field is in. */
+  SpaceSlug?: string;
+  /** The unit the field is in. */
+  UnitID?: string;
+  /** The slug of the unit the field is in. */
+  UnitSlug?: string;
+  /** The unit's failed validating checks that name the field. */
+  Validation?: BlameValidation[];
+  /** The field's value, as YAML. */
+  Value?: string;
+};
+export type UnitBlame = {
+  /** Why the unit's blame could not be read, in a SearchUnitBlame response. */
+  Error?: ResponseError;
+  /** The unit's fields the request selected, each with what set its value and everything else recorded about it, in resource and path order. */
+  Fields?: BlameField[];
+  /** The Space of the unit. */
+  SpaceID?: string;
+  /** The unit. */
+  UnitID?: string;
+};
 export type UnitConflictsResponse = {
   /** Number of conflicts whose withheld change was applied */
   Applied?: number;
@@ -28355,6 +28769,8 @@ export type UnitConflictSelector = {
   Reason?: string;
   /** Match conflicts on this resource; empty matches any resource */
   ResourceName?: string;
+  /** Match conflicts on resources of this type, in any API version; empty matches any type. With ResourceName, it picks out one of several resources of that name. */
+  ResourceType?: string;
 };
 export type UnitConflictsRequest = {
   /** Apply re-applies the withheld change; Dismiss drops the conflict without changing the configuration data */
@@ -28432,6 +28848,74 @@ export type ExtendedMutationRead = {
 export type MutationSourcesResponse = {
   /** Sources of mutations affecting the configuration data, by resource and path. */
   MutationSources?: ResourceMutationList;
+};
+export type BlamePathChange = {
+  /** The Mutation that recorded the change, with its Link, Trigger, Invocation and merge source. */
+  Mutation?: ExtendedMutation;
+  /** What the unit's record says the change did to the field: Add, Update, Replace or Delete. Returned in History. */
+  MutationType?: string;
+  /** The change, as a chain hop. */
+  Origin?: BlameOrigin;
+  /** The Revision the change made, with its user, ChangeOrders, Releases and Tags. */
+  Revision?: ExtendedRevision;
+  /** The value the change recorded for the field. Returned in History. */
+  Value?: string;
+};
+export type BlamePathChangeRead = {
+  /** The Mutation that recorded the change, with its Link, Trigger, Invocation and merge source. */
+  Mutation?: ExtendedMutationRead;
+  /** What the unit's record says the change did to the field: Add, Update, Replace or Delete. Returned in History. */
+  MutationType?: string;
+  /** The change, as a chain hop. */
+  Origin?: BlameOrigin;
+  /** The Revision the change made, with its user, ChangeOrders, Releases and Tags. */
+  Revision?: ExtendedRevisionRead;
+  /** The value the change recorded for the field. Returned in History. */
+  Value?: string;
+};
+export type UnitPathReport = {
+  /** The path's own annotations other than guards, by kind. The field's Guards are those that apply to it, its ancestors' and its resource's included. */
+  Annotations?: {
+    [key: string]: {
+      [key: string]: string;
+    };
+  };
+  /** The field's chain: the changes that put the value here, from this unit out to where it was set, each with the Mutation and Revision it was read from. */
+  Changes?: BlamePathChange[];
+  /** The field, as the unit's blame reports it, without its Chain: Changes carries the chain with its records. */
+  Field?: BlameField;
+  /** Every change this unit recorded to the field, oldest first; returned when history is requested. */
+  History?: BlamePathChange[];
+  /** Names, as space/slug, of the Units and Targets the report's records refer to by ID alone: the other unit of each conflict, each Link's upstream unit, each merge source, and each Release's Target. */
+  Names?: {
+    [key: string]: string;
+  };
+  /** ReleaseState in words, naming the revisions. */
+  ReleaseMessage?: string;
+  /** Whether the unit's last Release includes the value: Released, NeverReleased, ChangedSinceRelease, or NothingToRelease in a Space with no release Target. Absent for a field the unit does not have. */
+  ReleaseState?: string;
+};
+export type UnitPathReportRead = {
+  /** The path's own annotations other than guards, by kind. The field's Guards are those that apply to it, its ancestors' and its resource's included. */
+  Annotations?: {
+    [key: string]: {
+      [key: string]: string;
+    };
+  };
+  /** The field's chain: the changes that put the value here, from this unit out to where it was set, each with the Mutation and Revision it was read from. */
+  Changes?: BlamePathChangeRead[];
+  /** The field, as the unit's blame reports it, without its Chain: Changes carries the chain with its records. */
+  Field?: BlameField;
+  /** Every change this unit recorded to the field, oldest first; returned when history is requested. */
+  History?: BlamePathChangeRead[];
+  /** Names, as space/slug, of the Units and Targets the report's records refer to by ID alone: the other unit of each conflict, each Link's upstream unit, each merge source, and each Release's Target. */
+  Names?: {
+    [key: string]: string;
+  };
+  /** ReleaseState in words, naming the revisions. */
+  ReleaseMessage?: string;
+  /** Whether the unit's last Release includes the value: Released, NeverReleased, ChangedSinceRelease, or NothingToRelease in a Space with no release Target. Absent for a field the unit does not have. */
+  ReleaseState?: string;
 };
 export type UnitProtectionResponse = {
   Error?: ResponseError;
@@ -29221,6 +29705,8 @@ export const {
   useLazyGetUnitQuery,
   usePatchUnitMutation,
   useUpdateUnitMutation,
+  useGetUnitBlameQuery,
+  useLazyGetUnitBlameQuery,
   useResolveUnitConflictsMutation,
   useDownloadUnitDataQuery,
   useLazyDownloadUnitDataQuery,
@@ -29234,6 +29720,8 @@ export const {
   useLazyGetExtendedMutationQuery,
   useGetUnitMutationSourcesQuery,
   useLazyGetUnitMutationSourcesQuery,
+  useGetUnitPathQuery,
+  useLazyGetUnitPathQuery,
   useSetUnitProtectionMutation,
   useListExtendedResourcesQuery,
   useLazyListExtendedResourcesQuery,
@@ -29295,6 +29783,8 @@ export const {
   useBulkCreateUnitsMutation,
   useBulkMoveUnitsMutation,
   useBulkTagUnitsMutation,
+  useSearchUnitBlameQuery,
+  useLazySearchUnitBlameQuery,
   useSearchUnitDataQuery,
   useLazySearchUnitDataQuery,
   useSearchUnitDiffQuery,

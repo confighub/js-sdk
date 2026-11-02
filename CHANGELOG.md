@@ -7,6 +7,27 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.10.2 — 2026-11-01
+
+### API
+
+Compared with ConfigHub `v0.10.1`:
+
+#### Added (12)
+
+- path `/space/{space_id}/unit/{unit_id}/blame`
+- path `/space/{space_id}/unit/{unit_id}/path`
+- path `/unit_blame`
+- field `ExtendedSpace.UpstreamSpace`
+- field `UnitConflictSelector.ResourceType`
+- schema `BlameField`
+- schema `BlameNeededPath`
+- schema `BlameOrigin`
+- schema `BlamePathChange`
+- schema `BlameValidation`
+- schema `UnitBlame`
+- schema `UnitPathReport`
+
 ## 0.10.1 — 2026-11-01
 
 ### API
