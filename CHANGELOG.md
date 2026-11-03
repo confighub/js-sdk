@@ -7,6 +7,21 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.10.4 — 2026-11-03
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: `ApiInfo` has `OCITLS`, whether the OCI registry at
+  `OCIHost` and `OCIPort` is reached over https.
+
+### API
+
+Compared with ConfigHub `v0.10.3`:
+
+#### Added (1)
+
+- field `ApiInfo.OCITLS`
+
 ## 0.10.3 — 2026-11-02
 
 ### API

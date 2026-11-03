@@ -26175,6 +26175,8 @@ export type ApiInfoRead = {
   OCIHost?: string;
   /** OCI registry port for pulling configuration artifacts. */
   OCIPort?: string;
+  /** Whether the OCI registry is reached over https. It is the scheme of the instance's configured registry URL. Without one, it is true when the request arrived over https and absent otherwise, since a load balancer that terminates TLS without forwarding headers makes an https request look like plain http. When it is absent, as it also is from servers that predate it, a client uses the scheme it reached the API over. */
+  OCITLS?: boolean | null;
   TokenExchangeAudience?: string;
   TokenExchangeEndpoint?: string;
   UIURL?: string;
