@@ -26061,6 +26061,8 @@ export type MutationConflict = {
   Guard?: WithheldGuard;
   /** For GuardWithheld: the guard change that did not propagate */
   GuardChange?: GuardDelta;
+  /** For Guarded and GuardWithheld: every guard the operation's clearance did not cover, those it forbade with DoesNotExist first and then in key order. Guard is the first of them. */
+  Guards?: WithheldGuard[];
   /** Path of the mutation; empty for resource-level conflicts */
   Path?: string;
   /** Why the mutation was dropped */
@@ -28750,6 +28752,10 @@ export type UnitConflictsResponse = {
   /** Number of conflicts dropped without changing the configuration data */
   Dismissed?: number;
   Error?: ResponseError;
+  /** Number of permanent dismissals recorded, each a reason (or a reason and a guard) at one path of one resource */
+  Recorded?: number;
+  /** Number of permanent dismissals removed by Undismiss */
+  Removed?: number;
   /** The Unit as the request left it, or would have left it for a dry run */
   Unit?: Unit;
 };
@@ -28763,25 +28769,35 @@ export type UnitConflictsResponseRead = {
   /** Number of conflicts dropped without changing the configuration data */
   Dismissed?: number;
   Error?: ResponseError;
+  /** Number of permanent dismissals recorded, each a reason (or a reason and a guard) at one path of one resource */
+  Recorded?: number;
+  /** Number of permanent dismissals removed by Undismiss */
+  Removed?: number;
   /** The Unit as the request left it, or would have left it for a dry run */
   Unit?: UnitRead;
 };
 export type UnitConflictSelector = {
-  /** Match conflicts at this path; empty matches any path, including resource-level conflicts */
+  /** Match Guarded and GuardWithheld conflicts every one of whose guards is named here, as key or key=value; empty matches any conflict, guarded or not */
+  Guards?: string[];
+  /** Match conflicts at this path; empty matches any path, including resource-level conflicts. An element of a list may be named by position (spec.data.0.secretKey), by merge key (containers.?name=main.image), or as the conflict records it, and * matches any one list element or map key (spec.data.*.secretKey). */
   Path?: string;
-  /** Match conflicts dropped for this reason: Subtracted, DeleteShadowed, ProtectedPath, or UnresolvedPath; empty matches any reason */
+  /** Match conflicts dropped for this reason, as their Reason names it; empty matches any reason */
   Reason?: string;
-  /** Match conflicts on this resource; empty matches any resource */
+  /** Match conflicts on this resource, by its whole name (namespace/name, or /name for a cluster-scoped Kubernetes resource) or a name it had before a rename; empty matches any resource */
   ResourceName?: string;
+  /** Match conflicts on every resource with this name without its namespace, now or before a rename; empty matches any. With Permanent or Undismiss it has to match only one resource. */
+  ResourceNameWithoutScope?: string;
   /** Match conflicts on resources of this type, in any API version; empty matches any type. With ResourceName, it picks out one of several resources of that name. */
   ResourceType?: string;
 };
 export type UnitConflictsRequest = {
-  /** Apply re-applies the withheld change; Dismiss drops the conflict without changing the configuration data */
+  /** Apply re-applies the withheld change; Dismiss drops the conflict without changing the configuration data; Undismiss removes dismissals recorded with Permanent */
   Action?: string;
   /** Report what the request would do without writing anything. The response carries the Unit as it would be. */
   DryRun?: boolean;
-  /** Which outstanding conflicts to act on. Empty acts on all of them. */
+  /** With Dismiss, also dismiss the conflicts each selector matches whenever a later merge reports them. Each selector names one resource, by ResourceName or ResourceNameWithoutScope, and a Reason, and Guards for a guard-caused reason; an empty Path covers every path of the resource. */
+  Permanent?: boolean;
+  /** Which outstanding conflicts to act on. Empty acts on all of them. Permanent and Undismiss need at least one, each naming a ResourceName or ResourceNameWithoutScope, and for Permanent a Reason. */
   Select?: UnitConflictSelector[];
 };
 export type UnitDiff = {
@@ -28816,6 +28832,8 @@ export type ResourceGuards = {
   };
 };
 export type UnitGuardRequest = {
+  /** Recorded on the Revision the edit creates. Defaults to "Set path guards". */
+  ChangeDescription?: string;
   /** The classes of reason this edit is cleared for; required to edit a path that already carries guards */
   Clearance?: Clearance;
   /** Per-resource guard edits to apply to the Unit's PathAnnotations */
@@ -28935,6 +28953,8 @@ export type ResourceProtection = {
   Resource?: ResourceInfo;
 };
 export type UnitProtectionRequest = {
+  /** Recorded on the Revision the edit creates. Defaults to "Set path protection". */
+  ChangeDescription?: string;
   /** Per-resource Protected edits to apply to the Unit's MutationSources */
   ResourceProtection?: ResourceProtection[] | null;
   /** Clear every Protected value on the Unit's MutationSources before applying ResourceProtection */

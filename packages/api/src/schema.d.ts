@@ -6714,6 +6714,8 @@ export interface components {
             Guard?: components["schemas"]["WithheldGuard"];
             /** @description For GuardWithheld: the guard change that did not propagate */
             GuardChange?: components["schemas"]["GuardDelta"];
+            /** @description For Guarded and GuardWithheld: every guard the operation's clearance did not cover, those it forbade with DoesNotExist first and then in key order. Guard is the first of them. */
+            Guards?: components["schemas"]["WithheldGuard"][];
             /** @description Path of the mutation; empty for resource-level conflicts */
             Path?: string;
             /** @description Why the mutation was dropped */
@@ -8695,21 +8697,27 @@ export interface components {
             UnitID?: string;
         };
         UnitConflictSelector: {
-            /** @description Match conflicts at this path; empty matches any path, including resource-level conflicts */
+            /** @description Match Guarded and GuardWithheld conflicts every one of whose guards is named here, as key or key=value; empty matches any conflict, guarded or not */
+            Guards?: string[];
+            /** @description Match conflicts at this path; empty matches any path, including resource-level conflicts. An element of a list may be named by position (spec.data.0.secretKey), by merge key (containers.?name=main.image), or as the conflict records it, and * matches any one list element or map key (spec.data.*.secretKey). */
             Path?: string;
-            /** @description Match conflicts dropped for this reason: Subtracted, DeleteShadowed, ProtectedPath, or UnresolvedPath; empty matches any reason */
+            /** @description Match conflicts dropped for this reason, as their Reason names it; empty matches any reason */
             Reason?: string;
-            /** @description Match conflicts on this resource; empty matches any resource */
+            /** @description Match conflicts on this resource, by its whole name (namespace/name, or /name for a cluster-scoped Kubernetes resource) or a name it had before a rename; empty matches any resource */
             ResourceName?: string;
+            /** @description Match conflicts on every resource with this name without its namespace, now or before a rename; empty matches any. With Permanent or Undismiss it has to match only one resource. */
+            ResourceNameWithoutScope?: string;
             /** @description Match conflicts on resources of this type, in any API version; empty matches any type. With ResourceName, it picks out one of several resources of that name. */
             ResourceType?: string;
         };
         UnitConflictsRequest: {
-            /** @description Apply re-applies the withheld change; Dismiss drops the conflict without changing the configuration data */
+            /** @description Apply re-applies the withheld change; Dismiss drops the conflict without changing the configuration data; Undismiss removes dismissals recorded with Permanent */
             Action?: string;
             /** @description Report what the request would do without writing anything. The response carries the Unit as it would be. */
             DryRun?: boolean;
-            /** @description Which outstanding conflicts to act on. Empty acts on all of them. */
+            /** @description With Dismiss, also dismiss the conflicts each selector matches whenever a later merge reports them. Each selector names one resource, by ResourceName or ResourceNameWithoutScope, and a Reason, and Guards for a guard-caused reason; an empty Path covers every path of the resource. */
+            Permanent?: boolean;
+            /** @description Which outstanding conflicts to act on. Empty acts on all of them. Permanent and Undismiss need at least one, each naming a ResourceName or ResourceNameWithoutScope, and for Permanent a Reason. */
             Select?: components["schemas"]["UnitConflictSelector"][];
         };
         UnitConflictsResponse: {
@@ -8722,6 +8730,10 @@ export interface components {
             /** @description Number of conflicts dropped without changing the configuration data */
             Dismissed?: number;
             Error?: components["schemas"]["ResponseError"];
+            /** @description Number of permanent dismissals recorded, each a reason (or a reason and a guard) at one path of one resource */
+            Recorded?: number;
+            /** @description Number of permanent dismissals removed by Undismiss */
+            Removed?: number;
             /** @description The Unit as the request left it, or would have left it for a dry run */
             Unit?: components["schemas"]["Unit"];
         };
@@ -8883,6 +8895,8 @@ export interface components {
             Version?: number;
         };
         UnitGuardRequest: {
+            /** @description Recorded on the Revision the edit creates. Defaults to "Set path guards". */
+            ChangeDescription?: string;
             /** @description The classes of reason this edit is cleared for; required to edit a path that already carries guards */
             Clearance?: components["schemas"]["Clearance"];
             /** @description Per-resource guard edits to apply to the Unit's PathAnnotations */
@@ -8961,6 +8975,8 @@ export interface components {
             ReleaseState?: string;
         };
         UnitProtectionRequest: {
+            /** @description Recorded on the Revision the edit creates. Defaults to "Set path protection". */
+            ChangeDescription?: string;
             /** @description Per-resource Protected edits to apply to the Unit's MutationSources */
             ResourceProtection?: components["schemas"]["ResourceProtection"][] | null;
             /** @description Clear every Protected value on the Unit's MutationSources before applying ResourceProtection */
