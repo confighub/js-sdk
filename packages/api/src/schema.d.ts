@@ -4063,18 +4063,30 @@ export interface components {
             ProvidedResource?: components["schemas"]["ResourceInfo"];
         };
         BindingList: components["schemas"]["Binding"][];
+        BlameConflictDismissal: {
+            /** @description For a dismissal of what one guard withheld, the guard's key. */
+            Guard?: string;
+            /** @description The guard's value; empty for any value. */
+            GuardValue?: string;
+            /** @description Where the dismissal is recorded: a path, which may name any list element or map key with *, or empty for the resource as a whole. */
+            Path?: string;
+            /** @description The reason of the conflicts dismissed. */
+            Reason?: string;
+        };
         BlameField: {
             /** @description True for a field the unit does not have, listed because a conflict names it: a merge could not find the path, or the resource, to make an upstream change to. It has no value and no history. */
             Absent?: boolean;
             /** @description The changes that put the value here, from this unit out to where it was set, following each merge and Link resolve upstream. The last is the answer. */
             Chain?: components["schemas"]["BlameOrigin"][];
+            /** @description The conflict dismissals recorded for this row: at the field's path or by a pattern naming it, or, on the row about a resource as a whole, on the resource. The unit's path report lists every dismissal covering the field, its resource's included. */
+            ConflictDismissals?: components["schemas"]["BlameConflictDismissal"][];
             /** @description The unit's outstanding conflicts about the field: upstream changes to it a merge or resolve dropped. */
             Conflicts?: components["schemas"]["MutationConflict"][];
             /** @description True for a field, or a resource, that the unit does not have because a change deleted it: the unit's record still names the deletion. It has no value; its chain is the change that deleted it, and Protected says whether a merge from upstream leaves it deleted. */
             Deleted?: boolean;
             /** @description The unit's Link findings about the field: what a Link's resolve could not do here. */
             Findings?: components["schemas"]["LinkFinding"][];
-            /** @description What there is to know about the field, one code each: Protected, Guarded, Conflict, Absent, Deleted, Finding, ValidationError, ValidationWarning, Upgraded, SetByLink, SetByTrigger, ChangeOrder, Unreleased, Needed and Provided. */
+            /** @description What there is to know about the field, one code each: Protected, Guarded, Conflict, ConflictDismissed, Absent, Deleted, Finding, ValidationError, ValidationWarning, Upgraded, SetByLink, SetByTrigger, ChangeOrder, Unreleased, Needed and Provided. */
             Flags?: string[];
             /** @description The guards on the field: its own, its ancestors' and its resource's, which an operation writing here has to be cleared for. */
             Guards?: {
@@ -4322,7 +4334,7 @@ export interface components {
             readonly ChangeWorkflow?: components["schemas"]["ChangeWorkflowSpec"];
             /**
              * Format: uuid
-             * @description ChangeWorkflowID is the ChangeWorkflow this ChangeOrder is promoted under. It says which workflow the stored copy was taken from, and keeps saying so after that workflow has been edited or deleted, which is why it is not a foreign key.
+             * @description ChangeWorkflowID is the ChangeWorkflow this ChangeOrder is promoted under. It says which workflow the stored copy was taken from, and keeps saying so after that workflow has been edited or deleted, which is why it is not a foreign key. Every Space the ChangeOrder is headed for has to be selected by one of the workflow's Stages, since a Space in none of them cannot be promoted into; the ChangeOrder's own Space is exempt when the change is already there, as it is for UpgradeUnit and MergeUnits. Creating a ChangeOrder, or an update adding a Space to InScopeSpaceIDs, is refused otherwise.
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             ChangeWorkflowID?: string;
@@ -7430,13 +7442,13 @@ export interface components {
             ToValue?: string;
         };
         ResourceGuards: {
-            /** @description Guard keys to remove, by path. Removing a key that is not there is not an error */
+            /** @description Guard keys to remove, by path, named as in Set; * also matches the paths guarded that the data no longer has. Removing a key that is not there is not an error */
             Remove?: {
                 [key: string]: string[];
             };
-            /** @description Identifies the resource within the Unit whose guards are being edited */
+            /** @description The resource whose guards are being edited: ResourceName, its whole name (namespace/name) or a name it had before a rename, or ResourceNameWithoutScope, a name without its namespace that has to match one resource; ResourceType, in any API version, is optional. A resource the unit does not have yet is named by ResourceType and ResourceName. */
             Resource?: components["schemas"]["ResourceInfo"];
-            /** @description Guard key/value pairs to add or overwrite, by path. The empty path addresses the resource as a whole */
+            /** @description Guard key/value pairs to add or overwrite, by path. The empty path addresses the resource as a whole. A list element is named by merge key or by position, and * stands for every element or key there is; a path that does not exist yet is kept as written */
             Set?: {
                 [key: string]: {
                     [key: string]: string;
@@ -7505,11 +7517,11 @@ export interface components {
             ResourceAnnotations?: components["schemas"]["PathAnnotations"];
         };
         ResourceProtection: {
-            /** @description Map of resolved path to its new Protected value: true = a local override a merge must not overwrite, false = the merge's to update. The empty path addresses the resource as a whole: a merge withholds every change to a resource protected as a whole, including its deletion and replacement, whatever its paths' values are */
+            /** @description Map of path to its new Protected value: true = a local override a merge must not overwrite, false = the merge's to update. A list element is named by merge key or by position, and * stands for every element or key there is; a path naming a field the unit deleted is set on the record of that deletion. The empty path addresses the resource as a whole: a merge withholds every change to a resource protected as a whole, including its deletion and replacement, whatever its paths' values are */
             Protected?: {
                 [key: string]: boolean;
             } | null;
-            /** @description Identifies the resource within the unit whose protection is being set */
+            /** @description The resource whose protection is being set: ResourceName, its whole name (namespace/name) or a name it had before a rename, or ResourceNameWithoutScope, a name without its namespace that has to match one resource; ResourceType, in any API version, is optional */
             Resource?: components["schemas"]["ResourceInfo"];
         };
         ResourceTypePathsEntry: {
@@ -8699,7 +8711,7 @@ export interface components {
         UnitConflictSelector: {
             /** @description Match Guarded and GuardWithheld conflicts every one of whose guards is named here, as key or key=value; empty matches any conflict, guarded or not */
             Guards?: string[];
-            /** @description Match conflicts at this path; empty matches any path, including resource-level conflicts. An element of a list may be named by position (spec.data.0.secretKey), by merge key (containers.?name=main.image), or as the conflict records it, and * matches any one list element or map key (spec.data.*.secretKey). */
+            /** @description Match conflicts at this path; empty matches any path, including resource-level conflicts. An element of a list may be named by position (spec.data.0.secretKey), by merge key (containers.?name=main.image), or as the conflict records it, and * matches any one list element or map key (spec.data.*.secretKey). With Undismiss, the path names dismissals as Permanent recorded them: empty, the one on the resource as a whole; *, every one; a path, the one recorded at that path, a pattern included. */
             Path?: string;
             /** @description Match conflicts dropped for this reason, as their Reason names it; empty matches any reason */
             Reason?: string;
@@ -8953,7 +8965,7 @@ export interface components {
             UnitID?: string;
         };
         UnitPathReport: {
-            /** @description The path's own annotations other than guards, by kind. The field's Guards are those that apply to it, its ancestors' and its resource's included. */
+            /** @description The path's own annotations other than guards and conflict dismissals, by kind. The field's Guards are those that apply to it, its ancestors' and its resource's included. */
             Annotations?: {
                 [key: string]: {
                     [key: string]: string;
@@ -8961,6 +8973,8 @@ export interface components {
             };
             /** @description The field's chain: the changes that put the value here, from this unit out to where it was set, each with the Mutation and Revision it was read from. */
             Changes?: components["schemas"]["BlamePathChange"][];
+            /** @description Every conflict dismissal covering the field, each with the Path it is recorded at: the field's, a pattern naming it, or empty for one on its resource as a whole. */
+            ConflictDismissals?: components["schemas"]["BlameConflictDismissal"][];
             /** @description The field, as the unit's blame reports it, without its Chain: Changes carries the chain with its records. */
             Field?: components["schemas"]["BlameField"];
             /** @description Every change this unit recorded to the field, oldest first; returned when history is requested. */
@@ -42661,7 +42675,7 @@ export interface operations {
                 /**
                  * @description Only the fields with at least one of these flags, comma-separated. Conflict,Absent,Finding,ValidationError,ValidationWarning selects the fields that need attention.
                  *
-                 *     Supported values: Protected, Guarded, Conflict, Absent, Deleted, Finding, ValidationError, ValidationWarning, Upgraded, SetByLink, SetByTrigger, ChangeOrder, Unreleased, Needed, Provided.
+                 *     Supported values: Protected, Guarded, Conflict, ConflictDismissed, Absent, Deleted, Finding, ValidationError, ValidationWarning, Upgraded, SetByLink, SetByTrigger, ChangeOrder, Unreleased, Needed, Provided.
                  */
                 flags?: string;
                 /** @description Follow each merge and Link resolve into the unit it took the value from, to where the value was set. Default true; false reports each unit's own record, which names the upstream unit without reading it. */
@@ -51866,7 +51880,7 @@ export interface operations {
                 /**
                  * @description Only the fields with at least one of these flags, comma-separated. Conflict,Absent,Finding,ValidationError,ValidationWarning selects the fields that need attention.
                  *
-                 *     Supported values: Protected, Guarded, Conflict, Absent, Deleted, Finding, ValidationError, ValidationWarning, Upgraded, SetByLink, SetByTrigger, ChangeOrder, Unreleased, Needed, Provided.
+                 *     Supported values: Protected, Guarded, Conflict, ConflictDismissed, Absent, Deleted, Finding, ValidationError, ValidationWarning, Upgraded, SetByLink, SetByTrigger, ChangeOrder, Unreleased, Needed, Provided.
                  */
                 flags?: string;
                 /** @description Follow each merge and Link resolve into the unit it took the value from, to where the value was set. Default true; false reports each unit's own record, which names the upstream unit without reading it. */
