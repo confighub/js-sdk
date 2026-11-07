@@ -7,6 +7,33 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.10.10 — 2026-11-06
+
+### API
+
+Compared with ConfigHub `v0.10.9`:
+
+#### Removed (2), breaking for code typed against them
+
+- field `FunctionInvocation.Clearance`
+- field `FunctionInvocation.Guards`
+
+#### Added (13)
+
+- parameter `inherited_guards` on `POST /function/invoke`
+- parameter `inherited_guards` on `POST /space/{space_id}/function/invoke`
+- parameter `inherited_guards` on `PATCH /space/{space_id}/unit/{unit_id}`
+- parameter `inherited_guards` on `PUT /space/{space_id}/unit/{unit_id}`
+- parameter `inherited_guards` on `PUT /space/{space_id}/unit/{unit_id}/data`
+- parameter `inherited_guards` on `PATCH /unit`
+- field `BlameField.InheritedGuards`
+- field `Invocation.Clearance`
+- field `Invocation.Guards`
+- field `Mutation.Clearance`
+- field `Mutation.Guards`
+- field `Mutation.InheritedGuards`
+- field `ResourceGuards.SetInherited`
+
 ## 0.10.9 — 2026-11-06
 
 ### API
