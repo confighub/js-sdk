@@ -6273,12 +6273,18 @@ export interface components {
             Version?: number;
         };
         GuardDelta: {
-            /** @description The path whose inherited guards changed; empty for the resource as a whole */
+            /** @description The path whose guards changed; empty for the resource as a whole */
             Path?: string;
             /** @description Inherited guard keys removed */
             Remove?: string[];
+            /** @description Guard keys removed that stay with the Unit, not inherited; a restore taking out guards the restored Revision did not have */
+            RemoveLocal?: string[];
             /** @description Inherited guard keys added or changed, with their new values */
             Set?: {
+                [key: string]: string;
+            };
+            /** @description Guard keys added or changed as guards that stay with the Unit, with their new values; a restore putting back the Unit's own guards */
+            SetLocal?: {
                 [key: string]: string;
             };
         };
@@ -6603,7 +6609,7 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             ChannelID?: string;
-            /** @description The classes of guarded reason the change was filtered with. On a function invocation that is the request's clearance together with that of every Trigger and Invocation that wrote in the same execution; on a Link's change, the Link's */
+            /** @description The classes of guarded reason the change was filtered with. On a function invocation that is the request's clearance together with that of every Trigger and Invocation that wrote in the same execution; on a Link's change, the Link's; on an apply of withheld conflicts, the request's */
             Clearance?: components["schemas"]["Clearance"];
             /**
              * Format: date-time
@@ -8739,6 +8745,8 @@ export interface components {
         UnitConflictsRequest: {
             /** @description Apply re-applies the withheld change; Dismiss drops the conflict without changing the configuration data; Undismiss removes dismissals recorded with Permanent */
             Action?: string;
+            /** @description With Apply, the classes of guarded reason the applied changes are cleared for, as a list of {Key, Operator, Values} requirements. A withheld value is written only where the guards at its path admit this clearance, and a withheld guard change only where the guards already at its path do; the request is refused otherwise. Not taken by Dismiss or Undismiss, which write no configuration data and no guards. */
+            Clearance?: components["schemas"]["Clearance"];
             /** @description Report what the request would do without writing anything. The response carries the Unit as it would be. */
             DryRun?: boolean;
             /** @description With Dismiss, also dismiss the conflicts each selector matches whenever a later merge reports them. Each selector names one resource, by ResourceName or ResourceNameWithoutScope, and a Reason, and Guards for a guard-caused reason; an empty Path covers every path of the resource. */
@@ -8768,6 +8776,7 @@ export interface components {
             ChangeSetClose?: components["schemas"]["ChangeSetCloseResult"];
             /** @description The configuration the operation produced; returned when include names ConfigData. */
             ConfigData?: string;
+            /** @description What this write could not apply: for an upgrade, merge or resolve, each change it withheld, and for any write, each value whose guards its clearance did not cover (Guarded) and each guard change it was not cleared to make (GuardWithheld). For a dry run, what it would withhold. Unit.Conflicts lists every conflict outstanding on the Unit, including those earlier operations left. */
             Conflicts?: components["schemas"]["MutationConflictList"];
             /** @description What the operation changed, or on a dry run would change, path by path with the values on both sides; returned when include names Diff. */
             Diff?: components["schemas"]["ConfigDiff"];
