@@ -6107,7 +6107,7 @@ export interface components {
              * @description Deprecated: use UpdateValidationResults, which this means the same thing as. Setting either has the same effect.
              */
             UpdateApplyGates?: boolean;
-            /** @description UpdateValidationResults indicates that the results of Trigger execution should be used to update ValidationErrors and ValidationWarnings on the affected Units. Requires Triggers to be specified. */
+            /** @description UpdateValidationResults indicates that the results of Trigger execution should be used to update ValidationErrors and ValidationWarnings on the affected Units, and the ValidationResults that say why each gate failed. Requires Triggers to be specified. */
             UpdateValidationResults?: boolean;
             /** @description WhereResource restricts which resources functions operate on using ConfigHub metadata path expressions (ConfigHub.ResourceName, ConfigHub.ResourceNameWithoutScope, ConfigHub.ResourceType, ConfigHub.ResourceCategory). */
             WhereResource?: string;
