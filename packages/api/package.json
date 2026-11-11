@@ -1,6 +1,6 @@
 {
   "name": "@confighub/api",
-  "version": "0.10.14",
+  "version": "0.11.0",
   "description": "Typed, framework-agnostic client for the ConfigHub API",
   "license": "MIT",
   "repository": {
