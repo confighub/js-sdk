@@ -2763,7 +2763,7 @@ export interface paths {
         };
         /**
          * Get everything recorded about one field of a Unit
-         * @description Returns everything recorded about one field of a Unit's configuration: the field as the Unit's blame reports it, its own annotations, whether the Unit's last Release includes its value, and each change from this Unit out to where the value was set with the Mutation and Revision it was read from. With history, it also returns every change the Unit recorded to the field. A field that names nothing is a 404; one that names several fields, or a value holding several, is a 400 whose message lists them.
+         * @description Returns everything recorded about one field of a Unit's configuration: the field as the Unit's blame reports it, its own annotations, whether the Unit's last Release includes its value, each change from this Unit out to where the value was set with the Mutation and Revision it was read from, the comments the configuration has about the field, and the latest thread of ReviewComments about it. With history, it also returns every change the Unit recorded to the field. A field that names nothing is a 404; one that names several fields, or a value holding several, is a 400 whose message lists them.
          */
         get: operations["GetUnitPath"];
         put?: never;
@@ -4071,6 +4071,14 @@ export interface components {
             ProvidedResource?: components["schemas"]["ResourceInfo"];
         };
         BindingList: components["schemas"]["Binding"][];
+        BlameConfigComments: {
+            /** @description The comment on the lines below the field. */
+            Foot?: string;
+            /** @description The comment on the lines above the field. On the row about a resource as a whole, the comment above the resource's document separator. */
+            Head?: string;
+            /** @description The comment at the end of the field's line. */
+            Line?: string;
+        };
         BlameConflictDismissal: {
             /** @description For a dismissal of what one guard withheld, the guard's key. */
             Guard?: string;
@@ -4290,6 +4298,16 @@ export interface components {
             Revision?: components["schemas"]["ExtendedRevision"];
             /** @description The value the change recorded for the field. Returned in History. */
             Value?: string;
+        };
+        BlameReviewThread: {
+            /**
+             * Format: uuid
+             * @description The ChangeOrder the thread was made in review of, if any; the report's Names names it, unless it cannot be read.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChangeOrderID?: string;
+            /** @description The comment that started the thread, then its replies, replies to replies included, oldest first. Hidden comments are left out; a thread whose first comment is hidden still has its replies. The report's Names names each comment's author by UserID, unless the author cannot be read. */
+            Comments?: components["schemas"]["ReviewComment"][] | null;
         };
         BlameValidation: {
             /** @description The result's free-text messages, where the function gave no Issues. */
@@ -9028,13 +9046,15 @@ export interface components {
             };
             /** @description The field's chain: the changes that put the value here, from this unit out to where it was set, each with the Mutation and Revision it was read from. */
             Changes?: components["schemas"]["BlamePathChange"][];
+            /** @description The comments the unit's configuration has about the field: above it, at the end of its line, and below it. Absent when it has none. */
+            ConfigComments?: components["schemas"]["BlameConfigComments"];
             /** @description Every conflict dismissal covering the field, each with the Path it is recorded at: the field's, a pattern naming it, or empty for one on its resource as a whole. */
             ConflictDismissals?: components["schemas"]["BlameConflictDismissal"][];
             /** @description The field, as the unit's blame reports it, without its Chain: Changes carries the chain with its records. */
             Field?: components["schemas"]["BlameField"];
             /** @description Every change this unit recorded to the field, oldest first; returned when history is requested. */
             History?: components["schemas"]["BlamePathChange"][];
-            /** @description Names, as space/slug, of the Units and Targets the report's records refer to by ID alone: the other unit of each conflict, each Link's upstream unit, each merge source, and each Release's Target. */
+            /** @description Names of the entities the report's records refer to by ID alone: as space/slug, the other unit of each conflict, each Link's upstream unit and each merge source; by slug, or space/slug in another Space, each Release's Target and the ReviewThread's ChangeOrder; and by username, the author of each comment of the ReviewThread. */
             Names?: {
                 [key: string]: string;
             };
@@ -9042,6 +9062,10 @@ export interface components {
             ReleaseMessage?: string;
             /** @description Whether the unit's last Release includes the value: Released, NeverReleased, ChangedSinceRelease, or NothingToRelease in a Space with no release Target. Absent for a field the unit does not have. */
             ReleaseState?: string;
+            /** @description The thread of ReviewComments about the field that was commented in most recently: those naming its resource and path, the path as written or naming the same element. Absent when there is none. */
+            ReviewThread?: components["schemas"]["BlameReviewThread"];
+            /** @description How many threads of ReviewComments are about the field, ReviewThread among them. */
+            ReviewThreads?: number;
         };
         UnitProtectionRequest: {
             /** @description Recorded on the Revision the edit creates. Defaults to "Set path protection". */
@@ -9171,7 +9195,7 @@ export interface components {
             Slug?: string;
         };
         UploadLinkResult: {
-            /** @description Create or Unchanged. */
+            /** @description Create, Update (a Link an earlier upload created that is cleared for less than it now needs: a Link from a carrier's placeholder Unit is cleared for the Link=Upsert guard of the ConfigMaps rendered into it), or Unchanged. */
             Action?: string;
             Error?: components["schemas"]["ResponseError"];
             FromUnit?: string;
@@ -9292,7 +9316,7 @@ export interface components {
             Units?: components["schemas"]["UploadUnitResult"][];
         };
         UploadTriggerResult: {
-            /** @description Create (in the Space, which runs the Triggers defined in it), Unchanged (the Space already runs a Mutation Trigger with the function, or one with the slug is in the Space), or Missing (the Space selects its Triggers from elsewhere, and none it selects runs the function). */
+            /** @description Create (in the Space, which runs the Triggers defined in it), Update (a Trigger of the pack that an earlier upload created in the Space, which gets the guards and clearance the pack now states), Unchanged (the Space already runs a Mutation Trigger with the function, or one with the slug is in the Space), or Missing (the Space selects its Triggers from elsewhere, and none it selects runs the function). */
             Action?: string;
             Error?: components["schemas"]["ResponseError"];
             /** @description The function the Trigger runs. */
