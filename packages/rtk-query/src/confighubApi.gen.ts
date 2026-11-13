@@ -1396,6 +1396,7 @@ const injectedRtkApi = api
             filter_space: queryArg.filterSpace,
             allow_exists: queryArg.allowExists,
             include_hidden: queryArg.includeHidden,
+            from_refs: queryArg.fromRefs,
             with_backing_units: queryArg.withBackingUnits,
             from_backing_units: queryArg.fromBackingUnits,
             where_unit: queryArg.whereUnit,
@@ -4935,7 +4936,7 @@ export type BulkDeleteComponentsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Component are OrganizationID, Permissions.
+    Supported attributes for Component are AllowedChangeWorkflowIDs, OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -5028,7 +5029,7 @@ export type BulkPatchComponentsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Component are OrganizationID, Permissions.
+    Supported attributes for Component are AllowedChangeWorkflowIDs, OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -9309,7 +9310,7 @@ export type ListComponentsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Component are OrganizationID, Permissions.
+    Supported attributes for Component are AllowedChangeWorkflowIDs, OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -9391,7 +9392,7 @@ export type GetComponentApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Component are OrganizationID, Permissions.
+    Supported attributes for Component are AllowedChangeWorkflowIDs, OrganizationID, Permissions.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -11733,6 +11734,8 @@ export type BulkCreateLinksApiArg = {
     
     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
   includeHidden?: string;
+  /** Create the NeedsProvides links between the Kubernetes/YAML units where_unit and filter_unit select that their configuration calls for, as upload infers them: from the references a resource makes to another, the Namespace a resource is in, the CRD that defines its type, and the label selectors that select a workload's pods. Links are inferred among the units of one space, and among those of spaces with the same ReleaseTargetID. A resource that names no namespace, or names the placeholder, is in its space's Namespace label, and in a namespace of the space's own if it has none. Each link is created in its from unit's space, with AutoUpdate, and the request body is applied to it, which can set its labels, annotations, delete gates and AutoUpdate but not its UpdateType. No link is created between two units that have a NeedsProvides link between them already, in either direction, and none that would close a cycle among the links created. Units of other toolchains are passed over. Takes none of the parameters that select links to copy or where the copies go. */
+  fromRefs?: boolean;
   /** Give each Link written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Link's configuration, which is then kept in step with it. */
   withBackingUnits?: boolean;
   /** Create Links from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
@@ -11773,11 +11776,11 @@ export type BulkCreateLinksApiArg = {
     
     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
-    The Units to create entities from, with from_backing_units.
+    The Units to create entities from, with from_backing_units, or to create links between, with from_refs.
     
     The whole string must be query-encoded. */
   whereUnit?: string;
-  /** A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+  /** A Filter, by ID, over the Units to create entities from, with from_backing_units, or to create links between, with from_refs. */
   filterUnit?: string;
   /** With from_backing_units, patch a Link a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Link is returned as it is. */
   patchExisting?: boolean;
@@ -25797,6 +25800,7 @@ export type ExtendedCommandRunRead = {
   ViewColumns?: ViewColumn[];
 };
 export type ExtendedComponent = {
+  AllowedChangeWorkflows?: ChangeWorkflow[];
   Component?: Component;
   Error?: ResponseError;
   Organization?: Organization;
@@ -25805,6 +25809,7 @@ export type ExtendedComponent = {
   ViewColumns?: ViewColumn[];
 };
 export type ExtendedComponentRead = {
+  AllowedChangeWorkflows?: ChangeWorkflowRead[];
   Component?: ComponentRead;
   Error?: ResponseError;
   Organization?: OrganizationRead;

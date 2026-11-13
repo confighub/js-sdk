@@ -780,7 +780,7 @@ export interface paths {
         put?: never;
         /**
          * Bulk create (copy) multiple links
-         * @description Copy existing links with retargeted From and/or To units. Select source links via where/filter, then retarget using reverse, from_downstream_where (optionally with to_downstream_where), or where_space/filter_space parameters.
+         * @description Copy existing links with retargeted From and/or To units. Select source links via where/filter, then retarget using reverse, from_downstream_where (optionally with to_downstream_where), or where_space/filter_space parameters. With from_refs, create the NeedsProvides links the configuration of the Kubernetes/YAML units where_unit and filter_unit select calls for instead; with from_backing_units, create links from the ConfigHub/YAML units they select.
          */
         post: operations["BulkCreateLinks"];
         /**
@@ -5696,6 +5696,7 @@ export interface components {
             ViewColumns?: components["schemas"]["ViewColumn"][];
         };
         ExtendedComponent: {
+            AllowedChangeWorkflows?: components["schemas"]["ChangeWorkflow"][];
             Component?: components["schemas"]["Component"];
             Error?: components["schemas"]["ResponseError"];
             Organization?: components["schemas"]["Organization"];
@@ -9757,7 +9758,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Component are OrganizationID, Permissions.
+                 *     Supported attributes for Component are AllowedChangeWorkflowIDs, OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -9959,7 +9960,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Component are OrganizationID, Permissions.
+                 *     Supported attributes for Component are AllowedChangeWorkflowIDs, OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -17893,7 +17894,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Component are OrganizationID, Permissions.
+                 *     Supported attributes for Component are AllowedChangeWorkflowIDs, OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -18139,7 +18140,7 @@ export interface operations {
                  *     The attribute names are case-sensitive, PascalCase, and
                  *     expected in a comma-separated list format as in the JSON encoding.
                  *
-                 *     Supported attributes for Component are OrganizationID, Permissions.
+                 *     Supported attributes for Component are AllowedChangeWorkflowIDs, OrganizationID, Permissions.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -22650,6 +22651,8 @@ export interface operations {
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
                  */
                 include_hidden?: string;
+                /** @description Create the NeedsProvides links between the Kubernetes/YAML units where_unit and filter_unit select that their configuration calls for, as upload infers them: from the references a resource makes to another, the Namespace a resource is in, the CRD that defines its type, and the label selectors that select a workload's pods. Links are inferred among the units of one space, and among those of spaces with the same ReleaseTargetID. A resource that names no namespace, or names the placeholder, is in its space's Namespace label, and in a namespace of the space's own if it has none. Each link is created in its from unit's space, with AutoUpdate, and the request body is applied to it, which can set its labels, annotations, delete gates and AutoUpdate but not its UpdateType. No link is created between two units that have a NeedsProvides link between them already, in either direction, and none that would close a cycle among the links created. Units of other toolchains are passed over. Takes none of the parameters that select links to copy or where the copies go. */
+                from_refs?: boolean;
                 /** @description Give each Link written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Link's configuration, which is then kept in step with it. */
                 with_backing_units?: boolean;
                 /** @description Create Links from the ConfigHub/YAML Units where_unit and filter_unit select, each in its Unit's Space, and each with its Unit as its backing Unit. The request body is applied after the Unit's document. Units of other toolchains or describing other entity types are passed over; outstanding ValidationErrors on a Unit are an error. Takes none of the parameters that select entities to clone, name the clones or choose their Spaces. */
@@ -22691,12 +22694,12 @@ export interface operations {
                  *
                  *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
                  *
-                 *     The Units to create entities from, with from_backing_units.
+                 *     The Units to create entities from, with from_backing_units, or to create links between, with from_refs.
                  *
                  *     The whole string must be query-encoded.
                  */
                 where_unit?: string;
-                /** @description A Filter, by ID, over the Units to create entities from, with from_backing_units. */
+                /** @description A Filter, by ID, over the Units to create entities from, with from_backing_units, or to create links between, with from_refs. */
                 filter_unit?: string;
                 /** @description With from_backing_units, patch a Link a selected Unit already backs with what the Unit holds that it has not taken yet, as a bulk patch with from_backing_units does, rather than report that the Unit backs it. The request body is applied after it. Without it, such a Unit is an error, or with allow_exists the Link is returned as it is. */
                 patch_existing?: boolean;
