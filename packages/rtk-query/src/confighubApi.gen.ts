@@ -26091,6 +26091,8 @@ export type FunctionSignature = {
   Hermetic?: boolean;
   /** Will return the same result if invoked again */
   Idempotent?: boolean;
+  /** Parts of the FunctionContext passed only to the functions that read them: Conflicts, the Unit's outstanding merge conflicts, and LinkFindings, what the resolves of its Links could not do */
+  Include?: string[];
   /** May change the configuration data */
   Mutating?: boolean;
   /** The keys of the OtherData the function reads, if any: a revision specifier such as LastReleasedRevisionNum, which a caller that names no revision is passed, or a key such as schema under which the caller passes another Unit. Letters, digits, '-' and '_'. */
@@ -26105,7 +26107,7 @@ export type FunctionSignature = {
   RequiredParameters?: number;
   /** Toolchain under which the function is registered */
   ToolchainType?: string;
-  /** Returns ValidationResult */
+  /** Returns a ValidationResult judging the resources selected, passing when none is selected unless it judges something it declares in Include */
   Validating?: boolean;
   /** Last parameter may be repeated */
   VarArgs?: boolean;
@@ -26206,10 +26208,6 @@ export type FunctionInvocationsRequest = {
   ChangeDescription?: string;
   ChannelID?: string;
   FunctionInvocations?: FunctionInvocationList;
-  /** Put the Unit's outstanding merge conflicts in the FunctionContext, for functions that reason about them. A request that runs Triggers gets them regardless */
-  IncludeConflicts?: boolean;
-  /** Put what the resolves of the Unit's Links could not do in the FunctionContext, for functions that reason about it. A request that runs Triggers gets them regardless */
-  IncludeLinkFindings?: boolean;
   /** Invocations is a list of Invocation IDs to execute. The invocations must be within the same Organization. Invocations will be executed after the FunctionInvocations list. Functions are grouped by executor (built-in or Channel) and executed in phases: general mutating functions first, then final mutating functions (like ensure-context), then validating functions. Functions that don't match the unit's toolchain type are ignored. */
   Invocations?: Uuid[];
   /** NumFilters is the number of validating functions from the FunctionInvocations to treat as filters for the remaining functions in the list. In the case that the validation function does not pass, stop and don't execute the remaining functions, but don't report an error. */
