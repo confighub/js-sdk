@@ -10801,7 +10801,6 @@ export type BulkPatchInvocationsApiArg = {
       [key: string]: string | null;
     } | null;
     ChannelID?: string | null;
-    /** Classes of guarded reason this Invocation's functions are cleared for; combined by union with the clearance of the Trigger or API call that runs it */
     Clearance?: (object | null)[] | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
@@ -10810,7 +10809,6 @@ export type BulkPatchInvocationsApiArg = {
     /** Friendly name for the entity. */
     DisplayName?: string | null;
     FunctionInvocations?: (object | null)[] | null;
-    /** Guards to record on the paths this Invocation's functions write, so a later operation must be cleared for them; combined with the guards of a Trigger running it, the Trigger's winning per key. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Clearance must cover them. */
     Guards?: {
       [key: string]: string | null;
     } | null;
@@ -11042,7 +11040,6 @@ export type BulkCreateInvocationsApiArg = {
       [key: string]: string | null;
     } | null;
     ChannelID?: string | null;
-    /** Classes of guarded reason this Invocation's functions are cleared for; combined by union with the clearance of the Trigger or API call that runs it */
     Clearance?: (object | null)[] | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
@@ -11051,7 +11048,6 @@ export type BulkCreateInvocationsApiArg = {
     /** Friendly name for the entity. */
     DisplayName?: string | null;
     FunctionInvocations?: (object | null)[] | null;
-    /** Guards to record on the paths this Invocation's functions write, so a later operation must be cleared for them; combined with the guards of a Trigger running it, the Trigger's winning per key. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Clearance must cover them. */
     Guards?: {
       [key: string]: string | null;
     } | null;
@@ -11502,7 +11498,6 @@ export type BulkPatchLinksApiArg = {
     DownstreamPaths?: (object | null)[] | null;
     DownstreamSetters?: (object | null)[] | null;
     FromUnitID?: string | null;
-    /** Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the link takes back the guards it set on the paths it last wrote. Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
     Guards?: {
       [key: string]: string | null;
     } | null;
@@ -11803,7 +11798,6 @@ export type BulkCreateLinksApiArg = {
     DownstreamPaths?: (object | null)[] | null;
     DownstreamSetters?: (object | null)[] | null;
     FromUnitID?: string | null;
-    /** Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the link takes back the guards it set on the paths it last wrote. Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
     Guards?: {
       [key: string]: string | null;
     } | null;
@@ -16129,7 +16123,6 @@ export type PatchInvocationApiArg = {
       [key: string]: string | null;
     } | null;
     ChannelID?: string | null;
-    /** Classes of guarded reason this Invocation's functions are cleared for; combined by union with the clearance of the Trigger or API call that runs it */
     Clearance?: (object | null)[] | null;
     /** An optional set of gates that, if any is present, will block deletion */
     DeleteGates?: {
@@ -16138,7 +16131,6 @@ export type PatchInvocationApiArg = {
     /** Friendly name for the entity. */
     DisplayName?: string | null;
     FunctionInvocations?: (object | null)[] | null;
-    /** Guards to record on the paths this Invocation's functions write, so a later operation must be cleared for them; combined with the guards of a Trigger running it, the Trigger's winning per key. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard). Clearance must cover them. */
     Guards?: {
       [key: string]: string | null;
     } | null;
@@ -16401,7 +16393,6 @@ export type PatchLinkApiArg = {
     DownstreamPaths?: (object | null)[] | null;
     DownstreamSetters?: (object | null)[] | null;
     FromUnitID?: string | null;
-    /** Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the link takes back the guards it set on the paths it last wrote. Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
     Guards?: {
       [key: string]: string | null;
     } | null;
@@ -17405,7 +17396,6 @@ export type PatchTriggerApiArg = {
     Event?: string | null;
     /** Function name */
     FunctionName?: string | null;
-    /** Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the trigger takes back the guards it set on the paths it last wrote. Only meaningful for a mutating trigger, and part of the trigger's Hash, unlike Protect. */
     Guards?: {
       [key: string]: string | null;
     } | null;
@@ -20820,7 +20810,6 @@ export type BulkPatchTriggersApiArg = {
     Event?: string | null;
     /** Function name */
     FunctionName?: string | null;
-    /** Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the trigger takes back the guards it set on the paths it last wrote. Only meaningful for a mutating trigger, and part of the trigger's Hash, unlike Protect. */
     Guards?: {
       [key: string]: string | null;
     } | null;
@@ -21072,7 +21061,6 @@ export type BulkCreateTriggersApiArg = {
     Event?: string | null;
     /** Function name */
     FunctionName?: string | null;
-    /** Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the trigger takes back the guards it set on the paths it last wrote. Only meaningful for a mutating trigger, and part of the trigger's Hash, unlike Protect. */
     Guards?: {
       [key: string]: string | null;
     } | null;
@@ -26638,6 +26626,7 @@ export type Link = {
   };
   /** Automatically update the downstream Unit when the upstream Unit changes. A Link created without an UpdateType is a NeedsProvides Link with AutoUpdate set, which is what such a Link has always done. */
   AutoUpdate?: boolean;
+  /** Classes of guarded reason this Link's resolve is cleared for, whatever its UpdateType and whether the resolve is queued or requested. A path whose guards it does not cover is not written, and the withheld change is reported as a conflict. This is what lets one Link maintain a field another is guarded out of: a TransformPaths Link cleared for the guard {"Link":"TransformPaths"} keeps writing the value it guards, while an UpgradeUnit Link cleared for nothing leaves it alone. A stored clearance gets no default: a Link that should write over an Override guard needs Override in its Clearance. */
   Clearance?: Clearance;
   /** An optional set of gates that, if any is present, will block deletion. */
   DeleteGates?: {
@@ -26653,7 +26642,7 @@ export type Link = {
   DownstreamSetters?: ParameterizedFunction[];
   /** Unique identifier of the downstream (consumer) Unit. Links must be in the same space as the source unit. */
   FromUnitID: string;
-  /** Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the link takes back the guards it set on the paths it last wrote. Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
+  /** Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. {"Link":"<UpdateType>"}, with a Clearance admitting it, holds what the link maintains against merges and other writes while the link keeps writing it. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the link takes back the guards it set on the paths it last wrote, and updating it takes back those it no longer states. Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
   Guards?: GuardStamp;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
@@ -26665,7 +26654,7 @@ export type Link = {
   LinkID?: string;
   /** The needs/provides attribute bindings stated for this Link, which resolution uses as they are. Each Binding maps one needed attribute in the downstream Unit to one provided attribute in the upstream Unit. An Insert Link has exactly one, which identifies only the needed attribute (NeededResource and NeededPath) and whose DataType selects how the upstream Unit is inserted: string, the default, inserts it verbatim as text; the downstream Unit's own configuration format inserts it as configuration data. */
   ManualBindings?: BindingList;
-  /** Enables the subtraction (override-preservation) step of the merge performed when resolving this Link. When false (the default), the source patch is applied without subtraction and the downstream Unit's local differences are preserved by the stored Mutation Protected values alone, widened by WhereMutation if it is set. When true, the merge additionally subtracts the downstream Unit's local differences from the source patch and the stored values are not consulted. Only meaningful for UpgradeUnit and MergeUnits Links. */
+  /** Enables the subtraction (override-preservation) step of the merge performed when resolving this Link. When false (the default), the source patch is applied without subtraction, and the downstream Unit's local differences are preserved by its guards -- an Override guard on each local override -- widened by WhereMutation if it is set. When true, the merge additionally subtracts the downstream Unit's local differences from the source patch; the guards still hold. Only meaningful for UpgradeUnit and MergeUnits Links. */
   MergeEnableSubtraction?: boolean;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
@@ -26695,7 +26684,7 @@ export type Link = {
   UpstreamPaths?: NamedPath[];
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
-  /** Where expression selecting Mutations of the downstream Unit whose paths this Link's merges must not overwrite. Unioned with the Protected values stored on the downstream Unit's MutationSources, so it protects further paths and never re-opens one the Unit already claimed. */
+  /** Where expression selecting Mutations of the downstream Unit whose paths this Link's merges must not overwrite. It adds to the downstream Unit's guards, so it holds further paths and never re-opens a guarded one. */
   WhereMutation?: string;
   /** Where expression used to select which resources of the upstream Unit should be eligible for propagation to the downstream Unit. */
   WhereResource?: string;
@@ -26710,6 +26699,7 @@ export type LinkRead = {
   BackingUnitID?: string;
   /** The needs/provides attribute bindings resolution found for this Link and keeps up to date: one for each needed attribute of the downstream Unit it matched with an attribute the upstream Unit provides. Set by the server, and rebuilt by each resolve. A needed attribute that a binding in ManualBindings names is not matched again. */
   Bindings?: BindingList;
+  /** Classes of guarded reason this Link's resolve is cleared for, whatever its UpdateType and whether the resolve is queued or requested. A path whose guards it does not cover is not written, and the withheld change is reported as a conflict. This is what lets one Link maintain a field another is guarded out of: a TransformPaths Link cleared for the guard {"Link":"TransformPaths"} keeps writing the value it guards, while an UpgradeUnit Link cleared for nothing leaves it alone. A stored clearance gets no default: a Link that should write over an Override guard needs Override in its Clearance. */
   Clearance?: Clearance;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
   CreatedAt?: string;
@@ -26729,7 +26719,7 @@ export type LinkRead = {
   EntityType?: string;
   /** Unique identifier of the downstream (consumer) Unit. Links must be in the same space as the source unit. */
   FromUnitID: string;
-  /** Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the link takes back the guards it set on the paths it last wrote. Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
+  /** Guards to record on the paths this link's resolve writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. {"Link":"<UpdateType>"}, with a Clearance admitting it, holds what the link maintains against merges and other writes while the link keeps writing it. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the link takes back the guards it set on the paths it last wrote, and updating it takes back those it no longer states. Refused on UpgradeUnit and MergeUnits links, whose guards arrive by propagation from upstream. */
   Guards?: GuardStamp;
   /** SHA256 hash of the resolution-relevant Link fields, used to detect changes that require re-resolution. */
   Hash?: string;
@@ -26743,7 +26733,7 @@ export type LinkRead = {
   LinkID?: string;
   /** The needs/provides attribute bindings stated for this Link, which resolution uses as they are. Each Binding maps one needed attribute in the downstream Unit to one provided attribute in the upstream Unit. An Insert Link has exactly one, which identifies only the needed attribute (NeededResource and NeededPath) and whose DataType selects how the upstream Unit is inserted: string, the default, inserts it verbatim as text; the downstream Unit's own configuration format inserts it as configuration data. */
   ManualBindings?: BindingList;
-  /** Enables the subtraction (override-preservation) step of the merge performed when resolving this Link. When false (the default), the source patch is applied without subtraction and the downstream Unit's local differences are preserved by the stored Mutation Protected values alone, widened by WhereMutation if it is set. When true, the merge additionally subtracts the downstream Unit's local differences from the source patch and the stored values are not consulted. Only meaningful for UpgradeUnit and MergeUnits Links. */
+  /** Enables the subtraction (override-preservation) step of the merge performed when resolving this Link. When false (the default), the source patch is applied without subtraction, and the downstream Unit's local differences are preserved by its guards -- an Override guard on each local override -- widened by WhereMutation if it is set. When true, the merge additionally subtracts the downstream Unit's local differences from the source patch; the guards still hold. Only meaningful for UpgradeUnit and MergeUnits Links. */
   MergeEnableSubtraction?: boolean;
   /** Unique identifier for an organization. */
   OrganizationID?: string;
@@ -26783,7 +26773,7 @@ export type LinkRead = {
   UpstreamSpaceID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
-  /** Where expression selecting Mutations of the downstream Unit whose paths this Link's merges must not overwrite. Unioned with the Protected values stored on the downstream Unit's MutationSources, so it protects further paths and never re-opens one the Unit already claimed. */
+  /** Where expression selecting Mutations of the downstream Unit whose paths this Link's merges must not overwrite. It adds to the downstream Unit's guards, so it holds further paths and never re-opens a guarded one. */
   WhereMutation?: string;
   /** Where expression used to select which resources of the upstream Unit should be eligible for propagation to the downstream Unit. */
   WhereResource?: string;
@@ -27977,6 +27967,7 @@ export type Trigger = {
   Arguments?: FunctionArgument[] | null;
   /** Unique identifier for a Channel whose client executes the function specified by the Trigger. If it is not specified, the builtin function executor is used. A Trigger that references an Invocation takes the Invocation's. */
   ChannelID?: string;
+  /** Classes of guarded reason this trigger's function is cleared for. A path whose guards it does not cover is not written, and the withheld change is reported as a conflict. A trigger running a stored Invocation is cleared for what either names. A stored clearance gets no default: a trigger that should write over an Override guard needs Override in its Clearance. Only meaningful for a mutating trigger, and part of the trigger's Hash. */
   Clearance?: Clearance;
   /** An optional set of gates that, if any is present, will block deletion. */
   DeleteGates?: {
@@ -27993,7 +27984,7 @@ export type Trigger = {
   Event: string;
   /** Function name */
   FunctionName?: string;
-  /** Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the trigger takes back the guards it set on the paths it last wrote. Only meaningful for a mutating trigger, and part of the trigger's Hash, unlike Protect. */
+  /** Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. {"Trigger":"<Slug>"}, with a Clearance admitting it, holds what the trigger decides against merges and other writes while the trigger keeps writing it. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the trigger takes back the guards it set on the paths it last wrote, and updating it takes back those it no longer states. Only meaningful for a mutating trigger, and part of the trigger's Hash. */
   Guards?: GuardStamp;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
@@ -28043,6 +28034,7 @@ export type TriggerRead = {
   BackingUnitID?: string;
   /** Unique identifier for a Channel whose client executes the function specified by the Trigger. If it is not specified, the builtin function executor is used. A Trigger that references an Invocation takes the Invocation's. */
   ChannelID?: string;
+  /** Classes of guarded reason this trigger's function is cleared for. A path whose guards it does not cover is not written, and the withheld change is reported as a conflict. A trigger running a stored Invocation is cleared for what either names. A stored clearance gets no default: a trigger that should write over an Override guard needs Override in its Clearance. Only meaningful for a mutating trigger, and part of the trigger's Hash. */
   Clearance?: Clearance;
   /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
   CreatedAt?: string;
@@ -28063,7 +28055,7 @@ export type TriggerRead = {
   Event: string;
   /** Function name */
   FunctionName?: string;
-  /** Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. Sibling to Protect: Protect claims the paths, Guards say why. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the trigger takes back the guards it set on the paths it last wrote. Only meaningful for a mutating trigger, and part of the trigger's Hash, unlike Protect. */
+  /** Guards to record on the paths this trigger's function writes, naming the reasons those paths hold what they hold, so a later operation must be cleared for them before overwriting. {"Trigger":"<Slug>"}, with a Clearance admitting it, holds what the trigger decides against merges and other writes while the trigger keeps writing it. Add and overwrite only -- retiring a guard is the /guard API (cub unit set-guard --remove-guard), except that deleting the trigger takes back the guards it set on the paths it last wrote, and updating it takes back those it no longer states. Only meaningful for a mutating trigger, and part of the trigger's Hash. */
   Guards?: GuardStamp;
   /** SHA256 hash of the trigger's specification fields, used to detect changes. */
   Hash?: string;
