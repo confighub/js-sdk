@@ -7,6 +7,33 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.11.9 — 2026-11-18
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: UnitEvents are gone; nothing had written one since
+  the workers that reported them were removed. Removed operations: `getUnitEvent`,
+  `listUnitEvents` and `listAllUnitEvents`. Removed types: `UnitEvent` and `UnitEventRead`, and in
+  `@confighub/api` the schemas `UnitEvent`, `ActionType`, `ActionResultType` and
+  `ActionStatusType`. Removed fields: `Unit.HeadUnitEventNum` and `ExtendedUnit.LatestUnitEvent`.
+  A Unit read or write still accepts `UnitEventID` in `include`, and ignores it.
+
+### API
+
+Compared with ConfigHub `v0.11.8`:
+
+#### Removed (9), breaking for code typed against them
+
+- path `/space/{space_id}/unit/{unit_id}/unit_event`
+- path `/space/{space_id}/unit/{unit_id}/unit_event/{unit_event_id}`
+- path `/unit_event`
+- schema `ActionResultType`
+- schema `ActionStatusType`
+- schema `ActionType`
+- field `ExtendedUnit.LatestUnitEvent`
+- field `Unit.HeadUnitEventNum`
+- schema `UnitEvent`
+
 ## 0.11.8 — 2026-11-17
 
 ### API

@@ -37,7 +37,6 @@ export const addTagTypes = [
   "Target",
   "Trigger",
   "Mutation",
-  "UnitEvent",
   "View",
   "Upload",
   "User",
@@ -3946,32 +3945,6 @@ const injectedRtkApi = api
         }),
         providesTags: ["Revision"],
       }),
-      listUnitEvents: build.query<
-        ListUnitEventsApiResponse,
-        ListUnitEventsApiArg
-      >({
-        query: (queryArg) => ({
-          url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/unit_event`,
-          params: {
-            where: queryArg.where,
-            filter: queryArg.filter,
-            contains: queryArg.contains,
-            where_permission: queryArg.wherePermission,
-            include_hidden: queryArg.includeHidden,
-            offset: queryArg.offset,
-            limit: queryArg.limit,
-            order_by: queryArg.orderBy,
-            continue: queryArg["continue"],
-          },
-        }),
-        providesTags: ["UnitEvent"],
-      }),
-      getUnitEvent: build.query<GetUnitEventApiResponse, GetUnitEventApiArg>({
-        query: (queryArg) => ({
-          url: `/space/${queryArg.spaceId}/unit/${queryArg.unitId}/unit_event/${queryArg.unitEventId}`,
-        }),
-        providesTags: ["UnitEvent"],
-      }),
       listViews: build.query<ListViewsApiResponse, ListViewsApiArg>({
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/view`,
@@ -4648,27 +4621,6 @@ const injectedRtkApi = api
           },
         }),
         providesTags: ["Unit"],
-      }),
-      listAllUnitEvents: build.query<
-        ListAllUnitEventsApiResponse,
-        ListAllUnitEventsApiArg
-      >({
-        query: (queryArg) => ({
-          url: `/unit_event`,
-          params: {
-            where: queryArg.where,
-            filter: queryArg.filter,
-            contains: queryArg.contains,
-            where_permission: queryArg.wherePermission,
-            include_hidden: queryArg.includeHidden,
-            offset: queryArg.offset,
-            limit: queryArg.limit,
-            order_by: queryArg.orderBy,
-            continue: queryArg["continue"],
-            distinct_on: queryArg.distinctOn,
-          },
-        }),
-        providesTags: ["UnitEvent"],
       }),
       searchUnitMutationSources: build.query<
         SearchUnitMutationSourcesApiResponse,
@@ -5654,7 +5606,7 @@ export type BulkCreateSpacesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -6367,7 +6319,7 @@ export type BulkCreateAttributesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -8297,7 +8249,7 @@ export type BulkCreateChangeWorkflowsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -8970,7 +8922,7 @@ export type BulkCreateChannelsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -10032,7 +9984,7 @@ export type BulkCreateFiltersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -10271,7 +10223,7 @@ export type InvokeFunctionsOnOrgApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -11022,7 +10974,7 @@ export type BulkCreateInvocationsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -11769,7 +11721,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units, or to create links between, with from_refs.
     
@@ -15883,7 +15835,7 @@ export type InvokeFunctionsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -17508,7 +17460,7 @@ export type ListUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -17546,7 +17498,7 @@ export type ListUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -17594,7 +17546,7 @@ export type ListUnitsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
+    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -17665,7 +17617,7 @@ export type GetUnitApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -18802,131 +18754,6 @@ export type GetRevisionMutationSourcesApiArg = {
   unitId: string;
   /** Unique identifier for a revision_id */
   revisionId: string;
-};
-export type ListUnitEventsApiResponse = /** status 200 OK */ UnitEventRead[];
-export type ListUnitEventsApiArg = {
-  /** Unique identifier for a space_id */
-  spaceId: string;
-  /** Unique identifier for a unit_id */
-  unitId: string;
-  /** The specified string is an expression for the purpose of filtering
-    the list of UnitEvents returned. The expression syntax was inspired by SQL.
-    It supports conjunctions using `AND` of relational expressions of the form *attribute*
-    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
-    as in the JSON encoding.
-    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
-    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
-    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
-    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
-    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
-    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
-    UUIDs and boolean attributes support equality and inequality only.
-    UUID and time literals must be quoted as string literals.
-    String literals are quoted with single quotes, such as `'string'`.
-    Time literals use the same form as when serialized as JSON,
-    such as: `CreatedAt > '2025-02-18T23:16:34'`.
-    Integer and boolean literals are also supported for attributes of those types.
-    Arrays support the `?` operator to to match any element of the array,
-    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
-    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
-    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
-    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
-    Without the `*` such a reference is an error, since it names no single value to compare.
-    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
-    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
-    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
-    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
-    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
-    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
-    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
-    Conjunctions are supported using the `AND` operator.
-    An example conjunction is:
-    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
-    
-    Supported attributes for filtering on UnitEvent: Action, CreatedAt, HiddenReason, OrganizationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
-    
-    The whole string must be query-encoded. */
-  where?: string;
-  /** UUID of a Filter entity to apply to the UnitEvent list.
-    
-    The Filter must be in the same Organization as the user credentials.
-    
-    The Filter's From field must match the entity type being filtered (UnitEvent).
-    
-    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
-    
-    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
-    
-    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
-  filter?: string;
-  /** Free text search that approximately matches the specified string against string fields and map keys/values.
-    
-    The search is case-insensitive and uses pattern matching to find entities containing the text.
-    
-    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
-    
-    For map fields (like Labels and Annotations), the search matches both map keys and values.
-    
-    The search uses OR logic across all searchable fields, so matching any field will return the entity.
-    
-    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
-    
-    Searchable fields for UnitEvent include string and map-type attributes from the queryable attributes list.
-    
-    The whole string must be query-encoded. */
-  contains?: string;
-  /** Only return UnitEvent entities on which the caller has this permission, as well as View, which every entity listed needs.
-    
-    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
-    
-    Supported values: Manage, Edit, Use, View. */
-  wherePermission?: "Manage" | "Edit" | "Use" | "View";
-  /** Hidden UnitEvent entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
-    
-    It is a comma-separated list of HiddenReasons, or `*` for all of them.
-    
-    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
-    
-    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
-  includeHidden?: string;
-  /** Deprecated: use continue. Number of UnitEvent entities to skip before returning results. Cannot be combined with continue. */
-  offset?: number;
-  /** Maximum number of UnitEvent entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
-  limit?: number;
-  /** Comma-separated list of fields to sort UnitEvent results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
-    
-    Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
-    
-    Supported attributes for ordering UnitEvent: Action, CreatedAt, HiddenReason, OrganizationID, Result, RevisionNum, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
-    
-    Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
-    
-    Results are ordered by the UnitEvent's ID after the fields named, and by the ID alone if none are.
-    
-    The whole string must be query-encoded. */
-  orderBy?: string;
-  /** The token from the ConfigHub-Continue header of the previous page, to return the UnitEvent entities after it.
-    
-    The request's other parameters, except limit, must be the same as those of the request that returned the token.
-    
-    Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more. */
-  continue?: string;
-};
-export type GetUnitEventApiResponse =
-  /** status 200 UnitEvent is a historical record of the outcome of an operation on a
-Unit, such as a function invocation completing or failing, or a cancellation being acknowledged.
-Each event records the action, its result and status, any message, and when the operation started
-and ended. UnitEvents are numbered per Unit by UnitEventNum.
-
-The workers that performed these operations have been removed, so no new UnitEvents are written;
-existing ones remain in a Unit's history. */ UnitEventRead;
-export type GetUnitEventApiArg = {
-  /** Unique identifier for a space_id */
-  spaceId: string;
-  /** Unique identifier for a unit_id */
-  unitId: string;
-  /** Unique identifier for a unit_event_id */
-  unitEventId: string;
 };
 export type ListViewsApiResponse = /** status 200 OK */ ExtendedViewRead[];
 export type ListViewsApiArg = {
@@ -20333,7 +20160,7 @@ export type BulkCreateTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -21029,7 +20856,7 @@ export type BulkCreateTriggersApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -21218,7 +21045,7 @@ export type BulkDeleteUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -21264,7 +21091,7 @@ export type BulkDeleteUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21311,7 +21138,7 @@ export type ListAllUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -21349,7 +21176,7 @@ export type ListAllUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21397,7 +21224,7 @@ export type ListAllUnitsApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
+    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -21462,7 +21289,7 @@ export type BulkPatchUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -21508,11 +21335,11 @@ export type BulkPatchUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID.
     
     A write also accepts the parts of its result: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
     
-    Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
+    Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21689,7 +21516,7 @@ export type BulkCreateUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -21735,11 +21562,11 @@ export type BulkCreateUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID.
     
     A write also accepts the parts of its result: ConfigData for the configuration the operation produced, MutationSources for what set each value in it, and Diff for what the operation changed, path by path with the values on both sides. None is a field of a Unit, and each costs something to return, so they are returned only when named. A dry run stores nothing, so this is the only way to see what it would have produced.
     
-    Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
+    Supported values: ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID, ConfigData, MutationSources, Diff.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -21928,7 +21755,7 @@ export type BulkMoveUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -21974,7 +21801,7 @@ export type BulkMoveUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -22020,7 +21847,7 @@ export type BulkTagUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -22066,7 +21893,7 @@ export type BulkTagUnitsApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -22108,7 +21935,7 @@ export type SearchUnitBlameApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -22171,7 +21998,7 @@ export type SearchUnitBlameApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
+    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -22248,7 +22075,7 @@ export type SearchUnitDataApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -22286,7 +22113,7 @@ export type SearchUnitDataApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -22328,7 +22155,7 @@ export type SearchUnitDataApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
+    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -22391,7 +22218,7 @@ export type SearchUnitDiffApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -22454,7 +22281,7 @@ export type SearchUnitDiffApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
+    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -22490,119 +22317,6 @@ export type SearchUnitDiffApiArg = {
   include?: string;
   /** Limit the diff to the resources this where expression selects on either side. */
   whereResource?: string;
-};
-export type ListAllUnitEventsApiResponse = /** status 200 OK */ UnitEventRead[];
-export type ListAllUnitEventsApiArg = {
-  /** The specified string is an expression for the purpose of filtering
-    the list of UnitEvents returned. The expression syntax was inspired by SQL.
-    It supports conjunctions using `AND` of relational expressions of the form *attribute*
-    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
-    as in the JSON encoding.
-    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
-    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
-    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
-    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
-    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
-    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
-    UUIDs and boolean attributes support equality and inequality only.
-    UUID and time literals must be quoted as string literals.
-    String literals are quoted with single quotes, such as `'string'`.
-    Time literals use the same form as when serialized as JSON,
-    such as: `CreatedAt > '2025-02-18T23:16:34'`.
-    Integer and boolean literals are also supported for attributes of those types.
-    Arrays support the `?` operator to to match any element of the array,
-    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
-    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
-    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
-    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
-    Without the `*` such a reference is an error, since it names no single value to compare.
-    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
-    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
-    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
-    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
-    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
-    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
-    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
-    Conjunctions are supported using the `AND` operator.
-    An example conjunction is:
-    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
-    
-    Supported attributes for filtering on UnitEvent: Action, CreatedAt, HiddenReason, OrganizationID, Result, RevisionNum, SpaceID, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
-    
-    The whole string must be query-encoded. */
-  where?: string;
-  /** UUID of a Filter entity to apply to the UnitEvent list.
-    
-    The Filter must be in the same Organization as the user credentials.
-    
-    The Filter's From field must match the entity type being filtered (UnitEvent).
-    
-    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
-    
-    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
-    
-    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
-  filter?: string;
-  /** Free text search that approximately matches the specified string against string fields and map keys/values.
-    
-    The search is case-insensitive and uses pattern matching to find entities containing the text.
-    
-    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
-    
-    For map fields (like Labels and Annotations), the search matches both map keys and values.
-    
-    The search uses OR logic across all searchable fields, so matching any field will return the entity.
-    
-    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
-    
-    Searchable fields for UnitEvent include string and map-type attributes from the queryable attributes list.
-    
-    The whole string must be query-encoded. */
-  contains?: string;
-  /** Only return UnitEvent entities on which the caller has this permission, as well as View, which every entity listed needs.
-    
-    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
-    
-    Supported values: Manage, Edit, Use, View. */
-  wherePermission?: "Manage" | "Edit" | "Use" | "View";
-  /** Hidden UnitEvent entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
-    
-    It is a comma-separated list of HiddenReasons, or `*` for all of them.
-    
-    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
-    
-    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
-  includeHidden?: string;
-  /** Deprecated: use continue. Number of UnitEvent entities to skip before returning results. Cannot be combined with continue. */
-  offset?: number;
-  /** Maximum number of UnitEvent entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
-  limit?: number;
-  /** Comma-separated list of fields to sort UnitEvent results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
-    
-    Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
-    
-    Supported attributes for ordering UnitEvent: Action, CreatedAt, HiddenReason, OrganizationID, Result, RevisionNum, StartedAt, Status, TerminatedAt, UnitEventID, UnitEventNum, UnitID, UpdatedAt.
-    
-    Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
-    
-    Results are ordered by the UnitEvent's ID after the fields named, and by the ID alone if none are.
-    
-    The whole string must be query-encoded. */
-  orderBy?: string;
-  /** The token from the ConfigHub-Continue header of the previous page, to return the UnitEvent entities after it.
-    
-    The request's other parameters, except limit, must be the same as those of the request that returned the token.
-    
-    Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more. */
-  continue?: string;
-  /** Entity to return at most one UnitEvent per. The result set applies DISTINCT ON this key, keeping the most recent row for each.
-    
-    Supported values: Unit, Off.
-    
-    If not specified, results are restricted to at most one row per Unit.
-    
-    Off disables the DISTINCT ON and returns every matching row, so it requires an explicit 'limit' and is rejected with 400 without one. */
-  distinctOn?: "Unit" | "Off";
 };
 export type SearchUnitMutationSourcesApiResponse =
   /** status 200 OK */ UnitMutationSources[];
@@ -22641,7 +22355,7 @@ export type SearchUnitMutationSourcesApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
     
@@ -22679,7 +22393,7 @@ export type SearchUnitMutationSourcesApiArg = {
     The attribute names are case-sensitive, PascalCase, and
     expected in a comma-separated list format as in the JSON encoding.
     
-    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UnitEventID, UpstreamSpaceID, UpstreamUnitID.
+    Supported attributes for Unit are ChangeSetID, FromLinkID, HeadMutationNum, HeadRevisionNum, LastReleasedRevisionNum, OrganizationID, Permissions, SpaceID, TargetID, UpstreamSpaceID, UpstreamUnitID.
     
     The whole string must be query-encoded. */
   include?: string;
@@ -22721,7 +22435,7 @@ export type SearchUnitMutationSourcesApiArg = {
     
     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
     
-    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
+    Supported attributes for ordering Unit: ChangeSetID, CreatedAt, DataHash, DisplayName, HeadRevisionID, HeadRevisionNum, HiddenReason, LastChangeDescription, LastReleasedRevisionNum, OrganizationID, Slug, SpaceID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamUnitID.
     
     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
     
@@ -23431,7 +23145,7 @@ export type BulkCreateViewsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HeadUnitEventNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
     
     The Units to create entities from, with from_backing_units.
     
@@ -26484,8 +26198,6 @@ export type UnitRead = {
   HeadRevisionID?: string;
   /** Sequence number the head Revision. */
   HeadRevisionNum?: number;
-  /** Sequence number of the head unit event. */
-  HeadUnitEventNum?: number;
   /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
   HiddenReason?: string;
   /** An optional map of Label key/value pairs to specify identifying attributes of entities for the purpose of grouping and filtering them. */
@@ -28508,89 +28220,6 @@ export type MutationRead = {
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
-export type ActionType =
-  "N/A" | "Cancel" | "InvokeFunctions" | "ListFunctions" | "Apply";
-export type ActionResultType =
-  "None" | "FunctionInvocationCompleted" | "FunctionInvocationFailed";
-export type ActionStatusType =
-  | "None"
-  | "Pending"
-  | "Submitted"
-  | "Progressing"
-  | "Completed"
-  | "Failed"
-  | "Canceled"
-  | "Aborted";
-export type UnitEvent = {
-  /** Action is the operation the event reports on, such as InvokeFunctions, Cancel, or Apply. */
-  Action?: ActionType;
-  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-  HiddenReason?: string;
-  /** Message is the message reported with the result. */
-  Message?: string;
-  /** Unique identifier for an Organization. */
-  OrganizationID?: string;
-  /** Result is what the operation produced: FunctionInvocationCompleted or FunctionInvocationFailed for a function invocation, and None otherwise. */
-  Result?: ActionResultType;
-  /** RevisionNum is the number of the Unit's Revision the action was performed on. */
-  RevisionNum?: number;
-  /** Unique identifier for a space. */
-  SpaceID?: string;
-  /** StartedAt is when the operation started, in "2023-01-01T12:00:00Z" format. */
-  StartedAt?: string;
-  /** Status is the state of the operation the event reports: None, Pending, Submitted, Progressing, Completed, Failed, Canceled, or Aborted. */
-  Status?: ActionStatusType;
-  /** TerminatedAt is when the operation ended, in "2023-01-01T12:00:00Z" format. It is absent for an operation that had not ended when the event was recorded. */
-  TerminatedAt?: string | null;
-  /** UnitEventID is the unique identifier for this UnitEvent. */
-  UnitEventID?: string;
-  /** UnitEventNum is the sequence number of this UnitEvent among the Unit's UnitEvents. */
-  UnitEventNum?: number;
-  /** Unique identifier for a Unit. */
-  UnitID?: string;
-  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
-  Version?: number;
-};
-export type UnitEventRead = {
-  /** Action is the operation the event reports on, such as InvokeFunctions, Cancel, or Apply. */
-  Action?: ActionType;
-  /** The timestamp when the entity was created in "2023-01-01T12:00:00Z" format. */
-  CreatedAt?: string;
-  /** The type of entity. */
-  EntityType?: string;
-  /** The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-  HiddenReason?: string;
-  /** Message is the message reported with the result. */
-  Message?: string;
-  /** Unique identifier for an Organization. */
-  OrganizationID?: string;
-  /** Result is what the operation produced: FunctionInvocationCompleted or FunctionInvocationFailed for a function invocation, and None otherwise. */
-  Result?: ActionResultType;
-  /** RevisionNum is the number of the Unit's Revision the action was performed on. */
-  RevisionNum?: number;
-  /** Unique identifier for a space. */
-  SpaceID?: string;
-  /** Slug of the Space this entity belongs to. (readonly) */
-  SpaceSlug?: string;
-  /** StartedAt is when the operation started, in "2023-01-01T12:00:00Z" format. */
-  StartedAt?: string;
-  /** Status is the state of the operation the event reports: None, Pending, Submitted, Progressing, Completed, Failed, Canceled, or Aborted. */
-  Status?: ActionStatusType;
-  /** TerminatedAt is when the operation ended, in "2023-01-01T12:00:00Z" format. It is absent for an operation that had not ended when the event was recorded. */
-  TerminatedAt?: string | null;
-  /** UnitEventID is the unique identifier for this UnitEvent. */
-  UnitEventID?: string;
-  /** UnitEventNum is the sequence number of this UnitEvent among the Unit's UnitEvents. */
-  UnitEventNum?: number;
-  /** Unique identifier for a Unit. */
-  UnitID?: string;
-  /** Slug of the Unit this entity belongs to. (readonly) */
-  UnitSlug?: string;
-  /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
-  UpdatedAt?: string;
-  /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
-  Version?: number;
-};
 export type ExtendedUnit = {
   ChangeSet?: ChangeSet;
   Error?: ResponseError;
@@ -28601,8 +28230,6 @@ export type ExtendedUnit = {
   HeadRevision?: Revision;
   /** The Unit's current LastReleasedRevision */
   LastReleasedRevision?: Revision;
-  /** The latest event that took place on the Unit. */
-  LatestUnitEvent?: UnitEvent;
   /** The Organization the Unit belongs to. */
   Organization?: Organization;
   Permissions?: ExtendedPermissions;
@@ -28629,8 +28256,6 @@ export type ExtendedUnitRead = {
   HeadRevision?: RevisionRead;
   /** The Unit's current LastReleasedRevision */
   LastReleasedRevision?: RevisionRead;
-  /** The latest event that took place on the Unit. */
-  LatestUnitEvent?: UnitEventRead;
   /** The Organization the Unit belongs to. */
   Organization?: OrganizationRead;
   Permissions?: ExtendedPermissions;
@@ -29945,10 +29570,6 @@ export const {
   useLazyDownloadRevisionDataQuery,
   useGetRevisionMutationSourcesQuery,
   useLazyGetRevisionMutationSourcesQuery,
-  useListUnitEventsQuery,
-  useLazyListUnitEventsQuery,
-  useGetUnitEventQuery,
-  useLazyGetUnitEventQuery,
   useListViewsQuery,
   useLazyListViewsQuery,
   useCreateViewMutation,
@@ -29991,8 +29612,6 @@ export const {
   useLazySearchUnitDataQuery,
   useSearchUnitDiffQuery,
   useLazySearchUnitDiffQuery,
-  useListAllUnitEventsQuery,
-  useLazyListAllUnitEventsQuery,
   useSearchUnitMutationSourcesQuery,
   useLazySearchUnitMutationSourcesQuery,
   useUploadMutation,
