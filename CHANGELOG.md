@@ -7,6 +7,26 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.11.11 — 2026-11-20
+
+### API
+
+Compared with ConfigHub `v0.11.10`:
+
+#### Added (11)
+
+- parameter `selected_by` on `GET /resource`
+- parameter `selecting` on `GET /resource`
+- parameter `selected_by` on `GET /space/{space_id}/unit/{unit_id}/resource`
+- parameter `selecting` on `GET /space/{space_id}/unit/{unit_id}/resource`
+- parameter `selected_by` on `GET /space/{space_id}/unit/{unit_id}/resource/{resource_id}`
+- parameter `selecting` on `GET /space/{space_id}/unit/{unit_id}/resource/{resource_id}`
+- field `FunctionSignature.OtherDataAnyKey`
+- field `Space.TriggerOtherUnitIDs`
+- field `Trigger.OtherUnitSelections`
+- schema `OtherUnitSelection`
+- schema `TriggerOtherUnits`
+
 ## 0.11.10 — 2026-11-18
 
 ### API
