@@ -7,6 +7,23 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.11.13 — 2026-11-22
+
+### API
+
+Compared with ConfigHub `v0.11.12`:
+
+#### Added (8)
+
+- parameter `revision` on `GET /resource`
+- parameter `revision` on `GET /space/{space_id}/unit/{unit_id}/resource`
+- field `ChangeOrder.StartRevision`
+- field `MergeSelection.DeclinedHeld`
+- field `PromoteGateResult.DuplicateResources`
+- field `PromoteRequest.EndRevision`
+- schema `DuplicateResource`
+- schema `DuplicateResourceCopy`
+
 ## 0.11.12 — 2026-11-22
 
 ### Changes
