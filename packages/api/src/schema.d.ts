@@ -175,6 +175,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/audit_event": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List AuditEvents
+         * @description List AuditEvents
+         */
+        get: operations["ListAuditEvents"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/audit_event/{audit_event_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get AuditEvent
+         * @description Get AuditEvent
+         */
+        get: operations["GetAuditEvent"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/change_order": {
         parameters: {
             query?: never;
@@ -623,6 +663,26 @@ export interface paths {
          * @description Invoke Functions across Units in the Organization
          */
         post: operations["InvokeFunctionsOnOrg"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/function/reduce": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reduce what functions return across Units in the Organization
+         * @description Runs the map, functions that read configuration and return an AttributeValueList, on each Unit selected, puts each value they return, a row, into groups by GroupBy, and runs the reducer, such as reduce-starlark, once per group on the group's rows. Nothing is written. The reducer runs on the executor of the Space, or with executor_space across the Organization; each Unit's map runs on the executor of its own Space.
+         */
+        post: operations["ReduceFunctionsOnOrg"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2056,6 +2116,26 @@ export interface paths {
          * @description Invoke Functions
          */
         post: operations["InvokeFunctions"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/space/{space_id}/function/reduce": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reduce what functions return across Units
+         * @description Runs the map, functions that read configuration and return an AttributeValueList, on each Unit selected, puts each value they return, a row, into groups by GroupBy, and runs the reducer, such as reduce-starlark, once per group on the group's rows. Nothing is written. The reducer runs on the executor of the Space, or with executor_space across the Organization; each Unit's map runs on the executor of its own Space.
+         */
+        post: operations["ReduceFunctions"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3989,6 +4069,127 @@ export interface components {
             Value?: unknown;
         };
         AttributeValueList: components["schemas"]["AttributeValue"][];
+        /** @description An AuditEvent records one action on one entity: who did it, under what authority, and to what. AuditEvents are appended and never updated, and are only listed and read through the API. */
+        AuditEvent: {
+            /** @description The verb, as a code: Create, Update, Patch, Delete, Move, Detach, Hide, Permission, Tag, Upload, Promote, RequestReview, DismissReview, AdvanceStage, RefreshStage, AddMember, RemoveMember, AddBotUser, RemoveBotUser, Login, TokenExchange, RefreshToken, BrowserSession, EnableUser, DisableUser, DeleteUser, EnableOrganization, DisableOrganization, DeleteOrganization, SetQuota, Grant, Revoke. The entity acted on is SubjectEntityType, and whether it was allowed is Outcome. (readonly) */
+            readonly Action?: string;
+            /** @description The entity document or merge-patch fields after the action, when no Revision holds the change. (readonly) */
+            readonly After?: unknown;
+            /**
+             * Format: uuid
+             * @description Uniquely identifies the AuditEvent. (readonly)
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly AuditEventID?: string;
+            /** @description The entity document or merge-patch fields before the action, when no Revision holds the change. (readonly) */
+            readonly Before?: unknown;
+            /** @description The fields the action changed. (readonly) */
+            readonly ChangedFields?: string[];
+            /** @description AuditEvent. The type of the entity acted on is SubjectEntityType. (readonly) */
+            readonly EntityType?: string;
+            /** @description The message the caller was given, when the action was denied or failed. (readonly) */
+            readonly Error?: string;
+            /** @description The grants that allowed the action. (readonly) */
+            readonly Grants?: components["schemas"]["AuditGrant"][];
+            /** @description The head Revision hash of a deleted Unit. (readonly) */
+            readonly HeadRevisionHash?: string;
+            /** @description The head Revision number of a deleted Unit. (readonly) */
+            readonly HeadRevisionNum?: number | null;
+            /**
+             * Format: date-time
+             * @description When the action happened. (readonly)
+             * @example 2006-01-02T15:04:05Z07:00
+             */
+            readonly OccurredAt?: string;
+            /**
+             * Format: uuid
+             * @description The human a bot, Trigger, resolve or ChangeOrder stage advance acted for. (readonly)
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly OnBehalfOfUserID?: string;
+            /**
+             * Format: uuid
+             * @description The Organization acted in. (readonly)
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly OrganizationID?: string;
+            /**
+             * @description What made the action, as a code: API, AdminCLI, IdentityCLI, Trigger, Resolve, ChangeOrder, Migration or System. (readonly)
+             * @enum {string}
+             */
+            readonly Origin?: AuditEventOrigin;
+            /** @description Whether the action was allowed and made, as a code: Succeeded, Denied or Failed. (readonly) */
+            readonly Outcome?: string;
+            /** @description The ID of the request that made the action, which joins the request log. Empty outside the API. (readonly) */
+            readonly RequestID?: string;
+            /**
+             * Format: uuid
+             * @description The Revision, of the Unit or its backing Unit, that holds the change, when one does. It may name a deleted Revision. (readonly)
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly RevisionID?: string;
+            /** @description The Organization role of the User at the time. (readonly) */
+            readonly Role?: string;
+            /**
+             * Format: uuid
+             * @description The service account that acted, when one did. (readonly)
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly ServiceAccountID?: string;
+            /** @description The address the request came from. (readonly) */
+            readonly SourceIP?: string;
+            /**
+             * Format: uuid
+             * @description The Space of the entity acted on, when it is in one. (readonly)
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly SpaceID?: string;
+            /**
+             * Format: uuid
+             * @description The ID of the entity acted on. (readonly)
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly SubjectEntityID?: string;
+            /** @description The type of the entity acted on. (readonly) */
+            readonly SubjectEntityType?: string;
+            /** @description The Slug of the entity acted on, as it was at the time, since the entity may be renamed or deleted. (readonly) */
+            readonly SubjectSlug?: string;
+            /** @description The User-Agent of the request. (readonly) */
+            readonly UserAgent?: string;
+            /**
+             * Format: uuid
+             * @description The authenticated identity that acted. A bot or service account is its own User. (readonly)
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            readonly UserID?: string;
+            /**
+             * Format: int64
+             * @description Always 0: an AuditEvent is never updated. (readonly)
+             */
+            readonly Version?: number;
+        };
+        /** @description A grant that allowed the action an AuditEvent records. */
+        AuditGrant: {
+            /**
+             * Format: uuid
+             * @description The entity the grant is on.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            EntityID?: string;
+            /** @description The type of the entity the grant is on. */
+            EntityType?: string;
+            /**
+             * Format: uuid
+             * @description The Group the grant was to, when it was to a Group.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            GroupID?: string;
+            /**
+             * @description The kind of grant, as a code: Role, SpaceGrant, EntityPermissions or Group.
+             * @enum {string}
+             */
+            Source?: AuditGrantSource;
+        };
         Binding: {
             /** @description Shared attribute name that matched the need to the provide */
             AttributeName?: string;
@@ -4894,7 +5095,7 @@ export interface components {
             Name: string;
             /** @description The stage's entry gates, each naming a built-in check or one declared in CustomPrerequisites. Evaluated over every Space of the stage before this one; the first stage's are evaluated over the Space the ChangeOrder resides in, and refused for Invoke and fan-out ChangeOrders, whose change is in no Space before it is promoted. */
             Prerequisites?: string[];
-            /** @description Gates on publishing a Release for a change order in one of the stage's Spaces, each naming one declared in AttestationPrerequisites. Evaluated over the Revisions the Release bundles. */
+            /** @description Gates on publishing a Release for a change order in one of the stage's Spaces, each naming one declared in AttestationPrerequisites, or Validated, which is what publishing checks of what the Release bundles -- its Revisions' ValidationErrors and its Release triggers -- shown among the gates. Evaluated over the Revisions the Release bundles. */
             ReleasePrerequisites?: string[];
             /** @description Selects the stage's Spaces: a where expression over Spaces, intersected with the change order's InScopeSpaceIDs. Nothing else is implied, so a workflow can be shared across components. Empty selects every Space in the change order's scope. */
             WhereSpace?: string;
@@ -5573,6 +5774,15 @@ export interface components {
             /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
             ViewColumns?: components["schemas"]["ViewColumn"][];
         };
+        /** @description AuditEvent with additional related entities expanded based on the request's include parameter. */
+        ExtendedAuditEvent: {
+            /** @description The AuditEvent. */
+            AuditEvent?: components["schemas"]["AuditEvent"];
+            Error?: components["schemas"]["ResponseError"];
+            Organization?: components["schemas"]["Organization"];
+            /** @description The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+            ViewColumns?: components["schemas"]["ViewColumn"][];
+        };
         ExtendedChangeOrder: {
             ChangeOrder?: components["schemas"]["ChangeOrder"];
             EndTag?: components["schemas"]["Tag"];
@@ -6162,6 +6372,65 @@ export interface components {
             /** @description JSON schema (for embedded JSON values) */
             Schema?: components["schemas"]["Schema"];
         };
+        FunctionReduceGroup: {
+            /** @description Why the reducer failed on the group */
+            ErrorMessages?: string[];
+            /** @description The group's key, as GroupBy returned it */
+            Key: string;
+            /** @description The number of rows in the group */
+            NumRows: number;
+            /** @description The number of Units the group's rows came from */
+            NumUnits: number;
+            /** @description What the reducer returned for the group, as JSON of OutputType */
+            Output?: unknown;
+            /** @description The type of Output, the reducer's OutputType */
+            OutputType?: string;
+            /** @description True when the reducer succeeded on the group */
+            Success: boolean;
+        };
+        FunctionReduceRequest: {
+            FunctionInvocations?: components["schemas"]["FunctionInvocationList"];
+            /** @description CEL expression evaluated on each row, as row, returning the key of the row's group as a string, or a list of keys for a row that belongs to several groups, such as an Ingress row in the group of each of its hosts. row has the fields of the value returned (ResourceName, ResourceType, Path, Value, AttributeName, DataType, FunctionName) and Origin (UnitID, UnitSlug, UnitLabels, SpaceID, SpaceSlug, SpaceLabels, TargetID, TargetSlug, TargetSpaceSlug, RevisionNum), every one of which is present: the label maps are empty when there are none, and TargetID is null and the Target's slugs empty for a Unit with no Target. A Target's slug is unique only within its Space. For example row.Origin.TargetSpaceSlug + "/" + row.Origin.TargetSlug, or row.Origin.SpaceLabels[?"Environment"].orValue(""), which reads a label a Space may not have. A Unit with a row the expression fails on, such as one reading a missing label without ?, is reported in UnitErrors, and none of its rows is grouped. Empty puts every row in one group, whose key is empty. */
+            GroupBy?: string;
+            /** @description The reducer, run once per group on the group's rows: a function whose InputType is AttributeValueList, such as reduce-starlark */
+            Reduce?: components["schemas"]["FunctionInvocation"];
+            /** @description The ToolchainType of the Units to run the map on, and whose reducer is run. Units of other ToolchainTypes are not selected. Defaults to Kubernetes/YAML. */
+            ToolchainType?: string;
+            /** @description Restricts which resources the map's functions read, using ConfigHub metadata path expressions (ConfigHub.ResourceName, ConfigHub.ResourceNameWithoutScope, ConfigHub.ResourceType, ConfigHub.ResourceCategory) and resource paths. The map runs only on the Units selected that the Resource index says hold such a resource, without reading each Unit's configuration, and on any whose resources the index has not recorded. */
+            WhereResource?: string;
+        };
+        FunctionReduceResponse: {
+            /** @description The reducer's output for each group, in order of key */
+            Groups: components["schemas"]["FunctionReduceGroup"][] | null;
+            /** @description The number of rows the map returned */
+            NumRows: number;
+            /** @description The number of Units the map was run on */
+            NumUnits: number;
+            /** @description True when no Unit was left out and the reducer succeeded on every group */
+            Success: boolean;
+            /** @description The Units left out because the map or GroupBy failed on them, whose rows are in no group */
+            UnitErrors?: components["schemas"]["FunctionReduceUnitError"][];
+        };
+        FunctionReduceUnitError: {
+            /** @description Why the map or GroupBy failed on the Unit */
+            ErrorMessages: string[] | null;
+            /**
+             * Format: uuid
+             * @description The Unit's Space
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            SpaceID: string;
+            /** @description The slug of the Unit's Space */
+            SpaceSlug: string;
+            /**
+             * Format: uuid
+             * @description The Unit
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UnitID: string;
+            /** @description The Unit's slug */
+            UnitSlug: string;
+        };
         FunctionSignature: {
             /** @description Resource types the function applies to; * if all */
             AffectedResourceTypes?: string[];
@@ -6179,6 +6448,8 @@ export interface components {
             Idempotent?: boolean;
             /** @description Parts of the FunctionContext passed only to the functions that read them: Conflicts, the Unit's outstanding merge conflicts, and LinkFindings, what the resolves of its Links could not do */
             Include?: string[];
+            /** @description What the function reads: empty for configuration data, or AttributeValueList for a reducer, which is passed the rows of one group of a reduce instead */
+            InputType?: string;
             /** @description May change the configuration data */
             Mutating?: boolean;
             /** @description The function reads OtherData under any key its caller passes, as a general-purpose function such as vet-cel does, whose expression names the keys: such as the Units a Trigger's OtherUnitSelections pass. Besides those in OtherDataExpected */
@@ -6493,7 +6764,7 @@ export interface components {
             UpstreamGetters?: components["schemas"]["NamedFunctionResult"][];
             /**
              * Format: int64
-             * @description The RevisionNum of the last merged upstream revision.
+             * @description The RevisionNum of the last merged upstream revision. On a MergeUnits or UpgradeUnit Link, every upstream Revision at or below it has been merged or skipped, and UpstreamSkipped says which were skipped; above it, UpstreamMergedAbove lists what was merged out of order. It moves on past the Revisions just above it that need nothing merged -- skipped, merged out of order, or changing nothing -- so the Link is Stale exactly when it has something to take. Moving it forward by an update records the Revisions it passes as skipped.
              */
             UpstreamLastMergedRevisionNum?: number;
             /**
@@ -6502,8 +6773,12 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             readonly UpstreamLinkID?: string;
+            /** @description The upstream Revisions this Link merged above UpstreamLastMergedRevisionNum, out of order, in order. Recorded when a skip below UpstreamLastMergedRevisionNum is removed: the pointer is lowered to just under the Revision unskipped, and what the Link took between there and where the pointer was is listed here, so the next merge takes only the Revision unskipped. Dropped once the pointer passes them. */
+            readonly UpstreamMergedAbove?: number[];
             /** @description Values to read from the upstream Unit when resolving a TransformPaths Link. Each NamedPath is read via get-paths and made available to DownstreamPaths expressions by its Name. Only valid when UpdateType is TransformPaths. */
             UpstreamPaths?: components["schemas"]["NamedPath"][];
+            /** @description The upstream Revisions this Link passed over without merging them, as runs of consecutive RevisionNums skipped for one reason, oldest first, each with why: the reason given when they were skipped by name (skip_revisions), or what moved the merge pointer past them -- an update of UpstreamLastMergedRevisionNum, a ChangeOrder promoted with PriorRevisions Skip, or a ChangeOrder restored upstream. Every merge over the Link passes over them, except a ChangeOrder's promotion, which takes its interval whole. A Revision that changed nothing is not recorded, and a declined skip is listed, marked Declined, only while it is above UpstreamLastMergedRevisionNum. Recorded only for MergeUnits and UpgradeUnit Links, and kept, below UpstreamLastMergedRevisionNum too, until the Link is moved to other Units or reversed, which clears them. */
+            readonly UpstreamSkipped?: components["schemas"]["LinkSkippedRevisions"][];
             /**
              * Format: uuid
              * @description Space ID of the link this link was cloned from (if any).
@@ -6539,7 +6814,7 @@ export interface components {
             LinkID?: string;
             /** @description The path the finding is about; empty for a resource-level finding */
             Path?: string;
-            /** @description What the resolve could not do: NeededNotFound, ProvidedNotFound, or ResolveFailed */
+            /** @description What the resolve could not do: NeededNotFound, ProvidedNotFound, ResolveFailed, or ReferenceNotFound */
             Reason?: string;
             /** @description The resource the finding is about, in the Unit Reason names; empty for a finding about the resolve as a whole */
             Resource?: components["schemas"]["ResourceInfo"];
@@ -6551,9 +6826,70 @@ export interface components {
             UnitID?: string;
         };
         LinkFindingList: components["schemas"]["LinkFinding"][];
+        LinkSkippedRevisions: {
+            /**
+             * Format: date-time
+             * @description When the first Revision of the run was recorded as skipped.
+             * @example 2006-01-02T15:04:05Z07:00
+             */
+            CreatedAt?: string;
+            /** @description The skips are declined: final, not to be taken later. Declined skips are listed only above UpstreamLastMergedRevisionNum, where they still decide what the next merge takes. */
+            Declined?: boolean;
+            /**
+             * Format: int64
+             * @description The upstream Unit's RevisionNum the run starts at.
+             */
+            FromRevisionNum?: number;
+            /** @description What moved the merge pointer past the Revisions. */
+            Reason?: string;
+            /**
+             * Format: int64
+             * @description The upstream Unit's RevisionNum the run ends at, inclusive.
+             */
+            ToRevisionNum?: number;
+        };
         MergeKeyValue: {
             Key?: string;
             Value?: string;
+        };
+        MergeOverlap: {
+            /** @description The paths both wrote; empty for a change to the resource as a whole. */
+            Paths?: string[] | null;
+            /**
+             * Format: int64
+             * @description The earlier upstream RevisionNum left pending that wrote some of the same paths.
+             */
+            PendingRevisionNum?: number;
+            /** @description The resource both wrote. */
+            ResourceName?: string;
+            /**
+             * Format: int64
+             * @description The upstream RevisionNum taken.
+             */
+            RevisionNum?: number;
+        };
+        MergeSelection: {
+            /**
+             * Format: uuid
+             * @description The Link the Revisions were taken over.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            LinkID?: string;
+            /** @description Pending upstream Revisions, earlier than a Revision taken and not taken with it, that wrote some of the same paths, by MutationSources. Taking a Revision ahead of one it overlaps applies its change to content that does not have the earlier one. */
+            Overlaps?: components["schemas"]["MergeOverlap"][];
+            /** @description The Revisions taken that the Link had skipped, with the reason each was skipped; taking one removes its skip. */
+            SkipsOverridden?: components["schemas"]["MergeSkipOverridden"][];
+            /** @description The upstream RevisionNums taken, in order: those named that the Link had not merged already. */
+            Taken?: number[];
+        };
+        MergeSkipOverridden: {
+            /** @description Why it had been skipped. */
+            Reason?: string;
+            /**
+             * Format: int64
+             * @description The upstream RevisionNum.
+             */
+            RevisionNum?: number;
         };
         MoveRequest: {
             /**
@@ -6978,7 +7314,7 @@ export interface components {
             Message?: string;
             /** @description Promoted, Validated, Released, Healthy, or the name of a custom or attestation prerequisite. */
             Prerequisite?: string;
-            /** @description Why the gate does not hold, as a code: NotPromoted, PreviousStageEmpty, NotReleased, ValidationErrors, NotMarked, NoReleaseTarget, NoRelease, NoLiveStatus, NotSynced, Deploying, DeployFailed, Unhealthy, AttestationsMissing, AttestationRejected, ExpressionFalse, EvaluationFailed, or UnknownPrerequisite. A client that does not know a code shows Message. */
+            /** @description Why the gate does not hold, as a code: NotPromoted, PreviousStageEmpty, NotReleased, ValidationErrors, NotChecked, NotMarked, NoReleaseTarget, NoRelease, NoLiveStatus, NotSynced, Deploying, DeployFailed, Unhealthy, AttestationsMissing, AttestationRejected, ExpressionFalse, EvaluationFailed, or UnknownPrerequisite. A client that does not know a code shows Message. */
             Reason?: string;
             Satisfied?: boolean;
             /**
@@ -7046,6 +7382,8 @@ export interface components {
             PriorRevisions?: PromoteRequestPriorRevisions;
             /** @description Deprecated: use Guards, as {"Override":"Upstream"}, with a Clearance admitting it. Records each Unit's Override guard on the paths its writes change -- Override=Upstream for a Unit with an upstream Unit, Override=External for one without -- with the clearance to write over one. Accepted only for an Invoke ChangeOrder and for one that follows Insert, Upsert, or TransformPaths Links: refused for a promotion that merges, which the guard holds paths against. */
             Protect?: boolean;
+            /** @description The upstream revisions to take instead of everything each upstream has reached: cherry-picking. Each entry is as an entry of an upgrade's merge_revisions -- a revision, which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to> -- resolved on each Unit's upstream Unit, where an entry naming nothing it carries names nothing. A revision number is refused, alone or at either end of a range, since each Unit numbers its own. A Unit whose upstream the entries name nothing of that it has not merged is Unchanged, NotSelected. Each Unit's UpgradeUnit Link records what it took. Cannot be used with ChangeOrderID. */
+            Revisions?: string[];
             /**
              * Format: uuid
              * @description A Filter over Spaces selecting the Spaces to promote. Intersected with the other selectors.
@@ -7138,13 +7476,15 @@ export interface components {
             HeadRevisionNum?: number;
             /** @description For a Resolve, and a Mark made by one, the Links resolved. */
             LinkIDs?: components["schemas"]["UUID"][];
+            /** @description With Revisions, what the Unit's upgrade took, or on a dry run would take: the upstream revisions, the skips that overrode, and the earlier pending revisions that wrote some of the same paths. */
+            MergeSelections?: components["schemas"]["MergeSelection"][];
             /** @description What the write changed, or on a dry run would change: the entries of the Unit's MutationSources it produced. Returned when include names Mutations. */
             Mutations?: components["schemas"]["ResourceMutationList"];
             /** Format: int64 */
             PreviousHeadMutationNum?: number;
             /** Format: int64 */
             PreviousHeadRevisionNum?: number;
-            /** @description For Skip and Unchanged: NotCovered, CreatedAfterChangeOrder, AlreadyTaken, NotChanged when the change does not change the Unit, or CreatedInSpace when the Unit was created in this Space rather than cloned into it. A Unit in the Space that the change does not change is marked once the Space's writes are done, with both Tags on the Revision the ChangeOrder's PriorRevisions names. For an applied Upgrade or Resolve: NoChange, when the Unit already held the change, so no Revision was made and the ChangeOrder's Tags mark its head. */
+            /** @description For Skip and Unchanged: NotCovered, CreatedAfterChangeOrder, AlreadyTaken, NotChanged when the change does not change the Unit, CreatedInSpace when the Unit was created in this Space rather than cloned into it, or NotSelected when the Revisions named name nothing of its upstream it has not merged. A Unit in the Space that the change does not change is marked once the Space's writes are done, with both Tags on the Revision the ChangeOrder's PriorRevisions names. For an applied Upgrade or Resolve: NoChange, when the Unit already held the change, so no Revision was made and the ChangeOrder's Tags mark its head. */
             Reason?: string;
             Slug?: string;
             /**
@@ -7222,7 +7562,7 @@ export interface components {
              * @description Monotonically increasing sequence number of the Release within its Target, assigned at publish time. The highest ReleaseNum is the latest Release for the Target.
              */
             readonly ReleaseNum?: number;
-            /** @description SkippedUnits names the Units released to the Release's Target that the Release does not bundle, mapped to the reason as a code. NotMarked: publishing with a TagID leaves out a Unit that has never been released and that the Tag marks no Revision of; a Unit that has been released must be marked. (readonly) */
+            /** @description SkippedUnits names the Units released to the Release's Target that the Release does not bundle, mapped to the reason as a code. NotMarked: publishing with a TagID leaves out a Unit that has never been released and that the Tag marks no Revision of; a Unit that has been released must be marked. InChangeSet: publishing without a TagID leaves out a Unit that has never been released and was created inside a ChangeSet its head is partway through, so it has no configuration from before the ChangeSet. (readonly) */
             readonly SkippedUnits?: {
                 [key: string]: string;
             };
@@ -7261,11 +7601,51 @@ export interface components {
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             readonly UserID?: string;
+            /** @description By gate, the bundled Units holding the resources a Release trigger's failures name. (readonly) */
+            readonly ValidationFailedUnitIDs?: {
+                [key: string]: components["schemas"]["UUID"][];
+            };
+            /** @description What each Release trigger found in the documents the Release bundles, by gate name. A failing Release trigger refuses the Release unless it is Warn, so a published Release's failures are warnings. (readonly) */
+            readonly ValidationResults?: {
+                [key: string]: components["schemas"]["ValidationResultList"];
+            };
+            /** @description The gates of the Warn Release triggers that failed on the Release's documents. (readonly) */
+            readonly ValidationWarnings?: {
+                [key: string]: boolean;
+            };
             /**
              * Format: int64
              * @description An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update.
              */
             Version?: number;
+        };
+        ReleaseHeldBackUnit: {
+            /**
+             * Format: uuid
+             * @description The ChangeSet the Unit's head Revision is partway through.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChangeSetID?: string;
+            /** @description The ChangeSet's slug. */
+            ChangeSetSlug?: string;
+            /**
+             * Format: int64
+             * @description The Unit's head Revision, which is not bundled.
+             */
+            HeadRevisionNum?: number;
+            /**
+             * Format: int64
+             * @description The Revision bundled: the one before the ChangeSet.
+             */
+            RevisionNum?: number;
+            /**
+             * Format: uuid
+             * @description The Unit held back.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            UnitID?: string;
+            /** @description The Unit's slug. */
+            UnitSlug?: string;
         };
         ReleaseLiveStatus: {
             /** @description The object the status was read from, such as the name of the Argo CD Application. */
@@ -7344,6 +7724,8 @@ export interface components {
             Error?: components["schemas"]["ResponseError"];
             /** @description For a change order, each ReleasePrerequisite of the stage the Space belongs to, evaluated over the Revisions the Release bundles, whether or not it holds. */
             Gates?: components["schemas"]["PromoteGateResult"][];
+            /** @description The Units bundled at the Revision before a ChangeSet their head is partway through, rather than at their head: a ChangeSet that is still open, or that closed while the Unit was still in it. Also reported when no Release was created because nothing changed. */
+            HeldBack?: components["schemas"]["ReleaseHeldBackUnit"][];
             /** @description Why no Release was created: nothing changed since the latest published Release, or, on a refusal, the error as one string. */
             Message?: string;
             /** @description The published Release, or the latest published Release when no Release was created. */
@@ -7384,6 +7766,8 @@ export interface components {
             ResourceName?: string;
             /** @description Type of the resource; Kubernetes resources are represented in the form <apiVersion>/<kind>. */
             ResourceType?: string;
+            /** @description Which of the Unit's Revisions this is a resource of: HeadRevisionNum. (readonly) */
+            readonly RevisionRef?: string;
             /**
              * Format: uuid
              * @description Unique identifier for a space.
@@ -8296,6 +8680,8 @@ export interface components {
             readonly TriggerHash?: string;
             /** @description List of Trigger IDs that match the WhereTrigger and/or TriggerFilterID criteria. (readonly) */
             readonly TriggerIDs?: components["schemas"]["UUID"][];
+            /** @description The Units the OtherUnitSelections of the Triggers in TriggerIDs selected for this Target, by Trigger and OtherData key, evaluated with TriggerIDs and with the Use permission of whoever made that write. A Trigger the Target applies, run on a Unit released to it, is passed them under the key. A Unit deleted is removed from it. (readonly) */
+            readonly TriggerOtherUnitIDs?: components["schemas"]["TriggerOtherUnits"][];
             /**
              * Format: date-time
              * @description The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format.
@@ -8410,7 +8796,7 @@ export interface components {
             DisplayName?: string;
             /** @description The type of entity. */
             readonly EntityType?: string;
-            /** @description Event specifies the type of event that will activate this trigger. Valid values are Mutation and PostClone */
+            /** @description Event specifies the type of event that will activate this trigger. Valid values are Mutation, PostClone and Release. A Release trigger runs its validating functions once when a Space publishes a Release, over the documents of the Units the Release bundles that the trigger selects, and a failure refuses the Release unless the trigger is Warn; its results are recorded on the Release, not on the Units. */
             Event: string;
             /** @description Function name */
             FunctionName?: string;
@@ -8440,7 +8826,7 @@ export interface components {
             OtherUnitIDs?: {
                 [key: string]: components["schemas"]["UUID"];
             };
-            /** @description Selections of other Units to pass to the trigger's function as OtherData, by the key the function reads them under. Each Space that selects the trigger evaluates them when it evaluates its triggers -- when it is created, when its WhereTrigger or TriggerFilterID changes, and on refresh_triggers -- and records the Units each picked in its TriggerOtherUnitIDs. A change to the data of a Unit recorded re-runs the trigger on the Space's Units it applies to, and a Unit recorded can be deleted, which removes it from the record and re-runs the trigger the same way; which Units a selection picks changes only when the Space evaluates it again. A selection's Where may name that Space as EvaluatingSpace, as in `Space.ReleaseTargetID = EvaluatingSpace.ReleaseTargetID`. Only Units of the trigger's ToolchainType are selected, and whoever makes the Space's write needs Use permission on each. The function is passed the selected Units' head data as one entry, only the resources the selection's WhereResource matches if it has one, with each document's origin in OtherDataOrigins; it runs with whatever was selected, nothing included. A key is in either OtherUnitIDs or OtherUnitSelections. */
+            /** @description Selections of other Units to pass to the trigger's function as OtherData, by the key the function reads them under. Each Space and Target that selects the trigger evaluates them when it evaluates its triggers -- when it is created, when its WhereTrigger or TriggerFilterID changes, and on refresh_triggers -- and records the Units each picked in its TriggerOtherUnitIDs. A change to the data of a Unit recorded re-runs the trigger on the Units it applies to there, and a Unit recorded can be deleted, which removes it from the record and re-runs the trigger the same way; which Units a selection picks changes only when the Space or Target evaluates it again. A selection's Where may name that Space as EvaluatingSpace, as in `Space.ReleaseTargetID = EvaluatingSpace.ReleaseTargetID`, or that Target as EvaluatingTarget, as in `Space.ReleaseTargetID = EvaluatingTarget.TargetID`; the one not evaluating it is NULL, and no comparison with it holds. Only Units of the trigger's ToolchainType are selected, and whoever makes the Space's or Target's write needs Use permission on each. The function is passed the selected Units' head data as one entry, only the resources the selection's WhereResource matches if it has one, with each document's origin in OtherDataOrigins; it runs with whatever was selected, nothing included. A key is in either OtherUnitIDs or OtherUnitSelections. */
             OtherUnitSelections?: {
                 [key: string]: components["schemas"]["OtherUnitSelection"];
             };
@@ -8795,6 +9181,8 @@ export interface components {
             Diff?: components["schemas"]["ConfigDiff"];
             Error?: components["schemas"]["ResponseError"];
             Links?: components["schemas"]["LinkCreateOrUpdateResponse"][];
+            /** @description For an upgrade or resolve with merge_revisions, what it took over each Link, or on a dry run would take: the upstream revisions, the skips that overrode, and the earlier pending revisions that wrote some of the same paths. */
+            MergeSelections?: components["schemas"]["MergeSelection"][];
             /** @description What set each value in the configuration the operation produced; returned when include names MutationSources. */
             MutationSources?: components["schemas"]["ResourceMutationList"];
             Unit?: components["schemas"]["Unit"];
@@ -8967,15 +9355,31 @@ export interface components {
             MutationSources?: components["schemas"]["ResourceMutationList"];
         };
         UnitTagRequest: {
+            /**
+             * Format: uuid
+             * @description Narrow the Units to those in this ChangeOrder's Space and the Spaces it is headed for, or with TargetStage, the Spaces of that Stage of its ChangeWorkflow.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            ChangeOrderID?: string;
             /** @description Move the Tag from the Revision it marks on each Unit to the one Revision names, refusing a Unit it marks no Revision of. Tags owned by a ChangeSet, ChangeOrder or Release cannot be added or removed; a ChangeOrder's release Tag can be moved, to a Revision at or after the one its end Tag marks and the Unit's LastReleasedRevisionNum, with no ValidationErrors, while no Release in the Space has been published at it. */
             Move?: boolean;
             /** @description Which Unit revision to tag: a named revision ('HeadRevisionNum', 'LastReleasedRevisionNum'), a revision number, an entity reference ('Tag:uuid', 'ChangeSet:uuid', 'Revision:uuid'), any of those prefixed with 'Before:', or 'Remove' to remove the tag from the unit */
             Revision?: string;
             /**
              * Format: uuid
+             * @description Narrow the Units to those in the Spaces this Space Filter selects.
+             * @example 248df4b7-aa70-47b8-a036-33ac447e668d
+             */
+            SpaceFilterID?: string;
+            /**
+             * Format: uuid
              * @example 248df4b7-aa70-47b8-a036-33ac447e668d
              */
             TagID?: string;
+            /** @description With ChangeOrderID, narrow the Units to those in the Spaces of this Stage of the ChangeOrder's ChangeWorkflow. */
+            TargetStage?: string;
+            /** @description Narrow the Units to those in the Spaces this where expression over Spaces selects. Combines with SpaceFilterID, ChangeOrderID and TargetStage as an intersection. */
+            WhereSpace?: string;
         };
         UnitTagResponse: {
             Error?: components["schemas"]["ResponseError"];
@@ -9738,6 +10142,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Component needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -9977,6 +10399,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Component needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -10170,6 +10610,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ServiceAccount. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -10392,6 +10850,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ServiceAccount. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -10701,6 +11177,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Space needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -10902,6 +11396,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Space. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -11159,6 +11671,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Space needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -11251,6 +11781,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Attest. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attest needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attest waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -11480,6 +12028,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Attestation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attestation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -11695,6 +12261,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Attribute. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -12045,6 +12629,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -12240,6 +12842,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Attribute. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -12486,6 +13106,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -12670,6 +13308,371 @@ export interface operations {
             };
             /** @description Something went wrong while processing Attribute. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    ListAuditEvents: {
+        parameters: {
+            query?: {
+                /**
+                 * @description The specified string is an expression for the purpose of filtering
+                 *     the list of AuditEvents returned. The expression syntax was inspired by SQL.
+                 *     It supports conjunctions using `AND` of relational expressions of the form *attribute*
+                 *     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+                 *     as in the JSON encoding.
+                 *     Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+                 *     String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+                 *     `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+                 *     String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+                 *     `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+                 *     Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+                 *     UUIDs and boolean attributes support equality and inequality only.
+                 *     UUID and time literals must be quoted as string literals.
+                 *     String literals are quoted with single quotes, such as `'string'`.
+                 *     Time literals use the same form as when serialized as JSON,
+                 *     such as: `CreatedAt > '2025-02-18T23:16:34'`.
+                 *     Integer and boolean literals are also supported for attributes of those types.
+                 *     Arrays support the `?` operator to to match any element of the array,
+                 *     as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+                 *     Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+                 *     An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+                 *     as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+                 *     Without the `*` such a reference is an error, since it names no single value to compare.
+                 *     Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+                 *     Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+                 *     as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+                 *     Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+                 *     These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+                 *     The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+                 *     such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+                 *     Conjunctions are supported using the `AND` operator.
+                 *     An example conjunction is:
+                 *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+                 *
+                 *     Supported attributes for filtering on AuditEvent: Action, AuditEventID, Grants, OccurredAt, OnBehalfOfUserID, OrganizationID, Origin, Outcome, RequestID, Role, SpaceID, SubjectEntityID, SubjectEntityType, UserID.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                where?: string;
+                /**
+                 * @description UUID of a Filter entity to apply to the AuditEvent list.
+                 *
+                 *     The Filter must be in the same Organization as the user credentials.
+                 *
+                 *     The Filter's From field must match the entity type being filtered (AuditEvent).
+                 *
+                 *     For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+                 *
+                 *     The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+                 *
+                 *     If both 'filter' and 'where' parameters are specified, they are combined with AND logic.
+                 */
+                filter?: string;
+                /**
+                 * @description Free text search that approximately matches the specified string against string fields and map keys/values.
+                 *
+                 *     The search is case-insensitive and uses pattern matching to find entities containing the text.
+                 *
+                 *     Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+                 *
+                 *     For map fields (like Labels and Annotations), the search matches both map keys and values.
+                 *
+                 *     The search uses OR logic across all searchable fields, so matching any field will return the entity.
+                 *
+                 *     If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+                 *
+                 *     Searchable fields for AuditEvent include string and map-type attributes from the queryable attributes list.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                contains?: string;
+                /**
+                 * @description Include clause for expanding related entities in the response for AuditEvent.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *
+                 *     Supported attributes for AuditEvent are OrganizationID.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                include?: string;
+                /**
+                 * @description Select clause for specifying which fields to include in the response for AuditEvent.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *     If not specified, all fields are returned.
+                 *     Entity and parent IDs (like OrganizationID, SpaceID, AuditEventID) and Slug are always returned regardless of the select parameter.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
+                 *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+                 *     The whole string must be query-encoded.
+                 */
+                select?: string;
+                /**
+                 * @description Only return AuditEvent entities on which the caller has this permission, as well as View, which every entity listed needs.
+                 *
+                 *     A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+                 *
+                 *     Supported values: Manage, Edit, Use, View.
+                 */
+                where_permission?: PathsAudit_eventGetParametersQueryWhere_permission;
+                /**
+                 * @description UUID of a View whose columns to compute for each AuditEvent, returned as ViewColumns.
+                 *
+                 *     The View must be in the same Organization as the user credentials, and be a View of AuditEvent: its Of, or the From of its Filter, must be AuditEvent.
+                 *
+                 *     If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+                 *
+                 *     The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them.
+                 */
+                view?: string;
+                /** @description Maximum number of AuditEvent entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
+                limit?: number;
+                /**
+                 * @description Comma-separated list of fields to sort AuditEvent results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
+                 *
+                 *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
+                 *
+                 *     Supported attributes for ordering AuditEvent: Action, AuditEventID, OccurredAt, OnBehalfOfUserID, OrganizationID, Origin, Outcome, RequestID, Role, SpaceID, SubjectEntityID, SubjectEntityType, UserID.
+                 *
+                 *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
+                 *
+                 *     Results are ordered by the AuditEvent's ID after the fields named, and by the ID alone if none are.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                order_by?: string;
+                /**
+                 * @description The token from the ConfigHub-Continue header of the previous page, to return the AuditEvent entities after it.
+                 *
+                 *     The request's other parameters, except limit, must be the same as those of the request that returned the token.
+                 *
+                 *     Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more.
+                 */
+                continue?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    /** @description The token to pass as the continue parameter of the next request, when there may be more entities after this page. It is absent on the last page. A page can hold fewer entities than the limit, or none, and still have one. */
+                    "ConfigHub-Continue"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExtendedAuditEvent"][];
+                };
+            };
+            /** @description AuditEvent request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description AuditEvent not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing AuditEvent. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something AuditEvent needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something AuditEvent waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
+    GetAuditEvent: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Include clause for expanding related entities in the response for AuditEvent.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *
+                 *     Supported attributes for AuditEvent are OrganizationID.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                include?: string;
+                /**
+                 * @description Select clause for specifying which fields to include in the response for AuditEvent.
+                 *     The attribute names are case-sensitive, PascalCase, and
+                 *     expected in a comma-separated list format as in the JSON encoding.
+                 *     If not specified, all fields are returned.
+                 *     Entity and parent IDs (like OrganizationID, SpaceID, AuditEventID) and Slug are always returned regardless of the select parameter.
+                 *     Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
+                 *     Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+                 *     The whole string must be query-encoded.
+                 */
+                select?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Unique identifier for a audit_event_id */
+                audit_event_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description AuditEvent with additional related entities expanded based on the request's include parameter. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExtendedAuditEvent"];
+                };
+            };
+            /** @description AuditEvent request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description AuditEvent not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing AuditEvent. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something AuditEvent needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something AuditEvent waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -12892,6 +13895,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeOrder. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -13204,6 +14225,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -13399,6 +14438,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeOrder. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -13649,6 +14706,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -13835,6 +14910,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeOrder. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -14057,6 +15150,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeSet. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -14353,6 +15464,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeSet needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -14548,6 +15677,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeSet. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -14780,6 +15927,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeSet needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -14964,6 +16129,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeSet. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15186,6 +16369,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeWorkflow. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15545,6 +16746,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -15740,6 +16959,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeWorkflow. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15989,6 +17226,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -16173,6 +17428,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeWorkflow. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16395,6 +17668,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Channel. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16751,6 +18042,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -16946,6 +18255,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Channel. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17192,6 +18519,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -17383,6 +18728,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -17453,6 +18816,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing DeclaredCommand. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something DeclaredCommand needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something DeclaredCommand waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17682,6 +19063,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something CommandRun needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something CommandRun waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -17904,6 +19303,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Component needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -17993,6 +19410,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Component. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -18099,6 +19534,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Component needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -18185,6 +19638,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Component. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -18280,6 +19751,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Component. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -18407,6 +19896,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Component needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -18477,6 +19984,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Component. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -18570,6 +20095,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Component. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Component waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -18691,6 +20234,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Demote needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Demote waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -18780,6 +20341,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Unit. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -19006,6 +20585,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Filter. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -19364,6 +20961,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -19559,6 +21174,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Filter. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -19807,6 +21440,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -19998,6 +21649,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -20112,6 +21781,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Function. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Function needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Function waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -20363,6 +22050,194 @@ export interface operations {
             };
         };
     };
+    ReduceFunctionsOnOrg: {
+        parameters: {
+            query?: {
+                /** @description Space ID or slug whose executor to use for listing or invoking builtin functions */
+                executor_space?: string;
+                /**
+                 * @description The specified string is an expression for the purpose of filtering
+                 *     the list of Units returned. The expression syntax was inspired by SQL.
+                 *     It supports conjunctions using `AND` of relational expressions of the form *attribute*
+                 *     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+                 *     as in the JSON encoding.
+                 *     Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+                 *     String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+                 *     `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+                 *     String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+                 *     `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+                 *     Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+                 *     UUIDs and boolean attributes support equality and inequality only.
+                 *     UUID and time literals must be quoted as string literals.
+                 *     String literals are quoted with single quotes, such as `'string'`.
+                 *     Time literals use the same form as when serialized as JSON,
+                 *     such as: `CreatedAt > '2025-02-18T23:16:34'`.
+                 *     Integer and boolean literals are also supported for attributes of those types.
+                 *     Arrays support the `?` operator to to match any element of the array,
+                 *     as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+                 *     Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+                 *     An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+                 *     as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+                 *     Without the `*` such a reference is an error, since it names no single value to compare.
+                 *     Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+                 *     Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+                 *     as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+                 *     Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+                 *     These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+                 *     The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+                 *     such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+                 *     Conjunctions are supported using the `AND` operator.
+                 *     An example conjunction is:
+                 *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+                 *
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *
+                 *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                where?: string;
+                /**
+                 * @description UUID of a Filter entity to apply to the Unit list.
+                 *
+                 *     The Filter must be in the same Organization as the user credentials.
+                 *
+                 *     The Filter's From field must match the entity type being filtered (Unit).
+                 *
+                 *     For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+                 *
+                 *     The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+                 *
+                 *     If both 'filter' and 'where' parameters are specified, they are combined with AND logic.
+                 */
+                filter?: string;
+                /**
+                 * @description Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+                 *
+                 *     It is a comma-separated list of HiddenReasons, or `*` for all of them.
+                 *
+                 *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+                 *
+                 *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 */
+                include_hidden?: string;
+                /** @description Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
+                resource_type?: string;
+                /** @description Where data: The specified string is an expression for the purpose of evaluating whether the configuration data matches the filter. It supports conjunctions using `AND` of relational expressions of the form *path* *operator* *literal*. The path specifications are dot-separated, for both map fields and array indices, as in `spec.template.spec.containers.0.image = 'ghcr.io/headlamp-k8s/headlamp:latest' AND spec.replicas > 1`. Path expressions support `*` for wildcard array or map segments and `?key=value` syntax for associative matches of array elements containing objects with a `key` attribute. Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `!~`, `~*`, `!~*`, `IN`, `NOT IN`. String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards, `ILIKE` for case-insensitive pattern matching, `!~~` for NOT LIKE. String regex operators: `~` for regex matching, `~*` for case-insensitive regex, `!~` and `!~*` for regex not matching (case-sensitive and insensitive). Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`. Boolean values support equality and inequality only. The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses, such as `spec.template.spec.containers.0.image#reference IN (':latest', ':arm64-latest')`. The syntax `.|` splits the path: the left side selects, and the right side is a property of what was selected. On the right side of a `.|`, and only there, `!=` is true when the property is absent: `spec.containers.*.|image != 'nginx'` selects the containers and asks that none of their images be nginx, which a container with no image satisfies. Everywhere else a path that is not present is not a match, `!=` included. String literals are quoted with single quotes, such as `'string'`. Integer and boolean literals are also supported for attributes of those types. The whole string must be query-encoded. */
+                where_data?: string;
+                /** @description Which engine answers where_data and resource_type: `sql` (the default) evaluates the expression against the stored resource projection in a single query, falling back to the function engine for the expressions it cannot translate; `function` invokes the where-filter function on each candidate Unit, reading every one's configuration; `shadow` runs both, answers with `function`, and logs any disagreement. Temporary: `function` is the escape hatch for one release, after which this parameter goes away. */
+                where_data_engine?: string;
+                /** @description Where expression to match Triggers. Matched triggers are invoked on each unit to filter by validation results. Use with triggers_passed to control whether passing or failing units are returned (default: failing). */
+                where_trigger?: string;
+                /** @description Filter UUID (with From=Trigger). The filter's matching triggers are invoked on units to filter by validation results. Can be combined with where_trigger. */
+                trigger_filter?: string;
+                /** @description When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
+                triggers_passed?: boolean;
+                /** @description UUID of a View of Unit. Its Filter selects the Units as the filter parameter does, so the two may not both be specified. */
+                view?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["FunctionReduceRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FunctionReduceResponse"];
+                };
+            };
+            /** @description Function request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Function not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Function data conflict. Data has changed since last read. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing Function. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Function needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Function waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
     ListGroups: {
         parameters: {
             query?: {
@@ -20564,6 +22439,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Group needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Group waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -20653,6 +22546,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Group needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Group waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -20734,6 +22645,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Group. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Group needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Group waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -20831,6 +22760,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Group. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Group needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Group waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -21075,6 +23022,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Invocation. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -21440,6 +23405,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -21637,6 +23620,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Invocation. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -21892,6 +23893,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -22083,6 +24102,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -22132,7 +24169,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -22305,6 +24342,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -22354,7 +24409,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
                  *
                  *     Where expression to select source links to copy
                  *
@@ -22412,7 +24467,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
                  *
                  *     Where expression to find downstream UpgradeUnit links from each source link's FromUnit. Creates one copy per match. Exactly one of reverse, from_downstream_where and where_space/filter_space is required.
                  *
@@ -22454,7 +24509,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
                  *
                  *     Where expression to find downstream UpgradeUnit link from each source link's ToUnit. Exactly one match required. If omitted, ToUnitID/ToSpaceID are unchanged.
                  *
@@ -22725,6 +24780,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -22774,7 +24847,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -22927,6 +25000,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -22976,7 +25067,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -23039,6 +25130,14 @@ export interface operations {
                 continue?: string;
                 /** @description Swap the FromUnit and ToUnit directions of the links */
                 reverse?: boolean;
+                /** @description Revisions of each link's upstream unit to skip, so that merges over the links pass over them: a comma-separated list, each entry a revision (a number, HeadRevisionNum, LastReleasedRevisionNum, or Tag:, ChangeSet:, ChangeOrder:, Release: or Revision: and an ID, any of them prefixed with Before:), which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>. Only MergeUnits and UpgradeUnit links skip revisions, and only those they have not merged; one skipped already takes the skip_reason and decline_skips given. */
+                skip_revisions?: string;
+                /** @description Revisions of each link's upstream unit whose skips to remove, so that the next merge takes them, as skip_revisions names them. Unskipping a revision below UpstreamLastMergedRevisionNum lowers it to just under the revision, and lists in UpstreamMergedAbove what the link took between there and where it was, so the next merge takes only what was unskipped. */
+                unskip_revisions?: string;
+                /** @description Why the revisions skip_revisions names are skipped, shown with them in UpstreamSkipped */
+                skip_reason?: string;
+                /** @description Whether the skips of the revisions skip_revisions names are final: a declined skip is not to be taken later, and is not listed in UpstreamSkipped, though the link still has not merged the revision. false lists a declined skip again. Without it, a new skip is not declined and one skipped already keeps what it was. */
+                decline_skips?: boolean;
                 /** @description Give each Link written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Link's configuration, which is then kept in step with it. */
                 with_backing_units?: boolean;
                 /** @description Patch each selected Link with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
@@ -23189,6 +25288,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -23256,6 +25373,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing UserInfo. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something UserInfo needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something UserInfo waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -23346,6 +25481,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something BrowserSession needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something BrowserSession waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -23413,6 +25566,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing OAuthClient. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OAuthClient needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OAuthClient waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -23507,6 +25678,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something OAuthClient needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OAuthClient waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -23577,6 +25766,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing OAuthClient. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OAuthClient needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OAuthClient waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -23672,6 +25879,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing OAuthClient. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OAuthClient needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OAuthClient waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -23875,6 +26100,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Organization needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Organization waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -23974,6 +26217,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Organization needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Organization waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -24060,6 +26321,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Organization. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Organization needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Organization waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24178,6 +26457,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Organization. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Organization needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Organization waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24353,6 +26650,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something OrganizationMember needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OrganizationMember waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -24443,6 +26758,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something OrganizationMember needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OrganizationMember waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -24515,6 +26848,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing OrganizationMember. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OrganizationMember needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OrganizationMember waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24612,6 +26963,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing OrganizationMember. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OrganizationMember needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something OrganizationMember waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24729,6 +27098,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Promote. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Promote needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Promote waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24961,6 +27348,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Release. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25203,6 +27608,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Resource needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Resource waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -25425,6 +27848,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ReviewComment needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -25618,6 +28059,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ReviewComment. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25832,6 +28291,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ReviewComment. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26078,6 +28555,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Revision needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Revision waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -26300,6 +28795,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Revision. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Revision needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Revision waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26536,6 +29049,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Revision needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Revision waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -26758,6 +29289,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -26843,6 +29392,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ServiceAccount. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26949,6 +29516,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -27035,6 +29620,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ServiceAccount. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27130,6 +29733,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ServiceAccount. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27248,6 +29869,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ServiceAccount. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27438,6 +30077,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -27524,6 +30181,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ServiceAccount. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27622,6 +30297,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -27712,6 +30405,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ServiceAccount. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27902,6 +30613,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -27995,6 +30724,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -28079,6 +30826,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ServiceAccount. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28183,6 +30948,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -28264,6 +31047,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ServiceAccount. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ServiceAccount waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28495,6 +31296,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Space needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -28584,6 +31403,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Space. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28692,6 +31529,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Space needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -28780,6 +31635,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Space. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28882,6 +31755,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Space. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -29013,6 +31904,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Space. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -29245,6 +32154,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ExtendedAttestation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedAttestation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -29331,6 +32258,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Attestation. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attestation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attestation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -29432,6 +32377,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ExtendedAttestation. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedAttestation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedAttestation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -29664,6 +32627,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -29759,6 +32740,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Attribute. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -29867,6 +32866,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -29967,6 +32984,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -30057,6 +33092,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Attribute. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -30193,6 +33246,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -30265,6 +33336,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Attribute. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -30365,6 +33454,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Attribute. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Attribute waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -30597,6 +33704,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -30685,6 +33810,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeOrder. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -30793,6 +33936,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -30883,6 +34044,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeOrder. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -30983,6 +34162,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeOrder. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -31131,6 +34328,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -31215,6 +34430,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeOrder. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeOrder waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -31447,6 +34680,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeSet needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -31535,6 +34786,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeSet. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -31643,6 +34912,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeSet needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -31731,6 +35018,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeSet. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -31831,6 +35136,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeSet. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -31954,6 +35277,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeSet. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeSet waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -32186,6 +35527,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -32276,6 +35635,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeWorkflow. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -32384,6 +35761,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -32472,6 +35867,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeWorkflow. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -32569,6 +35982,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeWorkflow. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -32703,6 +36134,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -32775,6 +36224,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeWorkflow. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -32870,6 +36337,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ChangeWorkflow. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ChangeWorkflow waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -33102,6 +36587,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -33192,6 +36695,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Channel. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -33300,6 +36821,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -33388,6 +36927,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Channel. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -33485,6 +37042,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Channel. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -33616,6 +37191,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -33710,6 +37303,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something CommandRun needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something CommandRun waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -33782,6 +37393,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Channel. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -33884,6 +37513,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -33965,6 +37612,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Channel. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -34056,6 +37721,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Channel. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -34164,6 +37847,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Channel needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Channel waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -34237,6 +37938,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing DeclaredCommand. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something DeclaredCommand needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something DeclaredCommand waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -34469,6 +38188,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something CommandRun needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something CommandRun waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -34564,6 +38301,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing CommandRun. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something CommandRun needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something CommandRun waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -34674,6 +38429,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something CommandRun needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something CommandRun waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -34762,6 +38535,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something CommandRun needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something CommandRun waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -34832,6 +38623,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Space. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -34925,6 +38734,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Space. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Space waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -35161,6 +38988,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -35251,6 +39096,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Filter. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -35359,6 +39222,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -35447,6 +39328,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Filter. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -35544,6 +39443,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Filter. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -35677,6 +39594,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -35749,6 +39684,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Filter. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -35844,6 +39797,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Filter. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Filter waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -35970,6 +39941,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Function. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Function needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Function waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -36226,6 +40215,195 @@ export interface operations {
             };
         };
     };
+    ReduceFunctions: {
+        parameters: {
+            query?: {
+                /**
+                 * @description The specified string is an expression for the purpose of filtering
+                 *     the list of Units returned. The expression syntax was inspired by SQL.
+                 *     It supports conjunctions using `AND` of relational expressions of the form *attribute*
+                 *     *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+                 *     as in the JSON encoding.
+                 *     Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+                 *     String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+                 *     `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+                 *     String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+                 *     `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+                 *     Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+                 *     UUIDs and boolean attributes support equality and inequality only.
+                 *     UUID and time literals must be quoted as string literals.
+                 *     String literals are quoted with single quotes, such as `'string'`.
+                 *     Time literals use the same form as when serialized as JSON,
+                 *     such as: `CreatedAt > '2025-02-18T23:16:34'`.
+                 *     Integer and boolean literals are also supported for attributes of those types.
+                 *     Arrays support the `?` operator to to match any element of the array,
+                 *     as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+                 *     Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+                 *     An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+                 *     as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+                 *     Without the `*` such a reference is an error, since it names no single value to compare.
+                 *     Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+                 *     Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+                 *     as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+                 *     Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+                 *     These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+                 *     The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+                 *     such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+                 *     Conjunctions are supported using the `AND` operator.
+                 *     An example conjunction is:
+                 *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+                 *
+                 *     Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+                 *
+                 *     Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
+                 *
+                 *     The whole string must be query-encoded.
+                 */
+                where?: string;
+                /**
+                 * @description UUID of a Filter entity to apply to the Unit list.
+                 *
+                 *     The Filter must be in the same Organization as the user credentials.
+                 *
+                 *     The Filter's From field must match the entity type being filtered (Unit).
+                 *
+                 *     For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+                 *
+                 *     The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+                 *
+                 *     If both 'filter' and 'where' parameters are specified, they are combined with AND logic.
+                 */
+                filter?: string;
+                /**
+                 * @description Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+                 *
+                 *     It is a comma-separated list of HiddenReasons, or `*` for all of them.
+                 *
+                 *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+                 *
+                 *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 */
+                include_hidden?: string;
+                /** @description Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
+                resource_type?: string;
+                /** @description Where data: The specified string is an expression for the purpose of evaluating whether the configuration data matches the filter. It supports conjunctions using `AND` of relational expressions of the form *path* *operator* *literal*. The path specifications are dot-separated, for both map fields and array indices, as in `spec.template.spec.containers.0.image = 'ghcr.io/headlamp-k8s/headlamp:latest' AND spec.replicas > 1`. Path expressions support `*` for wildcard array or map segments and `?key=value` syntax for associative matches of array elements containing objects with a `key` attribute. Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `!~`, `~*`, `!~*`, `IN`, `NOT IN`. String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards, `ILIKE` for case-insensitive pattern matching, `!~~` for NOT LIKE. String regex operators: `~` for regex matching, `~*` for case-insensitive regex, `!~` and `!~*` for regex not matching (case-sensitive and insensitive). Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`. Boolean values support equality and inequality only. The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses, such as `spec.template.spec.containers.0.image#reference IN (':latest', ':arm64-latest')`. The syntax `.|` splits the path: the left side selects, and the right side is a property of what was selected. On the right side of a `.|`, and only there, `!=` is true when the property is absent: `spec.containers.*.|image != 'nginx'` selects the containers and asks that none of their images be nginx, which a container with no image satisfies. Everywhere else a path that is not present is not a match, `!=` included. String literals are quoted with single quotes, such as `'string'`. Integer and boolean literals are also supported for attributes of those types. The whole string must be query-encoded. */
+                where_data?: string;
+                /** @description Which engine answers where_data and resource_type: `sql` (the default) evaluates the expression against the stored resource projection in a single query, falling back to the function engine for the expressions it cannot translate; `function` invokes the where-filter function on each candidate Unit, reading every one's configuration; `shadow` runs both, answers with `function`, and logs any disagreement. Temporary: `function` is the escape hatch for one release, after which this parameter goes away. */
+                where_data_engine?: string;
+                /** @description Where expression to match Triggers. Matched triggers are invoked on each unit to filter by validation results. Use with triggers_passed to control whether passing or failing units are returned (default: failing). */
+                where_trigger?: string;
+                /** @description Filter UUID (with From=Trigger). The filter's matching triggers are invoked on units to filter by validation results. Can be combined with where_trigger. */
+                trigger_filter?: string;
+                /** @description When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
+                triggers_passed?: boolean;
+                /** @description UUID of a View of Unit. Its Filter selects the Units as the filter parameter does, so the two may not both be specified. */
+                view?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Unique identifier for a space_id */
+                space_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["FunctionReduceRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FunctionReduceResponse"];
+                };
+            };
+            /** @description Function request is invalid (Bad Request). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unauthorized access. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Forbidden access. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Function not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Function data conflict. Data has changed since last read. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something went wrong while processing Function. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Function needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Function waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Unexpected error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+        };
+    };
     ListInvocations: {
         parameters: {
             query?: {
@@ -36442,6 +40620,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -36532,6 +40728,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Invocation. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -36640,6 +40854,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -36728,6 +40960,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Invocation. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -36825,6 +41075,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Invocation. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -36963,6 +41231,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -37035,6 +41321,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Invocation. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -37137,6 +41441,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Invocation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Invocation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -37186,7 +41508,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -37362,6 +41684,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -37457,6 +41797,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Link. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -37565,6 +41923,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -37579,6 +41955,14 @@ export interface operations {
     UpdateLink: {
         parameters: {
             query?: {
+                /** @description Revisions of the link's upstream unit to skip, so that merges over the link pass over them: a comma-separated list, each entry a revision (a number, HeadRevisionNum, LastReleasedRevisionNum, or Tag:, ChangeSet:, ChangeOrder:, Release: or Revision: and an ID, any of them prefixed with Before:), which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>. Only MergeUnits and UpgradeUnit links skip revisions, and only those they have not merged; one skipped already takes the skip_reason and decline_skips given. */
+                skip_revisions?: string;
+                /** @description Revisions of the link's upstream unit whose skips to remove, so that the next merge takes them, as skip_revisions names them. Unskipping a revision below UpstreamLastMergedRevisionNum lowers it to just under the revision, and lists in UpstreamMergedAbove what the link took between there and where it was, so the next merge takes only what was unskipped. */
+                unskip_revisions?: string;
+                /** @description Why the revisions skip_revisions names are skipped, shown with them in UpstreamSkipped */
+                skip_reason?: string;
+                /** @description Whether the skips of the revisions skip_revisions names are final: a declined skip is not to be taken later, and is not listed in UpstreamSkipped, though the link still has not merged the revision. false lists a declined skip again. Without it, a new skip is not declined and one skipped already keeps what it was. */
+                decline_skips?: boolean;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
                 dry_run?: boolean;
             };
@@ -37658,6 +42042,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Link. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -37762,6 +42164,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -37778,6 +42198,14 @@ export interface operations {
             query?: {
                 /** @description Swap the FromUnit and ToUnit directions of the link */
                 reverse?: boolean;
+                /** @description Revisions of the link's upstream unit to skip, so that merges over the link pass over them: a comma-separated list, each entry a revision (a number, HeadRevisionNum, LastReleasedRevisionNum, or Tag:, ChangeSet:, ChangeOrder:, Release: or Revision: and an ID, any of them prefixed with Before:), which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>. Only MergeUnits and UpgradeUnit links skip revisions, and only those they have not merged; one skipped already takes the skip_reason and decline_skips given. */
+                skip_revisions?: string;
+                /** @description Revisions of the link's upstream unit whose skips to remove, so that the next merge takes them, as skip_revisions names them. Unskipping a revision below UpstreamLastMergedRevisionNum lowers it to just under the revision, and lists in UpstreamMergedAbove what the link took between there and where it was, so the next merge takes only what was unskipped. */
+                unskip_revisions?: string;
+                /** @description Why the revisions skip_revisions names are skipped, shown with them in UpstreamSkipped */
+                skip_reason?: string;
+                /** @description Whether the skips of the revisions skip_revisions names are final: a declined skip is not to be taken later, and is not listed in UpstreamSkipped, though the link still has not merged the revision. false lists a declined skip again. Without it, a new skip is not declined and one skipped already keeps what it was. */
+                decline_skips?: boolean;
                 /** @description If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
                 dry_run?: boolean;
             };
@@ -37914,6 +42342,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -37986,6 +42432,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Link. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -38086,6 +42550,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Link. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Link waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -38318,6 +42800,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ExtendedRelease needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedRelease waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -38410,6 +42910,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Release. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -38518,6 +43036,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ExtendedRelease needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedRelease waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -38606,6 +43142,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Release. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -38706,6 +43260,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Release. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -38829,6 +43401,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Release needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -38901,6 +43491,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Release. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -38998,6 +43606,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Release. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Release waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -39230,6 +43856,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Tag needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -39318,6 +43962,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Tag. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -39426,6 +44088,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Tag needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -39514,6 +44194,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Tag. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -39614,6 +44312,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Tag. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -39740,6 +44456,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Tag needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -39789,7 +44523,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -39965,6 +44699,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -40055,6 +44807,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Target. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -40163,6 +44933,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -40253,6 +45041,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Target. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -40353,6 +45159,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Target. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -40487,6 +45311,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -40559,6 +45401,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Target. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -40654,6 +45514,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Target. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -40888,6 +45766,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -40995,6 +45891,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -41089,6 +46003,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Trigger. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -41201,6 +46133,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -41291,6 +46241,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Trigger. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -41456,6 +46424,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -41528,6 +46514,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Trigger. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -41633,6 +46637,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Trigger. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -41879,6 +46901,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -41999,6 +47039,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -42100,6 +47158,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -42131,6 +47207,8 @@ export interface operations {
                 inherited_guards?: string;
                 /** @description Merge the range as one rebased diff and record it as one Revision, instead of walking it. By default a merge replays: it takes the source's Revisions in order and, where a Revision records function invocations that can be re-executed, runs them against this Unit rather than rebasing their recorded paths onto it -- so a change lands where this Unit's own structure puts it -- and records each source Revision that has an effect here as a Revision of its own, carrying that Revision's change description, its own conflicts, and one Mutation per source Mutation. Squashing gives up both: the range arrives as a single rebased patch in a single Revision, which is what a merge did before replay existed. Accepted with upgrade, merge_source, and resolve of an UpgradeUnit or MergeUnits Link, and refused elsewhere, since there is no range to walk. A Link can ask for it standingly with its Squash field. */
                 squash?: boolean;
+                /** @description Take back a range of the Unit's own Revisions, keeping what came after it, as git revert does. Requires merge_source Self, with merge_base naming the last Revision to take back and merge_end the Revision before the first -- the range reversed -- and implies squash. A Unit on which the range resolves to run forwards is refused, rather than having the range re-applied as a forward self merge would; one on which it is empty is left unchanged. The Revision written is described by the Revisions it reverted unless a change description is given. */
+                revert?: boolean;
                 /** @description Upgrade the unit to the latest version of its upstream unit */
                 upgrade?: boolean;
                 /** @description Restore revision source. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
@@ -42143,6 +47221,8 @@ export interface operations {
                 merge_base?: string;
                 /** @description Merge end revision of the merge source, which provides the final configuration of the changes to merge. Also accepted with upgrade and with resolve, where it names how far along the source to take the propagation; the default there is the source's head. Naming a ChangeSet or Tag that ends a change is what leaves a change still being made at the source behind. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
                 merge_end?: string;
+                /** @description The upstream revisions to take, with upgrade or resolve, instead of everything the Link has not merged: cherry-picking. A comma-separated list, each entry a revision, which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>; each end as merge_end takes one. The union is taken in order; revisions the Link has merged already are passed over, and so is every other revision, which stays pending or skipped. A skipped revision named is taken, and its skip removed. An entry naming nothing the upstream unit carries names nothing there, but naming no revision of it at all is refused, and so is taking part of a ChangeSet without the rest. The Link's UpstreamLastMergedRevisionNum stays where it was; the revisions taken above it are listed in its UpstreamMergedAbove. The response's MergeSelections say, for each Link, what was taken, which skips that overrode, and which earlier pending revisions wrote some of the same paths. Only UpgradeUnit and MergeUnits Links take part; cannot be used with change_order or merge_end. */
+                merge_revisions?: string;
                 /** @description Identifier of the external source for merge-on-update. When set, computes mutations between the last MergeExternal revision and the provided data, then patches the current unit data with those mutations. */
                 merge_external_source?: string;
                 /** @description Enable the subtraction (override-preservation) step of upgrade and merge_source. By default (false), the source patch is applied without subtraction and the target's local differences are preserved by the stored Mutation Protected values; set true to additionally subtract the target's local differences from the source patch. Has no effect on a self merge (merge_source=Self), where subtraction is always disabled. */
@@ -42311,6 +47391,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -42420,6 +47518,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -42451,6 +47567,8 @@ export interface operations {
                 inherited_guards?: string;
                 /** @description Merge the range as one rebased diff and record it as one Revision, instead of walking it. By default a merge replays: it takes the source's Revisions in order and, where a Revision records function invocations that can be re-executed, runs them against this Unit rather than rebasing their recorded paths onto it -- so a change lands where this Unit's own structure puts it -- and records each source Revision that has an effect here as a Revision of its own, carrying that Revision's change description, its own conflicts, and one Mutation per source Mutation. Squashing gives up both: the range arrives as a single rebased patch in a single Revision, which is what a merge did before replay existed. Accepted with upgrade, merge_source, and resolve of an UpgradeUnit or MergeUnits Link, and refused elsewhere, since there is no range to walk. A Link can ask for it standingly with its Squash field. */
                 squash?: boolean;
+                /** @description Take back a range of the Unit's own Revisions, keeping what came after it, as git revert does. Requires merge_source Self, with merge_base naming the last Revision to take back and merge_end the Revision before the first -- the range reversed -- and implies squash. A Unit on which the range resolves to run forwards is refused, rather than having the range re-applied as a forward self merge would; one on which it is empty is left unchanged. The Revision written is described by the Revisions it reverted unless a change description is given. */
+                revert?: boolean;
                 /** @description Upgrade the unit to the latest version of its upstream unit */
                 upgrade?: boolean;
                 /** @description Restore revision source. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
@@ -42463,6 +47581,8 @@ export interface operations {
                 merge_base?: string;
                 /** @description Merge end revision of the merge source, which provides the final configuration of the changes to merge. Also accepted with upgrade and with resolve, where it names how far along the source to take the propagation; the default there is the source's head. Naming a ChangeSet or Tag that ends a change is what leaves a change still being made at the source behind. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
                 merge_end?: string;
+                /** @description The upstream revisions to take, with upgrade or resolve, instead of everything the Link has not merged: cherry-picking. A comma-separated list, each entry a revision, which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>; each end as merge_end takes one. The union is taken in order; revisions the Link has merged already are passed over, and so is every other revision, which stays pending or skipped. A skipped revision named is taken, and its skip removed. An entry naming nothing the upstream unit carries names nothing there, but naming no revision of it at all is refused, and so is taking part of a ChangeSet without the rest. The Link's UpstreamLastMergedRevisionNum stays where it was; the revisions taken above it are listed in its UpstreamMergedAbove. The response's MergeSelections say, for each Link, what was taken, which skips that overrode, and which earlier pending revisions wrote some of the same paths. Only UpgradeUnit and MergeUnits Links take part; cannot be used with change_order or merge_end. */
+                merge_revisions?: string;
                 /** @description Identifier of the external source for merge-on-update. When set, computes mutations between the last MergeExternal revision and the provided data, then patches the current unit data with those mutations. */
                 merge_external_source?: string;
                 /** @description Enable the subtraction (override-preservation) step of upgrade and merge_source. By default (false), the source patch is applied without subtraction and the target's local differences are preserved by the stored Mutation Protected values; set true to additionally subtract the target's local differences from the source patch. Has no effect on a self merge (merge_source=Self), where subtraction is always disabled. */
@@ -42669,6 +47789,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -42758,6 +47896,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Unit. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -42857,6 +48013,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -42929,6 +48103,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Unit. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -43065,6 +48257,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -43157,6 +48367,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -43242,6 +48470,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Unit. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -43478,6 +48724,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ExtendedMutation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedMutation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -43581,6 +48845,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ExtendedMutation needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedMutation waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -43653,6 +48935,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Unit. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -43750,6 +49050,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -43835,6 +49153,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Unit. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -44082,6 +49418,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ExtendedResource needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedResource waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -44184,6 +49538,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ExtendedResource. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedResource needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedResource waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -44418,6 +49790,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ReviewComment needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -44506,6 +49896,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ReviewComment. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -44616,6 +50024,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ReviewComment needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -44706,6 +50132,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ReviewComment. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -44805,6 +50249,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ReviewComment. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -44919,6 +50381,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing ReviewComment. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ReviewComment waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -45160,6 +50640,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ExtendedRevision needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedRevision waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -45263,6 +50761,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something ExtendedRevision needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something ExtendedRevision waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -45344,6 +50860,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Revision needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Revision waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -45418,6 +50952,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Revision. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Revision needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Revision waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -45650,6 +51202,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -45740,6 +51310,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing View. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -45848,6 +51436,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -45936,6 +51542,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing View. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -46033,6 +51657,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing View. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -46166,6 +51808,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -46238,6 +51898,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing View. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -46333,6 +52011,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing View. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -46555,6 +52251,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Tag. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -46847,6 +52561,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Tag needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -47042,6 +52774,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Tag. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -47270,6 +53020,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Tag needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -47461,6 +53229,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Tag needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Tag waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -47510,7 +53296,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -47683,6 +53469,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -47732,7 +53536,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -48033,6 +53837,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -48082,7 +53904,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -48237,6 +54059,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -48286,7 +54126,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -48479,6 +54319,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -48528,7 +54386,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+                 *     Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
                  *
                  *     The whole string must be query-encoded.
                  */
@@ -48663,6 +54521,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Target. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Target waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -48887,6 +54763,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Trigger. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -49269,6 +55163,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -49466,6 +55378,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Trigger. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -49738,6 +55668,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -49922,6 +55870,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Trigger. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Trigger waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -50165,6 +56131,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -50380,7 +56364,7 @@ export interface operations {
                  *     An example conjunction is:
                  *     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
                  *
-                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+                 *     Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
                  *
                  *     Where expression to filter outgoing links (links to units outside the cloned set) for copying. If non-empty, matching outgoing links are also copied with FromUnitID retargeted to the cloned unit.
                  *
@@ -50518,6 +56502,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Unit. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -50738,6 +56740,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -50869,6 +56889,8 @@ export interface operations {
                 inherited_guards?: string;
                 /** @description Merge the range as one rebased diff and record it as one Revision, instead of walking it. By default a merge replays: it takes the source's Revisions in order and, where a Revision records function invocations that can be re-executed, runs them against this Unit rather than rebasing their recorded paths onto it -- so a change lands where this Unit's own structure puts it -- and records each source Revision that has an effect here as a Revision of its own, carrying that Revision's change description, its own conflicts, and one Mutation per source Mutation. Squashing gives up both: the range arrives as a single rebased patch in a single Revision, which is what a merge did before replay existed. Accepted with upgrade, merge_source, and resolve of an UpgradeUnit or MergeUnits Link, and refused elsewhere, since there is no range to walk. A Link can ask for it standingly with its Squash field. */
                 squash?: boolean;
+                /** @description Take back a range of the Unit's own Revisions, keeping what came after it, as git revert does. Requires merge_source Self, with merge_base naming the last Revision to take back and merge_end the Revision before the first -- the range reversed -- and implies squash. A Unit on which the range resolves to run forwards is refused, rather than having the range re-applied as a forward self merge would; one on which it is empty is left unchanged. The Revision written is described by the Revisions it reverted unless a change description is given. */
+                revert?: boolean;
                 /** @description Upgrade the unit to the latest version of its upstream unit */
                 upgrade?: boolean;
                 /** @description Restore revision source. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
@@ -50881,6 +56903,8 @@ export interface operations {
                 merge_base?: string;
                 /** @description Merge end revision of the merge source, which provides the final configuration of the changes to merge. Also accepted with upgrade and with resolve, where it names how far along the source to take the propagation; the default there is the source's head. Naming a ChangeSet or Tag that ends a change is what leaves a change still being made at the source behind. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
                 merge_end?: string;
+                /** @description The upstream revisions to take, with upgrade or resolve, instead of everything the Link has not merged: cherry-picking. A comma-separated list, each entry a revision, which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>; each end as merge_end takes one. The union is taken in order; revisions the Link has merged already are passed over, and so is every other revision, which stays pending or skipped. A skipped revision named is taken, and its skip removed. An entry naming nothing the upstream unit carries names nothing there, but naming no revision of it at all is refused, and so is taking part of a ChangeSet without the rest. The Link's UpstreamLastMergedRevisionNum stays where it was; the revisions taken above it are listed in its UpstreamMergedAbove. The response's MergeSelections say, for each Link, what was taken, which skips that overrode, and which earlier pending revisions wrote some of the same paths. Only UpgradeUnit and MergeUnits Links take part; cannot be used with change_order or merge_end. */
+                merge_revisions?: string;
                 /** @description Identifier of the external source for merge-on-update. When set, computes mutations between the last MergeExternal revision and the provided data, then patches the current unit data with those mutations. */
                 merge_external_source?: string;
                 /** @description Enable the subtraction (override-preservation) step of upgrade and merge_source. By default (false), the source patch is applied without subtraction and the target's local differences are preserved by the stored Mutation Protected values; set true to additionally subtract the target's local differences from the source patch. Has no effect on a self merge (merge_source=Self), where subtraction is always disabled. */
@@ -51087,6 +57111,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -51273,6 +57315,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Unit. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -51473,6 +57533,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Unit. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -51696,6 +57774,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Unit. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -51931,6 +58027,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -52143,6 +58257,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing Unit. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -52378,6 +58510,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something Unit needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Unit waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -52488,6 +58638,15 @@ export interface operations {
             };
             /** @description Something went wrong while processing Upload. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something Upload needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -52716,6 +58875,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something User needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something User waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -52798,6 +58975,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing User. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something User needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something User waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -53020,6 +59215,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing View. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -53378,6 +59591,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -53573,6 +59804,24 @@ export interface operations {
             };
             /** @description Something went wrong while processing View. */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -53821,6 +60070,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -54012,6 +60279,24 @@ export interface operations {
                     "application/json": components["schemas"]["StandardErrorResponse"];
                 };
             };
+            /** @description Something View needs is not available now, such as a client holding a Channel a function runs on. Retry later. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
+            /** @description Something View waited on did not answer in time, such as a function run on a Channel. */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StandardErrorResponse"];
+                };
+            };
             /** @description Unexpected error. */
             default: {
                 headers: {
@@ -54031,6 +60316,12 @@ export enum PathsAttestationGetParametersQueryWhere_permission {
     View = "View"
 }
 export enum PathsAttributeGetParametersQueryWhere_permission {
+    Manage = "Manage",
+    Edit = "Edit",
+    Use = "Use",
+    View = "View"
+}
+export enum PathsAudit_eventGetParametersQueryWhere_permission {
     Manage = "Manage",
     Edit = "Edit",
     Use = "Use",
@@ -54405,6 +60696,22 @@ export enum PathsViewGetParametersQueryWhere_permission {
 export enum AttestationResult {
     Pass = "Pass",
     Fail = "Fail"
+}
+export enum AuditEventOrigin {
+    API = "API",
+    AdminCLI = "AdminCLI",
+    IdentityCLI = "IdentityCLI",
+    Trigger = "Trigger",
+    Resolve = "Resolve",
+    ChangeOrder = "ChangeOrder",
+    Migration = "Migration",
+    System = "System"
+}
+export enum AuditGrantSource {
+    Role = "Role",
+    SpaceGrant = "SpaceGrant",
+    EntityPermissions = "EntityPermissions",
+    Group = "Group"
 }
 export enum ChangeOrderPriorRevisions {
     Include = "Include",

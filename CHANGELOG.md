@@ -7,6 +7,63 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.11.12 — 2026-11-22
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: AuditEvents, a record of each action on an entity:
+  who made it, under what authority, to which entity, and when. New operations: `listAuditEvents`
+  and `getAuditEvent`, which read only; an admin reads every event of the Organization, and anyone
+  else only their own. New types: `AuditEvent`, `ExtendedAuditEvent` and `AuditGrant`.
+
+### API
+
+Compared with ConfigHub `v0.11.11`:
+
+#### Added (50)
+
+- path `/audit_event`
+- path `/audit_event/{audit_event_id}`
+- path `/function/reduce`
+- path `/space/{space_id}/function/reduce`
+- parameter `skip_revisions` on `PATCH /link`
+- parameter `unskip_revisions` on `PATCH /link`
+- parameter `skip_reason` on `PATCH /link`
+- parameter `decline_skips` on `PATCH /link`
+- parameter `skip_revisions` on `PATCH /space/{space_id}/link/{link_id}`
+- parameter `unskip_revisions` on `PATCH /space/{space_id}/link/{link_id}`
+- parameter `skip_reason` on `PATCH /space/{space_id}/link/{link_id}`
+- parameter `decline_skips` on `PATCH /space/{space_id}/link/{link_id}`
+- parameter `skip_revisions` on `PUT /space/{space_id}/link/{link_id}`
+- parameter `unskip_revisions` on `PUT /space/{space_id}/link/{link_id}`
+- parameter `skip_reason` on `PUT /space/{space_id}/link/{link_id}`
+- parameter `decline_skips` on `PUT /space/{space_id}/link/{link_id}`
+- parameter `revert` on `PATCH /space/{space_id}/unit/{unit_id}`
+- parameter `merge_revisions` on `PATCH /space/{space_id}/unit/{unit_id}`
+- parameter `revert` on `PUT /space/{space_id}/unit/{unit_id}`
+- parameter `merge_revisions` on `PUT /space/{space_id}/unit/{unit_id}`
+- parameter `revert` on `PATCH /unit`
+- parameter `merge_revisions` on `PATCH /unit`
+- field `FunctionSignature.InputType`
+- field `Link.UpstreamMergedAbove`
+- field `Link.UpstreamSkipped`
+- field `PromoteRequest.Revisions`
+- field `PromoteUnitResult.MergeSelections`
+- field `Release.ValidationFailedUnitIDs`
+- field `Release.ValidationResults`
+- field `Release.ValidationWarnings`
+- field `ReleasePublishResponse.HeldBack`
+- field `Resource.RevisionRef`
+- field `Target.TriggerOtherUnitIDs`
+- field `UnitCreateOrUpdateResponse.MergeSelections`
+- field `UnitTagRequest.ChangeOrderID`
+- field `UnitTagRequest.SpaceFilterID`
+- field `UnitTagRequest.TargetStage`
+- field `UnitTagRequest.WhereSpace`
+- schema `AuditEvent`
+- schema `AuditGrant`
+- …and 10 more
+
 ## 0.11.11 — 2026-11-20
 
 ### API

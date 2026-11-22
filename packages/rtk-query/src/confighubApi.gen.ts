@@ -9,6 +9,7 @@ export const addTagTypes = [
   "Attest",
   "Attestation",
   "Attribute",
+  "AuditEvent",
   "ChangeOrder",
   "ChangeSet",
   "ChangeWorkflow",
@@ -356,6 +357,39 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Attribute"],
       }),
+      listAuditEvents: build.query<
+        ListAuditEventsApiResponse,
+        ListAuditEventsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/audit_event`,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include: queryArg.include,
+            select: queryArg.select,
+            where_permission: queryArg.wherePermission,
+            view: queryArg.view,
+            limit: queryArg.limit,
+            order_by: queryArg.orderBy,
+            continue: queryArg["continue"],
+          },
+        }),
+        providesTags: ["AuditEvent"],
+      }),
+      getAuditEvent: build.query<GetAuditEventApiResponse, GetAuditEventApiArg>(
+        {
+          query: (queryArg) => ({
+            url: `/audit_event/${queryArg.auditEventId}`,
+            params: {
+              include: queryArg.include,
+              select: queryArg.select,
+            },
+          }),
+          providesTags: ["AuditEvent"],
+        },
+      ),
       bulkDeleteChangeOrders: build.mutation<
         BulkDeleteChangeOrdersApiResponse,
         BulkDeleteChangeOrdersApiArg
@@ -1144,6 +1178,30 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Function"],
       }),
+      reduceFunctionsOnOrg: build.mutation<
+        ReduceFunctionsOnOrgApiResponse,
+        ReduceFunctionsOnOrgApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/function/reduce`,
+          method: "POST",
+          body: queryArg.functionReduceRequest,
+          params: {
+            executor_space: queryArg.executorSpace,
+            where: queryArg.where,
+            filter: queryArg.filter,
+            include_hidden: queryArg.includeHidden,
+            resource_type: queryArg.resourceType,
+            where_data: queryArg.whereData,
+            where_data_engine: queryArg.whereDataEngine,
+            where_trigger: queryArg.whereTrigger,
+            trigger_filter: queryArg.triggerFilter,
+            triggers_passed: queryArg.triggersPassed,
+            view: queryArg.view,
+          },
+        }),
+        invalidatesTags: ["Function"],
+      }),
       listGroups: build.query<ListGroupsApiResponse, ListGroupsApiArg>({
         query: (queryArg) => ({
           url: `/group`,
@@ -1370,6 +1428,10 @@ const injectedRtkApi = api
             limit: queryArg.limit,
             continue: queryArg["continue"],
             reverse: queryArg.reverse,
+            skip_revisions: queryArg.skipRevisions,
+            unskip_revisions: queryArg.unskipRevisions,
+            skip_reason: queryArg.skipReason,
+            decline_skips: queryArg.declineSkips,
             with_backing_units: queryArg.withBackingUnits,
             from_backing_units: queryArg.fromBackingUnits,
             dry_run: queryArg.dryRun,
@@ -2888,6 +2950,29 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Function"],
       }),
+      reduceFunctions: build.mutation<
+        ReduceFunctionsApiResponse,
+        ReduceFunctionsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/function/reduce`,
+          method: "POST",
+          body: queryArg.functionReduceRequest,
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            include_hidden: queryArg.includeHidden,
+            resource_type: queryArg.resourceType,
+            where_data: queryArg.whereData,
+            where_data_engine: queryArg.whereDataEngine,
+            where_trigger: queryArg.whereTrigger,
+            trigger_filter: queryArg.triggerFilter,
+            triggers_passed: queryArg.triggersPassed,
+            view: queryArg.view,
+          },
+        }),
+        invalidatesTags: ["Function"],
+      }),
       listInvocations: build.query<
         ListInvocationsApiResponse,
         ListInvocationsApiArg
@@ -3055,6 +3140,10 @@ const injectedRtkApi = api
           body: queryArg.body,
           params: {
             reverse: queryArg.reverse,
+            skip_revisions: queryArg.skipRevisions,
+            unskip_revisions: queryArg.unskipRevisions,
+            skip_reason: queryArg.skipReason,
+            decline_skips: queryArg.declineSkips,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -3066,6 +3155,10 @@ const injectedRtkApi = api
           method: "PUT",
           body: queryArg.link,
           params: {
+            skip_revisions: queryArg.skipRevisions,
+            unskip_revisions: queryArg.unskipRevisions,
+            skip_reason: queryArg.skipReason,
+            decline_skips: queryArg.declineSkips,
             dry_run: queryArg.dryRun,
           },
         }),
@@ -3558,12 +3651,14 @@ const injectedRtkApi = api
             guards: queryArg.guards,
             inherited_guards: queryArg.inheritedGuards,
             squash: queryArg.squash,
+            revert: queryArg.revert,
             upgrade: queryArg.upgrade,
             restore: queryArg.restore,
             resolve: queryArg.resolve,
             merge_source: queryArg.mergeSource,
             merge_base: queryArg.mergeBase,
             merge_end: queryArg.mergeEnd,
+            merge_revisions: queryArg.mergeRevisions,
             merge_external_source: queryArg.mergeExternalSource,
             merge_enable_subtraction: queryArg.mergeEnableSubtraction,
             where_mutation: queryArg.whereMutation,
@@ -3593,12 +3688,14 @@ const injectedRtkApi = api
             guards: queryArg.guards,
             inherited_guards: queryArg.inheritedGuards,
             squash: queryArg.squash,
+            revert: queryArg.revert,
             upgrade: queryArg.upgrade,
             restore: queryArg.restore,
             resolve: queryArg.resolve,
             merge_source: queryArg.mergeSource,
             merge_base: queryArg.mergeBase,
             merge_end: queryArg.mergeEnd,
+            merge_revisions: queryArg.mergeRevisions,
             merge_external_source: queryArg.mergeExternalSource,
             merge_enable_subtraction: queryArg.mergeEnableSubtraction,
             where_mutation: queryArg.whereMutation,
@@ -4451,12 +4548,14 @@ const injectedRtkApi = api
             guards: queryArg.guards,
             inherited_guards: queryArg.inheritedGuards,
             squash: queryArg.squash,
+            revert: queryArg.revert,
             upgrade: queryArg.upgrade,
             restore: queryArg.restore,
             resolve: queryArg.resolve,
             merge_source: queryArg.mergeSource,
             merge_base: queryArg.mergeBase,
             merge_end: queryArg.mergeEnd,
+            merge_revisions: queryArg.mergeRevisions,
             merge_external_source: queryArg.mergeExternalSource,
             merge_enable_subtraction: queryArg.mergeEnableSubtraction,
             where_mutation: queryArg.whereMutation,
@@ -6457,6 +6556,150 @@ export type BulkMoveAttributesApiArg = {
   /** Report what the move would do, and what would stop it, without moving anything */
   dryRun?: boolean;
   moveRequest: MoveRequest;
+};
+export type ListAuditEventsApiResponse =
+  /** status 200 OK */ ExtendedAuditEventRead[];
+export type ListAuditEventsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of AuditEvents returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on AuditEvent: Action, AuditEventID, Grants, OccurredAt, OnBehalfOfUserID, OrganizationID, Origin, Outcome, RequestID, Role, SpaceID, SubjectEntityID, SubjectEntityType, UserID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the AuditEvent list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (AuditEvent).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for AuditEvent include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Include clause for expanding related entities in the response for AuditEvent.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for AuditEvent are OrganizationID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Select clause for specifying which fields to include in the response for AuditEvent.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, AuditEventID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
+  /** Only return AuditEvent entities on which the caller has this permission, as well as View, which every entity listed needs.
+    
+    A list made to choose an entity to act on can name the permission the action needs, such as Edit to change it or Use to refer to it from another entity, so that it leaves out the entities the action would be refused on.
+    
+    Supported values: Manage, Edit, Use, View. */
+  wherePermission?: "Manage" | "Edit" | "Use" | "View";
+  /** UUID of a View whose columns to compute for each AuditEvent, returned as ViewColumns.
+    
+    The View must be in the same Organization as the user credentials, and be a View of AuditEvent: its Of, or the From of its Filter, must be AuditEvent.
+    
+    If the View has a Filter, the Filter selects the entities as the filter parameter does, so the two may not both be specified.
+    
+    The related entities and fields the View's columns read are included and selected automatically, so neither include nor select has to name them. */
+  view?: string;
+  /** Maximum number of AuditEvent entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
+  limit?: number;
+  /** Comma-separated list of fields to sort AuditEvent results by, each in the form 'ASC|DESC:FieldName' or just 'FieldName'.
+    
+    Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
+    
+    Supported attributes for ordering AuditEvent: Action, AuditEventID, OccurredAt, OnBehalfOfUserID, OrganizationID, Origin, Outcome, RequestID, Role, SpaceID, SubjectEntityID, SubjectEntityType, UserID.
+    
+    Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
+    
+    Results are ordered by the AuditEvent's ID after the fields named, and by the ID alone if none are.
+    
+    The whole string must be query-encoded. */
+  orderBy?: string;
+  /** The token from the ConfigHub-Continue header of the previous page, to return the AuditEvent entities after it.
+    
+    The request's other parameters, except limit, must be the same as those of the request that returned the token.
+    
+    Keep reading until a response has no such header: a page can hold fewer entities than the limit, or none, and still be followed by more. */
+  continue?: string;
+};
+export type GetAuditEventApiResponse =
+  /** status 200 AuditEvent with additional related entities expanded based on the request's include parameter. */ ExtendedAuditEventRead;
+export type GetAuditEventApiArg = {
+  /** Include clause for expanding related entities in the response for AuditEvent.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for AuditEvent are OrganizationID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Select clause for specifying which fields to include in the response for AuditEvent.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    If not specified, all fields are returned.
+    Entity and parent IDs (like OrganizationID, SpaceID, AuditEventID) and Slug are always returned regardless of the select parameter.
+    Fields used in where and contains filters, fields named by order_by, and fields read by the columns of the View named by view are also automatically included.
+    Example: 'DisplayName,CreatedAt,Labels' will return only those fields plus the required ID and Slug fields.
+    The whole string must be query-encoded. */
+  select?: string;
+  /** Unique identifier for a audit_event_id */
+  auditEventId: string;
 };
 export type BulkDeleteChangeOrdersApiResponse =
   | /** status 200 OK */ DeleteResponse[]
@@ -10275,6 +10518,87 @@ export type InvokeFunctionsOnOrgApiArg = {
   view?: string;
   functionInvocationsRequest: FunctionInvocationsRequest;
 };
+export type ReduceFunctionsOnOrgApiResponse =
+  /** status 200 OK */ FunctionReduceResponse;
+export type ReduceFunctionsOnOrgApiArg = {
+  /** Space ID or slug whose executor to use for listing or invoking builtin functions */
+  executorSpace?: string;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Unit list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Unit).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
+  resourceType?: string;
+  /** Where data: The specified string is an expression for the purpose of evaluating whether the configuration data matches the filter. It supports conjunctions using `AND` of relational expressions of the form *path* *operator* *literal*. The path specifications are dot-separated, for both map fields and array indices, as in `spec.template.spec.containers.0.image = 'ghcr.io/headlamp-k8s/headlamp:latest' AND spec.replicas > 1`. Path expressions support `*` for wildcard array or map segments and `?key=value` syntax for associative matches of array elements containing objects with a `key` attribute. Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `!~`, `~*`, `!~*`, `IN`, `NOT IN`. String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards, `ILIKE` for case-insensitive pattern matching, `!~~` for NOT LIKE. String regex operators: `~` for regex matching, `~*` for case-insensitive regex, `!~` and `!~*` for regex not matching (case-sensitive and insensitive). Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`. Boolean values support equality and inequality only. The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses, such as `spec.template.spec.containers.0.image#reference IN (':latest', ':arm64-latest')`. The syntax `.|` splits the path: the left side selects, and the right side is a property of what was selected. On the right side of a `.|`, and only there, `!=` is true when the property is absent: `spec.containers.*.|image != 'nginx'` selects the containers and asks that none of their images be nginx, which a container with no image satisfies. Everywhere else a path that is not present is not a match, `!=` included. String literals are quoted with single quotes, such as `'string'`. Integer and boolean literals are also supported for attributes of those types. The whole string must be query-encoded. */
+  whereData?: string;
+  /** Which engine answers where_data and resource_type: `sql` (the default) evaluates the expression against the stored resource projection in a single query, falling back to the function engine for the expressions it cannot translate; `function` invokes the where-filter function on each candidate Unit, reading every one's configuration; `shadow` runs both, answers with `function`, and logs any disagreement. Temporary: `function` is the escape hatch for one release, after which this parameter goes away. */
+  whereDataEngine?: string;
+  /** Where expression to match Triggers. Matched triggers are invoked on each unit to filter by validation results. Use with triggers_passed to control whether passing or failing units are returned (default: failing). */
+  whereTrigger?: string;
+  /** Filter UUID (with From=Trigger). The filter's matching triggers are invoked on units to filter by validation results. Can be combined with where_trigger. */
+  triggerFilter?: string;
+  /** When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
+  triggersPassed?: boolean;
+  /** UUID of a View of Unit. Its Filter selects the Units as the filter parameter does, so the two may not both be specified. */
+  view?: string;
+  functionReduceRequest: FunctionReduceRequest;
+};
 export type ListGroupsApiResponse = /** status 200 OK */ ExtendedGroupRead[];
 export type ListGroupsApiArg = {
   /** The specified string is an expression for the purpose of filtering
@@ -11157,7 +11481,7 @@ export type BulkDeleteLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -11249,7 +11573,7 @@ export type SearchListLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -11379,7 +11703,7 @@ export type BulkPatchLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -11433,6 +11757,14 @@ export type BulkPatchLinksApiArg = {
   continue?: string;
   /** Swap the FromUnit and ToUnit directions of the links */
   reverse?: boolean;
+  /** Revisions of each link's upstream unit to skip, so that merges over the links pass over them: a comma-separated list, each entry a revision (a number, HeadRevisionNum, LastReleasedRevisionNum, or Tag:, ChangeSet:, ChangeOrder:, Release: or Revision: and an ID, any of them prefixed with Before:), which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>. Only MergeUnits and UpgradeUnit links skip revisions, and only those they have not merged; one skipped already takes the skip_reason and decline_skips given. */
+  skipRevisions?: string;
+  /** Revisions of each link's upstream unit whose skips to remove, so that the next merge takes them, as skip_revisions names them. Unskipping a revision below UpstreamLastMergedRevisionNum lowers it to just under the revision, and lists in UpstreamMergedAbove what the link took between there and where it was, so the next merge takes only what was unskipped. */
+  unskipRevisions?: string;
+  /** Why the revisions skip_revisions names are skipped, shown with them in UpstreamSkipped */
+  skipReason?: string;
+  /** Whether the skips of the revisions skip_revisions names are final: a declined skip is not to be taken later, and is not listed in UpstreamSkipped, though the link still has not merged the revision. false lists a declined skip again. Without it, a new skip is not declined and one skipped already keeps what it was. */
+  declineSkips?: boolean;
   /** Give each Link written a backing Unit if it has none: a ConfigHub/YAML Unit holding the Link's configuration, which is then kept in step with it. */
   withBackingUnits?: boolean;
   /** Patch each selected Link with what its backing Unit holds that it has not taken yet: the change to the Unit since its LastReleasedRevisionNum. The request body is applied after it. Selecting one with no backing Unit is an error, and so are outstanding ValidationErrors on a backing Unit. */
@@ -11525,7 +11857,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
     
     Where expression to select source links to copy
     
@@ -11579,7 +11911,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
     
     Where expression to find downstream UpgradeUnit links from each source link's FromUnit. Creates one copy per match. Exactly one of reverse, from_downstream_where and where_space/filter_space is required.
     
@@ -11619,7 +11951,7 @@ export type BulkCreateLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
     
     Where expression to find downstream UpgradeUnit link from each source link's ToUnit. Exactly one match required. If omitted, ToUnitID/ToSpaceID are unchanged.
     
@@ -15891,6 +16223,87 @@ export type InvokeFunctionsApiArg = {
   view?: string;
   functionInvocationsRequest: FunctionInvocationsRequest;
 };
+export type ReduceFunctionsApiResponse =
+  /** status 200 OK */ FunctionReduceResponse;
+export type ReduceFunctionsApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** The specified string is an expression for the purpose of filtering
+    the list of Units returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Unit: Annotations, ApplyGates, ApplyWarnings, ChangeSetID, Conflicts, CreatedAt, DataHash, DeleteGates, DestroyGates, DisplayName, FromLinkID, HeadRevisionID, HeadRevisionNum, HiddenReason, Labels, LastChangeDescription, LastReleasedRevisionNum, LinkFindings, MutationSources, NeededPaths, OrganizationID, PathAnnotations, Permissions, ProvidedPaths, Slug, SpaceID, TargetID, ToolchainType, UnitID, Unreleasable, UpdatedAt, UpstreamRevisionNum, UpstreamSpaceID, UpstreamUnitID, ValidationErrors, ValidationPassed, ValidationResults, ValidationSkipped, ValidationTriggerIDs, ValidationWarnings, ValueTriggerIDs, Values.
+    
+    Finding all units created by cloning can be done using the expression `UpstreamRevisionNum > 0`. Clones of a specific unit can be found by additionally filtering based on `UpstreamUnitID`. Units never released can be found using `LastReleasedRevisionNum = 0`. Units with unreleased changes can be found with `HeadRevisionNum > LastReleasedRevisionNum AND ReleaseTargetID IS NOT NULL AND Unreleasable = false`.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Unit list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Unit).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Hidden Unit entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Resource type: Resource type to match for the desired ToolchainType, for example apps/v1/Deployment */
+  resourceType?: string;
+  /** Where data: The specified string is an expression for the purpose of evaluating whether the configuration data matches the filter. It supports conjunctions using `AND` of relational expressions of the form *path* *operator* *literal*. The path specifications are dot-separated, for both map fields and array indices, as in `spec.template.spec.containers.0.image = 'ghcr.io/headlamp-k8s/headlamp:latest' AND spec.replicas > 1`. Path expressions support `*` for wildcard array or map segments and `?key=value` syntax for associative matches of array elements containing objects with a `key` attribute. Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `!~`, `~*`, `!~*`, `IN`, `NOT IN`. String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards, `ILIKE` for case-insensitive pattern matching, `!~~` for NOT LIKE. String regex operators: `~` for regex matching, `~*` for case-insensitive regex, `!~` and `!~*` for regex not matching (case-sensitive and insensitive). Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`. Boolean values support equality and inequality only. The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses, such as `spec.template.spec.containers.0.image#reference IN (':latest', ':arm64-latest')`. The syntax `.|` splits the path: the left side selects, and the right side is a property of what was selected. On the right side of a `.|`, and only there, `!=` is true when the property is absent: `spec.containers.*.|image != 'nginx'` selects the containers and asks that none of their images be nginx, which a container with no image satisfies. Everywhere else a path that is not present is not a match, `!=` included. String literals are quoted with single quotes, such as `'string'`. Integer and boolean literals are also supported for attributes of those types. The whole string must be query-encoded. */
+  whereData?: string;
+  /** Which engine answers where_data and resource_type: `sql` (the default) evaluates the expression against the stored resource projection in a single query, falling back to the function engine for the expressions it cannot translate; `function` invokes the where-filter function on each candidate Unit, reading every one's configuration; `shadow` runs both, answers with `function`, and logs any disagreement. Temporary: `function` is the escape hatch for one release, after which this parameter goes away. */
+  whereDataEngine?: string;
+  /** Where expression to match Triggers. Matched triggers are invoked on each unit to filter by validation results. Use with triggers_passed to control whether passing or failing units are returned (default: failing). */
+  whereTrigger?: string;
+  /** Filter UUID (with From=Trigger). The filter's matching triggers are invoked on units to filter by validation results. Can be combined with where_trigger. */
+  triggerFilter?: string;
+  /** When true, return units that pass trigger validation; when false (default), return units that fail. Only applies when where_trigger or trigger_filter is specified. */
+  triggersPassed?: boolean;
+  /** UUID of a View of Unit. Its Filter selects the Units as the filter parameter does, so the two may not both be specified. */
+  view?: string;
+  functionReduceRequest: FunctionReduceRequest;
+};
 export type ListInvocationsApiResponse =
   /** status 200 OK */ ExtendedInvocationRead[];
 export type ListInvocationsApiArg = {
@@ -16184,7 +16597,7 @@ export type ListLinksApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -16336,6 +16749,14 @@ export type PatchLinkApiArg = {
   linkId: string;
   /** Swap the FromUnit and ToUnit directions of the link */
   reverse?: boolean;
+  /** Revisions of the link's upstream unit to skip, so that merges over the link pass over them: a comma-separated list, each entry a revision (a number, HeadRevisionNum, LastReleasedRevisionNum, or Tag:, ChangeSet:, ChangeOrder:, Release: or Revision: and an ID, any of them prefixed with Before:), which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>. Only MergeUnits and UpgradeUnit links skip revisions, and only those they have not merged; one skipped already takes the skip_reason and decline_skips given. */
+  skipRevisions?: string;
+  /** Revisions of the link's upstream unit whose skips to remove, so that the next merge takes them, as skip_revisions names them. Unskipping a revision below UpstreamLastMergedRevisionNum lowers it to just under the revision, and lists in UpstreamMergedAbove what the link took between there and where it was, so the next merge takes only what was unskipped. */
+  unskipRevisions?: string;
+  /** Why the revisions skip_revisions names are skipped, shown with them in UpstreamSkipped */
+  skipReason?: string;
+  /** Whether the skips of the revisions skip_revisions names are final: a declined skip is not to be taken later, and is not listed in UpstreamSkipped, though the link still has not merged the revision. false lists a declined skip again. Without it, a new skip is not declined and one skipped already keeps what it was. */
+  declineSkips?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   body: {
@@ -16396,6 +16817,14 @@ export type UpdateLinkApiArg = {
   spaceId: string;
   /** Unique identifier for a link_id */
   linkId: string;
+  /** Revisions of the link's upstream unit to skip, so that merges over the link pass over them: a comma-separated list, each entry a revision (a number, HeadRevisionNum, LastReleasedRevisionNum, or Tag:, ChangeSet:, ChangeOrder:, Release: or Revision: and an ID, any of them prefixed with Before:), which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>. Only MergeUnits and UpgradeUnit links skip revisions, and only those they have not merged; one skipped already takes the skip_reason and decline_skips given. */
+  skipRevisions?: string;
+  /** Revisions of the link's upstream unit whose skips to remove, so that the next merge takes them, as skip_revisions names them. Unskipping a revision below UpstreamLastMergedRevisionNum lowers it to just under the revision, and lists in UpstreamMergedAbove what the link took between there and where it was, so the next merge takes only what was unskipped. */
+  unskipRevisions?: string;
+  /** Why the revisions skip_revisions names are skipped, shown with them in UpstreamSkipped */
+  skipReason?: string;
+  /** Whether the skips of the revisions skip_revisions names are final: a declined skip is not to be taken later, and is not listed in UpstreamSkipped, though the link still has not merged the revision. false lists a declined skip again. Without it, a new skip is not declined and one skipped already keeps what it was. */
+  declineSkips?: boolean;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   link: Link;
@@ -16911,7 +17340,7 @@ export type ListTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -17667,6 +18096,8 @@ export type PatchUnitApiArg = {
   inheritedGuards?: string;
   /** Merge the range as one rebased diff and record it as one Revision, instead of walking it. By default a merge replays: it takes the source's Revisions in order and, where a Revision records function invocations that can be re-executed, runs them against this Unit rather than rebasing their recorded paths onto it -- so a change lands where this Unit's own structure puts it -- and records each source Revision that has an effect here as a Revision of its own, carrying that Revision's change description, its own conflicts, and one Mutation per source Mutation. Squashing gives up both: the range arrives as a single rebased patch in a single Revision, which is what a merge did before replay existed. Accepted with upgrade, merge_source, and resolve of an UpgradeUnit or MergeUnits Link, and refused elsewhere, since there is no range to walk. A Link can ask for it standingly with its Squash field. */
   squash?: boolean;
+  /** Take back a range of the Unit's own Revisions, keeping what came after it, as git revert does. Requires merge_source Self, with merge_base naming the last Revision to take back and merge_end the Revision before the first -- the range reversed -- and implies squash. A Unit on which the range resolves to run forwards is refused, rather than having the range re-applied as a forward self merge would; one on which it is empty is left unchanged. The Revision written is described by the Revisions it reverted unless a change description is given. */
+  revert?: boolean;
   /** Upgrade the unit to the latest version of its upstream unit */
   upgrade?: boolean;
   /** Restore revision source. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
@@ -17679,6 +18110,8 @@ export type PatchUnitApiArg = {
   mergeBase?: string;
   /** Merge end revision of the merge source, which provides the final configuration of the changes to merge. Also accepted with upgrade and with resolve, where it names how far along the source to take the propagation; the default there is the source's head. Naming a ChangeSet or Tag that ends a change is what leaves a change still being made at the source behind. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
   mergeEnd?: string;
+  /** The upstream revisions to take, with upgrade or resolve, instead of everything the Link has not merged: cherry-picking. A comma-separated list, each entry a revision, which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>; each end as merge_end takes one. The union is taken in order; revisions the Link has merged already are passed over, and so is every other revision, which stays pending or skipped. A skipped revision named is taken, and its skip removed. An entry naming nothing the upstream unit carries names nothing there, but naming no revision of it at all is refused, and so is taking part of a ChangeSet without the rest. The Link's UpstreamLastMergedRevisionNum stays where it was; the revisions taken above it are listed in its UpstreamMergedAbove. The response's MergeSelections say, for each Link, what was taken, which skips that overrode, and which earlier pending revisions wrote some of the same paths. Only UpgradeUnit and MergeUnits Links take part; cannot be used with change_order or merge_end. */
+  mergeRevisions?: string;
   /** Identifier of the external source for merge-on-update. When set, computes mutations between the last MergeExternal revision and the provided data, then patches the current unit data with those mutations. */
   mergeExternalSource?: string;
   /** Enable the subtraction (override-preservation) step of upgrade and merge_source. By default (false), the source patch is applied without subtraction and the target's local differences are preserved by the stored Mutation Protected values; set true to additionally subtract the target's local differences from the source patch. Has no effect on a self merge (merge_source=Self), where subtraction is always disabled. */
@@ -17811,6 +18244,8 @@ export type UpdateUnitApiArg = {
   inheritedGuards?: string;
   /** Merge the range as one rebased diff and record it as one Revision, instead of walking it. By default a merge replays: it takes the source's Revisions in order and, where a Revision records function invocations that can be re-executed, runs them against this Unit rather than rebasing their recorded paths onto it -- so a change lands where this Unit's own structure puts it -- and records each source Revision that has an effect here as a Revision of its own, carrying that Revision's change description, its own conflicts, and one Mutation per source Mutation. Squashing gives up both: the range arrives as a single rebased patch in a single Revision, which is what a merge did before replay existed. Accepted with upgrade, merge_source, and resolve of an UpgradeUnit or MergeUnits Link, and refused elsewhere, since there is no range to walk. A Link can ask for it standingly with its Squash field. */
   squash?: boolean;
+  /** Take back a range of the Unit's own Revisions, keeping what came after it, as git revert does. Requires merge_source Self, with merge_base naming the last Revision to take back and merge_end the Revision before the first -- the range reversed -- and implies squash. A Unit on which the range resolves to run forwards is refused, rather than having the range re-applied as a forward self merge would; one on which it is empty is left unchanged. The Revision written is described by the Revisions it reverted unless a change description is given. */
+  revert?: boolean;
   /** Upgrade the unit to the latest version of its upstream unit */
   upgrade?: boolean;
   /** Restore revision source. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
@@ -17823,6 +18258,8 @@ export type UpdateUnitApiArg = {
   mergeBase?: string;
   /** Merge end revision of the merge source, which provides the final configuration of the changes to merge. Also accepted with upgrade and with resolve, where it names how far along the source to take the propagation; the default there is the source's head. Naming a ChangeSet or Tag that ends a change is what leaves a change still being made at the source behind. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
   mergeEnd?: string;
+  /** The upstream revisions to take, with upgrade or resolve, instead of everything the Link has not merged: cherry-picking. A comma-separated list, each entry a revision, which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>; each end as merge_end takes one. The union is taken in order; revisions the Link has merged already are passed over, and so is every other revision, which stays pending or skipped. A skipped revision named is taken, and its skip removed. An entry naming nothing the upstream unit carries names nothing there, but naming no revision of it at all is refused, and so is taking part of a ChangeSet without the rest. The Link's UpstreamLastMergedRevisionNum stays where it was; the revisions taken above it are listed in its UpstreamMergedAbove. The response's MergeSelections say, for each Link, what was taken, which skips that overrode, and which earlier pending revisions wrote some of the same paths. Only UpgradeUnit and MergeUnits Links take part; cannot be used with change_order or merge_end. */
+  mergeRevisions?: string;
   /** Identifier of the external source for merge-on-update. When set, computes mutations between the last MergeExternal revision and the provided data, then patches the current unit data with those mutations. */
   mergeExternalSource?: string;
   /** Enable the subtraction (override-preservation) step of upgrade and merge_source. By default (false), the source patch is applied without subtraction and the target's local differences are preserved by the stored Mutation Protected values; set true to additionally subtract the target's local differences from the source patch. Has no effect on a self merge (merge_source=Self), where subtraction is always disabled. */
@@ -19666,7 +20103,7 @@ export type BulkDeleteTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -19760,7 +20197,7 @@ export type ListAllTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -19902,7 +20339,7 @@ export type BulkPatchTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -20031,7 +20468,7 @@ export type BulkCreateTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -20262,7 +20699,7 @@ export type BulkMoveTargetsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, UpdatedAt, UpstreamTargetID.
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
     
     The whole string must be query-encoded. */
   where?: string;
@@ -21386,6 +21823,8 @@ export type BulkPatchUnitsApiArg = {
   inheritedGuards?: string;
   /** Merge the range as one rebased diff and record it as one Revision, instead of walking it. By default a merge replays: it takes the source's Revisions in order and, where a Revision records function invocations that can be re-executed, runs them against this Unit rather than rebasing their recorded paths onto it -- so a change lands where this Unit's own structure puts it -- and records each source Revision that has an effect here as a Revision of its own, carrying that Revision's change description, its own conflicts, and one Mutation per source Mutation. Squashing gives up both: the range arrives as a single rebased patch in a single Revision, which is what a merge did before replay existed. Accepted with upgrade, merge_source, and resolve of an UpgradeUnit or MergeUnits Link, and refused elsewhere, since there is no range to walk. A Link can ask for it standingly with its Squash field. */
   squash?: boolean;
+  /** Take back a range of the Unit's own Revisions, keeping what came after it, as git revert does. Requires merge_source Self, with merge_base naming the last Revision to take back and merge_end the Revision before the first -- the range reversed -- and implies squash. A Unit on which the range resolves to run forwards is refused, rather than having the range re-applied as a forward self merge would; one on which it is empty is left unchanged. The Revision written is described by the Revisions it reverted unless a change description is given. */
+  revert?: boolean;
   /** Upgrade the unit to the latest version of its upstream unit */
   upgrade?: boolean;
   /** Restore revision source. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
@@ -21398,6 +21837,8 @@ export type BulkPatchUnitsApiArg = {
   mergeBase?: string;
   /** Merge end revision of the merge source, which provides the final configuration of the changes to merge. Also accepted with upgrade and with resolve, where it names how far along the source to take the propagation; the default there is the source's head. Naming a ChangeSet or Tag that ends a change is what leaves a change still being made at the source behind. Supports: Named revisions ('HeadRevisionNum', 'LastReleasedRevisionNum'), direct revision number (e.g., '42'), or entity references ('Tag:uuid', 'ChangeSet:uuid', 'ChangeOrder:uuid', 'Revision:uuid'). Can be prefixed with 'Before:' to select the revision immediately before the specified one (e.g., 'Before:LastReleasedRevisionNum', 'Before:42'). When using Tag or ChangeSet references, the latest revision associated with that entity is selected. 'ChangeOrder:uuid' selects the revision the change order ended at on this Unit and 'Before:ChangeOrder:uuid' the one before it began, which is what undoes a promotion however many revisions it made. */
   mergeEnd?: string;
+  /** The upstream revisions to take, with upgrade or resolve, instead of everything the Link has not merged: cherry-picking. A comma-separated list, each entry a revision, which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to>, the revisions after <from> up to and including <to>; each end as merge_end takes one. The union is taken in order; revisions the Link has merged already are passed over, and so is every other revision, which stays pending or skipped. A skipped revision named is taken, and its skip removed. An entry naming nothing the upstream unit carries names nothing there, but naming no revision of it at all is refused, and so is taking part of a ChangeSet without the rest. The Link's UpstreamLastMergedRevisionNum stays where it was; the revisions taken above it are listed in its UpstreamMergedAbove. The response's MergeSelections say, for each Link, what was taken, which skips that overrode, and which earlier pending revisions wrote some of the same paths. Only UpgradeUnit and MergeUnits Links take part; cannot be used with change_order or merge_end. */
+  mergeRevisions?: string;
   /** Identifier of the external source for merge-on-update. When set, computes mutations between the last MergeExternal revision and the provided data, then patches the current unit data with those mutations. */
   mergeExternalSource?: string;
   /** Enable the subtraction (override-preservation) step of upgrade and merge_source. By default (false), the source patch is applied without subtraction and the target's local differences are preserved by the stored Mutation Protected values; set true to additionally subtract the target's local differences from the source patch. Has no effect on a self merge (merge_source=Self), where subtraction is always disabled. */
@@ -21695,7 +22136,7 @@ export type BulkCreateUnitsApiArg = {
     An example conjunction is:
     `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
     
-    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamPaths, UpstreamSpaceID.
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
     
     Where expression to filter outgoing links (links to units outside the cloned set) for copying. If non-empty, matching outgoing links are also copied with FromUnitID retargeted to the cloned unit.
     
@@ -24334,6 +24775,97 @@ export type MoveResponse = {
 export type MoveRequest = {
   ToSpaceID?: string;
 };
+export type AuditEvent = {};
+export type AuditGrant = {
+  /** The entity the grant is on. */
+  EntityID?: string;
+  /** The type of the entity the grant is on. */
+  EntityType?: string;
+  /** The Group the grant was to, when it was to a Group. */
+  GroupID?: string;
+  /** The kind of grant, as a code: Role, SpaceGrant, EntityPermissions or Group. */
+  Source?: "Role" | "SpaceGrant" | "EntityPermissions" | "Group";
+};
+export type AuditEventRead = {
+  /** The verb, as a code: Create, Update, Patch, Delete, Move, Detach, Hide, Permission, Tag, Upload, Promote, RequestReview, DismissReview, AdvanceStage, RefreshStage, AddMember, RemoveMember, AddBotUser, RemoveBotUser, Login, TokenExchange, RefreshToken, BrowserSession, EnableUser, DisableUser, DeleteUser, EnableOrganization, DisableOrganization, DeleteOrganization, SetQuota, Grant, Revoke. The entity acted on is SubjectEntityType, and whether it was allowed is Outcome. (readonly) */
+  Action?: string;
+  /** The entity document or merge-patch fields after the action, when no Revision holds the change. (readonly) */
+  After?: any;
+  /** Uniquely identifies the AuditEvent. (readonly) */
+  AuditEventID?: string;
+  /** The entity document or merge-patch fields before the action, when no Revision holds the change. (readonly) */
+  Before?: any;
+  /** The fields the action changed. (readonly) */
+  ChangedFields?: string[];
+  /** AuditEvent. The type of the entity acted on is SubjectEntityType. (readonly) */
+  EntityType?: string;
+  /** The message the caller was given, when the action was denied or failed. (readonly) */
+  Error?: string;
+  /** The grants that allowed the action. (readonly) */
+  Grants?: AuditGrant[];
+  /** The head Revision hash of a deleted Unit. (readonly) */
+  HeadRevisionHash?: string;
+  /** The head Revision number of a deleted Unit. (readonly) */
+  HeadRevisionNum?: number | null;
+  /** When the action happened. (readonly) */
+  OccurredAt?: string;
+  /** The human a bot, Trigger, resolve or ChangeOrder stage advance acted for. (readonly) */
+  OnBehalfOfUserID?: string;
+  /** The Organization acted in. (readonly) */
+  OrganizationID?: string;
+  /** What made the action, as a code: API, AdminCLI, IdentityCLI, Trigger, Resolve, ChangeOrder, Migration or System. (readonly) */
+  Origin?:
+    | "API"
+    | "AdminCLI"
+    | "IdentityCLI"
+    | "Trigger"
+    | "Resolve"
+    | "ChangeOrder"
+    | "Migration"
+    | "System";
+  /** Whether the action was allowed and made, as a code: Succeeded, Denied or Failed. (readonly) */
+  Outcome?: string;
+  /** The ID of the request that made the action, which joins the request log. Empty outside the API. (readonly) */
+  RequestID?: string;
+  /** The Revision, of the Unit or its backing Unit, that holds the change, when one does. It may name a deleted Revision. (readonly) */
+  RevisionID?: string;
+  /** The Organization role of the User at the time. (readonly) */
+  Role?: string;
+  /** The service account that acted, when one did. (readonly) */
+  ServiceAccountID?: string;
+  /** The address the request came from. (readonly) */
+  SourceIP?: string;
+  /** The Space of the entity acted on, when it is in one. (readonly) */
+  SpaceID?: string;
+  /** The ID of the entity acted on. (readonly) */
+  SubjectEntityID?: string;
+  /** The type of the entity acted on. (readonly) */
+  SubjectEntityType?: string;
+  /** The Slug of the entity acted on, as it was at the time, since the entity may be renamed or deleted. (readonly) */
+  SubjectSlug?: string;
+  /** The User-Agent of the request. (readonly) */
+  UserAgent?: string;
+  /** The authenticated identity that acted. A bot or service account is its own User. (readonly) */
+  UserID?: string;
+  /** Always 0: an AuditEvent is never updated. (readonly) */
+  Version?: number;
+};
+export type ExtendedAuditEvent = {
+  /** The AuditEvent. */
+  AuditEvent?: AuditEvent;
+  Error?: ResponseError;
+  Organization?: Organization;
+  /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+  ViewColumns?: ViewColumn[];
+};
+export type ExtendedAuditEventRead = {
+  /** The AuditEvent. */
+  AuditEvent?: AuditEventRead;
+  Error?: ResponseError;
+  Organization?: OrganizationRead;
+  /** The values of the columns of the View named by the view parameter, in the View's column order. A column that selects several values, such as one with a wildcard, has an entry for each, all with the column's Name. */
+  ViewColumns?: ViewColumn[];
+};
 export type ChangeOrderReviewRequest = {
   /** When the review was requested, by the server's clock. A new request is stamped with the current time, and an existing one keeps its time; sending a later time than the one recorded re-requests the review, and stamps it with the current time. */
   RequestedAt?: string;
@@ -24489,7 +25021,7 @@ export type ChangeWorkflowStage = {
   Name: string;
   /** The stage's entry gates, each naming a built-in check or one declared in CustomPrerequisites. Evaluated over every Space of the stage before this one; the first stage's are evaluated over the Space the ChangeOrder resides in, and refused for Invoke and fan-out ChangeOrders, whose change is in no Space before it is promoted. */
   Prerequisites?: string[];
-  /** Gates on publishing a Release for a change order in one of the stage's Spaces, each naming one declared in AttestationPrerequisites. Evaluated over the Revisions the Release bundles. */
+  /** Gates on publishing a Release for a change order in one of the stage's Spaces, each naming one declared in AttestationPrerequisites, or Validated, which is what publishing checks of what the Release bundles -- its Revisions' ValidationErrors and its Release triggers -- shown among the gates. Evaluated over the Revisions the Release bundles. */
   ReleasePrerequisites?: string[];
   /** Selects the stage's Spaces: a where expression over Spaces, intersected with the change order's InScopeSpaceIDs. Nothing else is implied, so a workflow can be shared across components. Empty selects every Space in the change order's scope. */
   WhereSpace?: string;
@@ -25831,6 +26363,8 @@ export type FunctionSignature = {
   Idempotent?: boolean;
   /** Parts of the FunctionContext passed only to the functions that read them: Conflicts, the Unit's outstanding merge conflicts, and LinkFindings, what the resolves of its Links could not do */
   Include?: string[];
+  /** What the function reads: empty for configuration data, or AttributeValueList for a reducer, which is passed the rows of one group of a reduce instead */
+  InputType?: string;
   /** May change the configuration data */
   Mutating?: boolean;
   /** The function reads OtherData under any key its caller passes, as a general-purpose function such as vet-cel does, whose expression names the keys: such as the Units a Trigger's OtherUnitSelections pass. Besides those in OtherDataExpected */
@@ -25966,6 +26500,57 @@ export type FunctionInvocationsRequest = {
   /** WhereResource restricts which resources functions operate on using ConfigHub metadata path expressions (ConfigHub.ResourceName, ConfigHub.ResourceNameWithoutScope, ConfigHub.ResourceType, ConfigHub.ResourceCategory). */
   WhereResource?: string;
 };
+export type FunctionReduceGroup = {
+  /** Why the reducer failed on the group */
+  ErrorMessages?: string[];
+  /** The group's key, as GroupBy returned it */
+  Key: string;
+  /** The number of rows in the group */
+  NumRows: number;
+  /** The number of Units the group's rows came from */
+  NumUnits: number;
+  /** What the reducer returned for the group, as JSON of OutputType */
+  Output?: any;
+  /** The type of Output, the reducer's OutputType */
+  OutputType?: string;
+  /** True when the reducer succeeded on the group */
+  Success: boolean;
+};
+export type FunctionReduceUnitError = {
+  /** Why the map or GroupBy failed on the Unit */
+  ErrorMessages: string[] | null;
+  /** The Unit's Space */
+  SpaceID: string;
+  /** The slug of the Unit's Space */
+  SpaceSlug: string;
+  /** The Unit */
+  UnitID: string;
+  /** The Unit's slug */
+  UnitSlug: string;
+};
+export type FunctionReduceResponse = {
+  /** The reducer's output for each group, in order of key */
+  Groups: FunctionReduceGroup[] | null;
+  /** The number of rows the map returned */
+  NumRows: number;
+  /** The number of Units the map was run on */
+  NumUnits: number;
+  /** True when no Unit was left out and the reducer succeeded on every group */
+  Success: boolean;
+  /** The Units left out because the map or GroupBy failed on them, whose rows are in no group */
+  UnitErrors?: FunctionReduceUnitError[];
+};
+export type FunctionReduceRequest = {
+  FunctionInvocations?: FunctionInvocationList;
+  /** CEL expression evaluated on each row, as row, returning the key of the row's group as a string, or a list of keys for a row that belongs to several groups, such as an Ingress row in the group of each of its hosts. row has the fields of the value returned (ResourceName, ResourceType, Path, Value, AttributeName, DataType, FunctionName) and Origin (UnitID, UnitSlug, UnitLabels, SpaceID, SpaceSlug, SpaceLabels, TargetID, TargetSlug, TargetSpaceSlug, RevisionNum), every one of which is present: the label maps are empty when there are none, and TargetID is null and the Target's slugs empty for a Unit with no Target. A Target's slug is unique only within its Space. For example row.Origin.TargetSpaceSlug + "/" + row.Origin.TargetSlug, or row.Origin.SpaceLabels[?"Environment"].orValue(""), which reads a label a Space may not have. A Unit with a row the expression fails on, such as one reading a missing label without ?, is reported in UnitErrors, and none of its rows is grouped. Empty puts every row in one group, whose key is empty. */
+  GroupBy?: string;
+  /** The reducer, run once per group on the group's rows: a function whose InputType is AttributeValueList, such as reduce-starlark */
+  Reduce?: FunctionInvocation;
+  /** The ToolchainType of the Units to run the map on, and whose reducer is run. Units of other ToolchainTypes are not selected. Defaults to Kubernetes/YAML. */
+  ToolchainType?: string;
+  /** Restricts which resources the map's functions read, using ConfigHub metadata path expressions (ConfigHub.ResourceName, ConfigHub.ResourceNameWithoutScope, ConfigHub.ResourceType, ConfigHub.ResourceCategory) and resource paths. The map runs only on the Units selected that the Resource index says hold such a resource, without reading each Unit's configuration, and on any whose resources the index has not recorded. */
+  WhereResource?: string;
+};
 export type ExtendedGroup = {
   Error?: ResponseError;
   /** The Group. */
@@ -26084,7 +26669,7 @@ export type LinkFinding = {
   LinkID?: string;
   /** The path the finding is about; empty for a resource-level finding */
   Path?: string;
-  /** What the resolve could not do: NeededNotFound, ProvidedNotFound, or ResolveFailed */
+  /** What the resolve could not do: NeededNotFound, ProvidedNotFound, ResolveFailed, or ReferenceNotFound */
   Reason?: string;
   /** The resource the finding is about, in the Unit Reason names; empty for a finding about the resolve as a whole */
   Resource?: ResourceInfo;
@@ -26426,7 +27011,7 @@ export type Link = {
   UpdateType?: string;
   /** Getter function invocations whose first AttributeValue Value is exposed to DownstreamPaths expressions and DownstreamSetters argument templates by Name, alongside UpstreamPaths. Each function must be non-mutating and produce OutputTypeAttributeValueList. Functions served on a Channel are not supported. Only valid when UpdateType is TransformPaths. */
   UpstreamGetters?: NamedFunctionResult[];
-  /** The RevisionNum of the last merged upstream revision. */
+  /** The RevisionNum of the last merged upstream revision. On a MergeUnits or UpgradeUnit Link, every upstream Revision at or below it has been merged or skipped, and UpstreamSkipped says which were skipped; above it, UpstreamMergedAbove lists what was merged out of order. It moves on past the Revisions just above it that need nothing merged -- skipped, merged out of order, or changing nothing -- so the Link is Stale exactly when it has something to take. Moving it forward by an update records the Revisions it passes as skipped. */
   UpstreamLastMergedRevisionNum?: number;
   /** Values to read from the upstream Unit when resolving a TransformPaths Link. Each NamedPath is read via get-paths and made available to DownstreamPaths expressions by its Name. Only valid when UpdateType is TransformPaths. */
   UpstreamPaths?: NamedPath[];
@@ -26436,6 +27021,18 @@ export type Link = {
   WhereMutation?: string;
   /** Where expression used to select which resources of the upstream Unit should be eligible for propagation to the downstream Unit. */
   WhereResource?: string;
+};
+export type LinkSkippedRevisions = {
+  /** When the first Revision of the run was recorded as skipped. */
+  CreatedAt?: string;
+  /** The skips are declined: final, not to be taken later. Declined skips are listed only above UpstreamLastMergedRevisionNum, where they still decide what the next merge takes. */
+  Declined?: boolean;
+  /** The upstream Unit's RevisionNum the run starts at. */
+  FromRevisionNum?: number;
+  /** What moved the merge pointer past the Revisions. */
+  Reason?: string;
+  /** The upstream Unit's RevisionNum the run ends at, inclusive. */
+  ToRevisionNum?: number;
 };
 export type LinkRead = {
   /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -26511,12 +27108,16 @@ export type LinkRead = {
   UpdatedAt?: string;
   /** Getter function invocations whose first AttributeValue Value is exposed to DownstreamPaths expressions and DownstreamSetters argument templates by Name, alongside UpstreamPaths. Each function must be non-mutating and produce OutputTypeAttributeValueList. Functions served on a Channel are not supported. Only valid when UpdateType is TransformPaths. */
   UpstreamGetters?: NamedFunctionResult[];
-  /** The RevisionNum of the last merged upstream revision. */
+  /** The RevisionNum of the last merged upstream revision. On a MergeUnits or UpgradeUnit Link, every upstream Revision at or below it has been merged or skipped, and UpstreamSkipped says which were skipped; above it, UpstreamMergedAbove lists what was merged out of order. It moves on past the Revisions just above it that need nothing merged -- skipped, merged out of order, or changing nothing -- so the Link is Stale exactly when it has something to take. Moving it forward by an update records the Revisions it passes as skipped. */
   UpstreamLastMergedRevisionNum?: number;
   /** Link ID of the link this link was cloned from (if any). */
   UpstreamLinkID?: string;
+  /** The upstream Revisions this Link merged above UpstreamLastMergedRevisionNum, out of order, in order. Recorded when a skip below UpstreamLastMergedRevisionNum is removed: the pointer is lowered to just under the Revision unskipped, and what the Link took between there and where the pointer was is listed here, so the next merge takes only the Revision unskipped. Dropped once the pointer passes them. */
+  UpstreamMergedAbove?: number[];
   /** Values to read from the upstream Unit when resolving a TransformPaths Link. Each NamedPath is read via get-paths and made available to DownstreamPaths expressions by its Name. Only valid when UpdateType is TransformPaths. */
   UpstreamPaths?: NamedPath[];
+  /** The upstream Revisions this Link passed over without merging them, as runs of consecutive RevisionNums skipped for one reason, oldest first, each with why: the reason given when they were skipped by name (skip_revisions), or what moved the merge pointer past them -- an update of UpstreamLastMergedRevisionNum, a ChangeOrder promoted with PriorRevisions Skip, or a ChangeOrder restored upstream. Every merge over the Link passes over them, except a ChangeOrder's promotion, which takes its interval whole. A Revision that changed nothing is not recorded, and a declined skip is listed, marked Declined, only while it is above UpstreamLastMergedRevisionNum. Recorded only for MergeUnits and UpgradeUnit Links, and kept, below UpstreamLastMergedRevisionNum too, until the Link is moved to other Units or reversed, which clears them. */
+  UpstreamSkipped?: LinkSkippedRevisions[];
   /** Space ID of the link this link was cloned from (if any). */
   UpstreamSpaceID?: string;
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
@@ -26692,7 +27293,7 @@ export type PromoteGateResult = {
   Message?: string;
   /** Promoted, Validated, Released, Healthy, or the name of a custom or attestation prerequisite. */
   Prerequisite?: string;
-  /** Why the gate does not hold, as a code: NotPromoted, PreviousStageEmpty, NotReleased, ValidationErrors, NotMarked, NoReleaseTarget, NoRelease, NoLiveStatus, NotSynced, Deploying, DeployFailed, Unhealthy, AttestationsMissing, AttestationRejected, ExpressionFalse, EvaluationFailed, or UnknownPrerequisite. A client that does not know a code shows Message. */
+  /** Why the gate does not hold, as a code: NotPromoted, PreviousStageEmpty, NotReleased, ValidationErrors, NotChecked, NotMarked, NoReleaseTarget, NoRelease, NoLiveStatus, NotSynced, Deploying, DeployFailed, Unhealthy, AttestationsMissing, AttestationRejected, ExpressionFalse, EvaluationFailed, or UnknownPrerequisite. A client that does not know a code shows Message. */
   Reason?: string;
   Satisfied?: boolean;
   SpaceID?: string;
@@ -26714,6 +27315,32 @@ export type PromoteLinkResult = {
   ToUnitSlug?: string;
   UpstreamLinkID?: string;
 };
+export type MergeOverlap = {
+  /** The paths both wrote; empty for a change to the resource as a whole. */
+  Paths?: string[] | null;
+  /** The earlier upstream RevisionNum left pending that wrote some of the same paths. */
+  PendingRevisionNum?: number;
+  /** The resource both wrote. */
+  ResourceName?: string;
+  /** The upstream RevisionNum taken. */
+  RevisionNum?: number;
+};
+export type MergeSkipOverridden = {
+  /** Why it had been skipped. */
+  Reason?: string;
+  /** The upstream RevisionNum. */
+  RevisionNum?: number;
+};
+export type MergeSelection = {
+  /** The Link the Revisions were taken over. */
+  LinkID?: string;
+  /** Pending upstream Revisions, earlier than a Revision taken and not taken with it, that wrote some of the same paths, by MutationSources. Taking a Revision ahead of one it overlaps applies its change to content that does not have the earlier one. */
+  Overlaps?: MergeOverlap[];
+  /** The Revisions taken that the Link had skipped, with the reason each was skipped; taking one removes its skip. */
+  SkipsOverridden?: MergeSkipOverridden[];
+  /** The upstream RevisionNums taken, in order: those named that the Link had not merged already. */
+  Taken?: number[];
+};
 export type PromoteUnitResult = {
   /** Upgrade, Resolve, Mark, Empty, Revive, Clone, Invoke, Unchanged, or Skip. */
   Action?: string;
@@ -26727,11 +27354,13 @@ export type PromoteUnitResult = {
   HeadRevisionNum?: number;
   /** For a Resolve, and a Mark made by one, the Links resolved. */
   LinkIDs?: Uuid[];
+  /** With Revisions, what the Unit's upgrade took, or on a dry run would take: the upstream revisions, the skips that overrode, and the earlier pending revisions that wrote some of the same paths. */
+  MergeSelections?: MergeSelection[];
   /** What the write changed, or on a dry run would change: the entries of the Unit's MutationSources it produced. Returned when include names Mutations. */
   Mutations?: ResourceMutationList;
   PreviousHeadMutationNum?: number;
   PreviousHeadRevisionNum?: number;
-  /** For Skip and Unchanged: NotCovered, CreatedAfterChangeOrder, AlreadyTaken, NotChanged when the change does not change the Unit, or CreatedInSpace when the Unit was created in this Space rather than cloned into it. A Unit in the Space that the change does not change is marked once the Space's writes are done, with both Tags on the Revision the ChangeOrder's PriorRevisions names. For an applied Upgrade or Resolve: NoChange, when the Unit already held the change, so no Revision was made and the ChangeOrder's Tags mark its head. */
+  /** For Skip and Unchanged: NotCovered, CreatedAfterChangeOrder, AlreadyTaken, NotChanged when the change does not change the Unit, CreatedInSpace when the Unit was created in this Space rather than cloned into it, or NotSelected when the Revisions named name nothing of its upstream it has not merged. A Unit in the Space that the change does not change is marked once the Space's writes are done, with both Tags on the Revision the ChangeOrder's PriorRevisions names. For an applied Upgrade or Resolve: NoChange, when the Unit already held the change, so no Revision was made and the ChangeOrder's Tags mark its head. */
   Reason?: string;
   Slug?: string;
   /** Absent for a clone a dry run would create. */
@@ -26807,6 +27436,8 @@ export type PromoteRequest = {
   PriorRevisions?: "Include" | "Skip" | "Error" | "All";
   /** Deprecated: use Guards, as {"Override":"Upstream"}, with a Clearance admitting it. Records each Unit's Override guard on the paths its writes change -- Override=Upstream for a Unit with an upstream Unit, Override=External for one without -- with the clearance to write over one. Accepted only for an Invoke ChangeOrder and for one that follows Insert, Upsert, or TransformPaths Links: refused for a promotion that merges, which the guard holds paths against. */
   Protect?: boolean;
+  /** The upstream revisions to take instead of everything each upstream has reached: cherry-picking. Each entry is as an entry of an upgrade's merge_revisions -- a revision, which names that revision, or for a ChangeSet or ChangeOrder its revisions, or a range <from>..<to> -- resolved on each Unit's upstream Unit, where an entry naming nothing it carries names nothing. A revision number is refused, alone or at either end of a range, since each Unit numbers its own. A Unit whose upstream the entries name nothing of that it has not merged is Unchanged, NotSelected. Each Unit's UpgradeUnit Link records what it took. Cannot be used with ChangeOrderID. */
+  Revisions?: string[];
   /** A Filter over Spaces selecting the Spaces to promote. Intersected with the other selectors. */
   SpaceFilterID?: string;
   /** Merge each Unit's range as one rebased Revision rather than replaying each upstream Revision. */
@@ -26915,7 +27546,7 @@ export type ReleaseRead = {
   ReleaseID?: string;
   /** Monotonically increasing sequence number of the Release within its Target, assigned at publish time. The highest ReleaseNum is the latest Release for the Target. */
   ReleaseNum?: number;
-  /** SkippedUnits names the Units released to the Release's Target that the Release does not bundle, mapped to the reason as a code. NotMarked: publishing with a TagID leaves out a Unit that has never been released and that the Tag marks no Revision of; a Unit that has been released must be marked. (readonly) */
+  /** SkippedUnits names the Units released to the Release's Target that the Release does not bundle, mapped to the reason as a code. NotMarked: publishing with a TagID leaves out a Unit that has never been released and that the Tag marks no Revision of; a Unit that has been released must be marked. InChangeSet: publishing without a TagID leaves out a Unit that has never been released and was created inside a ChangeSet its head is partway through, so it has no configuration from before the ChangeSet. (readonly) */
   SkippedUnits?: {
     [key: string]: string;
   };
@@ -26931,6 +27562,18 @@ export type ReleaseRead = {
   UpdatedAt?: string;
   /** The User who published the Release. Absent for Releases published before it was recorded. (readonly) */
   UserID?: string;
+  /** By gate, the bundled Units holding the resources a Release trigger's failures name. (readonly) */
+  ValidationFailedUnitIDs?: {
+    [key: string]: Uuid[];
+  };
+  /** What each Release trigger found in the documents the Release bundles, by gate name. A failing Release trigger refuses the Release unless it is Warn, so a published Release's failures are warnings. (readonly) */
+  ValidationResults?: {
+    [key: string]: ValidationResultList;
+  };
+  /** The gates of the Warn Release triggers that failed on the Release's documents. (readonly) */
+  ValidationWarnings?: {
+    [key: string]: boolean;
+  };
   /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
   Version?: number;
 };
@@ -27051,6 +27694,8 @@ export type TargetRead = {
   TriggerHash?: string;
   /** List of Trigger IDs that match the WhereTrigger and/or TriggerFilterID criteria. (readonly) */
   TriggerIDs?: Uuid[];
+  /** The Units the OtherUnitSelections of the Triggers in TriggerIDs selected for this Target, by Trigger and OtherData key, evaluated with TriggerIDs and with the Use permission of whoever made that write. A Trigger the Target applies, run on a Unit released to it, is passed them under the key. A Unit deleted is removed from it. (readonly) */
+  TriggerOtherUnitIDs?: TriggerOtherUnits[];
   /** The timestamp when the entity was last updated in "2023-01-01T12:00:00Z" format. */
   UpdatedAt?: string;
   UpstreamTargetID?: string;
@@ -27174,6 +27819,8 @@ export type ResourceRead = {
   ResourceName?: string;
   /** Type of the resource; Kubernetes resources are represented in the form <apiVersion>/<kind>. */
   ResourceType?: string;
+  /** Which of the Unit's Revisions this is a resource of: HeadRevisionNum. (readonly) */
+  RevisionRef?: string;
   /** Unique identifier for a space. */
   SpaceID?: string;
   /** Slug of the Space this entity belongs to. (readonly) */
@@ -27733,7 +28380,7 @@ export type Trigger = {
   Disabled?: boolean;
   /** Friendly name for the entity. */
   DisplayName?: string;
-  /** Event specifies the type of event that will activate this trigger. Valid values are Mutation and PostClone */
+  /** Event specifies the type of event that will activate this trigger. Valid values are Mutation, PostClone and Release. A Release trigger runs its validating functions once when a Space publishes a Release, over the documents of the Units the Release bundles that the trigger selects, and a failure refuses the Release unless the trigger is Warn; its results are recorded on the Release, not on the Units. */
   Event: string;
   /** Function name */
   FunctionName?: string;
@@ -27753,7 +28400,7 @@ export type Trigger = {
   OtherUnitIDs?: {
     [key: string]: Uuid;
   };
-  /** Selections of other Units to pass to the trigger's function as OtherData, by the key the function reads them under. Each Space that selects the trigger evaluates them when it evaluates its triggers -- when it is created, when its WhereTrigger or TriggerFilterID changes, and on refresh_triggers -- and records the Units each picked in its TriggerOtherUnitIDs. A change to the data of a Unit recorded re-runs the trigger on the Space's Units it applies to, and a Unit recorded can be deleted, which removes it from the record and re-runs the trigger the same way; which Units a selection picks changes only when the Space evaluates it again. A selection's Where may name that Space as EvaluatingSpace, as in `Space.ReleaseTargetID = EvaluatingSpace.ReleaseTargetID`. Only Units of the trigger's ToolchainType are selected, and whoever makes the Space's write needs Use permission on each. The function is passed the selected Units' head data as one entry, only the resources the selection's WhereResource matches if it has one, with each document's origin in OtherDataOrigins; it runs with whatever was selected, nothing included. A key is in either OtherUnitIDs or OtherUnitSelections. */
+  /** Selections of other Units to pass to the trigger's function as OtherData, by the key the function reads them under. Each Space and Target that selects the trigger evaluates them when it evaluates its triggers -- when it is created, when its WhereTrigger or TriggerFilterID changes, and on refresh_triggers -- and records the Units each picked in its TriggerOtherUnitIDs. A change to the data of a Unit recorded re-runs the trigger on the Units it applies to there, and a Unit recorded can be deleted, which removes it from the record and re-runs the trigger the same way; which Units a selection picks changes only when the Space or Target evaluates it again. A selection's Where may name that Space as EvaluatingSpace, as in `Space.ReleaseTargetID = EvaluatingSpace.ReleaseTargetID`, or that Target as EvaluatingTarget, as in `Space.ReleaseTargetID = EvaluatingTarget.TargetID`; the one not evaluating it is NULL, and no comparison with it holds. Only Units of the trigger's ToolchainType are selected, and whoever makes the Space's or Target's write needs Use permission on each. The function is passed the selected Units' head data as one entry, only the resources the selection's WhereResource matches if it has one, with each document's origin in OtherDataOrigins; it runs with whatever was selected, nothing included. A key is in either OtherUnitIDs or OtherUnitSelections. */
   OtherUnitSelections?: {
     [key: string]: OtherUnitSelection;
   };
@@ -27808,7 +28455,7 @@ export type TriggerRead = {
   DisplayName?: string;
   /** The type of entity. */
   EntityType?: string;
-  /** Event specifies the type of event that will activate this trigger. Valid values are Mutation and PostClone */
+  /** Event specifies the type of event that will activate this trigger. Valid values are Mutation, PostClone and Release. A Release trigger runs its validating functions once when a Space publishes a Release, over the documents of the Units the Release bundles that the trigger selects, and a failure refuses the Release unless the trigger is Warn; its results are recorded on the Release, not on the Units. */
   Event: string;
   /** Function name */
   FunctionName?: string;
@@ -27830,7 +28477,7 @@ export type TriggerRead = {
   OtherUnitIDs?: {
     [key: string]: Uuid;
   };
-  /** Selections of other Units to pass to the trigger's function as OtherData, by the key the function reads them under. Each Space that selects the trigger evaluates them when it evaluates its triggers -- when it is created, when its WhereTrigger or TriggerFilterID changes, and on refresh_triggers -- and records the Units each picked in its TriggerOtherUnitIDs. A change to the data of a Unit recorded re-runs the trigger on the Space's Units it applies to, and a Unit recorded can be deleted, which removes it from the record and re-runs the trigger the same way; which Units a selection picks changes only when the Space evaluates it again. A selection's Where may name that Space as EvaluatingSpace, as in `Space.ReleaseTargetID = EvaluatingSpace.ReleaseTargetID`. Only Units of the trigger's ToolchainType are selected, and whoever makes the Space's write needs Use permission on each. The function is passed the selected Units' head data as one entry, only the resources the selection's WhereResource matches if it has one, with each document's origin in OtherDataOrigins; it runs with whatever was selected, nothing included. A key is in either OtherUnitIDs or OtherUnitSelections. */
+  /** Selections of other Units to pass to the trigger's function as OtherData, by the key the function reads them under. Each Space and Target that selects the trigger evaluates them when it evaluates its triggers -- when it is created, when its WhereTrigger or TriggerFilterID changes, and on refresh_triggers -- and records the Units each picked in its TriggerOtherUnitIDs. A change to the data of a Unit recorded re-runs the trigger on the Units it applies to there, and a Unit recorded can be deleted, which removes it from the record and re-runs the trigger the same way; which Units a selection picks changes only when the Space or Target evaluates it again. A selection's Where may name that Space as EvaluatingSpace, as in `Space.ReleaseTargetID = EvaluatingSpace.ReleaseTargetID`, or that Target as EvaluatingTarget, as in `Space.ReleaseTargetID = EvaluatingTarget.TargetID`; the one not evaluating it is NULL, and no comparison with it holds. Only Units of the trigger's ToolchainType are selected, and whoever makes the Space's or Target's write needs Use permission on each. The function is passed the selected Units' head data as one entry, only the resources the selection's WhereResource matches if it has one, with each document's origin in OtherDataOrigins; it runs with whatever was selected, nothing included. A key is in either OtherUnitIDs or OtherUnitSelections. */
   OtherUnitSelections?: {
     [key: string]: OtherUnitSelection;
   };
@@ -28039,11 +28686,27 @@ export type CommandRunRefusal = {
   /** Why the run was refused, as a code: CommandNotDeclared, CommandDeclaredByMany or ChannelDoesNotDeclare. */
   Reason?: string;
 };
+export type ReleaseHeldBackUnit = {
+  /** The ChangeSet the Unit's head Revision is partway through. */
+  ChangeSetID?: string;
+  /** The ChangeSet's slug. */
+  ChangeSetSlug?: string;
+  /** The Unit's head Revision, which is not bundled. */
+  HeadRevisionNum?: number;
+  /** The Revision bundled: the one before the ChangeSet. */
+  RevisionNum?: number;
+  /** The Unit held back. */
+  UnitID?: string;
+  /** The Unit's slug. */
+  UnitSlug?: string;
+};
 export type ReleasePublishResponse = {
   /** Why the Release was not published. */
   Error?: ResponseError;
   /** For a change order, each ReleasePrerequisite of the stage the Space belongs to, evaluated over the Revisions the Release bundles, whether or not it holds. */
   Gates?: PromoteGateResult[];
+  /** The Units bundled at the Revision before a ChangeSet their head is partway through, rather than at their head: a ChangeSet that is still open, or that closed while the Unit was still in it. Also reported when no Release was created because nothing changed. */
+  HeldBack?: ReleaseHeldBackUnit[];
   /** Why no Release was created: nothing changed since the latest published Release, or, on a refusal, the error as one string. */
   Message?: string;
   /** The published Release, or the latest published Release when no Release was created. */
@@ -28054,6 +28717,8 @@ export type ReleasePublishResponseRead = {
   Error?: ResponseError;
   /** For a change order, each ReleasePrerequisite of the stage the Space belongs to, evaluated over the Revisions the Release bundles, whether or not it holds. */
   Gates?: PromoteGateResult[];
+  /** The Units bundled at the Revision before a ChangeSet their head is partway through, rather than at their head: a ChangeSet that is still open, or that closed while the Unit was still in it. Also reported when no Release was created because nothing changed. */
+  HeldBack?: ReleaseHeldBackUnit[];
   /** Why no Release was created: nothing changed since the latest published Release, or, on a refusal, the error as one string. */
   Message?: string;
   /** The published Release, or the latest published Release when no Release was created. */
@@ -28340,6 +29005,8 @@ export type UnitCreateOrUpdateResponse = {
   Diff?: ConfigDiff;
   Error?: ResponseError;
   Links?: LinkCreateOrUpdateResponse[];
+  /** For an upgrade or resolve with merge_revisions, what it took over each Link, or on a dry run would take: the upstream revisions, the skips that overrode, and the earlier pending revisions that wrote some of the same paths. */
+  MergeSelections?: MergeSelection[];
   /** What set each value in the configuration the operation produced; returned when include names MutationSources. */
   MutationSources?: ResourceMutationList;
   Unit?: Unit;
@@ -28355,6 +29022,8 @@ export type UnitCreateOrUpdateResponseRead = {
   Diff?: ConfigDiff;
   Error?: ResponseError;
   Links?: LinkCreateOrUpdateResponseRead[];
+  /** For an upgrade or resolve with merge_revisions, what it took over each Link, or on a dry run would take: the upstream revisions, the skips that overrode, and the earlier pending revisions that wrote some of the same paths. */
+  MergeSelections?: MergeSelection[];
   /** What set each value in the configuration the operation produced; returned when include names MutationSources. */
   MutationSources?: ResourceMutationList;
   Unit?: UnitRead;
@@ -28993,11 +29662,19 @@ export type UnitTagResponse = {
   Message?: string;
 };
 export type UnitTagRequest = {
+  /** Narrow the Units to those in this ChangeOrder's Space and the Spaces it is headed for, or with TargetStage, the Spaces of that Stage of its ChangeWorkflow. */
+  ChangeOrderID?: string;
   /** Move the Tag from the Revision it marks on each Unit to the one Revision names, refusing a Unit it marks no Revision of. Tags owned by a ChangeSet, ChangeOrder or Release cannot be added or removed; a ChangeOrder's release Tag can be moved, to a Revision at or after the one its end Tag marks and the Unit's LastReleasedRevisionNum, with no ValidationErrors, while no Release in the Space has been published at it. */
   Move?: boolean;
   /** Which Unit revision to tag: a named revision ('HeadRevisionNum', 'LastReleasedRevisionNum'), a revision number, an entity reference ('Tag:uuid', 'ChangeSet:uuid', 'Revision:uuid'), any of those prefixed with 'Before:', or 'Remove' to remove the tag from the unit */
   Revision?: string;
+  /** Narrow the Units to those in the Spaces this Space Filter selects. */
+  SpaceFilterID?: string;
   TagID?: string;
+  /** With ChangeOrderID, narrow the Units to those in the Spaces of this Stage of the ChangeOrder's ChangeWorkflow. */
+  TargetStage?: string;
+  /** Narrow the Units to those in the Spaces this where expression over Spaces selects. Combines with SpaceFilterID, ChangeOrderID and TargetStage as an intersection. */
+  WhereSpace?: string;
 };
 export type UnitData = {
   /** The configuration data. */
@@ -29292,6 +29969,10 @@ export const {
   useBulkPatchAttributesMutation,
   useBulkCreateAttributesMutation,
   useBulkMoveAttributesMutation,
+  useListAuditEventsQuery,
+  useLazyListAuditEventsQuery,
+  useGetAuditEventQuery,
+  useLazyGetAuditEventQuery,
   useBulkDeleteChangeOrdersMutation,
   useListAllChangeOrdersQuery,
   useLazyListAllChangeOrdersQuery,
@@ -29342,6 +30023,7 @@ export const {
   useListOrgFunctionsQuery,
   useLazyListOrgFunctionsQuery,
   useInvokeFunctionsOnOrgMutation,
+  useReduceFunctionsOnOrgMutation,
   useListGroupsQuery,
   useLazyListGroupsQuery,
   useGetGroupQuery,
@@ -29510,6 +30192,7 @@ export const {
   useListFunctionsQuery,
   useLazyListFunctionsQuery,
   useInvokeFunctionsMutation,
+  useReduceFunctionsMutation,
   useListInvocationsQuery,
   useLazyListInvocationsQuery,
   useCreateInvocationMutation,
