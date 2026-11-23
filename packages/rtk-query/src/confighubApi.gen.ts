@@ -27350,6 +27350,18 @@ export type PromoteLinkResult = {
   ToUnitSlug?: string;
   UpstreamLinkID?: string;
 };
+export type MergeAlreadyHere = {
+  /** The downstream Unit's RevisionNum that made the same change. */
+  DownstreamRevisionNum?: number;
+  /** The source Unit of a Resolve, or the ChangeOrder. */
+  EntityID?: string;
+  /** How the change was made in both: Resolve, by resolving the same source Unit at the same or a later Revision; or ChangeOrder, by the same Invoke ChangeOrder. */
+  Kind?: "Resolve" | "ChangeOrder";
+  /** The upstream RevisionNum passed over. */
+  RevisionNum?: number;
+  /** For a Resolve, the source Unit's RevisionNum the upstream Revision's resolve read. */
+  SourceRevisionNum?: number;
+};
 export type MergeSkipOverridden = {
   /** Why it had been skipped. */
   Reason?: string;
@@ -27367,6 +27379,8 @@ export type MergeOverlap = {
   RevisionNum?: number;
 };
 export type MergeSelection = {
+  /** Pending upstream Revisions passed over because the downstream Unit already made the same change itself: by its own resolve of the same source, under the same Invoke ChangeOrder, or by merging it from elsewhere. Each is marked merged on the Link. One is passed over only when doing so leaves no older value on top: the downstream's copy wrote every path the Revision did, nothing merged before it writes those paths, and nothing from before it upstream reached the downstream after its copy. */
+  AlreadyHere?: MergeAlreadyHere[];
   /** The Revisions named, or in a ChangeOrder's range, that the Link declined, with the reason each was skipped. A declined skip holds: no merge takes the Revision until its skip is made an ordinary one (decline_skips=false) or removed (unskip_revisions). */
   DeclinedHeld?: MergeSkipOverridden[];
   /** The Link the Revisions were taken over. */
@@ -27391,7 +27405,7 @@ export type PromoteUnitResult = {
   HeadRevisionNum?: number;
   /** For a Resolve, and a Mark made by one, the Links resolved. */
   LinkIDs?: Uuid[];
-  /** With Revisions, what the Unit's upgrade took, or on a dry run would take: the upstream revisions, the skips that overrode, and the earlier pending revisions that wrote some of the same paths. */
+  /** With Revisions, what the Unit's upgrade took, or on a dry run would take: the upstream revisions, the skips that overrode, and the earlier pending revisions that wrote some of the same paths. Any upgrade also lists the pending upstream revisions it passes over because the Unit made the same change itself (AlreadyHere). */
   MergeSelections?: MergeSelection[];
   /** What the write changed, or on a dry run would change: the entries of the Unit's MutationSources it produced. Returned when include names Mutations. */
   Mutations?: ResourceMutationList;
@@ -29044,7 +29058,7 @@ export type UnitCreateOrUpdateResponse = {
   Diff?: ConfigDiff;
   Error?: ResponseError;
   Links?: LinkCreateOrUpdateResponse[];
-  /** For an upgrade or resolve with merge_revisions, what it took over each Link, or on a dry run would take: the upstream revisions, the skips that overrode, and the earlier pending revisions that wrote some of the same paths. */
+  /** For an upgrade or resolve with merge_revisions, what it took over each Link, or on a dry run would take: the upstream revisions, the skips that overrode, and the earlier pending revisions that wrote some of the same paths. Any merge also lists the pending upstream revisions it passed over because the Unit made the same change itself (AlreadyHere). */
   MergeSelections?: MergeSelection[];
   /** What set each value in the configuration the operation produced; returned when include names MutationSources. */
   MutationSources?: ResourceMutationList;
@@ -29061,7 +29075,7 @@ export type UnitCreateOrUpdateResponseRead = {
   Diff?: ConfigDiff;
   Error?: ResponseError;
   Links?: LinkCreateOrUpdateResponseRead[];
-  /** For an upgrade or resolve with merge_revisions, what it took over each Link, or on a dry run would take: the upstream revisions, the skips that overrode, and the earlier pending revisions that wrote some of the same paths. */
+  /** For an upgrade or resolve with merge_revisions, what it took over each Link, or on a dry run would take: the upstream revisions, the skips that overrode, and the earlier pending revisions that wrote some of the same paths. Any merge also lists the pending upstream revisions it passed over because the Unit made the same change itself (AlreadyHere). */
   MergeSelections?: MergeSelection[];
   /** What set each value in the configuration the operation produced; returned when include names MutationSources. */
   MutationSources?: ResourceMutationList;
