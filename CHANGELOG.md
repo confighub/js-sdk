@@ -7,6 +7,20 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.11.18 — 2026-11-24
+
+### API
+
+Compared with ConfigHub `v0.11.17`:
+
+#### Added (5)
+
+- path `/space/{space_id}/unit/{unit_id}/unarchive`
+- path `/unit/unarchive`
+- parameter `archive` on `DELETE /space/{space_id}/unit/{unit_id}`
+- parameter `archive` on `DELETE /unit`
+- schema `UnarchiveResponse`
+
 ## 0.11.17 — 2026-11-24
 
 ### API
