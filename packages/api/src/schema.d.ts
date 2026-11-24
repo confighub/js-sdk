@@ -6996,8 +6996,8 @@ export interface components {
             FunctionInvocation?: components["schemas"]["FunctionInvocation"];
             /** @description The guards the change recorded on the paths it wrote: the operation's merged with those of the Trigger, Invocation, or Link that produced it */
             Guards?: components["schemas"]["GuardStamp"];
-            /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-            HiddenReason?: string;
+            /** @description The reason the Unit this entity belongs to is hidden, if it is. The entity is hidden as its Unit is, and is left out of List and Search results unless the include_hidden parameter names the reason or is *, or the request names the Unit, by its path or by UnitID. */
+            readonly HiddenReason?: string;
             /** @description The guards the change recorded as inherited on the paths it wrote, which clones receive and merges carry to the units downstream */
             InheritedGuards?: components["schemas"]["GuardStamp"];
             /**
@@ -7812,8 +7812,8 @@ export interface components {
             Data?: Record<string, never>;
             /** @description The type of entity. */
             readonly EntityType?: string;
-            /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-            HiddenReason?: string;
+            /** @description The reason the Unit this entity belongs to is hidden, if it is. The entity is hidden as its Unit is, and is left out of List and Search results unless the include_hidden parameter names the reason or is *, or the request names the Unit, by its path or by UnitID. */
+            readonly HiddenReason?: string;
             /**
              * Format: uuid
              * @description Unique identifier for an Organization.
@@ -8036,7 +8036,7 @@ export interface components {
             readonly CreatedAt?: string;
             /** @description The type of entity. */
             readonly EntityType?: string;
-            /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
+            /** @description The reason the comment is hidden, if it is, such as Resolved. A hidden comment is left out of List and Search results unless the include_hidden parameter names its reason or is *, or the where parameter names the comment by ID. A comment is also left out while its Unit is hidden, unless the request names the Unit. */
             HiddenReason?: string;
             /**
              * Format: uuid
@@ -8160,8 +8160,8 @@ export interface components {
             Description?: string;
             /** @description The type of entity. */
             readonly EntityType?: string;
-            /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
-            HiddenReason?: string;
+            /** @description The reason the Unit this entity belongs to is hidden, if it is. The entity is hidden as its Unit is, and is left out of List and Search results unless the include_hidden parameter names the reason or is *, or the request names the Unit, by its path or by UnitID. */
+            readonly HiddenReason?: string;
             LinkFindings?: components["schemas"]["LinkFindingList"];
             /** @description Attribute paths this Revision's configuration needs from upstream Units via NeedsProvides Links. */
             NeededPaths?: components["schemas"]["AttributeValue"][];
@@ -27567,6 +27567,8 @@ export interface operations {
                  *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
                  *
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 *
+                 *     A Resource is also hidden while its Unit is, with the Unit's HiddenReason, unless the request names the Unit: in its path, or by UnitID with `=` or `IN`.
                  */
                 include_hidden?: string;
                 /**
@@ -27586,7 +27588,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Resource: CreatedAt, HiddenReason, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, ToolchainType, UnitID, UpdatedAt.
+                 *     Supported attributes for ordering Resource: CreatedAt, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, ToolchainType, UnitID, UpdatedAt.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -27820,6 +27822,8 @@ export interface operations {
                  *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
                  *
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 *
+                 *     A ReviewComment is also hidden while its Unit is, with the Unit's HiddenReason, unless the request names the Unit: in its path, or by UnitID with `=` or `IN`.
                  */
                 include_hidden?: string;
                 /**
@@ -28031,6 +28035,8 @@ export interface operations {
                  *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
                  *
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 *
+                 *     A ReviewComment is also hidden while its Unit is, with the Unit's HiddenReason, unless the request names the Unit: in its path, or by UnitID with `=` or `IN`.
                  */
                 include_hidden?: string;
                 /**
@@ -28249,6 +28255,8 @@ export interface operations {
                  *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
                  *
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 *
+                 *     A ReviewComment is also hidden while its Unit is, with the Unit's HiddenReason, unless the request names the Unit: in its path, or by UnitID with `=` or `IN`.
                  */
                 include_hidden?: string;
                 /**
@@ -28277,13 +28285,10 @@ export interface operations {
                 "application/merge-patch+json": {
                     /** Format: uuid */
                     ChangeOrderID?: string | null;
-                    /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
                     HiddenReason?: string | null;
-                    /** @description Path to which the remark is attached; optional */
                     Path?: string | null;
                     /** Format: uuid */
                     ReplyToID?: string | null;
-                    /** @description Resource to which the remark is attached; optional */
                     Resource?: Record<string, never> | null;
                     /** Format: uuid */
                     RevisionID?: string | null;
@@ -28512,6 +28517,8 @@ export interface operations {
                  *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
                  *
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 *
+                 *     A Revision is also hidden while its Unit is, with the Unit's HiddenReason, unless the request names the Unit: in its path, or by UnitID with `=` or `IN`.
                  */
                 include_hidden?: string;
                 /**
@@ -28531,7 +28538,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Revision: ChangeSetID, CreatedAt, DataHash, Description, HiddenReason, OrganizationID, RevisionID, RevisionNum, Source, UnitID, UpdatedAt, UserAgent, UserID.
+                 *     Supported attributes for ordering Revision: ChangeSetID, CreatedAt, DataHash, Description, OrganizationID, RevisionID, RevisionNum, Source, UnitID, UpdatedAt, UserAgent, UserID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -28769,6 +28776,8 @@ export interface operations {
                  *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
                  *
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 *
+                 *     A Revision is also hidden while its Unit is, with the Unit's HiddenReason, unless the request names the Unit: in its path, or by UnitID with `=` or `IN`.
                  */
                 include_hidden?: string;
                 /** @description Maximum number of Revision entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
@@ -28778,7 +28787,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Revision: ChangeSetID, CreatedAt, DataHash, Description, HiddenReason, OrganizationID, RevisionID, RevisionNum, Source, UnitID, UpdatedAt, UserAgent, UserID.
+                 *     Supported attributes for ordering Revision: ChangeSetID, CreatedAt, DataHash, Description, OrganizationID, RevisionID, RevisionNum, Source, UnitID, UpdatedAt, UserAgent, UserID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -29016,6 +29025,8 @@ export interface operations {
                  *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
                  *
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 *
+                 *     A Revision is also hidden while its Unit is, with the Unit's HiddenReason, unless the request names the Unit: in its path, or by UnitID with `=` or `IN`.
                  */
                 include_hidden?: string;
                 /** @description Maximum number of Revision entities to return. If not specified, all matching entities are returned. Values greater than 1000 are rejected with 400. When there may be more entities, the response has a ConfigHub-Continue header to pass as the continue parameter of the next request. */
@@ -29025,7 +29036,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Revision: ChangeSetID, CreatedAt, DataHash, Description, HiddenReason, OrganizationID, RevisionID, RevisionNum, Source, UnitID, UpdatedAt, UserAgent, UserID.
+                 *     Supported attributes for ordering Revision: ChangeSetID, CreatedAt, DataHash, Description, OrganizationID, RevisionID, RevisionNum, Source, UnitID, UpdatedAt, UserAgent, UserID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -48691,6 +48702,8 @@ export interface operations {
                  *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
                  *
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 *
+                 *     A Mutation is also hidden while its Unit is, with the Unit's HiddenReason, unless the request names the Unit: in its path, or by UnitID with `=` or `IN`.
                  */
                 include_hidden?: string;
                 /**
@@ -48710,7 +48723,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Mutation: ChannelID, CreatedAt, FunctionName, HiddenReason, InvocationID, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, Subgroup, TriggerID, UnitID, UpdatedAt.
+                 *     Supported attributes for ordering Mutation: ChannelID, CreatedAt, FunctionName, InvocationID, LinkID, MergeBaseRevisionNum, MergeEndRevisionNum, MergeSourceID, MutationID, MutationNum, OrganizationID, ReplayOutcome, ReplayReason, RestoredRevisionNum, RevisionID, RevisionNum, Subgroup, TriggerID, UnitID, UpdatedAt.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -49374,6 +49387,8 @@ export interface operations {
                  *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
                  *
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 *
+                 *     A Resource is also hidden while its Unit is, with the Unit's HiddenReason, unless the request names the Unit: in its path, or by UnitID with `=` or `IN`.
                  */
                 include_hidden?: string;
                 /**
@@ -49393,7 +49408,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Resource: CreatedAt, HiddenReason, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, ToolchainType, UnitID, UpdatedAt.
+                 *     Supported attributes for ordering Resource: CreatedAt, OrganizationID, ResourceID, ResourceIndex, ResourceName, ResourceType, SpaceID, ToolchainType, UnitID, UpdatedAt.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
@@ -49759,6 +49774,8 @@ export interface operations {
                  *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
                  *
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 *
+                 *     A ReviewComment is also hidden while its Unit is, with the Unit's HiddenReason, unless the request names the Unit: in its path, or by UnitID with `=` or `IN`.
                  */
                 include_hidden?: string;
                 /**
@@ -50380,13 +50397,10 @@ export interface operations {
                 "application/merge-patch+json": {
                     /** Format: uuid */
                     ChangeOrderID?: string | null;
-                    /** @description The reason the entity is hidden, if it is. A hidden entity is left out of List and Search results, and of what bulk operations act on, unless the include_hidden parameter names its reason or is *, or the where parameter names the entity by Slug or ID. ConfigHub/YAML Units are created hidden with the reason BackingUnit unless given another. */
                     HiddenReason?: string | null;
-                    /** @description Path to which the remark is attached; optional */
                     Path?: string | null;
                     /** Format: uuid */
                     ReplyToID?: string | null;
-                    /** @description Resource to which the remark is attached; optional */
                     Resource?: Record<string, never> | null;
                     /** Format: uuid */
                     RevisionID?: string | null;
@@ -50604,6 +50618,8 @@ export interface operations {
                  *     A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
                  *
                  *     ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`.
+                 *
+                 *     A Revision is also hidden while its Unit is, with the Unit's HiddenReason, unless the request names the Unit: in its path, or by UnitID with `=` or `IN`.
                  */
                 include_hidden?: string;
                 /**
@@ -50623,7 +50639,7 @@ export interface operations {
                  *
                  *     Field names are case-sensitive and PascalCase, as in the JSON encoding. Sort direction defaults to ASC when the 'DIRECTION:' prefix is omitted.
                  *
-                 *     Supported attributes for ordering Revision: ChangeSetID, CreatedAt, DataHash, Description, HiddenReason, OrganizationID, RevisionID, RevisionNum, Source, UnitID, UpdatedAt, UserAgent, UserID.
+                 *     Supported attributes for ordering Revision: ChangeSetID, CreatedAt, DataHash, Description, OrganizationID, RevisionID, RevisionNum, Source, UnitID, UpdatedAt, UserAgent, UserID.
                  *
                  *     Example: 'DESC:CreatedAt' or 'DisplayName,DESC:CreatedAt'.
                  *
