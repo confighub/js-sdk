@@ -32281,6 +32281,8 @@ export type UploadUnitResult = {
   Error?: ResponseError;
   /** What the write changed, or on a dry run would change: the entries of the Unit's MutationSources it produced. Returned when include names Mutations. */
   Mutations?: ResourceMutationList;
+  /** For an AppConfig Unit, why its rendering (the render Invocation, the placeholder Unit it renders into, and the Link carrying the rendering) could not be set up. The Unit itself was not refused: Error is set when it was. */
+  RenderingError?: ResponseError;
   /** The resource identity this Unit is keyed by. */
   Resource?: string;
   /** Resource, AppConfig, AppConfigRendered, or BackingUnit. */

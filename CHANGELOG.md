@@ -7,6 +7,22 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.11.20 — 2026-11-25
+
+### Changes
+
+- `@confighub/api`, `@confighub/rtk-query`: `UploadUnitResult` has `RenderingError`, for an
+  AppConfig Unit whose rendering (its render Invocation, placeholder Unit and carrier Link) could
+  not be set up although the Unit was not refused. `Error` still means the Unit was not written.
+
+### API
+
+Compared with ConfigHub `v0.11.19`:
+
+#### Added (1)
+
+- field `UploadUnitResult.RenderingError`
+
 ## 0.11.19 — 2026-11-25
 
 ### API

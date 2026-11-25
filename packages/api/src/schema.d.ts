@@ -10362,6 +10362,8 @@ export interface components {
             Error?: components["schemas"]["ResponseError"];
             /** @description What the write changed, or on a dry run would change: the entries of the Unit's MutationSources it produced. Returned when include names Mutations. */
             Mutations?: components["schemas"]["ResourceMutationList"];
+            /** @description For an AppConfig Unit, why its rendering (the render Invocation, the placeholder Unit it renders into, and the Link carrying the rendering) could not be set up. The Unit itself was not refused: Error is set when it was. */
+            RenderingError?: components["schemas"]["ResponseError"];
             /** @description The resource identity this Unit is keyed by. */
             Resource?: string;
             /** @description Resource, AppConfig, AppConfigRendered, or BackingUnit. */
