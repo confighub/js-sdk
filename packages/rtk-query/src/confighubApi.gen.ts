@@ -63,6 +63,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            archive: queryArg.archive,
             from_backing_units: queryArg.fromBackingUnits,
           },
         }),
@@ -88,6 +89,25 @@ const injectedRtkApi = api
             backing_unit_space: queryArg.backingUnitSpace,
             from_backing_units: queryArg.fromBackingUnits,
             dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Component"],
+      }),
+      bulkUnarchiveComponents: build.mutation<
+        BulkUnarchiveComponentsApiResponse,
+        BulkUnarchiveComponentsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/_component/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
           },
         }),
         invalidatesTags: ["Component"],
@@ -150,6 +170,7 @@ const injectedRtkApi = api
             recursive: queryArg.recursive,
             recursive_force: queryArg.recursiveForce,
             detach: queryArg.detach,
+            archive: queryArg.archive,
             from_backing_units: queryArg.fromBackingUnits,
           },
         }),
@@ -211,6 +232,26 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Space"],
       }),
+      bulkUnarchiveSpaces: build.mutation<
+        BulkUnarchiveSpacesApiResponse,
+        BulkUnarchiveSpacesApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/_space/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+            recursive: queryArg.recursive,
+          },
+        }),
+        invalidatesTags: ["Space"],
+      }),
       attest: build.mutation<AttestApiResponse, AttestApiArg>({
         query: (queryArg) => ({
           url: `/attest`,
@@ -259,6 +300,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            archive: queryArg.archive,
             from_backing_units: queryArg.fromBackingUnits,
           },
         }),
@@ -357,6 +399,25 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Attribute"],
       }),
+      bulkUnarchiveAttributes: build.mutation<
+        BulkUnarchiveAttributesApiResponse,
+        BulkUnarchiveAttributesApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/attribute/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+          },
+        }),
+        invalidatesTags: ["Attribute"],
+      }),
       listAuditEvents: build.query<
         ListAuditEventsApiResponse,
         ListAuditEventsApiArg
@@ -406,6 +467,7 @@ const injectedRtkApi = api
             limit: queryArg.limit,
             continue: queryArg["continue"],
             detach: queryArg.detach,
+            archive: queryArg.archive,
           },
         }),
         invalidatesTags: ["ChangeOrder"],
@@ -501,6 +563,25 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["ChangeOrder"],
       }),
+      bulkUnarchiveChangeOrders: build.mutation<
+        BulkUnarchiveChangeOrdersApiResponse,
+        BulkUnarchiveChangeOrdersApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/change_order/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+          },
+        }),
+        invalidatesTags: ["ChangeOrder"],
+      }),
       bulkDeleteChangeSets: build.mutation<
         BulkDeleteChangeSetsApiResponse,
         BulkDeleteChangeSetsApiArg
@@ -517,6 +598,7 @@ const injectedRtkApi = api
             limit: queryArg.limit,
             continue: queryArg["continue"],
             detach: queryArg.detach,
+            archive: queryArg.archive,
           },
         }),
         invalidatesTags: ["ChangeSet"],
@@ -610,6 +692,25 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["ChangeSet"],
       }),
+      bulkUnarchiveChangeSets: build.mutation<
+        BulkUnarchiveChangeSetsApiResponse,
+        BulkUnarchiveChangeSetsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/change_set/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+          },
+        }),
+        invalidatesTags: ["ChangeSet"],
+      }),
       bulkDeleteChangeWorkflows: build.mutation<
         BulkDeleteChangeWorkflowsApiResponse,
         BulkDeleteChangeWorkflowsApiArg
@@ -625,6 +726,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            archive: queryArg.archive,
             from_backing_units: queryArg.fromBackingUnits,
           },
         }),
@@ -726,6 +828,25 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["ChangeWorkflow"],
       }),
+      bulkUnarchiveChangeWorkflows: build.mutation<
+        BulkUnarchiveChangeWorkflowsApiResponse,
+        BulkUnarchiveChangeWorkflowsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/change_workflow/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+          },
+        }),
+        invalidatesTags: ["ChangeWorkflow"],
+      }),
       bulkDeleteChannels: build.mutation<
         BulkDeleteChannelsApiResponse,
         BulkDeleteChannelsApiArg
@@ -741,6 +862,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            archive: queryArg.archive,
             from_backing_units: queryArg.fromBackingUnits,
           },
         }),
@@ -842,6 +964,25 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Channel"],
       }),
+      bulkUnarchiveChannels: build.mutation<
+        BulkUnarchiveChannelsApiResponse,
+        BulkUnarchiveChannelsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/channel/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+          },
+        }),
+        invalidatesTags: ["Channel"],
+      }),
       listAllCommands: build.query<
         ListAllCommandsApiResponse,
         ListAllCommandsApiArg
@@ -922,6 +1063,9 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/component/${queryArg.componentId}`,
           method: "DELETE",
+          params: {
+            archive: queryArg.archive,
+          },
         }),
         invalidatesTags: ["Component"],
       }),
@@ -986,6 +1130,16 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Component"],
       }),
+      unarchiveComponent: build.mutation<
+        UnarchiveComponentApiResponse,
+        UnarchiveComponentApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/component/${queryArg.componentId}/unarchive`,
+          method: "POST",
+        }),
+        invalidatesTags: ["Component"],
+      }),
       demote: build.mutation<DemoteApiResponse, DemoteApiArg>({
         query: (queryArg) => ({
           url: `/demote`,
@@ -1028,6 +1182,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            archive: queryArg.archive,
             from_backing_units: queryArg.fromBackingUnits,
           },
         }),
@@ -1127,6 +1282,25 @@ const injectedRtkApi = api
             include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Filter"],
+      }),
+      bulkUnarchiveFilters: build.mutation<
+        BulkUnarchiveFiltersApiResponse,
+        BulkUnarchiveFiltersApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/filter/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
           },
         }),
         invalidatesTags: ["Filter"],
@@ -1268,6 +1442,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            archive: queryArg.archive,
             from_backing_units: queryArg.fromBackingUnits,
           },
         }),
@@ -1369,6 +1544,25 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Invocation"],
       }),
+      bulkUnarchiveInvocations: build.mutation<
+        BulkUnarchiveInvocationsApiResponse,
+        BulkUnarchiveInvocationsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/invocation/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+          },
+        }),
+        invalidatesTags: ["Invocation"],
+      }),
       bulkDeleteLinks: build.mutation<
         BulkDeleteLinksApiResponse,
         BulkDeleteLinksApiArg
@@ -1384,6 +1578,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            archive: queryArg.archive,
             from_backing_units: queryArg.fromBackingUnits,
           },
         }),
@@ -1464,6 +1659,25 @@ const injectedRtkApi = api
             filter_unit: queryArg.filterUnit,
             patch_existing: queryArg.patchExisting,
             dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Link"],
+      }),
+      bulkUnarchiveLinks: build.mutation<
+        BulkUnarchiveLinksApiResponse,
+        BulkUnarchiveLinksApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/link/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
           },
         }),
         invalidatesTags: ["Link"],
@@ -1654,6 +1868,25 @@ const injectedRtkApi = api
           },
         }),
         providesTags: ["Release"],
+      }),
+      bulkUnarchiveReleases: build.mutation<
+        BulkUnarchiveReleasesApiResponse,
+        BulkUnarchiveReleasesApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/release/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+          },
+        }),
+        invalidatesTags: ["Release"],
       }),
       listAllResources: build.query<
         ListAllResourcesApiResponse,
@@ -2062,6 +2295,7 @@ const injectedRtkApi = api
             recursive: queryArg.recursive,
             recursive_force: queryArg.recursiveForce,
             detach: queryArg.detach,
+            archive: queryArg.archive,
           },
         }),
         invalidatesTags: ["Space"],
@@ -2195,6 +2429,9 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/attribute/${queryArg.attributeId}`,
           method: "DELETE",
+          params: {
+            archive: queryArg.archive,
+          },
         }),
         invalidatesTags: ["Attribute"],
       }),
@@ -2259,6 +2496,16 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Attribute"],
       }),
+      unarchiveAttribute: build.mutation<
+        UnarchiveAttributeApiResponse,
+        UnarchiveAttributeApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/attribute/${queryArg.attributeId}/unarchive`,
+          method: "POST",
+        }),
+        invalidatesTags: ["Attribute"],
+      }),
       listChangeOrders: build.query<
         ListChangeOrdersApiResponse,
         ListChangeOrdersApiArg
@@ -2305,6 +2552,7 @@ const injectedRtkApi = api
           method: "DELETE",
           params: {
             detach: queryArg.detach,
+            archive: queryArg.archive,
           },
         }),
         invalidatesTags: ["ChangeOrder"],
@@ -2365,6 +2613,16 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["ChangeOrder"],
       }),
+      unarchiveChangeOrder: build.mutation<
+        UnarchiveChangeOrderApiResponse,
+        UnarchiveChangeOrderApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/change_order/${queryArg.changeOrderId}/unarchive`,
+          method: "POST",
+        }),
+        invalidatesTags: ["ChangeOrder"],
+      }),
       listChangeSets: build.query<
         ListChangeSetsApiResponse,
         ListChangeSetsApiArg
@@ -2411,6 +2669,7 @@ const injectedRtkApi = api
           method: "DELETE",
           params: {
             detach: queryArg.detach,
+            archive: queryArg.archive,
           },
         }),
         invalidatesTags: ["ChangeSet"],
@@ -2450,6 +2709,16 @@ const injectedRtkApi = api
           params: {
             dry_run: queryArg.dryRun,
           },
+        }),
+        invalidatesTags: ["ChangeSet"],
+      }),
+      unarchiveChangeSet: build.mutation<
+        UnarchiveChangeSetApiResponse,
+        UnarchiveChangeSetApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/change_set/${queryArg.changeSetId}/unarchive`,
+          method: "POST",
         }),
         invalidatesTags: ["ChangeSet"],
       }),
@@ -2498,6 +2767,9 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/change_workflow/${queryArg.changeWorkflowId}`,
           method: "DELETE",
+          params: {
+            archive: queryArg.archive,
+          },
         }),
         invalidatesTags: ["ChangeWorkflow"],
       }),
@@ -2565,6 +2837,16 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["ChangeWorkflow"],
       }),
+      unarchiveChangeWorkflow: build.mutation<
+        UnarchiveChangeWorkflowApiResponse,
+        UnarchiveChangeWorkflowApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/change_workflow/${queryArg.changeWorkflowId}/unarchive`,
+          method: "POST",
+        }),
+        invalidatesTags: ["ChangeWorkflow"],
+      }),
       listChannels: build.query<ListChannelsApiResponse, ListChannelsApiArg>({
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/channel`,
@@ -2607,6 +2889,9 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/channel/${queryArg.channelId}`,
           method: "DELETE",
+          params: {
+            archive: queryArg.archive,
+          },
         }),
         invalidatesTags: ["Channel"],
       }),
@@ -2709,6 +2994,16 @@ const injectedRtkApi = api
           url: `/space/${queryArg.spaceId}/channel/${queryArg.channelId}/poll`,
           method: "POST",
           body: queryArg.channelPollRequest,
+        }),
+        invalidatesTags: ["Channel"],
+      }),
+      unarchiveChannel: build.mutation<
+        UnarchiveChannelApiResponse,
+        UnarchiveChannelApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/channel/${queryArg.channelId}/unarchive`,
+          method: "POST",
         }),
         invalidatesTags: ["Channel"],
       }),
@@ -2842,6 +3137,9 @@ const injectedRtkApi = api
           query: (queryArg) => ({
             url: `/space/${queryArg.spaceId}/filter/${queryArg.filterId}`,
             method: "DELETE",
+            params: {
+              archive: queryArg.archive,
+            },
           }),
           invalidatesTags: ["Filter"],
         },
@@ -2900,6 +3198,16 @@ const injectedRtkApi = api
           params: {
             dry_run: queryArg.dryRun,
           },
+        }),
+        invalidatesTags: ["Filter"],
+      }),
+      unarchiveFilter: build.mutation<
+        UnarchiveFilterApiResponse,
+        UnarchiveFilterApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/filter/${queryArg.filterId}/unarchive`,
+          method: "POST",
         }),
         invalidatesTags: ["Filter"],
       }),
@@ -3019,6 +3327,9 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/invocation/${queryArg.invocationId}`,
           method: "DELETE",
+          params: {
+            archive: queryArg.archive,
+          },
         }),
         invalidatesTags: ["Invocation"],
       }),
@@ -3085,6 +3396,16 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Invocation"],
       }),
+      unarchiveInvocation: build.mutation<
+        UnarchiveInvocationApiResponse,
+        UnarchiveInvocationApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/invocation/${queryArg.invocationId}/unarchive`,
+          method: "POST",
+        }),
+        invalidatesTags: ["Invocation"],
+      }),
       listLinks: build.query<ListLinksApiResponse, ListLinksApiArg>({
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/link`,
@@ -3121,6 +3442,9 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/link/${queryArg.linkId}`,
           method: "DELETE",
+          params: {
+            archive: queryArg.archive,
+          },
         }),
         invalidatesTags: ["Link"],
       }),
@@ -3188,6 +3512,16 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Link"],
       }),
+      unarchiveLink: build.mutation<
+        UnarchiveLinkApiResponse,
+        UnarchiveLinkApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/link/${queryArg.linkId}/unarchive`,
+          method: "POST",
+        }),
+        invalidatesTags: ["Link"],
+      }),
       listExtendedReleases: build.query<
         ListExtendedReleasesApiResponse,
         ListExtendedReleasesApiArg
@@ -3230,6 +3564,7 @@ const injectedRtkApi = api
           method: "DELETE",
           params: {
             detach: queryArg.detach,
+            archive: queryArg.archive,
           },
         }),
         invalidatesTags: ["Release"],
@@ -3283,6 +3618,16 @@ const injectedRtkApi = api
         }),
         providesTags: ["Release"],
       }),
+      unarchiveRelease: build.mutation<
+        UnarchiveReleaseApiResponse,
+        UnarchiveReleaseApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/release/${queryArg.releaseId}/unarchive`,
+          method: "POST",
+        }),
+        invalidatesTags: ["Release"],
+      }),
       withdrawRelease: build.mutation<
         WithdrawReleaseApiResponse,
         WithdrawReleaseApiArg
@@ -3330,6 +3675,7 @@ const injectedRtkApi = api
           method: "DELETE",
           params: {
             detach: queryArg.detach,
+            archive: queryArg.archive,
           },
         }),
         invalidatesTags: ["Tag"],
@@ -3366,6 +3712,15 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Tag"],
       }),
+      unarchiveTag: build.mutation<UnarchiveTagApiResponse, UnarchiveTagApiArg>(
+        {
+          query: (queryArg) => ({
+            url: `/space/${queryArg.spaceId}/tag/${queryArg.tagId}/unarchive`,
+            method: "POST",
+          }),
+          invalidatesTags: ["Tag"],
+        },
+      ),
       listTargets: build.query<ListTargetsApiResponse, ListTargetsApiArg>({
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/target`,
@@ -3406,6 +3761,7 @@ const injectedRtkApi = api
             url: `/space/${queryArg.spaceId}/target/${queryArg.targetId}`,
             method: "DELETE",
             params: {
+              archive: queryArg.archive,
               detach: queryArg.detach,
             },
           }),
@@ -3471,6 +3827,16 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Target"],
       }),
+      unarchiveTarget: build.mutation<
+        UnarchiveTargetApiResponse,
+        UnarchiveTargetApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/target/${queryArg.targetId}/unarchive`,
+          method: "POST",
+        }),
+        invalidatesTags: ["Target"],
+      }),
       listTriggers: build.query<ListTriggersApiResponse, ListTriggersApiArg>({
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/trigger`,
@@ -3513,6 +3879,9 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/trigger/${queryArg.triggerId}`,
           method: "DELETE",
+          params: {
+            archive: queryArg.archive,
+          },
         }),
         invalidatesTags: ["Trigger"],
       }),
@@ -3575,6 +3944,29 @@ const injectedRtkApi = api
           },
         }),
         invalidatesTags: ["Trigger"],
+      }),
+      unarchiveTrigger: build.mutation<
+        UnarchiveTriggerApiResponse,
+        UnarchiveTriggerApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/trigger/${queryArg.triggerId}/unarchive`,
+          method: "POST",
+        }),
+        invalidatesTags: ["Trigger"],
+      }),
+      unarchiveSpace: build.mutation<
+        UnarchiveSpaceApiResponse,
+        UnarchiveSpaceApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/unarchive`,
+          method: "POST",
+          params: {
+            recursive: queryArg.recursive,
+          },
+        }),
+        invalidatesTags: ["Space"],
       }),
       listUnits: build.query<ListUnitsApiResponse, ListUnitsApiArg>({
         query: (queryArg) => ({
@@ -4097,6 +4489,9 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/space/${queryArg.spaceId}/view/${queryArg.viewId}`,
           method: "DELETE",
+          params: {
+            archive: queryArg.archive,
+          },
         }),
         invalidatesTags: ["View"],
       }),
@@ -4155,6 +4550,16 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["View"],
       }),
+      unarchiveView: build.mutation<
+        UnarchiveViewApiResponse,
+        UnarchiveViewApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/space/${queryArg.spaceId}/view/${queryArg.viewId}/unarchive`,
+          method: "POST",
+        }),
+        invalidatesTags: ["View"],
+      }),
       bulkDeleteTags: build.mutation<
         BulkDeleteTagsApiResponse,
         BulkDeleteTagsApiArg
@@ -4171,6 +4576,7 @@ const injectedRtkApi = api
             limit: queryArg.limit,
             continue: queryArg["continue"],
             detach: queryArg.detach,
+            archive: queryArg.archive,
           },
         }),
         invalidatesTags: ["Tag"],
@@ -4260,6 +4666,25 @@ const injectedRtkApi = api
           invalidatesTags: ["Tag"],
         },
       ),
+      bulkUnarchiveTags: build.mutation<
+        BulkUnarchiveTagsApiResponse,
+        BulkUnarchiveTagsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/tag/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+          },
+        }),
+        invalidatesTags: ["Tag"],
+      }),
       bulkDeleteTargets: build.mutation<
         BulkDeleteTargetsApiResponse,
         BulkDeleteTargetsApiArg
@@ -4276,6 +4701,7 @@ const injectedRtkApi = api
             limit: queryArg.limit,
             continue: queryArg["continue"],
             detach: queryArg.detach,
+            archive: queryArg.archive,
             from_backing_units: queryArg.fromBackingUnits,
           },
         }),
@@ -4378,6 +4804,25 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Target"],
       }),
+      bulkUnarchiveTargets: build.mutation<
+        BulkUnarchiveTargetsApiResponse,
+        BulkUnarchiveTargetsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/target/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
+          },
+        }),
+        invalidatesTags: ["Target"],
+      }),
       bulkDeleteTriggers: build.mutation<
         BulkDeleteTriggersApiResponse,
         BulkDeleteTriggersApiArg
@@ -4393,6 +4838,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            archive: queryArg.archive,
             from_backing_units: queryArg.fromBackingUnits,
           },
         }),
@@ -4490,6 +4936,25 @@ const injectedRtkApi = api
             include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["Trigger"],
+      }),
+      bulkUnarchiveTriggers: build.mutation<
+        BulkUnarchiveTriggersApiResponse,
+        BulkUnarchiveTriggersApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/trigger/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
           },
         }),
         invalidatesTags: ["Trigger"],
@@ -4664,6 +5129,8 @@ const injectedRtkApi = api
             contains: queryArg.contains,
             include_hidden: queryArg.includeHidden,
             include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
           },
         }),
         invalidatesTags: ["Unit"],
@@ -4840,6 +5307,7 @@ const injectedRtkApi = api
             include: queryArg.include,
             limit: queryArg.limit,
             continue: queryArg["continue"],
+            archive: queryArg.archive,
             from_backing_units: queryArg.fromBackingUnits,
           },
         }),
@@ -4934,6 +5402,25 @@ const injectedRtkApi = api
             include_hidden: queryArg.includeHidden,
             include: queryArg.include,
             dry_run: queryArg.dryRun,
+          },
+        }),
+        invalidatesTags: ["View"],
+      }),
+      bulkUnarchiveViews: build.mutation<
+        BulkUnarchiveViewsApiResponse,
+        BulkUnarchiveViewsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/view/unarchive`,
+          method: "POST",
+          params: {
+            where: queryArg.where,
+            filter: queryArg.filter,
+            contains: queryArg.contains,
+            include_hidden: queryArg.includeHidden,
+            include: queryArg.include,
+            limit: queryArg.limit,
+            continue: queryArg["continue"],
           },
         }),
         invalidatesTags: ["View"],
@@ -5034,6 +5521,8 @@ export type BulkDeleteComponentsApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Component entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** Prune: of the Components selected, delete those whose backing Unit is empty, which says the Component should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Component's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
   fromBackingUnits?: boolean;
 };
@@ -5165,6 +5654,99 @@ export type BulkPatchComponentsApiArg = {
     /** An entity-specific sequence number used for optimistic concurrency control. The value read must be sent in calls to Update. */
     Version?: number | null;
   };
+};
+export type BulkUnarchiveComponentsApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Components were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveComponentsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Components returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Component: AllowedChangeWorkflowIDs, Annotations, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, RequireChangeTracking, RequireChangeWorkflow, Slug, UpdatedAt, UpstreamComponentID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Component list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Component).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Component include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Component entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Component.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Component are AllowedChangeWorkflowIDs, OrganizationID, Permissions.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Component entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Component entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
 };
 export type BulkDeleteServiceAccountsApiResponse =
   | /** status 200 OK */ DeleteResponse[]
@@ -5472,12 +6054,14 @@ export type BulkDeleteSpacesApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Space entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
-  /** Valid values are true and false. False is the default if unspecified. If true, recursively delete all entities within the deleted space(s) so long as none have delete gates. */
+  /** Valid values are true and false. False is the default if unspecified. If true, recursively delete all entities within the deleted space(s) so long as none have delete gates. With archive=true, archive them instead. */
   recursive?: string;
-  /** Valid values are true and false. False is the default if unspecified. If true, recursively delete all entities within the deleted space(s) regardless whether any have delete gates. */
+  /** Valid values are true and false. False is the default if unspecified. If true, recursively delete all entities within the deleted space(s) regardless whether any have delete gates. With archive=true, archive them instead. */
   recursiveForce?: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** Prune: of the Spaces selected, delete those whose backing Unit is empty, which says the Space should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Space's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
   fromBackingUnits?: boolean;
 };
@@ -5801,6 +6385,101 @@ export type BulkCreateSpacesApiArg = {
     WhereTrigger?: string | null;
   };
 };
+export type BulkUnarchiveSpacesApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Spaces were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveSpacesApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Spaces returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Space: Annotations, AttributeFilterID, AttributeHash, AttributeIDs, BackingUnitID, ComponentID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OCIRepositoryURL, OrganizationID, Permissions, ReleaseTargetID, Slug, SpaceID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamSpaceID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Space list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Space).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Space include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Space entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Space.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Space are AttributeFilterID, AttributeIDs, ComponentID, OrganizationID, Permissions, ReleaseTargetID, TriggerFilterID, TriggerIDs, UpstreamSpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Space entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Space entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+  /** If true, also unarchive what was archived with the Space. A Space archived recursively is refused without it. */
+  recursive?: boolean;
+};
 export type AttestApiResponse =
   | /** status 200 OK */ AttestResultRead
   | /** status 207 Recording failed in some Spaces; each Space's result carries its own error */ AttestResultRead;
@@ -6032,6 +6711,8 @@ export type BulkDeleteAttributesApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Attribute entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** Prune: of the Attributes selected, delete those whose backing Unit is empty, which says the Attribute should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Attribute's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
   fromBackingUnits?: boolean;
 };
@@ -6614,6 +7295,99 @@ export type BulkMoveAttributesApiArg = {
   dryRun?: boolean;
   moveRequest: MoveRequest;
 };
+export type BulkUnarchiveAttributesApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Attributes were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveAttributesApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Attributes returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Attribute: Annotations, AttributeID, BackingUnitID, CreatedAt, DataType, DeleteGates, DisplayName, Hash, HiddenReason, Labels, OrganizationID, Parameters, Permissions, ResourceTypePaths, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamAttributeID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Attribute list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Attribute).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Attribute include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Attribute entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Attribute.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Attribute are OrganizationID, Permissions, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Attribute entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Attribute entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
 export type ListAuditEventsApiResponse =
   /** status 200 OK */ ExtendedAuditEventRead[];
 export type ListAuditEventsApiArg = {
@@ -6852,6 +7626,8 @@ export type BulkDeleteChangeOrdersApiArg = {
   continue?: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type ListAllChangeOrdersApiResponse =
   /** status 200 OK */ ExtendedChangeOrderRead[];
@@ -7411,6 +8187,99 @@ export type BulkRefreshChangeOrderStagesApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
 };
+export type BulkUnarchiveChangeOrdersApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some ChangeOrders were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveChangeOrdersApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of ChangeOrders returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on ChangeOrder: AbortedReason, AdoptedEndTagID, Annotations, ChangeOrderID, ChangeWorkflow, ChangeWorkflowID, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, InvocationID, Labels, OrganizationID, Parameters, Permissions, PriorRevisions, PromotionFailures, PromotionOverrides, Promotions, ReleasePriorRevisions, ReleaseTagID, ReleasedRestoredSpaceIDs, ReleasedSpaceIDs, Releases, ResolvedSpaceIDs, RestoreTagID, RestoredSpaceIDs, ReviewRequests, SkippedUnits, Slug, SpaceFilterID, SpaceID, Stage, StartTagID, State, UnitFilterID, UpdateType, UpdatedAt, UserID, WhereSpace, WhereUnit.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the ChangeOrder list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (ChangeOrder).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for ChangeOrder include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden ChangeOrder entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for ChangeOrder.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for ChangeOrder are EndTagID, InvocationID, OrganizationID, Permissions, ReleaseTagID, RestoreTagID, SpaceFilterID, SpaceID, StartTagID, UnitFilterID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of ChangeOrder entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the ChangeOrder entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
 export type BulkDeleteChangeSetsApiResponse =
   | /** status 200 OK */ DeleteResponse[]
   | /** status 207 Multi-Status: Mixed success and failure results */ DeleteResponse[];
@@ -7505,6 +8374,8 @@ export type BulkDeleteChangeSetsApiArg = {
   continue?: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type ListAllChangeSetsApiResponse =
   /** status 200 OK */ ExtendedChangeSetRead[];
@@ -8035,6 +8906,99 @@ export type BulkMoveChangeSetsApiArg = {
   dryRun?: boolean;
   moveRequest: MoveRequest;
 };
+export type BulkUnarchiveChangeSetsApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some ChangeSets were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveChangeSetsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of ChangeSets returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on ChangeSet: Annotations, ChangeSetID, ChangeWorkflow, ChangeWorkflowID, CloseOverride, CreatedAt, DeleteGates, Description, DisplayName, EndTagID, HiddenReason, InScopeSpaceIDs, Labels, OrganizationID, Permissions, ReviewRequests, Slug, SpaceID, StartTagID, StartTagIsPriorRevision, State, UpdatedAt, UserID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the ChangeSet list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (ChangeSet).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for ChangeSet include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden ChangeSet entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for ChangeSet.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for ChangeSet are EndTagID, OrganizationID, Permissions, SpaceID, StartTagID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of ChangeSet entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the ChangeSet entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
 export type BulkDeleteChangeWorkflowsApiResponse =
   | /** status 200 OK */ DeleteResponse[]
   | /** status 207 Multi-Status: Mixed success and failure results */ DeleteResponse[];
@@ -8127,6 +9091,8 @@ export type BulkDeleteChangeWorkflowsApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the ChangeWorkflow entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** Prune: of the ChangeWorkflows selected, delete those whose backing Unit is empty, which says the ChangeWorkflow should not exist, and keep the Unit, empty and backing nothing, so that it keeps the ChangeWorkflow's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
   fromBackingUnits?: boolean;
 };
@@ -8721,6 +9687,99 @@ export type BulkMoveChangeWorkflowsApiArg = {
   dryRun?: boolean;
   moveRequest: MoveRequest;
 };
+export type BulkUnarchiveChangeWorkflowsApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some ChangeWorkflows were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveChangeWorkflowsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of ChangeWorkflows returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on ChangeWorkflow: Annotations, AttestationPrerequisites, BackingUnitID, ChangeWorkflowID, CreatedAt, CustomPrerequisites, DeleteGates, DisplayName, Final, Hash, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, Stages, UpdatedAt, UpstreamChangeWorkflowID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the ChangeWorkflow list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (ChangeWorkflow).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for ChangeWorkflow include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden ChangeWorkflow entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for ChangeWorkflow.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for ChangeWorkflow are OrganizationID, Permissions, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of ChangeWorkflow entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the ChangeWorkflow entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
 export type BulkDeleteChannelsApiResponse =
   | /** status 200 OK */ DeleteResponse[]
   | /** status 207 Multi-Status: Mixed success and failure results */ DeleteResponse[];
@@ -8813,6 +9872,8 @@ export type BulkDeleteChannelsApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Channel entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** Prune: of the Channels selected, delete those whose backing Unit is empty, which says the Channel should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Channel's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
   fromBackingUnits?: boolean;
 };
@@ -9401,6 +10462,99 @@ export type BulkMoveChannelsApiArg = {
   dryRun?: boolean;
   moveRequest: MoveRequest;
 };
+export type BulkUnarchiveChannelsApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Channels were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveChannelsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Channels returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Channel: Annotations, BackingUnitID, ChannelID, Commands, Condition, CreatedAt, DeleteGates, DisplayName, EventPosition, HiddenReason, IPAddress, Labels, LastMessage, LastSeenAt, OrganizationID, Permissions, Slug, SpaceID, Subscriptions, UpdatedAt, UpstreamChannelID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Channel list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Channel).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Channel include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Channel entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Channel.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Channel are OrganizationID, Permissions, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Channel entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Channel entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
 export type ListAllCommandsApiResponse = /** status 200 OK */ DeclaredCommand[];
 export type ListAllCommandsApiArg = {
   /** List only the Channels declaring this command. */
@@ -9686,6 +10840,8 @@ export type DeleteComponentApiResponse =
 export type DeleteComponentApiArg = {
   /** Unique identifier for a component_id */
   componentId: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetComponentApiResponse =
   /** status 200 OK */ ExtendedComponentRead;
@@ -9769,6 +10925,12 @@ export type UpdateComponentDocumentApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   entityDocumentEdit: EntityDocumentEdit;
+};
+export type UnarchiveComponentApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveComponentApiArg = {
+  /** Unique identifier for a component_id */
+  componentId: string;
 };
 export type DemoteApiResponse =
   | /** status 200 OK */ DemoteResult
@@ -9884,6 +11046,8 @@ export type BulkDeleteFiltersApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Filter entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** Prune: of the Filters selected, delete those whose backing Unit is empty, which says the Filter should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Filter's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
   fromBackingUnits?: boolean;
 };
@@ -10478,6 +11642,99 @@ export type BulkMoveFiltersApiArg = {
   dryRun?: boolean;
   moveRequest: MoveRequest;
 };
+export type BulkUnarchiveFiltersApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Filters were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveFiltersApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Filters returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Filter: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, FilterID, From, FromSpaceID, Hash, HiddenReason, IncludeHidden, Labels, OrganizationID, Permissions, ResourceType, Slug, SpaceID, UpdatedAt, UpstreamFilterID, Where, WhereData.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Filter list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Filter).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Filter include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Filter entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Filter.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Filter are FromSpaceID, OrganizationID, Permissions, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Filter entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Filter entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
 export type ListOrgFunctionsApiResponse = /** status 200 OK */ {
   [key: string]: {
     [key: string]: FunctionSignature;
@@ -10964,6 +12221,8 @@ export type BulkDeleteInvocationsApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Invocation entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** Prune: of the Invocations selected, delete those whose backing Unit is empty, which says the Invocation should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Invocation's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
   fromBackingUnits?: boolean;
 };
@@ -11570,6 +12829,99 @@ export type BulkMoveInvocationsApiArg = {
   dryRun?: boolean;
   moveRequest: MoveRequest;
 };
+export type BulkUnarchiveInvocationsApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Invocations were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveInvocationsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Invocations returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Invocation: Annotations, BackingUnitID, ChannelID, Clearance, CreatedAt, DeleteGates, DisplayName, FunctionInvocations, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherUnitIDs, Parameters, Permissions, Slug, SpaceID, ToolchainType, UpdatedAt, UpstreamInvocationID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Invocation list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Invocation).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Invocation include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Invocation entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Invocation.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Invocation are ChannelID, OrganizationID, Permissions, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Invocation entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Invocation entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
 export type BulkDeleteLinksApiResponse =
   | /** status 200 OK */ DeleteResponse[]
   | /** status 207 Multi-Status: Mixed success and failure results */ DeleteResponse[];
@@ -11662,6 +13014,8 @@ export type BulkDeleteLinksApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Link entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** Prune: of the Links selected, delete those whose backing Unit is empty, which says the Link should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Link's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
   fromBackingUnits?: boolean;
 };
@@ -12254,6 +13608,99 @@ export type BulkCreateLinksApiArg = {
     WhereResource?: string | null;
   };
 };
+export type BulkUnarchiveLinksApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Links were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveLinksApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Links returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Link: Annotations, AutoUpdate, BackingUnitID, Bindings, Clearance, CreatedAt, DeleteGates, DisplayName, DownstreamLastMergedRevisionNum, DownstreamPaths, DownstreamSetters, FromUnitID, Guards, Hash, HiddenReason, Labels, LinkID, ManualBindings, MergeEnableSubtraction, OrganizationID, Permissions, Protect, Slug, SpaceID, Squash, Stale, ToSpaceID, ToUnitID, TransformInvocationID, UpdateType, UpdatedAt, UpstreamGetters, UpstreamLastMergedRevisionNum, UpstreamLinkID, UpstreamMergedAbove, UpstreamPaths, UpstreamSkipped, UpstreamSpaceID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Link list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Link).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Link include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Link entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Link.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Link are FromUnitID, OrganizationID, Permissions, SpaceID, ToSpaceID, ToUnitID, TransformInvocationID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Link entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Link entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
 export type GetMeApiResponse =
   /** status 200 a User given membership on the Organization */ OrganizationMember;
 export type GetMeApiArg = void;
@@ -12725,6 +14172,99 @@ export type ListAllReleasesApiArg = {
     
     Off disables the DISTINCT ON and returns every matching row, so it requires an explicit 'limit' and is rejected with 400 without one. */
   distinctOn?: "Space" | "Off";
+};
+export type BulkUnarchiveReleasesApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Releases were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveReleasesApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Releases returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Release: Annotations, ChangeOrderID, CreatedAt, DeleteGates, Digest, HiddenReason, Labels, LiveStatus, ManifestDigest, OCIRepositoryURL, OrganizationID, Permissions, Published, ReleaseID, ReleaseNum, SkippedUnits, SpaceID, TagID, TargetID, UnitCount, UpdatedAt, UserID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Release list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Release).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Release include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Release entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Release.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Release are ChangeOrderID, OrganizationID, Permissions, SpaceID, TagID, TargetID, UserID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Release entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Release entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
 };
 export type ListAllResourcesApiResponse =
   /** status 200 OK */ ExtendedResourceRead[];
@@ -14274,12 +15814,14 @@ export type DeleteSpaceApiResponse =
 export type DeleteSpaceApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
-  /** Valid values are true and false. False is the default if unspecified. If true, recursively delete all entities within the deleted space(s) so long as none have delete gates. */
+  /** Valid values are true and false. False is the default if unspecified. If true, recursively delete all entities within the deleted space(s) so long as none have delete gates. With archive=true, archive them instead. */
   recursive?: string;
-  /** Valid values are true and false. False is the default if unspecified. If true, recursively delete all entities within the deleted space(s) regardless whether any have delete gates. */
+  /** Valid values are true and false. False is the default if unspecified. If true, recursively delete all entities within the deleted space(s) regardless whether any have delete gates. With archive=true, archive them instead. */
   recursiveForce?: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetSpaceApiResponse = /** status 200 OK */ ExtendedSpaceRead;
 export type GetSpaceApiArg = {
@@ -14681,6 +16223,8 @@ export type DeleteAttributeApiArg = {
   spaceId: string;
   /** Unique identifier for a attribute_id */
   attributeId: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetAttributeApiResponse =
   /** status 200 OK */ ExtendedAttributeRead;
@@ -14785,6 +16329,14 @@ export type UpdateAttributeDocumentApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   entityDocumentEdit: EntityDocumentEdit;
+};
+export type UnarchiveAttributeApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveAttributeApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a attribute_id */
+  attributeId: string;
 };
 export type ListChangeOrdersApiResponse =
   /** status 200 OK */ ExtendedChangeOrderRead[];
@@ -14939,6 +16491,8 @@ export type DeleteChangeOrderApiArg = {
   changeOrderId: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetChangeOrderApiResponse =
   /** status 200 OK */ ExtendedChangeOrderRead;
@@ -15039,6 +16593,14 @@ export type RefreshChangeOrderStageApiArg = {
   changeOrderId: string;
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
+};
+export type UnarchiveChangeOrderApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveChangeOrderApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a change_order_id */
+  changeOrderId: string;
 };
 export type ListChangeSetsApiResponse =
   /** status 200 OK */ ExtendedChangeSetRead[];
@@ -15193,6 +16755,8 @@ export type DeleteChangeSetApiArg = {
   changeSetId: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetChangeSetApiResponse =
   /** status 200 OK */ ExtendedChangeSetRead;
@@ -15267,6 +16831,14 @@ export type UpdateChangeSetApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   changeSet: ChangeSet;
+};
+export type UnarchiveChangeSetApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveChangeSetApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a change_set_id */
+  changeSetId: string;
 };
 export type ListChangeWorkflowsApiResponse =
   /** status 200 OK */ ExtendedChangeWorkflowRead[];
@@ -15421,6 +16993,8 @@ export type DeleteChangeWorkflowApiArg = {
   spaceId: string;
   /** Unique identifier for a change_workflow_id */
   changeWorkflowId: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetChangeWorkflowApiResponse =
   /** status 200 OK */ ExtendedChangeWorkflowRead;
@@ -15519,6 +17093,14 @@ export type UpdateChangeWorkflowDocumentApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   entityDocumentEdit: EntityDocumentEdit;
+};
+export type UnarchiveChangeWorkflowApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveChangeWorkflowApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a change_workflow_id */
+  changeWorkflowId: string;
 };
 export type ListChannelsApiResponse =
   /** status 200 OK */ ExtendedChannelRead[];
@@ -15673,6 +17255,8 @@ export type DeleteChannelApiArg = {
   spaceId: string;
   /** Unique identifier for a channel_id */
   channelId: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetChannelApiResponse = /** status 200 OK */ ExtendedChannelRead;
 export type GetChannelApiArg = {
@@ -15804,6 +17388,14 @@ export type PollChannelApiArg = {
   /** Unique identifier for a channel_id */
   channelId: string;
   channelPollRequest: ChannelPollRequest;
+};
+export type UnarchiveChannelApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveChannelApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a channel_id */
+  channelId: string;
 };
 export type ListCommandsApiResponse = /** status 200 OK */ DeclaredCommand[];
 export type ListCommandsApiArg = {
@@ -16159,6 +17751,8 @@ export type DeleteFilterApiArg = {
   spaceId: string;
   /** Unique identifier for a filter_id */
   filterId: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetFilterApiResponse = /** status 200 OK */ ExtendedFilterRead;
 export type GetFilterApiArg = {
@@ -16253,6 +17847,14 @@ export type UpdateFilterDocumentApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   entityDocumentEdit: EntityDocumentEdit;
+};
+export type UnarchiveFilterApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveFilterApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a filter_id */
+  filterId: string;
 };
 export type ListFunctionsApiResponse = /** status 200 OK */ {
   [key: string]: {
@@ -16653,6 +18255,8 @@ export type DeleteInvocationApiArg = {
   spaceId: string;
   /** Unique identifier for a invocation_id */
   invocationId: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetInvocationApiResponse =
   /** status 200 OK */ ExtendedInvocationRead;
@@ -16754,6 +18358,14 @@ export type UpdateInvocationDocumentApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   entityDocumentEdit: EntityDocumentEdit;
+};
+export type UnarchiveInvocationApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveInvocationApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a invocation_id */
+  invocationId: string;
 };
 export type ListLinksApiResponse = /** status 200 OK */ ExtendedLinkRead[];
 export type ListLinksApiArg = {
@@ -16910,6 +18522,8 @@ export type DeleteLinkApiArg = {
   spaceId: string;
   /** Unique identifier for a link_id */
   linkId: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetLinkApiResponse = /** status 200 OK */ ExtendedLinkRead;
 export type GetLinkApiArg = {
@@ -17047,6 +18661,14 @@ export type UpdateLinkDocumentApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   entityDocumentEdit: EntityDocumentEdit;
+};
+export type UnarchiveLinkApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveLinkApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a link_id */
+  linkId: string;
 };
 export type ListExtendedReleasesApiResponse =
   /** status 200 OK */ ExtendedReleaseRead[];
@@ -17197,6 +18819,8 @@ export type DeleteReleaseApiArg = {
   releaseId: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetExtendedReleaseApiResponse =
   /** status 200 Release with additional related entities expanded based on the request's include parameter. */ ExtendedReleaseRead;
@@ -17268,6 +18892,14 @@ export type UpdateReleaseApiArg = {
 };
 export type DownloadReleaseDataApiResponse = /** status 200 OK */ string;
 export type DownloadReleaseDataApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a release_id */
+  releaseId: string;
+};
+export type UnarchiveReleaseApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveReleaseApiArg = {
   /** Unique identifier for a space_id */
   spaceId: string;
   /** Unique identifier for a release_id */
@@ -17433,6 +19065,8 @@ export type DeleteTagApiArg = {
   tagId: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetTagApiResponse = /** status 200 OK */ ExtendedTagRead;
 export type GetTagApiArg = {
@@ -17503,6 +19137,14 @@ export type UpdateTagApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   tag: Tag;
+};
+export type UnarchiveTagApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveTagApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a tag_id */
+  tagId: string;
 };
 export type ListTargetsApiResponse = /** status 200 OK */ ExtendedTargetRead[];
 export type ListTargetsApiArg = {
@@ -17668,6 +19310,8 @@ export type DeleteTargetApiArg = {
   spaceId: string;
   /** Unique identifier for a target_id */
   targetId: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
 };
@@ -17767,6 +19411,14 @@ export type UpdateTargetDocumentApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   entityDocumentEdit: EntityDocumentEdit;
+};
+export type UnarchiveTargetApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveTargetApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a target_id */
+  targetId: string;
 };
 export type ListTriggersApiResponse =
   /** status 200 OK */ ExtendedTriggerRead[];
@@ -17931,6 +19583,8 @@ export type DeleteTriggerApiArg = {
   spaceId: string;
   /** Unique identifier for a trigger_id */
   triggerId: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetTriggerApiResponse = /** status 200 OK */ ExtendedTriggerRead;
 export type GetTriggerApiArg = {
@@ -18069,6 +19723,22 @@ export type UpdateTriggerDocumentApiArg = {
   /** If true, report what the write would do without doing it: the write runs, including every check it makes, and is then rolled back. The response is the one the write would return, with the entities as they would be written. An entity a dry run creates is given an ID that the real create will not reuse. */
   dryRun?: boolean;
   entityDocumentEdit: EntityDocumentEdit;
+};
+export type UnarchiveTriggerApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveTriggerApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a trigger_id */
+  triggerId: string;
+};
+export type UnarchiveSpaceApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveSpaceApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** If true, also unarchive what was archived with the Space. A Space archived recursively is refused without it. */
+  recursive?: boolean;
 };
 export type ListUnitsApiResponse = /** status 200 OK */ ExtendedUnitRead[];
 export type ListUnitsApiArg = {
@@ -19598,6 +21268,8 @@ export type DeleteViewApiArg = {
   spaceId: string;
   /** Unique identifier for a view_id */
   viewId: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type GetViewApiResponse = /** status 200 OK */ ExtendedViewRead;
 export type GetViewApiArg = {
@@ -19693,6 +21365,14 @@ export type UpdateViewDocumentApiArg = {
   dryRun?: boolean;
   entityDocumentEdit: EntityDocumentEdit;
 };
+export type UnarchiveViewApiResponse =
+  /** status 200 Response to unarchiving an entity. */ UnarchiveResponse;
+export type UnarchiveViewApiArg = {
+  /** Unique identifier for a space_id */
+  spaceId: string;
+  /** Unique identifier for a view_id */
+  viewId: string;
+};
 export type BulkDeleteTagsApiResponse =
   | /** status 200 OK */ DeleteResponse[]
   | /** status 207 Multi-Status: Mixed success and failure results */ DeleteResponse[];
@@ -19787,6 +21467,8 @@ export type BulkDeleteTagsApiArg = {
   continue?: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
 };
 export type ListAllTagsApiResponse = /** status 200 OK */ ExtendedTagRead[];
 export type ListAllTagsApiArg = {
@@ -20310,6 +21992,99 @@ export type BulkMoveTagsApiArg = {
   dryRun?: boolean;
   moveRequest: MoveRequest;
 };
+export type BulkUnarchiveTagsApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Tags were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveTagsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Tags returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Tag: Annotations, ChangeOrderID, ChangeSetID, CreatedAt, DeleteGates, DisplayName, HiddenReason, Labels, OrganizationID, Permissions, ReleaseID, Slug, SpaceID, TagID, UpdatedAt.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Tag list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Tag).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Tag include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Tag entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Tag.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Tag are ChangeSetID, OrganizationID, Permissions, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Tag entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Tag entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
 export type BulkDeleteTargetsApiResponse =
   | /** status 200 OK */ DeleteResponse[]
   | /** status 207 Multi-Status: Mixed success and failure results */ DeleteResponse[];
@@ -20404,6 +22179,8 @@ export type BulkDeleteTargetsApiArg = {
   continue?: string;
   /** If true, remove the references to the deleted entities from entities the request does not delete, instead of refusing the delete while any remain. References that cannot be removed still refuse it. For a Space, applies to everything the recursive delete removes. */
   detach?: boolean;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** Prune: of the Targets selected, delete those whose backing Unit is empty, which says the Target should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Target's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
   fromBackingUnits?: boolean;
 };
@@ -21006,6 +22783,99 @@ export type BulkMoveTargetsApiArg = {
   dryRun?: boolean;
   moveRequest: MoveRequest;
 };
+export type BulkUnarchiveTargetsApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Targets were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveTargetsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Targets returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Target: Annotations, BackingUnitID, CreatedAt, DeleteGates, DisplayName, Facts, HiddenReason, Labels, OrganizationID, Permissions, Slug, SpaceID, TargetID, TriggerFilterID, TriggerHash, TriggerIDs, TriggerOtherUnitIDs, UpdatedAt, UpstreamTargetID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Target list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Target).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Target include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Target entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Target.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Target are OrganizationID, Permissions, SpaceID, TriggerFilterID, TriggerIDs.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Target entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Target entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
 export type BulkDeleteTriggersApiResponse =
   | /** status 200 OK */ DeleteResponse[]
   | /** status 207 Multi-Status: Mixed success and failure results */ DeleteResponse[];
@@ -21100,6 +22970,8 @@ export type BulkDeleteTriggersApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the Trigger entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** Prune: of the Triggers selected, delete those whose backing Unit is empty, which says the Trigger should not exist, and keep the Unit, empty and backing nothing, so that it keeps the Trigger's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
   fromBackingUnits?: boolean;
 };
@@ -21735,6 +23607,99 @@ export type BulkMoveTriggersApiArg = {
   /** Report what the move would do, and what would stop it, without moving anything */
   dryRun?: boolean;
   moveRequest: MoveRequest;
+};
+export type BulkUnarchiveTriggersApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Triggers were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveTriggersApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Triggers returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on Trigger: Annotations, Arguments, BackingUnitID, ChannelID, Clearance, CreatedAt, DeleteGates, Description, Disabled, DisplayName, Event, FunctionName, Guards, Hash, HiddenReason, InvocationID, Labels, OrganizationID, OtherUnitIDs, OtherUnitSelections, Permissions, Protect, Slug, SpaceID, ToolchainType, TriggerID, UnitFilterID, UpdatedAt, UpstreamTriggerID, Validating, Warn, WhereResource, WhereUnit.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the Trigger list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (Trigger).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for Trigger include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden Trigger entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for Trigger.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for Trigger are ChannelID, InvocationID, OrganizationID, Permissions, SpaceID, UnitFilterID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of Trigger entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Trigger entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
 };
 export type BulkDeleteUnitsApiResponse =
   | /** status 200 OK */ DeleteResponse[]
@@ -22736,6 +24701,10 @@ export type BulkUnarchiveUnitsApiArg = {
     
     The whole string must be query-encoded. */
   include?: string;
+  /** Maximum number of Unit entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the Unit entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
 };
 export type SearchUnitBlameApiResponse = /** status 200 OK */ UnitBlame[];
 export type SearchUnitBlameApiArg = {
@@ -23548,6 +25517,8 @@ export type BulkDeleteViewsApiArg = {
   limit?: number;
   /** The token from the ConfigHub-Continue header of the previous request, to act on the View entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
   continue?: string;
+  /** If true, archive the entities rather than delete them: each is kept, with its history, hidden with the HiddenReason Archived, and given a Slug the server assigns from its ID, so that its own Slug is free. The Slug it had is kept in the label ArchivedSlug. An archived entity can be read, unarchived, or deleted for good, which a delete without archive does. Delete gates refuse an archive as they refuse a delete, and so do references from entities the request does not archive, except those held by history. */
+  archive?: boolean;
   /** Prune: of the Views selected, delete those whose backing Unit is empty, which says the View should not exist, and keep the Unit, empty and backing nothing, so that it keeps the View's history and a document that comes back revives it. The others are left alone and are not in the response, so a broad selection deletes only what was emptied. */
   fromBackingUnits?: boolean;
 };
@@ -24137,6 +26108,99 @@ export type BulkMoveViewsApiArg = {
   dryRun?: boolean;
   moveRequest: MoveRequest;
 };
+export type BulkUnarchiveViewsApiResponse =
+  | /** status 200 OK */ UnarchiveResponse[]
+  | /** status 207 Multi-Status: some Views were unarchived and others were not */ UnarchiveResponse[];
+export type BulkUnarchiveViewsApiArg = {
+  /** The specified string is an expression for the purpose of filtering
+    the list of Views returned. The expression syntax was inspired by SQL.
+    It supports conjunctions using `AND` of relational expressions of the form *attribute*
+    *operator* *attribute_or_literal*. The attribute names are case-sensitive and PascalCase,
+    as in the JSON encoding.
+    Strings support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `LIKE`, `NOT LIKE`, `ILIKE`, `~~`, `!~~`, `~`, `~*`, `!~`, `!~*`, `IN`, `NOT IN`.
+    String pattern operators: `LIKE` and `~~` for pattern matching with `%` and `_` wildcards,
+    `ILIKE` for case-insensitive pattern matching, `NOT LIKE` and `!~~` for negated pattern matching.
+    String regex operators: `~` for regex matching, `~*` for case-insensitive regex,
+    `!~` and `!~*` for regex not matching (case-sensitive and insensitive).
+    Integers support the following operators: `<`, `>`, `<=`, `>=`, `=`, `!=`, `IN`, `NOT IN`.
+    UUIDs and boolean attributes support equality and inequality only.
+    UUID and time literals must be quoted as string literals.
+    String literals are quoted with single quotes, such as `'string'`.
+    Time literals use the same form as when serialized as JSON,
+    such as: `CreatedAt > '2025-02-18T23:16:34'`.
+    Integer and boolean literals are also supported for attributes of those types.
+    Arrays support the `?` operator to to match any element of the array,
+    as in `FromLinkID ? '7c61626f-ddbe-41af-93f6-b69f4ab6d308'`.
+    Arrays can perform LEN() to check for length, as in `LEN(FromLinkID) > 0`.
+    An attribute naming a list of other entities can be filtered on their attributes with a `*` segment,
+    as in `FromLink.*.Slug = 'upgrade-app'`, which holds when any element satisfies it.
+    Without the `*` such a reference is an error, since it names no single value to compare.
+    Map support the dot notation to specify a particular map key, as in `Labels.tier = 'Backend'`.
+    Maps support `IS NULL` and `IS NOT NULL` with dot notation to check for key absence or presence,
+    as in `Labels.tier IS NULL` (key doesn't exist) or `Labels.tier IS NOT NULL` (key exists).
+    Comparison results can be tested with `IS TRUE`, `IS FALSE`, `IS NOT TRUE`, and `IS NOT FALSE`.
+    These are useful for nullable columns: `MergeSourceID = '<uuid>' IS NOT FALSE` matches rows where MergeSourceID equals the value OR is NULL.
+    The `IN` and `NOT IN` operators accept a comma-separated list of values in parentheses,
+    such as `Slug IN ('slugone', 'slugtwo')` or `Labels.environment IN ('prod', 'staging')`.
+    Conjunctions are supported using the `AND` operator.
+    An example conjunction is:
+    `CreatedAt >= '2025-01-07' AND Slug = 'test' AND Labels.mykey = 'myvalue'`.
+    
+    Supported attributes for filtering on View: Annotations, BackingUnitID, Columns, CreatedAt, DisplayName, FilterID, GroupBy, Hash, HiddenReason, Labels, Of, OrderBy, OrderByDirection, OrganizationID, Permissions, Slug, SpaceID, UpdatedAt, UpstreamViewID, ViewID.
+    
+    The whole string must be query-encoded. */
+  where?: string;
+  /** UUID of a Filter entity to apply to the View list.
+    
+    The Filter must be in the same Organization as the user credentials.
+    
+    The Filter's From field must match the entity type being filtered (View).
+    
+    For Space-resident entities, if the Filter has a FromSpaceID, it must match the operation's SpaceID.
+    
+    The Filter's Where clause will be combined with any explicit 'where' parameter using AND logic.
+    
+    If both 'filter' and 'where' parameters are specified, they are combined with AND logic. */
+  filter?: string;
+  /** Free text search that approximately matches the specified string against string fields and map keys/values.
+    
+    The search is case-insensitive and uses pattern matching to find entities containing the text.
+    
+    Searchable string fields include attributes like Slug, DisplayName, and string-typed custom fields.
+    
+    For map fields (like Labels and Annotations), the search matches both map keys and values.
+    
+    The search uses OR logic across all searchable fields, so matching any field will return the entity.
+    
+    If both 'where' and 'contains' parameters are specified, they are combined with AND logic.
+    
+    Searchable fields for View include string and map-type attributes from the queryable attributes list.
+    
+    The whole string must be query-encoded. */
+  contains?: string;
+  /** Hidden View entities, those with a HiddenReason, are left out of the results, or of what a bulk operation acts on, unless this names their HiddenReason.
+    
+    It is a comma-separated list of HiddenReasons, or `*` for all of them but `Archived`.
+    
+    A where clause naming the entities, by their Slug or ID with `=` or `IN`, or naming HiddenReason at all, also returns hidden entities it selects.
+    
+    Archived entities, which a delete with archive=true archives, are selected only when this names `Archived`, as in `Archived` or `*,Archived`; a where clause naming them returns them from a List or Search, but not from a bulk operation.
+    
+    ConfigHub/YAML Units, which hold the configuration of entities, are hidden with the HiddenReason `BackingUnit`. */
+  includeHidden?: string;
+  /** Include clause for expanding related entities in the response for View.
+    The attribute names are case-sensitive, PascalCase, and
+    expected in a comma-separated list format as in the JSON encoding.
+    
+    Supported attributes for View are FilterID, OrganizationID, Permissions, SpaceID.
+    
+    The whole string must be query-encoded. */
+  include?: string;
+  /** Maximum number of View entities to act on, in ID order. A request that names limit or continue also stops when it runs short of time, and returns a ConfigHub-Continue header to pass as the continue parameter of the next request; keep sending requests until a response has none. If neither is specified, the request acts on every selected entity. */
+  limit?: number;
+  /** The token from the ConfigHub-Continue header of the previous request, to act on the View entities after the last one it acted on. The request's other parameters, except limit, must be the same as those of the request that returned the token. */
+  continue?: string;
+};
 export type ErrorItem = {
   /** A clear explanation of what went wrong */
   Description?: string;
@@ -24272,6 +26336,14 @@ export type ComponentCreateOrUpdateResponse = {
 export type ComponentCreateOrUpdateResponseRead = {
   Component?: ComponentRead;
   Error?: ResponseError;
+};
+export type UnarchiveResponse = {
+  /** Error information if the unarchive failed. */
+  Error?: ResponseError;
+  /** The Slug the entity had before it was archived, when another entity has taken it since. The entity keeps the Slug the archive gave it, id followed by its ID, and can be renamed. */
+  KeptSlug?: string;
+  /** What was unarchived. */
+  Message?: string;
 };
 export type ServiceAccount = {
   /** An optional map of Annotation key/value pairs for tools to attach information to entities. */
@@ -26505,7 +28577,7 @@ export type MutationInfo = {
   Patch?: string;
   /** In the protection argument of the patch-mutations and reset functions, that the operation must leave the path alone. On a Unit's stored MutationSources, deprecated and no longer read: a local override a merge must not overwrite is an Override guard, in the Unit's PathAnnotations. True on paths stored as local overrides before that */
   Protected?: boolean;
-  /** Removed configuration data if MutationType is Delete and otherwise the new data */
+  /** Removed configuration data if MutationType is Delete and otherwise the new data. Empty on the resource-level entry of a Unit's or Revision's stored MutationSources, which records which Mutation added, replaced or deleted a resource but not its body: read the body from the data of that Mutation's Revision, or of the Revision before it for a Delete */
   Value?: string;
 };
 export type MergeKeyValue = {
@@ -28949,6 +31021,7 @@ export type TriggerRead = {
   WhereUnit?: string;
 };
 export type ExtendedSpace = {
+  ArchivedUnitCount?: number;
   AttributeFilter?: Filter;
   Attributes?: Attribute[];
   Component?: Component;
@@ -28985,6 +31058,7 @@ export type ExtendedSpace = {
   WarnedUnitCount?: number;
 };
 export type ExtendedSpaceRead = {
+  ArchivedUnitCount?: number;
   AttributeFilter?: FilterRead;
   Attributes?: AttributeRead[];
   Component?: ComponentRead;
@@ -29912,14 +31986,6 @@ export type UnitProtectionRequest = {
   /** Remove every Override guard the Unit has before applying ResourceProtection */
   UnprotectAll?: boolean;
 };
-export type UnarchiveResponse = {
-  /** Error information if the unarchive failed. */
-  Error?: ResponseError;
-  /** The Slug the entity had before it was archived, when another entity has taken it since. The entity keeps the Slug the archive gave it, id followed by its ID, and can be renamed. */
-  KeptSlug?: string;
-  /** What was unarchived. */
-  Message?: string;
-};
 export type AttributeSelector = {
   Path?: string;
   WhereResource?: string;
@@ -30394,11 +32460,13 @@ export type ViewCreateOrUpdateResponseRead = {
 export const {
   useBulkDeleteComponentsMutation,
   useBulkPatchComponentsMutation,
+  useBulkUnarchiveComponentsMutation,
   useBulkDeleteServiceAccountsMutation,
   useBulkPatchServiceAccountsMutation,
   useBulkDeleteSpacesMutation,
   useBulkPatchSpacesMutation,
   useBulkCreateSpacesMutation,
+  useBulkUnarchiveSpacesMutation,
   useAttestMutation,
   useListAllAttestationsQuery,
   useLazyListAllAttestationsQuery,
@@ -30408,6 +32476,7 @@ export const {
   useBulkPatchAttributesMutation,
   useBulkCreateAttributesMutation,
   useBulkMoveAttributesMutation,
+  useBulkUnarchiveAttributesMutation,
   useListAuditEventsQuery,
   useLazyListAuditEventsQuery,
   useGetAuditEventQuery,
@@ -30418,24 +32487,28 @@ export const {
   useBulkPatchChangeOrdersMutation,
   useBulkCreateChangeOrdersMutation,
   useBulkRefreshChangeOrderStagesMutation,
+  useBulkUnarchiveChangeOrdersMutation,
   useBulkDeleteChangeSetsMutation,
   useListAllChangeSetsQuery,
   useLazyListAllChangeSetsQuery,
   useBulkPatchChangeSetsMutation,
   useBulkCreateChangeSetsMutation,
   useBulkMoveChangeSetsMutation,
+  useBulkUnarchiveChangeSetsMutation,
   useBulkDeleteChangeWorkflowsMutation,
   useListAllChangeWorkflowsQuery,
   useLazyListAllChangeWorkflowsQuery,
   useBulkPatchChangeWorkflowsMutation,
   useBulkCreateChangeWorkflowsMutation,
   useBulkMoveChangeWorkflowsMutation,
+  useBulkUnarchiveChangeWorkflowsMutation,
   useBulkDeleteChannelsMutation,
   useListAllChannelsQuery,
   useLazyListAllChannelsQuery,
   useBulkPatchChannelsMutation,
   useBulkCreateChannelsMutation,
   useBulkMoveChannelsMutation,
+  useBulkUnarchiveChannelsMutation,
   useListAllCommandsQuery,
   useLazyListAllCommandsQuery,
   useListAllCommandRunsQuery,
@@ -30451,6 +32524,7 @@ export const {
   useGetComponentDocumentQuery,
   useLazyGetComponentDocumentQuery,
   useUpdateComponentDocumentMutation,
+  useUnarchiveComponentMutation,
   useDemoteMutation,
   useDiffConfigurationsMutation,
   useBulkDeleteFiltersMutation,
@@ -30459,6 +32533,7 @@ export const {
   useBulkPatchFiltersMutation,
   useBulkCreateFiltersMutation,
   useBulkMoveFiltersMutation,
+  useBulkUnarchiveFiltersMutation,
   useListOrgFunctionsQuery,
   useLazyListOrgFunctionsQuery,
   useInvokeFunctionsOnOrgMutation,
@@ -30477,11 +32552,13 @@ export const {
   useBulkPatchInvocationsMutation,
   useBulkCreateInvocationsMutation,
   useBulkMoveInvocationsMutation,
+  useBulkUnarchiveInvocationsMutation,
   useBulkDeleteLinksMutation,
   useSearchListLinksQuery,
   useLazySearchListLinksQuery,
   useBulkPatchLinksMutation,
   useBulkCreateLinksMutation,
+  useBulkUnarchiveLinksMutation,
   useGetMeQuery,
   useLazyGetMeQuery,
   useCreateBrowserSessionMutation,
@@ -30506,6 +32583,7 @@ export const {
   usePromoteMutation,
   useListAllReleasesQuery,
   useLazyListAllReleasesQuery,
+  useBulkUnarchiveReleasesMutation,
   useListAllResourcesQuery,
   useLazyListAllResourcesQuery,
   useBulkDeleteReviewCommentsMutation,
@@ -30563,6 +32641,7 @@ export const {
   useGetAttributeDocumentQuery,
   useLazyGetAttributeDocumentQuery,
   useUpdateAttributeDocumentMutation,
+  useUnarchiveAttributeMutation,
   useListChangeOrdersQuery,
   useLazyListChangeOrdersQuery,
   useCreateChangeOrderMutation,
@@ -30572,6 +32651,7 @@ export const {
   usePatchChangeOrderMutation,
   useUpdateChangeOrderMutation,
   useRefreshChangeOrderStageMutation,
+  useUnarchiveChangeOrderMutation,
   useListChangeSetsQuery,
   useLazyListChangeSetsQuery,
   useCreateChangeSetMutation,
@@ -30580,6 +32660,7 @@ export const {
   useLazyGetChangeSetQuery,
   usePatchChangeSetMutation,
   useUpdateChangeSetMutation,
+  useUnarchiveChangeSetMutation,
   useListChangeWorkflowsQuery,
   useLazyListChangeWorkflowsQuery,
   useCreateChangeWorkflowMutation,
@@ -30591,6 +32672,7 @@ export const {
   useGetChangeWorkflowDocumentQuery,
   useLazyGetChangeWorkflowDocumentQuery,
   useUpdateChangeWorkflowDocumentMutation,
+  useUnarchiveChangeWorkflowMutation,
   useListChannelsQuery,
   useLazyListChannelsQuery,
   useCreateChannelMutation,
@@ -30606,6 +32688,7 @@ export const {
   useReleaseChannelLeaseMutation,
   useAcquireChannelLeaseMutation,
   usePollChannelMutation,
+  useUnarchiveChannelMutation,
   useListCommandsQuery,
   useLazyListCommandsQuery,
   useListCommandRunsQuery,
@@ -30628,6 +32711,7 @@ export const {
   useGetFilterDocumentQuery,
   useLazyGetFilterDocumentQuery,
   useUpdateFilterDocumentMutation,
+  useUnarchiveFilterMutation,
   useListFunctionsQuery,
   useLazyListFunctionsQuery,
   useInvokeFunctionsMutation,
@@ -30643,6 +32727,7 @@ export const {
   useGetInvocationDocumentQuery,
   useLazyGetInvocationDocumentQuery,
   useUpdateInvocationDocumentMutation,
+  useUnarchiveInvocationMutation,
   useListLinksQuery,
   useLazyListLinksQuery,
   useCreateLinkMutation,
@@ -30654,6 +32739,7 @@ export const {
   useGetLinkDocumentQuery,
   useLazyGetLinkDocumentQuery,
   useUpdateLinkDocumentMutation,
+  useUnarchiveLinkMutation,
   useListExtendedReleasesQuery,
   useLazyListExtendedReleasesQuery,
   usePublishReleaseMutation,
@@ -30664,6 +32750,7 @@ export const {
   useUpdateReleaseMutation,
   useDownloadReleaseDataQuery,
   useLazyDownloadReleaseDataQuery,
+  useUnarchiveReleaseMutation,
   useWithdrawReleaseMutation,
   useListTagsQuery,
   useLazyListTagsQuery,
@@ -30673,6 +32760,7 @@ export const {
   useLazyGetTagQuery,
   usePatchTagMutation,
   useUpdateTagMutation,
+  useUnarchiveTagMutation,
   useListTargetsQuery,
   useLazyListTargetsQuery,
   useCreateTargetMutation,
@@ -30684,6 +32772,7 @@ export const {
   useGetTargetDocumentQuery,
   useLazyGetTargetDocumentQuery,
   useUpdateTargetDocumentMutation,
+  useUnarchiveTargetMutation,
   useListTriggersQuery,
   useLazyListTriggersQuery,
   useCreateTriggerMutation,
@@ -30695,6 +32784,8 @@ export const {
   useGetTriggerDocumentQuery,
   useLazyGetTriggerDocumentQuery,
   useUpdateTriggerDocumentMutation,
+  useUnarchiveTriggerMutation,
+  useUnarchiveSpaceMutation,
   useListUnitsQuery,
   useLazyListUnitsQuery,
   useCreateUnitMutation,
@@ -30753,24 +32844,28 @@ export const {
   useGetViewDocumentQuery,
   useLazyGetViewDocumentQuery,
   useUpdateViewDocumentMutation,
+  useUnarchiveViewMutation,
   useBulkDeleteTagsMutation,
   useListAllTagsQuery,
   useLazyListAllTagsQuery,
   useBulkPatchTagsMutation,
   useBulkCreateTagsMutation,
   useBulkMoveTagsMutation,
+  useBulkUnarchiveTagsMutation,
   useBulkDeleteTargetsMutation,
   useListAllTargetsQuery,
   useLazyListAllTargetsQuery,
   useBulkPatchTargetsMutation,
   useBulkCreateTargetsMutation,
   useBulkMoveTargetsMutation,
+  useBulkUnarchiveTargetsMutation,
   useBulkDeleteTriggersMutation,
   useListAllTriggersQuery,
   useLazyListAllTriggersQuery,
   useBulkPatchTriggersMutation,
   useBulkCreateTriggersMutation,
   useBulkMoveTriggersMutation,
+  useBulkUnarchiveTriggersMutation,
   useBulkDeleteUnitsMutation,
   useListAllUnitsQuery,
   useLazyListAllUnitsQuery,
@@ -30798,4 +32893,5 @@ export const {
   useBulkPatchViewsMutation,
   useBulkCreateViewsMutation,
   useBulkMoveViewsMutation,
+  useBulkUnarchiveViewsMutation,
 } = injectedRtkApi;

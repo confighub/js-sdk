@@ -7,6 +7,56 @@ version; `X.Y` names the ConfigHub API the packages were generated against (see 
 GitHub release's notes. An "API spec" entry is a re-pin to a new ConfigHub release and
 lists what the generated surface gained or lost.
 
+## 0.11.19 — 2026-11-25
+
+### API
+
+Compared with ConfigHub `v0.11.18`:
+
+#### Added (62)
+
+- path `/_component/unarchive`
+- path `/_space/unarchive`
+- path `/attribute/unarchive`
+- path `/change_order/unarchive`
+- path `/change_set/unarchive`
+- path `/change_workflow/unarchive`
+- path `/channel/unarchive`
+- path `/component/{component_id}/unarchive`
+- path `/filter/unarchive`
+- path `/invocation/unarchive`
+- path `/link/unarchive`
+- path `/release/unarchive`
+- path `/space/{space_id}/attribute/{attribute_id}/unarchive`
+- path `/space/{space_id}/change_order/{change_order_id}/unarchive`
+- path `/space/{space_id}/change_set/{change_set_id}/unarchive`
+- path `/space/{space_id}/change_workflow/{change_workflow_id}/unarchive`
+- path `/space/{space_id}/channel/{channel_id}/unarchive`
+- path `/space/{space_id}/filter/{filter_id}/unarchive`
+- path `/space/{space_id}/invocation/{invocation_id}/unarchive`
+- path `/space/{space_id}/link/{link_id}/unarchive`
+- path `/space/{space_id}/release/{release_id}/unarchive`
+- path `/space/{space_id}/tag/{tag_id}/unarchive`
+- path `/space/{space_id}/target/{target_id}/unarchive`
+- path `/space/{space_id}/trigger/{trigger_id}/unarchive`
+- path `/space/{space_id}/unarchive`
+- path `/space/{space_id}/view/{view_id}/unarchive`
+- path `/tag/unarchive`
+- path `/target/unarchive`
+- path `/trigger/unarchive`
+- path `/view/unarchive`
+- parameter `archive` on `DELETE /_component`
+- parameter `archive` on `DELETE /_space`
+- parameter `archive` on `DELETE /attribute`
+- parameter `archive` on `DELETE /change_order`
+- parameter `archive` on `DELETE /change_set`
+- parameter `archive` on `DELETE /change_workflow`
+- parameter `archive` on `DELETE /channel`
+- parameter `archive` on `DELETE /component/{component_id}`
+- parameter `archive` on `DELETE /filter`
+- parameter `archive` on `DELETE /invocation`
+- …and 22 more
+
 ## 0.11.18 — 2026-11-24
 
 ### API
